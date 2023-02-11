@@ -168,76 +168,6 @@ const SignUp = () => {
     }
   };
 
-  // 구글, 깃허브 로그인
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
-
-  const onGoogleClick = async () => {
-    await signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        const user = result.user;
-        const uid = auth.currentUser?.uid;
-        mutation.mutate({
-          id: uid,
-          email,
-          password: pw,
-          phoneNumber: '',
-          area: '',
-          nickName: auth.currentUser?.displayName,
-          photoURL: auth.currentUser?.photoURL,
-          score: 0,
-          follower: [],
-          follow: [],
-          point: 0,
-          matchingItem: [],
-          comment: [],
-        });
-        navigate('/home');
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        if (
-          errorMessage.includes('auth/account-exists-with-different-credential')
-        ) {
-          setErr('이미 가입된 회원입니다.');
-          return;
-        }
-      });
-  };
-
-  const onGithubClick = async () => {
-    await signInWithPopup(auth, githubProvider)
-      .then((result) => {
-        const user = result.user;
-        const uid = auth.currentUser?.uid;
-        mutation.mutate({
-          id: uid,
-          email,
-          password: pw,
-          phoneNumber: '',
-          area: '',
-          nickName: auth.currentUser?.displayName,
-          photoURL: auth.currentUser?.photoURL,
-          score: 0,
-          follower: [],
-          follow: [],
-          point: 0,
-          matchingItem: [],
-          comment: [],
-        });
-        navigate('/home');
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        if (
-          errorMessage.includes('auth/account-exists-with-different-credential')
-        ) {
-          setErr('이미 가입된 회원입니다.');
-          return;
-        }
-      });
-  };
-
   return (
     <>
       <Container>
@@ -333,11 +263,6 @@ const SignUp = () => {
 
           <JoinButton>등록하기</JoinButton>
         </FormTag>
-        <PTag>SNS 회원가입</PTag>
-        <SocialLoginButtonContainer>
-          <GoogleIcon onClick={onGoogleClick} />
-          <GitIcon onClick={onGithubClick} />
-        </SocialLoginButtonContainer>
         <MoveSignInButton onClick={() => navigate('/signin')}>
           이미 회원이신가요?
         </MoveSignInButton>
