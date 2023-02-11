@@ -38,7 +38,6 @@ const SignIn = () => {
   });
 
   const idList = data?.map((user: userType) => user.id);
-  console.log('idList: ', idList);
 
   const [isViewPW, setIsViewPW] = useState(false);
   const handleClickViewPW = () => {
