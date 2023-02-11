@@ -11,7 +11,6 @@ const Home = () => {
       })
       .catch((error) => {
         console.log( '로그아웃error: ' ,error);
-        
       });
   }
   return (

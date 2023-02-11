@@ -1,11 +1,18 @@
 import Router from './router/Router';
 import GlobalStyle from './styles/GlobalStyle';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+ import {
+   useQuery,
+   useMutation,
+   useQueryClient,
+   QueryClient,
+   QueryClientProvider,
+ } from 'react-query';
 // import { ThemeProvider } from 'styled-components';
 // import { isDarkAtom } from './atom';
 // import { useRecoilValue } from 'recoil';
 // import { darkTheme, lightTheme } from './theme';
-
+ const queryClient = new QueryClient();
 const App = () => {
   /**Recoil적용을 위해 임시적으로 다크모드 생성 후 주석 처리 합니다
    * 삭제는 말아주세요
@@ -15,9 +22,11 @@ const App = () => {
   return (
     <>
       {/* <ThemeProvider theme={isDark ? darkTheme : lightTheme}> */}
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <Router />
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      </QueryClientProvider>
       {/* </ThemeProvider> */}
     </>
   );

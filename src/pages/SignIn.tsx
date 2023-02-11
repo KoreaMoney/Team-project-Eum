@@ -63,13 +63,10 @@ const SignIn = () => {
     } else {
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
-          console.log('로그인 성공');
           navigate('/home');
         })
         .catch((error) => {
-          const errorMessage = error.message;
-          console.log( 'errorMessage: ' ,errorMessage);
-          
+          const errorMessage = error.message;          
           if (errorMessage.includes('user-not-found')) {
             setErr('가입된 회원이 아닙니다.');
             return;
@@ -89,12 +86,10 @@ const SignIn = () => {
     await signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
-        console.log('user: ', user);
         navigate('/home');
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log('error: ', errorMessage);
         return;
       });
   };
@@ -103,12 +98,10 @@ const SignIn = () => {
     await signInWithPopup(auth, githubProvider)
       .then((result) => {
         const user = result.user;
-        console.log('user: ', user);
         navigate('/home');
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log('error: ', errorMessage);
       });
   };
 
