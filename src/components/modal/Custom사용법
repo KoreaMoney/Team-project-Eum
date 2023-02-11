@@ -1,0 +1,67 @@
+모달 사용 법
+
+import React, { useState, useCallback } from 'react';
+import styled from 'styled-components';
+import { customSuccessAlert } from '../components/modal/CustomAlert';
+import { CustomModal } from '../components/modal/CustomModal';
+
+const Test = () => {
+  /**모달을 불러오기 위함 TEST CODE입니다 */
+  const [isModalActive, setIsModalActive] = useState(false);
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
+
+
+  /**CustomModal width와 height를 조절할 수있습니다
+   * 모달 구간에 작업하시면 되십니다
+   */
+  return (
+    <div>
+      <h1>Landing</h1>
+      {/* 여기부터 모달창입니다 */}
+      <button onClick={onClickToggleModal}>모달창 버튼</button>
+      {isModalActive ? (
+        <CustomModal
+          modal={isModalActive}
+          setModal={setIsModalActive}
+          width="400"
+          height="500"
+          element={
+            <div>
+              <ComponentSpace>Div에는 component가 들어갑니다</ComponentSpace>
+            </div>
+          }
+        />
+      ) : (
+        ''
+      )}
+      {/* 여기까지 모달창입니다 */}
+    </div>
+  );
+};
+
+const ComponentSpace = styled.div`
+  color: black;
+`;
+
+export default Test;
+
+----------------------------
+alert사용 법
+
+
+  customSuccessAlert('성공했습니다');
+  customWarningAlert('경고입니다');
+  customInfoAlert('중요합니다');
+
+----------------
+confirm사용 시 예시
+
+const handleLogoutClick = () => {
+    customConfirm('로그아웃 하시겠습니까?', '로그아웃하기', '로그아웃', () => {
+      navigate('/');
+      auth.signOut().catch(() => alert('error'));
+    });
+  };
+----------------

@@ -1,0 +1,17 @@
+// import { DefaultTheme } from 'styled-components';
+
+/**디자인 완성 시 추가 작성될 공간입니다
+ * 현재 임시적으로 theme에 다크모드 관련 사항을 넣었습니다
+ * 추후 theme.ts로 변경될 것입니다
+ */
+// export const lightTheme: DefaultTheme = {
+//   bgColor: '#fff',
+//   textColor: '#000',
+//   accentColor: 'tomato',
+// };
+
+// export const darkTheme: DefaultTheme = {
+//   bgColor: '#000',
+//   textColor: '#fff',
+//   accentColor: 'tomato',
+// };
