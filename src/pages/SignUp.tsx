@@ -1,27 +1,27 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { AiFillCloseCircle, AiFillEye } from "react-icons/ai";
-import { useNavigate } from "react-router";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { ISignUpForm, userType } from "../types";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/Firebase";
-import { useMutation, useQuery } from "react-query";
-import axios, { AxiosResponse } from "axios";
+import { useState } from 'react';
+import styled from 'styled-components';
+import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
+import { useNavigate } from 'react-router';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { ISignUpForm, userType } from '../types';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/Firebase';
+import { useMutation, useQuery } from 'react-query';
+import axios, { AxiosResponse } from 'axios';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [err, setErr] = useState("");
+  const [err, setErr] = useState('');
   const [isViewPW, setIsViewPW] = useState(false);
   const [isViewCheckPW, setIsViewCheckPW] = useState(false);
-  const [pw, setPw] = useState("");
-  const [checkPw, setCheckPw] = useState("");
-  const [nickName, setNickName] = useState("");
-  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState('');
+  const [checkPw, setCheckPw] = useState('');
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
   const [checkNick, setCheckNick] = useState(0);
-  const [errMsg, setErrMsg] = useState("");
+  const [errMsg, setErrMsg] = useState('');
   // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
 
   // 유효성 검사를 위한 코드들
@@ -34,7 +34,7 @@ const SignUp = () => {
     pw: yup.string().matches(passwordRule).required(),
     checkPw: yup
       .string()
-      .oneOf([yup.ref("pw")])
+      .oneOf([yup.ref('pw')])
       .required(),
   });
   // react hook form 라이브러리 사용
@@ -49,15 +49,15 @@ const SignUp = () => {
   // 회원가입 성공 시 users에 data 추가
   const mutation = useMutation((newUser: userType) => {
     return axios
-      .post("http://localhost:4000/users", newUser)
+      .post('http://localhost:4000/users', newUser)
       .then((response: AxiosResponse) => {
         return response;
       });
   });
 
   // 닉네임 중복검사
-  const { data } = useQuery("users", async () => {
-    const response = await axios.get("http://localhost:4000/users");
+  const { data } = useQuery('users', async () => {
+    const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
 
@@ -74,7 +74,7 @@ const SignUp = () => {
 
   // x 버튼 누르면 email input 초기화
   const handleInputValueClickBT = () => {
-    setEmail("");
+    setEmail('');
   };
   // input state 관리해주는 함수들
   const onChangeEmailHandler = (
@@ -102,7 +102,7 @@ const SignUp = () => {
   // 닉네임 중복확인 버튼 누르면 실행되는 함수
   const handleCheckOverlapNickName = () => {
     if (!nickName) {
-      setErrMsg("닉네임을 입력해주세요.");
+      setErrMsg('닉네임을 입력해주세요.');
     }
     const result = nickNameList.includes(nickName);
     if (result) {
@@ -110,7 +110,7 @@ const SignUp = () => {
     } else {
       if (nickName) {
         setCheckNick(2);
-        setErrMsg("✅중복되는 닉네임이 없습니다.");
+        setErrMsg('✅중복되는 닉네임이 없습니다.');
       }
     }
   };
@@ -121,24 +121,24 @@ const SignUp = () => {
       return;
     } else {
       if (checkNick === 0) {
-        setErrMsg("닉네임 중복을 확인해주세요.");
+        setErrMsg('닉네임 중복을 확인해주세요.');
         return;
       } else if (checkNick === 1) {
         return;
       } else {
         await createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
-            setEmail("");
-            setPw("");
-            setCheckPw("");
-            setErr("");
-            setNickName("");
+            setEmail('');
+            setPw('');
+            setCheckPw('');
+            setErr('');
+            setNickName('');
             mutation.mutate({
               id: auth.currentUser?.uid,
               email,
               password: pw,
-              phoneNumber: "",
-              area: "",
+              phoneNumber: '',
+              area: '',
               nickName,
               photoURL: auth.currentUser?.photoURL,
               score: 0,
@@ -148,13 +148,13 @@ const SignUp = () => {
               matchingItem: [],
               comment: [],
             });
-            navigate("/home");
+            navigate('/home');
           })
           .catch((error) => {
             const errorMessage = error.message;
 
-            if (errorMessage.includes("auth/email-already-in-use")) {
-              setErr("이미 가입된 회원입니다.");
+            if (errorMessage.includes('auth/email-already-in-use')) {
+              setErr('이미 가입된 회원입니다.');
               return;
             }
           });
@@ -175,8 +175,8 @@ const SignUp = () => {
               <InputBox
                 type="email"
                 placeholder="이메일"
-                {...register("email")}
-                style={{ borderColor: errors?.email?.message ? "red" : "" }}
+                {...register('email')}
+                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
               />
@@ -184,32 +184,32 @@ const SignUp = () => {
                 <CloseIcon onClick={handleInputValueClickBT} />
               ) : undefined}
 
-              {errors.email && errors.email.type === "required" && (
+              {errors.email && errors.email.type === 'required' && (
                 <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
               )}
-              {errors.email && errors.email.type === "email" && (
+              {errors.email && errors.email.type === 'email' && (
                 <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
               )}
             </ItemContainer>
             <ItemContainer>
               <InputBox
-                type={isViewPW ? "text" : "password"}
+                type={isViewPW ? 'text' : 'password'}
                 placeholder="비밀번호"
-                {...register("pw")}
-                style={{ borderColor: errors?.pw?.message ? "red" : "" }}
+                {...register('pw')}
+                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
               />
               {pw ? (
                 <ViewIcon
                   onClick={handleClickViewPW}
-                  style={{ color: isViewPW ? "black" : "#ddd" }}
+                  style={{ color: isViewPW ? 'black' : '#ddd' }}
                 />
               ) : undefined}
-              {errors.pw && errors.pw.type === "required" && (
+              {errors.pw && errors.pw.type === 'required' && (
                 <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
               )}
-              {errors.pw && errors.pw.type === "matches" && (
+              {errors.pw && errors.pw.type === 'matches' && (
                 <ErrorMSG>
                   비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
                 </ErrorMSG>
@@ -217,23 +217,23 @@ const SignUp = () => {
             </ItemContainer>
             <ItemContainer>
               <InputBox
-                type={isViewCheckPW ? "text" : "password"}
+                type={isViewCheckPW ? 'text' : 'password'}
                 placeholder="비밀번호 확인"
-                {...register("checkPw")}
-                style={{ borderColor: errors?.checkPw?.message ? "red" : "" }}
+                {...register('checkPw')}
+                style={{ borderColor: errors?.checkPw?.message ? 'red' : '' }}
                 onChange={onChangecheckPwHandler}
                 value={checkPw}
               />
               {checkPw ? (
                 <ViewIcon
                   onClick={handleClickCheckPW}
-                  style={{ color: isViewCheckPW ? "black" : "#ddd" }}
+                  style={{ color: isViewCheckPW ? 'black' : '#ddd' }}
                 />
               ) : undefined}
-              {errors.checkPw && errors.checkPw.type === "required" && (
+              {errors.checkPw && errors.checkPw.type === 'required' && (
                 <ErrorMSG>비밀번호를 확인해주세요.</ErrorMSG>
               )}
-              {errors.checkPw && errors.checkPw.type === "oneOf" && (
+              {errors.checkPw && errors.checkPw.type === 'oneOf' && (
                 <ErrorMSG>비밀번호가 일치하지 않습니다.</ErrorMSG>
               )}
               {err && <ErrorMSG>{err}</ErrorMSG>}
@@ -243,7 +243,7 @@ const SignUp = () => {
             <InputBox
               type="text"
               placeholder="닉네임"
-              style={{ borderColor: errors?.pw?.message ? "red" : "" }}
+              style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
               onChange={onChangeNickNameHandler}
               value={nickName}
             />
@@ -257,7 +257,7 @@ const SignUp = () => {
 
           <JoinButton>등록하기</JoinButton>
         </FormTag>
-        <MoveSignInButton onClick={() => navigate("/signin")}>
+        <MoveSignInButton onClick={() => navigate('/signin')}>
           이미 회원이신가요?
         </MoveSignInButton>
       </Container>

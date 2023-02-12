@@ -1,23 +1,23 @@
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import {AiFillCloseCircle, AiFillEye, AiFillGithub} from 'react-icons/ai';
-import {FcGoogle} from 'react-icons/fc';
-import {useNavigate} from 'react-router';
+import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
+import { useNavigate } from 'react-router';
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import {auth} from '../firebase/Firebase';
-import {ISignUpForm, userType} from '../types';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import { auth } from '../firebase/Firebase';
+import { ISignUpForm, userType } from '../types';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {CustomModal} from '../components/modal/CustomModal';
+import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
-import {useMutation, useQuery} from 'react-query';
-import axios, {AxiosResponse} from 'axios';
+import { useMutation, useQuery } from 'react-query';
+import axios, { AxiosResponse } from 'axios';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const SignIn = () => {
   });
 
   // uid 중복검사
-  const {data} = useQuery('users', async () => {
+  const { data } = useQuery('users', async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
@@ -54,7 +54,7 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
   });
@@ -193,10 +193,10 @@ const SignIn = () => {
           <InputContainer>
             <ItemContainer>
               <InputBox
-                type='email'
-                placeholder='이메일'
+                type="email"
+                placeholder="이메일"
                 {...register('email')}
-                style={{borderColor: errors?.email?.message ? 'red' : ''}}
+                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
               />
@@ -213,16 +213,16 @@ const SignIn = () => {
             <ItemContainer>
               <InputBox
                 type={isViewPW ? 'text' : 'password'}
-                placeholder='비밀번호'
+                placeholder="비밀번호"
                 {...register('pw')}
-                style={{borderColor: errors?.pw?.message ? 'red' : ''}}
+                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
               />
               {pw ? (
                 <ViewIcon
                   onClick={handleClickViewPW}
-                  style={{color: isViewPW ? 'black' : '#ddd'}}
+                  style={{ color: isViewPW ? 'black' : '#ddd' }}
                 />
               ) : undefined}
               {errors.pw && errors.pw.type === 'required' && (
@@ -255,8 +255,8 @@ const SignIn = () => {
           <CustomModal
             modal={isModalActive}
             setModal={setIsModalActive}
-            width='600'
-            height='300'
+            width="600"
+            height="300"
             element={
               <ComponentSpace>
                 <FindPW />

@@ -1,7 +1,7 @@
-import Router from "./router/Router";
-import GlobalStyle from "./styles/GlobalStyle";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient, QueryClientProvider } from "react-query";
+import Router from './router/Router';
+import GlobalStyle from './styles/GlobalStyle';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from 'react-query';
 // import { ThemeProvider } from 'styled-components';
 // import { isDarkAtom } from './atom';
 // import { useRecoilValue } from 'recoil';
