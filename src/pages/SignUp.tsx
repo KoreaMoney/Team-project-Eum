@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {AiFillCloseCircle, AiFillEye, AiFillGithub} from 'react-icons/ai';
 import {FcGoogle} from 'react-icons/fc';
 import {useNavigate} from 'react-router';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {ISignUpForm} from '../types';
+import {ISignUpForm, userType} from '../types';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {
@@ -14,20 +14,21 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import {auth} from '../firebase/Firebase';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
+import axios, {AxiosResponse} from 'axios';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [err, setErr] = useState('');
-  // 비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수
-  // 비밀번호 , 비밀번호체크랑 따로 구현했습니다.
   const [isViewPW, setIsViewPW] = useState(false);
   const [isViewCheckPW, setIsViewCheckPW] = useState(false);
-  const handleClickViewPW = () => {
-    setIsViewPW(!isViewPW);
-  };
-  const handleClickCheckPW = () => {
-    setIsViewCheckPW(!isViewCheckPW);
-  };
+  const [pw, setPw] = useState('');
+  const [checkPw, setCheckPw] = useState('');
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
+  const [checkNick, setCheckNick] = useState(0);
+  const [errMsg, setErrMsg] = useState('');
+  // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -51,94 +52,120 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
+  // 회원가입 성공 시 users에 data 추가
+  const mutation = useMutation((newUser: userType) => {
+    return axios
+      .post('http://localhost:4000/users', newUser)
+      .then((response: AxiosResponse) => {
+        return response;
+      });
+  });
+
+  // 닉네임 중복검사
+  const {data} = useQuery('users', async () => {
+    const response = await axios.get('http://localhost:4000/users');
+    return response.data;
+  });
+
+  const nickNameList = data?.map((user: userType) => user.nickName);
+
+  // 비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수
+  // 비밀번호 , 비밀번호체크랑 따로 구현했습니다.
+  const handleClickViewPW = () => {
+    setIsViewPW(!isViewPW);
+  };
+  const handleClickCheckPW = () => {
+    setIsViewCheckPW(!isViewCheckPW);
+  };
+
+  // x 버튼 누르면 email input 초기화
+  const handleInputValueClickBT = () => {
+    setEmail('');
+  };
   // input state 관리해주는 함수들
-  const [email, setEmail] = useState('');
   const onChangeEmailHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setEmail(e.target.value);
   };
-  // x 버튼 누르면 email input 초기화
-  const handleInputValueClickBT = () => {
-    setEmail('');
-  };
 
-  const [pw, setPw] = useState('');
   const onChangePwHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPw(e.target.value);
   };
 
-  const [checkPw, setCheckPw] = useState('');
   const onChangecheckPwHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setCheckPw(e.target.value);
   };
 
+  const onChangeNickNameHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setNickName(e.target.value);
+  };
+
+  // 닉네임 중복확인 버튼 누르면 실행되는 함수
+  const handleCheckOverlapNickName = () => {
+    if (!nickName) {
+      setErrMsg('닉네임을 입력해주세요.');
+    }
+    const result = nickNameList.includes(nickName);
+    if (result) {
+      setCheckNick(1);
+    } else {
+      if (nickName) {
+        setCheckNick(2);
+        setErrMsg('✅중복되는 닉네임이 없습니다.');
+      }
+    }
+  };
+
+  // 등록하기 버튼 누르면 실행되는 함수
   const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
     if (errors.checkPw || errors.email || errors.pw) {
       return;
     } else {
-      await createUserWithEmailAndPassword(auth, email, pw)
-        .then((userCredential) => {
-          console.log('회원가입 성공');
+      if (checkNick === 0) {
+        setErrMsg('닉네임 중복을 확인해주세요.');
+        return;
+      } else if (checkNick === 1) {
+        return;
+      } else {
+        await createUserWithEmailAndPassword(auth, email, pw)
+          .then((userCredential) => {
+            setEmail('');
+            setPw('');
+            setCheckPw('');
+            setErr('');
+            setNickName('');
+            mutation.mutate({
+              id: auth.currentUser?.uid,
+              email,
+              password: pw,
+              phoneNumber: '',
+              area: '',
+              nickName,
+              photoURL: auth.currentUser?.photoURL,
+              score: 0,
+              follower: [],
+              follow: [],
+              point: 0,
+              matchingItem: [],
+              comment: [],
+            });
+            navigate('/home');
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
 
-          setEmail('');
-          setPw('');
-          setCheckPw('');
-          setErr('');
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-
-          if (errorMessage.includes('auth/email-already-in-use')) {
-            setErr('이미 가입된 회원입니다.');
-            return;
-          }
-        });
+            if (errorMessage.includes('auth/email-already-in-use')) {
+              setErr('이미 가입된 회원입니다.');
+              return;
+            }
+          });
+      }
     }
-  };
-
-  // 구글, 깃허브 로그인
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
-
-  const onGoogleClick = async () => {
-    await signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        const user = result.user;
-        console.log('user: ', user);
-        navigate('/home');
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log('error: ', errorMessage);
-        if (
-          errorMessage.includes('auth/account-exists-with-different-credential')
-        ) {
-          setErr('이미 가입된 회원입니다.');
-          return;
-        }
-      });
-  };
-
-  const onGithubClick = async () => {
-    await signInWithPopup(auth, githubProvider)
-      .then((result) => {
-        const user = result.user;
-        console.log('user: ', user);
-        navigate('/home');
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log('error: ', errorMessage);
-        if (
-          errorMessage.includes('auth/account-exists-with-different-credential')
-        ) {
-          setErr('이미 가입된 회원입니다.');
-          return;
-        }
-      });
   };
 
   return (
@@ -218,13 +245,24 @@ const SignUp = () => {
               {err && <ErrorMSG>{err}</ErrorMSG>}
             </ItemContainer>
           </InputContainer>
+          <ItemContainer>
+            <InputBox
+              type='text'
+              placeholder='닉네임'
+              style={{borderColor: errors?.pw?.message ? 'red' : ''}}
+              onChange={onChangeNickNameHandler}
+              value={nickName}
+            />
+            <CheckBT type='button' onClick={handleCheckOverlapNickName}>
+              중복확인
+            </CheckBT>
+            {checkNick === 1 && <ErrorMSG>중복된 닉네임입니다.</ErrorMSG>}
+            {checkNick === 0 && <ErrorMSG>{errMsg}</ErrorMSG>}
+            {checkNick === 2 && <PassMSG>{errMsg}</PassMSG>}
+          </ItemContainer>
+
           <JoinButton>등록하기</JoinButton>
         </FormTag>
-        <PTag>SNS 회원가입</PTag>
-        <SocialLoginButtonContainer>
-          <GoogleIcon onClick={onGoogleClick} />
-          <GitIcon onClick={onGithubClick} />
-        </SocialLoginButtonContainer>
         <MoveSignInButton onClick={() => navigate('/signin')}>
           이미 회원이신가요?
         </MoveSignInButton>
@@ -235,6 +273,26 @@ const SignUp = () => {
 
 export default SignUp;
 
+const CheckBT = styled.button`
+  width: 20%;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  background-color: #e4e4e4;
+  position: absolute;
+  bottom: 25px;
+  right: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #e1e1e1;
+  }
+`;
+const PassMSG = styled.p`
+  color: green;
+  font-size: 0.8rem;
+`;
 const ErrorMSG = styled.p`
   color: red;
   font-size: 0.8rem;

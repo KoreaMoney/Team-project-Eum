@@ -1,25 +1,43 @@
-import { useCallback, useState } from 'react';
+import {useCallback, useState} from 'react';
 import styled from 'styled-components';
-import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
-import { useNavigate } from 'react-router';
+import {AiFillCloseCircle, AiFillEye, AiFillGithub} from 'react-icons/ai';
+import {FcGoogle} from 'react-icons/fc';
+import {useNavigate} from 'react-router';
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '../firebase/Firebase';
-import { ISignUpForm } from '../types';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {auth} from '../firebase/Firebase';
+import {ISignUpForm, userType} from '../types';
+import {SubmitHandler, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { CustomModal } from '../components/modal/CustomModal';
+import {CustomModal} from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
+import {useMutation, useQuery} from 'react-query';
+import axios, {AxiosResponse} from 'axios';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [err, setErr] = useState('');
+  const [checkID, setCheckID] = useState(false);
+  const mutation = useMutation((newUser: userType) => {
+    return axios
+      .post('http://localhost:4000/users', newUser)
+      .then((response: AxiosResponse) => {
+        return response;
+      });
+  });
+
+  // uid 중복검사
+  const {data} = useQuery('users', async () => {
+    const response = await axios.get('http://localhost:4000/users');
+    return response.data;
+  });
+
+  const idList = data?.map((user: userType) => user.id);
 
   const [isViewPW, setIsViewPW] = useState(false);
   const handleClickViewPW = () => {
@@ -36,7 +54,7 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
   });
@@ -63,13 +81,10 @@ const SignIn = () => {
     } else {
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
-          console.log('로그인 성공');
           navigate('/home');
         })
         .catch((error) => {
           const errorMessage = error.message;
-          console.log( 'errorMessage: ' ,errorMessage);
-          
           if (errorMessage.includes('user-not-found')) {
             setErr('가입된 회원이 아닙니다.');
             return;
@@ -80,7 +95,6 @@ const SignIn = () => {
     }
   };
 
-
   // 구글, 깃허브 로그인
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
@@ -89,13 +103,38 @@ const SignIn = () => {
     await signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
-        console.log('user: ', user);
+        const uid = auth.currentUser?.uid;
+        const isId = idList.includes(auth.currentUser?.uid);
+        if (!isId) {
+          mutation.mutate({
+            id: uid,
+            email,
+            password: pw,
+            phoneNumber: '',
+            area: '',
+            nickName: auth.currentUser?.displayName,
+            photoURL: auth.currentUser?.photoURL,
+            score: 0,
+            follower: [],
+            follow: [],
+            point: 0,
+            matchingItem: [],
+            comment: [],
+          });
+          console.log('데이터 추가: ');
+        } else {
+          console.log('데이터 추가XX: ');
+        }
         navigate('/home');
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log('error: ', errorMessage);
-        return;
+        if (
+          errorMessage.includes('auth/account-exists-with-different-credential')
+        ) {
+          setErr('이미 가입된 회원입니다.');
+          return;
+        }
       });
   };
 
@@ -103,12 +142,38 @@ const SignIn = () => {
     await signInWithPopup(auth, githubProvider)
       .then((result) => {
         const user = result.user;
-        console.log('user: ', user);
+        const uid = auth.currentUser?.uid;
+        const isId = idList.includes(auth.currentUser?.uid);
+        if (!isId) {
+          mutation.mutate({
+            id: uid,
+            email,
+            password: pw,
+            phoneNumber: '',
+            area: '',
+            nickName: auth.currentUser?.displayName,
+            photoURL: auth.currentUser?.photoURL,
+            score: 0,
+            follower: [],
+            follow: [],
+            point: 0,
+            matchingItem: [],
+            comment: [],
+          });
+          console.log('데이터 추가: ');
+        } else {
+          console.log('데이터 추가XX: ');
+        }
         navigate('/home');
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log('error: ', errorMessage);
+        if (
+          errorMessage.includes('auth/account-exists-with-different-credential')
+        ) {
+          setErr('이미 가입된 회원입니다.');
+          return;
+        }
       });
   };
 
@@ -128,10 +193,10 @@ const SignIn = () => {
           <InputContainer>
             <ItemContainer>
               <InputBox
-                type="email"
-                placeholder="이메일"
+                type='email'
+                placeholder='이메일'
                 {...register('email')}
-                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
+                style={{borderColor: errors?.email?.message ? 'red' : ''}}
                 onChange={onChangeEmailHandler}
                 value={email}
               />
@@ -148,16 +213,16 @@ const SignIn = () => {
             <ItemContainer>
               <InputBox
                 type={isViewPW ? 'text' : 'password'}
-                placeholder="비밀번호"
+                placeholder='비밀번호'
                 {...register('pw')}
-                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
+                style={{borderColor: errors?.pw?.message ? 'red' : ''}}
                 onChange={onChangePwHandler}
                 value={pw}
               />
               {pw ? (
                 <ViewIcon
                   onClick={handleClickViewPW}
-                  style={{ color: isViewPW ? 'black' : '#ddd' }}
+                  style={{color: isViewPW ? 'black' : '#ddd'}}
                 />
               ) : undefined}
               {errors.pw && errors.pw.type === 'required' && (
@@ -190,8 +255,8 @@ const SignIn = () => {
           <CustomModal
             modal={isModalActive}
             setModal={setIsModalActive}
-            width="600"
-            height="300"
+            width='600'
+            height='300'
             element={
               <ComponentSpace>
                 <FindPW />

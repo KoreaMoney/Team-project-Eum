@@ -11,9 +11,10 @@ const Home = () => {
       })
       .catch((error) => {
         console.log( '로그아웃error: ' ,error);
-        
       });
   }
+  console.log( 'auth.curr: ' ,auth.currentUser);
+  
   return (
     <div>
       Home <button onClick={logOut}>로그아웃</button>

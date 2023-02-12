@@ -41,13 +41,6 @@ export const toDoState = atom<IToDo[]>({
   default: [],
 });
 
-export const userState = atom<userType>({
-  key: 'userInfo',
-  default: {
-    userId: '',
-    profileImg: 'https://ifh.cc/v-BH3aJj',
-  },
-});
 
 /**todo의 모든 데이터는 get됩니다
  * 카테고리 별 데이터를 get됩니다
