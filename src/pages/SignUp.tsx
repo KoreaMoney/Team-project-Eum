@@ -1,21 +1,15 @@
-import {useEffect, useState} from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import {AiFillCloseCircle, AiFillEye, AiFillGithub} from 'react-icons/ai';
-import {FcGoogle} from 'react-icons/fc';
-import {useNavigate} from 'react-router';
-import {useForm, SubmitHandler} from 'react-hook-form';
-import {ISignUpForm, userType} from '../types';
+import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
+import { useNavigate } from 'react-router';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { ISignUpForm, userType } from '../types';
 import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {
-  createUserWithEmailAndPassword,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
-import {auth} from '../firebase/Firebase';
-import {useMutation, useQuery, useQueryClient} from 'react-query';
-import axios, {AxiosResponse} from 'axios';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/Firebase';
+import { useMutation, useQuery } from 'react-query';
+import axios, { AxiosResponse } from 'axios';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -47,7 +41,7 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
   });
@@ -62,7 +56,7 @@ const SignUp = () => {
   });
 
   // 닉네임 중복검사
-  const {data} = useQuery('users', async () => {
+  const { data } = useQuery('users', async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
@@ -133,7 +127,7 @@ const SignUp = () => {
         return;
       } else {
         await createUserWithEmailAndPassword(auth, email, pw)
-          .then((userCredential) => {
+          .then(() => {
             setEmail('');
             setPw('');
             setCheckPw('');
@@ -179,10 +173,10 @@ const SignUp = () => {
           <InputContainer>
             <ItemContainer>
               <InputBox
-                type='email'
-                placeholder='이메일'
+                type="email"
+                placeholder="이메일"
                 {...register('email')}
-                style={{borderColor: errors?.email?.message ? 'red' : ''}}
+                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
               />
@@ -200,16 +194,16 @@ const SignUp = () => {
             <ItemContainer>
               <InputBox
                 type={isViewPW ? 'text' : 'password'}
-                placeholder='비밀번호'
+                placeholder="비밀번호"
                 {...register('pw')}
-                style={{borderColor: errors?.pw?.message ? 'red' : ''}}
+                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
               />
               {pw ? (
                 <ViewIcon
                   onClick={handleClickViewPW}
-                  style={{color: isViewPW ? 'black' : '#ddd'}}
+                  style={{ color: isViewPW ? 'black' : '#ddd' }}
                 />
               ) : undefined}
               {errors.pw && errors.pw.type === 'required' && (
@@ -224,16 +218,16 @@ const SignUp = () => {
             <ItemContainer>
               <InputBox
                 type={isViewCheckPW ? 'text' : 'password'}
-                placeholder='비밀번호 확인'
+                placeholder="비밀번호 확인"
                 {...register('checkPw')}
-                style={{borderColor: errors?.checkPw?.message ? 'red' : ''}}
+                style={{ borderColor: errors?.checkPw?.message ? 'red' : '' }}
                 onChange={onChangecheckPwHandler}
                 value={checkPw}
               />
               {checkPw ? (
                 <ViewIcon
                   onClick={handleClickCheckPW}
-                  style={{color: isViewCheckPW ? 'black' : '#ddd'}}
+                  style={{ color: isViewCheckPW ? 'black' : '#ddd' }}
                 />
               ) : undefined}
               {errors.checkPw && errors.checkPw.type === 'required' && (
@@ -247,13 +241,13 @@ const SignUp = () => {
           </InputContainer>
           <ItemContainer>
             <InputBox
-              type='text'
-              placeholder='닉네임'
-              style={{borderColor: errors?.pw?.message ? 'red' : ''}}
+              type="text"
+              placeholder="닉네임"
+              style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
               onChange={onChangeNickNameHandler}
               value={nickName}
             />
-            <CheckBT type='button' onClick={handleCheckOverlapNickName}>
+            <CheckBT type="button" onClick={handleCheckOverlapNickName}>
               중복확인
             </CheckBT>
             {checkNick === 1 && <ErrorMSG>중복된 닉네임입니다.</ErrorMSG>}
@@ -368,19 +362,6 @@ const JoinButton = styled.button`
   }
 `;
 
-const PTag = styled.p`
-  font-size: 0.8rem;
-  color: #bbbbbb;
-`;
-
-const SocialLoginButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-`;
-
 const MoveSignInButton = styled.button`
   border: none;
   background-color: white;
@@ -416,14 +397,4 @@ const ViewIcon = styled(AiFillEye)`
   &:hover {
     color: #d1d1d1;
   }
-`;
-
-const GoogleIcon = styled(FcGoogle)`
-  font-size: 4rem;
-  cursor: pointer;
-`;
-
-const GitIcon = styled(AiFillGithub)`
-  font-size: 4rem;
-  cursor: pointer;
 `;
