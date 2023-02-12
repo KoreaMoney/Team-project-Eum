@@ -8,8 +8,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
-import { useMutation, useQuery } from 'react-query';
+
 import axios, { AxiosResponse } from 'axios';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const SignUp = () => {
   });
 
   // 닉네임 중복검사
-  const { data } = useQuery('users', async () => {
+  const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
