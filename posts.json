@@ -1,0 +1,56 @@
+{
+  "posts": [
+    {
+      "id": "37c1ad3f-f6e6-4b8e-b32d-8674fe7cd2b1",
+      "title": "123",
+      "nickName": "동그라미",
+      "uid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "456",
+      "price": "33333",
+      "matchingUsers": [],
+      "matchingUser": "",
+      "isMatching": false,
+      "isResolve": false,
+      "date": 1676197107519
+    },
+    {
+      "id": "f41f726c-19d2-4898-802b-9295a634b9a9",
+      "title": "ggg",
+      "nickName": "동그라미",
+      "uid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "ggg",
+      "price": "100000",
+      "matchingUsers": [],
+      "matchingUser": "",
+      "isMatching": false,
+      "isResolve": false,
+      "date": 1676197438784
+    },
+    {
+      "id": "fe22a964-d1da-4918-8a39-dbf4487f43bd",
+      "title": "ㅁㅁㅁ",
+      "nickName": "동그라미",
+      "uid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "ㄴㄴㄴ",
+      "price": "30000",
+      "matchingUsers": [],
+      "matchingUser": "",
+      "isMatching": false,
+      "isResolve": false,
+      "date": 1676206140465
+    },
+    {
+      "id": "568b5ed0-f502-42a3-8231-1fa6dcb131a1",
+      "title": "ㅋㅋㅋ",
+      "nickName": "동그라미",
+      "uid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "ㅋㅋㅋ",
+      "price": "333",
+      "matchingUsers": [],
+      "matchingUser": "",
+      "isMatching": false,
+      "isResolve": false,
+      "date": 1676206294249
+    }
+  ]
+}

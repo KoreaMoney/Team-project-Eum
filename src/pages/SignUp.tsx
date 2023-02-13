@@ -12,6 +12,7 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
+  updateProfile,
 } from 'firebase/auth';
 import {auth} from '../firebase/Firebase';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
@@ -28,7 +29,6 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [checkNick, setCheckNick] = useState(0);
   const [errMsg, setErrMsg] = useState('');
-  // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -61,7 +61,7 @@ const SignUp = () => {
       });
   });
 
-  // 닉네임 중복검사
+  // 닉네임 중복 찾기
   const {data} = useQuery('users', async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
@@ -117,6 +117,7 @@ const SignUp = () => {
       if (nickName) {
         setCheckNick(2);
         setErrMsg('✅중복되는 닉네임이 없습니다.');
+        // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
       }
     }
   };
@@ -154,7 +155,6 @@ const SignUp = () => {
               matchingItem: [],
               comment: [],
             });
-            navigate('/home');
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -164,6 +164,13 @@ const SignUp = () => {
               return;
             }
           });
+        if(auth.currentUser){
+          await updateProfile(auth.currentUser, {
+            displayName: nickName,
+          }).then(() => navigate('/home'));
+        } else {
+          return <div>닉네임을 등록해주세요.</div>
+        }
       }
     }
   };
