@@ -16,8 +16,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
-import { useMutation, useQuery } from 'react-query';
 import axios, { AxiosResponse } from 'axios';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const SignIn = () => {
   });
 
   // uid 중복검사
-  const { data } = useQuery('users', async () => {
+  const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
