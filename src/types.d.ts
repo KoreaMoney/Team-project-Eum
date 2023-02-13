@@ -3,7 +3,6 @@ export interface ISignUpForm {
   pw: string;
   checkPw: string;
 }
-
 export interface userType {
   id: string | undefined;
   email: string;
@@ -29,10 +28,23 @@ export interface userType {
   }];
 }
 
+export interface postType {
+  id: string | undefined;
+  title: string;
+  nickName: string | null | undefined;
+  uid: string | undefined;
+  content: string;
+  price: number | undefined;
+  matchingUsers: [];
+  matchingUser: string;
+  isMatching: boolean;
+  isResolve: boolean;
+  date: number;
+}
+
 /**삭제하지 말아주세요 */
 
 // import 'styled-components';
-
 // declare module 'styled-components' {
 //   export interface DefaultTheme {
 //     bgColor: string;
