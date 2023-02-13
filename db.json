@@ -1,0 +1,50 @@
+{
+  "users": [
+    {},
+    {
+      "id": "uySfMswxvQZqCHpnssaQHx1AEA82",
+      "email": "dosu@naver.com",
+      "password": "Aa123123!@",
+      "phoneNumber": "",
+      "area": "",
+      "nickName": "fffffffff",
+      "photoURL": null,
+      "score": 0,
+      "follower": [],
+      "follow": [],
+      "point": 0,
+      "matchingItem": [],
+      "comment": []
+    },
+    {
+      "id": "8918TyR4d5Vs9Bb9tdUv962BIJw2",
+      "email": "",
+      "password": "",
+      "phoneNumber": "",
+      "area": "",
+      "nickName": "Hugh Kim",
+      "photoURL": "https://lh3.googleusercontent.com/a/AEdFTp4WgejcOHpakGsyJYNLLDTaP1VGP4sLoxeLUOsRqRw=s96-c",
+      "score": 0,
+      "follower": [],
+      "follow": [],
+      "point": 0,
+      "matchingItem": [],
+      "comment": []
+    }
+  ],
+  "posts": [
+    {
+      "id": "7566c20f-9704-4670-8480-c0b3060e7c5c",
+      "title": "asdfsdaffads",
+      "nickName": "Hugh Kim",
+      "uid": "8918TyR4d5Vs9Bb9tdUv962BIJw2",
+      "content": "sadffdsasfda",
+      "price": "1111111111",
+      "matchingUsers": [],
+      "matchingUser": "",
+      "isMatching": false,
+      "isResolve": false,
+      "date": 1676252521577
+    }
+  ]
+}

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
+import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ISignUpForm, userType } from '../types';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
-
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -23,13 +23,11 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [checkNick, setCheckNick] = useState(0);
   const [errMsg, setErrMsg] = useState('');
-  // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
   const passwordRule =
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
-
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     pw: yup.string().matches(passwordRule).required(),
@@ -46,7 +44,6 @@ const SignUp = () => {
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
   });
-
   // 회원가입 성공 시 users에 data 추가
   const mutation = useMutation((newUser: userType) => {
     return axios
@@ -56,14 +53,12 @@ const SignUp = () => {
       });
   });
 
-  // 닉네임 중복검사
+  // 닉네임 중복 찾기
   const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
   });
-
   const nickNameList = data?.map((user: userType) => user.nickName);
-
   // 비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수
   // 비밀번호 , 비밀번호체크랑 따로 구현했습니다.
   const handleClickViewPW = () => {
@@ -72,7 +67,6 @@ const SignUp = () => {
   const handleClickCheckPW = () => {
     setIsViewCheckPW(!isViewCheckPW);
   };
-
   // x 버튼 누르면 email input 초기화
   const handleInputValueClickBT = () => {
     setEmail('');
@@ -83,23 +77,19 @@ const SignUp = () => {
   ): void => {
     setEmail(e.target.value);
   };
-
   const onChangePwHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPw(e.target.value);
   };
-
   const onChangecheckPwHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setCheckPw(e.target.value);
   };
-
   const onChangeNickNameHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setNickName(e.target.value);
   };
-
   // 닉네임 중복확인 버튼 누르면 실행되는 함수
   const handleCheckOverlapNickName = () => {
     if (!nickName) {
@@ -112,10 +102,10 @@ const SignUp = () => {
       if (nickName) {
         setCheckNick(2);
         setErrMsg('✅중복되는 닉네임이 없습니다.');
+        // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
       }
     }
   };
-
   // 등록하기 버튼 누르면 실행되는 함수
   const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
     if (errors.checkPw || errors.email || errors.pw) {
@@ -149,26 +139,30 @@ const SignUp = () => {
               matchingItem: [],
               comment: [],
             });
-            navigate('/home');
           })
           .catch((error) => {
             const errorMessage = error.message;
-
             if (errorMessage.includes('auth/email-already-in-use')) {
               setErr('이미 가입된 회원입니다.');
               return;
             }
           });
+        if (auth.currentUser) {
+          await updateProfile(auth.currentUser, {
+            displayName: nickName,
+          }).then(() => navigate('/home'));
+        } else {
+          return <div>닉네임을 등록해주세요.</div>;
+        }
       }
     }
   };
-
   return (
     <>
       <Container>
         <InfoBox>
           <InfoText>당신 곁의 개인 비서</InfoText>
-          <InfoText>Daylog</InfoText>
+          <InfoText>프로젝트 이름</InfoText>
         </InfoBox>
         <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
           <InputContainer>
@@ -184,7 +178,6 @@ const SignUp = () => {
               {email ? (
                 <CloseIcon onClick={handleInputValueClickBT} />
               ) : undefined}
-
               {errors.email && errors.email.type === 'required' && (
                 <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
               )}
@@ -255,7 +248,6 @@ const SignUp = () => {
             {checkNick === 0 && <ErrorMSG>{errMsg}</ErrorMSG>}
             {checkNick === 2 && <PassMSG>{errMsg}</PassMSG>}
           </ItemContainer>
-
           <JoinButton>등록하기</JoinButton>
         </FormTag>
         <MoveSignInButton onClick={() => navigate('/signin')}>
@@ -265,7 +257,6 @@ const SignUp = () => {
     </>
   );
 };
-
 export default SignUp;
 
 const CheckBT = styled.button`
@@ -292,11 +283,9 @@ const ErrorMSG = styled.p`
   color: red;
   font-size: 0.8rem;
 `;
-
 const FormTag = styled.form`
   width: 100%;
 `;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -306,13 +295,11 @@ const Container = styled.div`
   width: 25.7rem;
   margin: 0 auto;
 `;
-
 const InfoBox = styled.div`
   width: 100%;
   background-color: #f0f0f0;
   padding: 0.2rem 0;
 `;
-
 const InfoText = styled.p`
   font-size: 1.4rem;
   text-align: center;
@@ -320,18 +307,15 @@ const InfoText = styled.p`
   color: #878787;
   cursor: default;
 `;
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 6.2rem 0 0 0;
 `;
-
 const ItemContainer = styled.div`
   position: relative;
   height: 3.7rem;
 `;
-
 const InputBox = styled.input`
   width: 100%;
   height: 2.4rem;
@@ -347,7 +331,6 @@ const InputBox = styled.input`
     outline: none;
   }
 `;
-
 const JoinButton = styled.button`
   width: 100%;
   height: 50px;
@@ -362,7 +345,17 @@ const JoinButton = styled.button`
     background-color: #e1e1e1;
   }
 `;
-
+const PTag = styled.p`
+  font-size: 0.8rem;
+  color: #bbbbbb;
+`;
+const SocialLoginButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+`;
 const MoveSignInButton = styled.button`
   border: none;
   background-color: white;
@@ -374,7 +367,6 @@ const MoveSignInButton = styled.button`
     color: blue;
   }
 `;
-
 // ICON
 const CloseIcon = styled(AiFillCloseCircle)`
   position: absolute;
@@ -387,7 +379,6 @@ const CloseIcon = styled(AiFillCloseCircle)`
     color: #d1d1d1;
   }
 `;
-
 const ViewIcon = styled(AiFillEye)`
   position: absolute;
   bottom: 25px;
@@ -398,4 +389,12 @@ const ViewIcon = styled(AiFillEye)`
   &:hover {
     color: #d1d1d1;
   }
+`;
+const GoogleIcon = styled(FcGoogle)`
+  font-size: 4rem;
+  cursor: pointer;
+`;
+const GitIcon = styled(AiFillGithub)`
+  font-size: 4rem;
+  cursor: pointer;
 `;
