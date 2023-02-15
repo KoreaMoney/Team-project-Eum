@@ -2,7 +2,7 @@
 안녕하세요. 
 저희 이음 프로젝트는 개인에게는 별거 없는 재능이라도 누군가 필요한 재능이 될 수 있다고 생각하여 제작하였습니다.<br/>
 🏠HomePage<br/>
-🔗NOTION<br/>https://www.notion.so/e9e0f2e24c3041779bdbd281443bac6c
+🔗NOTION<br/>https://www.notion.so/e9e0f2e24c3041779bdbd281443bac6c<br/>
 📐Figma<br/><br/>
 
 
