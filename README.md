@@ -18,7 +18,9 @@
 
 
 🛠 사용 기술 및 라이브러리<br/>
-<img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=white"/>
+<img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/>
+<img src="https://img.shields.io/badge/React-FFCA28?style=flat-square&logo=Recoil&logoColor=brigthblue"/>
+
 Recoil
 React-Query, Socket.io, Styled-Components, Recoil<br/><br/><br/><br/>
 
