@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { postType } from '../types';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -36,6 +37,25 @@ const Home = () => {
       >
         글쓰기
       </button>
+      <div>
+        <ul style={{ display: 'flex', gap: '10px' }}>
+          <Link to="/categorypage/all">
+            <li>all</li>
+          </Link>
+          <Link to="/categorypage/study">
+            <li>공부</li>
+          </Link>
+          <Link to="/categorypage/play">
+            <li>놀이</li>
+          </Link>
+          <Link to="/categorypage/advice">
+            <li>상담</li>
+          </Link>
+          <Link to="/categorypage/etc">
+            <li>기타</li>
+          </Link>
+        </ul>
+      </div>
       <div>
         <h2>글목록</h2>
         {data &&
