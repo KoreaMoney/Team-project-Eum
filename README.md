@@ -18,7 +18,9 @@
 
 
 🛠 사용 기술 및 라이브러리<br/>
-Typescript, React-Query, Socket.io, Styled-Components, Recoil<br/><br/><br/><br/>
+[Typescript](https://img.shields.io/npm/types/typescript), 
+https://img.shields.io/static/v1?label=Type&message=Recoil&color=blue
+React-Query, Socket.io, Styled-Components, Recoil<br/><br/><br/><br/>
 
 
 ✅ 주요기능<br/><br/>
