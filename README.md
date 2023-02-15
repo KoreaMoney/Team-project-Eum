@@ -18,8 +18,8 @@
 
 
 🛠 사용 기술 및 라이브러리<br/>
-[Typescript](https://img.shields.io/npm/types/typescript), 
-https://img.shields.io/static/v1?label=Type&message=Recoil&color=blue
+<img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=white"/>
+Recoil
 React-Query, Socket.io, Styled-Components, Recoil<br/><br/><br/><br/>
 
 
