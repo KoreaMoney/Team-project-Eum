@@ -4,7 +4,7 @@
 🏠HomePage🔗NOTION📐Figma<br/><br/>
 
 👨‍💻 팀 소개<br/>
-총 팀원 ( FRONTEND - 4명, DESIGNER -1명)
+총 팀원 ( FRONTEND - 4명, DESIGNER -1명)<br/>
 🧑‍🤝‍🧑구성원 : 김미영(Leader), 김도원(Vice Leader), 정진수, 김남규 | 김예은(Designer)<br/><br/>
 
 팀명 : 노른자 <br/>(사물에서 알짜로 중요하거나 값지거나 한 부분이 의미인 것처럼 <br/>팀원들도 함께 프로젝트에서 값진 경험과 소중하고 중요한 인재가 되자!)<br/><br/>
