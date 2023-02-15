@@ -34,17 +34,76 @@
   ],
   "posts": [
     {
-      "id": "7566c20f-9704-4670-8480-c0b3060e7c5c",
-      "title": "asdfsdaffads",
-      "nickName": "Hugh Kim",
-      "uid": "8918TyR4d5Vs9Bb9tdUv962BIJw2",
-      "content": "sadffdsasfda",
-      "price": "1111111111",
-      "matchingUsers": [],
-      "matchingUser": "",
-      "isMatching": false,
-      "isResolve": false,
-      "date": 1676252521577
+      "id": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "333",
+      "imgURL": [],
+      "category": "study",
+      "like": [],
+      "views": 1
+    },
+    {
+      "id": "6e9efc46-ebe8-497d-9716-fea45edd1274",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "444",
+      "imgURL": [],
+      "category": "etc",
+      "like": [],
+      "views": 1
+    },
+    {
+      "id": "891ba902-8e48-4dc7-9962-3f82e57859cc",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "3333",
+      "imgURL": [],
+      "category": "etc",
+      "like": [],
+      "views": 0
+    },
+    {
+      "id": "40fb88e4-301e-4a47-b7fd-752bd01d2d3c",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "3333",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 2
+    },
+    {
+      "id": "769c1dbb-9fe6-4b67-885d-e7a1cced11aa",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "333",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 0
+    },
+    {
+      "id": "58f1ba26-75e3-415e-9a50-dd649df98453",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "123",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 3
     }
   ]
 }

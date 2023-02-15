@@ -23,6 +23,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [checkNick, setCheckNick] = useState(0);
   const [errMsg, setErrMsg] = useState('');
+  const uid = auth.currentUser?.uid
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -45,15 +46,11 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
   // 회원가입 성공 시 users에 data 추가
-  const mutation = useMutation((newUser: userType) => {
-    return axios
-      .post('http://localhost:4000/users', newUser)
-      .then((response: AxiosResponse) => {
-        return response;
-      });
-  });
-
-  // 닉네임 중복 찾기
+  const {mutate, isError, isLoading} = useMutation((newUser: userType) =>
+    axios.post('http://localhost:4000/users', newUser)
+  );
+// 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
+  // 닉네임 중복 확인을 위해 데이터를 가져옴
   const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/users');
     return response.data;
@@ -105,6 +102,8 @@ const SignUp = () => {
         // 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
       }
     }
+    // 안에서 가공 하게끔 만드는 / select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션
+    // 리코일 selector과 비슷함. 가공을 떠올리면 됨, 서버에서 받아온 데이터값을 우리가 원하는 값으로 가공 -> 우리 컴포넌트 안에서 쓸 수 있게 만들어주는 것. / usequery select 검색 하고 사용할 것.
   };
   // 등록하기 버튼 누르면 실행되는 함수
   const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
@@ -124,20 +123,14 @@ const SignUp = () => {
             setCheckPw('');
             setErr('');
             setNickName('');
-            mutation.mutate({
-              id: auth.currentUser?.uid,
-              email,
-              password: pw,
-              phoneNumber: '',
-              area: '',
-              nickName,
-              photoURL: auth.currentUser?.photoURL,
-              score: 0,
-              follower: [],
-              follow: [],
-              point: 0,
-              matchingItem: [],
-              comment: [],
+            mutate({
+              id: uid,
+              nickName: auth.currentUser?.displayName,
+              profileImg: auth.currentUser?.photoURL,
+              point: undefined,
+              contactTime: '22102330',
+              like: [],
+              isDoneCount: 0,
             });
           })
           .catch((error) => {

@@ -108,18 +108,12 @@ const SignIn = () => {
         if (!isId) {
           mutation.mutate({
             id: uid,
-            email,
-            password: pw,
-            phoneNumber: '',
-            area: '',
             nickName: auth.currentUser?.displayName,
-            photoURL: auth.currentUser?.photoURL,
-            score: 0,
-            follower: [],
-            follow: [],
-            point: 0,
-            matchingItem: [],
-            comment: [],
+            profileImg: auth.currentUser?.photoURL,
+            point: undefined,
+            contactTime: '22102330',
+            like: [],
+            isDoneCount: 0,
           });
           console.log('데이터 추가: ');
         } else {
@@ -147,18 +141,12 @@ const SignIn = () => {
         if (!isId) {
           mutation.mutate({
             id: uid,
-            email,
-            password: pw,
-            phoneNumber: '',
-            area: '',
             nickName: auth.currentUser?.displayName,
-            photoURL: auth.currentUser?.photoURL,
-            score: 0,
-            follower: [],
-            follow: [],
-            point: 0,
-            matchingItem: [],
-            comment: [],
+            profileImg: auth.currentUser?.photoURL,
+            point: undefined,
+            contactTime: '22102330',
+            like: [],
+            isDoneCount: 0,
           });
           console.log('데이터 추가: ');
         } else {
