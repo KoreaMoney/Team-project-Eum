@@ -16,6 +16,7 @@ const WritePage = () => {
   const { mutate, isError, isLoading } = useMutation((newPost: postType) =>
     axios.post('http://localhost:4000/posts', newPost)
   );
+
   // jsx문법에서 받아온 post를 useMutation의 인자에 보낸다. 그리고 axios를 통해 post한다.
   // post() 괄호 안에는 어디로 보낼것인가를 지정해주는 곳인 것 같다.
   // http://localhost:4000/posts 해당 api주소에 newPost를 추가한다는 코드
@@ -32,7 +33,6 @@ const WritePage = () => {
     like: [],
     views: 0,
   });
-
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price } = post;
@@ -56,7 +56,7 @@ const WritePage = () => {
   const onSubmitHandler = async () => {
     await mutate(post); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
     // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
-    // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다. 
+    // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
     navigate(`/categorypage/${post.category}/${post.id}`);
   };
   // 서버통신은 다 비동기함수
