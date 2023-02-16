@@ -5,6 +5,9 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { postType } from '../types';
 import { Link } from 'react-router-dom';
+import CommentInput from '../components/comment/CommentInput';
+import CommentsList from '../components/comment/CommentsList';
+
 
 const CategoryPageDetail = () => {
   const { id } = useParams();
@@ -51,6 +54,10 @@ const CategoryPageDetail = () => {
       <p>카테고리:{data[0].category}</p>
       <p>닉네임:{data[0].nickName}</p>
       <p>조회수:{data[0].views}</p>
+      <div>
+        <CommentInput />
+        <CommentsList />
+      </div>
     </>
   );
 };
