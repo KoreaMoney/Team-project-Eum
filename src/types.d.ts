@@ -8,9 +8,9 @@ export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
   profileImg: string | null | undefined;
-  point: number|undefined;
+  point: number | undefined;
   contactTime: string;
-  like: [],
+  like: [];
   isDoneCount: number;
 }
 
@@ -25,8 +25,18 @@ export interface postType {
   category: string;
   like: [];
   views: number;
+  createAt: number;
 }
 
+export interface commentType {
+  id: string;
+  postId: string | undefined;
+  writer: string | null | undefined;
+  content: string;
+  createAt: number;
+  writerNickName: string | null | undefined;
+  isEdit: boolean;
+}
 /**삭제하지 말아주세요 */
 
 // import 'styled-components';

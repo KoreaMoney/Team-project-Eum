@@ -64,7 +64,7 @@ const Home = () => {
               <div style={{ display: 'flex', gap: '10px' }} key={item.id}>
                 <ul
                   style={{ border: '1px solid #000000' }}
-                  onClick={() => navigate(`/detail/${item.id}`)}
+                  onClick={() => navigate(`/home/${item.category}/${item.id}`)}
                 >
                   <li>제목 :{item.title}</li>
                   <li>내용 :{item.content}</li>

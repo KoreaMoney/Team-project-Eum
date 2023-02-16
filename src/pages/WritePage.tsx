@@ -31,6 +31,7 @@ const WritePage = () => {
     category: '',
     like: [],
     views: 0,
+    createAt: Date.now(),
   });
 
 

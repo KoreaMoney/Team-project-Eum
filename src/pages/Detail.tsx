@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-
 const Detail = () => {
   return (
     <DetailContainer>
@@ -22,7 +21,6 @@ const Detail = () => {
         <PostUserInfo>작성자 정보</PostUserInfo>
       </PostContentWrapper>
       <CommentsWrapper>
-        <div>후기</div>
       </CommentsWrapper>
     </DetailContainer>
   );
