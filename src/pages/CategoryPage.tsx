@@ -45,7 +45,7 @@ const CategoryPage = () => {
     queryClient.fetchQuery(['posts', categoryName ?? 'all']);
     // fetchQuery : useQueryClient를 사용하여 queryClient 객체를 가져오고, 해당 쿼리를 다시 가져와서 데이터를 다시 로드할 수 있도록 하는 메서드 라고 한다.
     // axios로 patch요청을 보낸 후 45번줄을 호출해서 post목록 쿼리를 다시 가져와서 최신의 데이터를 가져올 수 있다고 한다.
-    navigate(`/categorypage/${post.category}/${post.id}`);
+    navigate(`/detail/${post.category}/${post.id}`);
   };
 
   return (
