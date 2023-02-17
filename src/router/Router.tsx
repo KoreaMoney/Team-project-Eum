@@ -24,7 +24,7 @@ const Router = () => {
           path="/categorypage/:categoryName/:id"
           element={<CategoryPageDetail />}
         />
-        <Route path="/mypage:id" element={<MyPage />} />
+        <Route path="/mypage/:id" element={<MyPage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
