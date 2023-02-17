@@ -157,7 +157,7 @@ const Transaction = () => {
         )}
         {data[0].isSellerCancel && data[0].isBuyerCancel && (
           <ClearDivContainer>
-            <ClearText>거래가 완료되었습니다.</ClearText>
+            <ClearText>거래가 취소되었습니다.</ClearText>
           </ClearDivContainer>
         )}
         <PostContainer>
