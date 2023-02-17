@@ -1,28 +1,80 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
+import { auth } from '../firebase/Firebase';
+import { onSalePostType, userType } from '../types';
+
 const Detail = () => {
-
   const { id } = useParams();
-
-  const { data, isLoading } = useQuery(['post', id], async () => {
+  const { categoryName } = useParams();
+  const navigate = useNavigate();
+  // 클릭한 글의 데이터를 가지고 옵니다.
+  const { data: post, isLoading } = useQuery(['post', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
     return response.data;
   });
+
+  // onSalePosts 데이터가 생성 코드
+  const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
+    axios.post('http://localhost:4000/onSalePosts', newSalePosts)
+  );
+
+  // 포인트 수정을 위해 유저 정보를 가지고 옵니다.
+  const { data: user } = useQuery(['user', auth.currentUser?.uid], async () => {
+    const response = await axios.get(
+      `http://localhost:4000/users/${auth.currentUser?.uid}`
+    );
+    return response.data;
+  });
+  console.log( 'user: ' ,user);
+  
+  // 포인트를 수정해주는 mutation 함수
+  const {mutate:updateUser} = useMutation((newUser: {point:string}) =>
+    axios.patch(`http://localhost:4000/users/${auth.currentUser?.uid}`, newUser)
+  );
+
   if (isLoading) {
     console.log('로딩중');
     return <div>Lodding...</div>;
   }
-  if (!data || data.length === 0) {
+  if (!post || post.length === 0) {
     console.log('데이터없음');
     return <div>Mo data found</div>;
   }
-
+  // 바로 신청하기 버튼 클릭 하면
+  // user 데이터의 point가 price만큼 빠지고
+  // mutate로 데이터를 저장합니다.
+  const onClickApplyBuy = async () => {
+    // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
+    await updateUser({point: String(Number(user.point) - Number(post?.[0].price))}) 
+    
+    console.log('auth.currentUser?.uid,: ', auth.currentUser?.uid);
+    const uuid = uuidv4();
+    await onSalePosts({
+      id: uuid,
+      postsId: id,
+      buyerUid: auth.currentUser?.uid,
+      sellerUid: post?.[0].sellerUid,
+      title: post?.[0].title,
+      content: post?.[0].content,
+      imgURL: post?.[0].imgURL,
+      price: post?.[0].price,
+      category: post?.[0].category,
+      ceatedAt: Date.now(),
+      isDone: false,
+      isSellerCancel: false,
+      isBuyerCancel: false,
+      views: post?.[0].views,
+      like: post?.[0].like,
+    });
+    navigate(`/detail/${categoryName}/${id}/${auth.currentUser?.uid}/${uuid}`);
+  };
   return (
     <DetailContainer>
       <PostContainer>
@@ -33,23 +85,23 @@ const Detail = () => {
             <BuyButton>삽니다</BuyButton>
           </SellBuyWrapper>
           <PostTitle>
-            <p>제목:{data[0].title}</p>
+            <p>제목:{post[0].title}</p>
           </PostTitle>
           <PostPrice>
-            <p>가격:{data[0].price}</p>
+            <p>가격:{post[0].price}</p>
           </PostPrice>
           <PostLikeButton>찜하기</PostLikeButton>
-          <OrderButton>바로 신청하기</OrderButton>
+          <OrderButton onClick={onClickApplyBuy}>바로 신청하기</OrderButton>
         </PostInfoWrapper>
       </PostContainer>
       <PostContentWrapper>
         <PostContent>
-          <p>내용:{data[0].content}</p>
+          <p>내용:{post[0].content}</p>
         </PostContent>
         <PostUserInfo>
-          <p>카테고리:{data[0].category}</p>
-          <p>닉네임:{data[0].nickName}</p>
-          <p>조회수:{data[0].views}</p>
+          <p>카테고리:{post[0].category}</p>
+          <p>닉네임:{post[0].nickName}</p>
+          <p>조회수:{post[0].views}</p>
         </PostUserInfo>
       </PostContentWrapper>
       <CommentsWrapper>

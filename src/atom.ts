@@ -7,6 +7,7 @@ export const isDarkAtom = atom({
   default: true,
 });
 
+
 /**추후 카테고리를 위한 recoil atom을 생성합니다
  * enum은 휴면에러 방지를 위해 진행합니다
  * 카테고리 별 todo는 임시적인 용어로 추추 변경 가능합니다
