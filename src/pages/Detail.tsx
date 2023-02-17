@@ -1,6 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import CommentInput from '../components/comment/CommentInput';
+import CommentsList from '../components/comment/CommentsList';
 const Detail = () => {
+
+  const { id } = useParams();
+
+  const { data, isLoading } = useQuery(['post', id], async () => {
+    // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
+    const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
+    return response.data;
+  });
+  if (isLoading) {
+    console.log('로딩중');
+    return <div>Lodding...</div>;
+  }
+  if (!data || data.length === 0) {
+    console.log('데이터없음');
+    return <div>Mo data found</div>;
+  }
+
   return (
     <DetailContainer>
       <PostContainer>
@@ -10,18 +32,31 @@ const Detail = () => {
             <SellButton>팝니다</SellButton>
             <BuyButton>삽니다</BuyButton>
           </SellBuyWrapper>
-          <PostTitle>제목</PostTitle>
-          <PostPrice>가격</PostPrice>
+          <PostTitle>
+            <p>제목:{data[0].title}</p>
+          </PostTitle>
+          <PostPrice>
+            <p>가격:{data[0].price}</p>
+          </PostPrice>
           <PostLikeButton>찜하기</PostLikeButton>
           <OrderButton>바로 신청하기</OrderButton>
         </PostInfoWrapper>
       </PostContainer>
       <PostContentWrapper>
-        <PostContent>서비스 설명</PostContent>
-        <PostUserInfo>작성자 정보</PostUserInfo>
+        <PostContent>
+          <p>내용:{data[0].content}</p>
+        </PostContent>
+        <PostUserInfo>
+          <p>카테고리:{data[0].category}</p>
+          <p>닉네임:{data[0].nickName}</p>
+          <p>조회수:{data[0].views}</p>
+        </PostUserInfo>
       </PostContentWrapper>
       <CommentsWrapper>
-        <div>후기</div>
+        <div>
+          <CommentInput />
+          <CommentsList />
+        </div>
       </CommentsWrapper>
     </DetailContainer>
   );
@@ -184,21 +219,21 @@ const PostUserInfo = styled.div`
   background-color: lightgray;
   color: #656565;
   border-radius: 10px;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 `;
 
 const CommentsWrapper = styled.div`
   padding: 12px;
   width: 100%;
-  height: 320px;
+  /* height: 320px; */
   background-color: lightgray;
   color: #656565;
   border: none;
   border-radius: 10px;
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: center; */
   margin-bottom: 24px;
 `;
