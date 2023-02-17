@@ -23,7 +23,6 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [checkNick, setCheckNick] = useState(0);
   const [errMsg, setErrMsg] = useState('');
-  const uid = auth.currentUser?.uid
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -46,10 +45,10 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
   // 회원가입 성공 시 users에 data 추가
-  const {mutate, isError, isLoading} = useMutation((newUser: userType) =>
+  const { mutate, isError, isLoading } = useMutation((newUser: userType) =>
     axios.post('http://localhost:4000/users', newUser)
   );
-// 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
+  // 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
   // 닉네임 중복 확인을 위해 데이터를 가져옴
   const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/users');
@@ -117,21 +116,13 @@ const SignUp = () => {
         return;
       } else {
         await createUserWithEmailAndPassword(auth, email, pw)
-          .then(() => {
+          .then( () => {
             setEmail('');
             setPw('');
             setCheckPw('');
             setErr('');
             setNickName('');
-            mutate({
-              id: uid,
-              nickName: auth.currentUser?.displayName,
-              profileImg: auth.currentUser?.photoURL,
-              point: undefined,
-              contactTime: '22102330',
-              like: [],
-              isDoneCount: 0,
-            });
+            
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -141,15 +132,26 @@ const SignUp = () => {
             }
           });
         if (auth.currentUser) {
+          await mutate({
+            id: auth.currentUser?.uid,
+            nickName,
+            profileImg: auth.currentUser?.photoURL,
+            point: '0',
+            contactTime: '',
+            like: [],
+            isDoneCount: 0,
+          });
           await updateProfile(auth.currentUser, {
             displayName: nickName,
-          }).then(() => navigate('/home'));
+          }).then(() => navigate('/'));
         } else {
           return <div>닉네임을 등록해주세요.</div>;
         }
       }
     }
   };
+  console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
+  
   return (
     <>
       <Container>

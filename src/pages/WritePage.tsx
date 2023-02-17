@@ -54,11 +54,12 @@ const WritePage = () => {
     });
   };
 
+  
   const onSubmitHandler = async () => {
     await mutate(post); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
     // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
     // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다. 
-    navigate(`/categorypage/${post.category}/${post.id}`);
+    navigate(`/detail/${post.category}/${post.id}`);
   };
   // 서버통신은 다 비동기함수
 
