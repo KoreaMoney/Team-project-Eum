@@ -30,21 +30,181 @@
       "point": 0,
       "matchingItem": [],
       "comment": []
+    },
+    {
+      "id": "5foIZi5kzBXXDQxm4kHnSN7aSJK2",
+      "nickName": "김미영",
+      "profileImg": "https://lh3.googleusercontent.com/a/AEdFTp4o7DZ8rGAD3pbny4PnXhADq0p10ONHWJ9DiPWL=s96-c",
+      "contactTime": "22102330",
+      "like": [],
+      "isDoneCount": 0
     }
   ],
   "posts": [
     {
-      "id": "7566c20f-9704-4670-8480-c0b3060e7c5c",
-      "title": "asdfsdaffads",
-      "nickName": "Hugh Kim",
-      "uid": "8918TyR4d5Vs9Bb9tdUv962BIJw2",
-      "content": "sadffdsasfda",
-      "price": "1111111111",
-      "matchingUsers": [],
-      "matchingUser": "",
-      "isMatching": false,
-      "isResolve": false,
-      "date": 1676252521577
+      "id": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "333",
+      "imgURL": [],
+      "category": "study",
+      "like": [],
+      "views": 13
+    },
+    {
+      "id": "6e9efc46-ebe8-497d-9716-fea45edd1274",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "444",
+      "imgURL": [],
+      "category": "etc",
+      "like": [],
+      "views": 9
+    },
+    {
+      "id": "891ba902-8e48-4dc7-9962-3f82e57859cc",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "3333",
+      "imgURL": [],
+      "category": "etc",
+      "like": [],
+      "views": 4
+    },
+    {
+      "id": "40fb88e4-301e-4a47-b7fd-752bd01d2d3c",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "3333",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 4
+    },
+    {
+      "id": "769c1dbb-9fe6-4b67-885d-e7a1cced11aa",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "333",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 2
+    },
+    {
+      "id": "58f1ba26-75e3-415e-9a50-dd649df98453",
+      "title": "123",
+      "nickName": "동그라미",
+      "sellerUid": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "content": "123",
+      "price": "123",
+      "imgURL": [],
+      "category": "advice",
+      "like": [],
+      "views": 9
+    }
+  ],
+  "comments": [
+    {
+      "id": "55b9e974-1fb1-4132-a16e-f5bfe1da4fc5",
+      "postId": "58f1ba26-75e3-415e-9a50-dd649df98453",
+      "content": "asdf",
+      "createAt": 1676545972579,
+      "isEdit": false
+    },
+    {
+      "id": "c55eb074-2497-42ae-8d96-9b21694d4972",
+      "postId": "58f1ba26-75e3-415e-9a50-dd649df98453",
+      "content": "asdf",
+      "createAt": 1676545972579,
+      "isEdit": false
+    },
+    {
+      "id": "9d560d62-6d8b-4014-8c19-178ede3c07e0",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "123",
+      "createAt": 1676546392495,
+      "isEdit": false
+    },
+    {
+      "id": "41b0cffb-005c-4c80-acf7-204e17753ce4",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "123",
+      "createAt": 1676546524857,
+      "isEdit": false
+    },
+    {
+      "id": "de45d48e-eda0-4abe-a088-b8ba280292cf",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "aa",
+      "createAt": 1676546663776,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "1f6ecb62-36cd-4df1-823c-bbe9934a1e3d",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "ㅁㄴㅇㄹ",
+      "createAt": 1676547103480,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "bad554c6-191b-4bf8-90a9-05bc0dcb1877",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "1234",
+      "createAt": 1676547126177,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "053acbc2-98b2-4152-ba85-a136b1144fd2",
+      "postId": "85f44a7e-848d-4729-af75-b488dc199d93",
+      "content": "ㅎㅎㅎㅎㅎ",
+      "createAt": 1676547175719,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "6269079a-db04-43c0-ac89-854cd0e96d02",
+      "postId": "40fb88e4-301e-4a47-b7fd-752bd01d2d3c",
+      "content": "ㅁㄹ",
+      "createAt": 1676547195911,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "1ad1350b-7adc-4909-bca0-c3e77eddbd87",
+      "postId": "40fb88e4-301e-4a47-b7fd-752bd01d2d3c",
+      "content": "ㅁㄴㅇㄹ",
+      "createAt": 1676547195911,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "d50cf7c3-fe97-45dc-ac04-2ce70d23f3fb",
+      "postId": "891ba902-8e48-4dc7-9962-3f82e57859cc",
+      "content": "ㅁㄴㅇㄹ",
+      "createAt": 1676547204395,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
     }
   ]
 }

@@ -9,7 +9,6 @@ const MyPage = () => {
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
-
   return (
     <MyPageContainer>
       <MyImageWrapper>
