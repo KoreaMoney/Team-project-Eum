@@ -21,6 +21,7 @@ const Detail = () => {
         <PostUserInfo>작성자 정보</PostUserInfo>
       </PostContentWrapper>
       <CommentsWrapper>
+        <div>후기</div>
       </CommentsWrapper>
     </DetailContainer>
   );
@@ -73,7 +74,7 @@ const SellButton = styled.button`
   height: 32px;
   font-size: 100%;
   background-color: #ffffff;
-  color: #656565;
+  color: #cccccc;
   border: none;
   border-bottom: 2px solid #e6e6e6;
   &:hover {
@@ -89,7 +90,7 @@ const BuyButton = styled.button`
   height: 32px;
   font-size: 100%;
   background-color: #ffffff;
-  color: #656565;
+  color: #cccccc;
   border: none;
   border-bottom: 2px solid #e6e6e6;
   &:hover {

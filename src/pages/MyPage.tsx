@@ -1,17 +1,93 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { CustomModal } from '../components/modal/CustomModal';
 
 const MyPage = () => {
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [isModalActive, setIsModalActive] = useState(false);
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
   return (
     <MyPageContainer>
       <MyImageWrapper>
         <div>프로필 이미지</div>
       </MyImageWrapper>
       <UserNameWrapper>
-        <div>닉네임</div>
-        <UserNameEditButton>수정버튼</UserNameEditButton>
+        {isEdit ? (
+          <>
+            <EditInputValue />
+            <CheckButton
+              onClick={() => {
+                setIsEdit(false);
+              }}
+            >
+              확인
+            </CheckButton>
+          </>
+        ) : (
+          <>
+            <UserName>닉네임</UserName>
+            <UserNameEditButton
+              onClick={() => {
+                setIsEdit(true);
+              }}
+            >
+              수정
+            </UserNameEditButton>
+          </>
+        )}
       </UserNameWrapper>
-      <PointButton>포인트</PointButton>
+      <PointButton onClick={onClickToggleModal}>포인트</PointButton>
+      {isModalActive ? (
+        <CustomModal
+          modal={isModalActive}
+          setModal={setIsModalActive}
+          width="800"
+          height="800"
+          element={
+            <PointModalContainer>
+              <CloseButton onClick={onClickToggleModal}>X</CloseButton>
+
+              <PointImgWrapper>
+                <img src="/assets/walletmoney.png" />
+                <h3>　내 포인트</h3>
+              </PointImgWrapper>
+              <CurrentPoint>3,500,000P</CurrentPoint>
+              <PointDepositWithdrawWrapper>
+                <PointDepositButton>
+                  <img src="/assets/moneysend.png" />
+                  <h3>　충전하기</h3>
+                </PointDepositButton>
+                <PointWithdrawButton>
+                  <img src="/assets/emptywalletadd.png" />
+                  <h3>　출금하기</h3>
+                </PointWithdrawButton>
+              </PointDepositWithdrawWrapper>
+              <PointHistoryContainer>
+                <h3>　전체</h3>
+                <PointHistoryWrapper>
+                  <PointHistory>
+                    <PointHistoryDate>2.14</PointHistoryDate>
+                    <PointHistoryContent>
+                      인스타그램 친구추가
+                    </PointHistoryContent>
+                    <PointHistoryAmount>200P</PointHistoryAmount>
+                  </PointHistory>
+                  <PointHistory>
+                    <PointHistoryDate>2.12</PointHistoryDate>
+                    <PointHistoryContent>수학문제 풀이</PointHistoryContent>
+                    <PointHistoryAmount>300P</PointHistoryAmount>
+                  </PointHistory>
+                </PointHistoryWrapper>
+              </PointHistoryContainer>
+            </PointModalContainer>
+          }
+        />
+      ) : (
+        ''
+      )}
       <UserTimeWrapper>
         <div>연락가능한 시간 : 09:00 - 21:00</div>
       </UserTimeWrapper>
@@ -56,6 +132,7 @@ const MyImageWrapper = styled.div`
 `;
 
 const UserNameWrapper = styled.div`
+  padding-left: 62px;
   width: 32%;
   margin: 10px auto;
   border-bottom: 2px solid #e6e6e6;
@@ -64,10 +141,18 @@ const UserNameWrapper = styled.div`
   align-items: center;
 `;
 
+const UserName = styled.div`
+  width: 100%;
+  height: 28px;
+  font-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const UserNameEditButton = styled.button`
-  margin-left: 40%;
-  width: 80px;
-  height: 32px;
+  width: 62px;
+  height: 28px;
   font-size: 100%;
   background-color: #656565;
   color: #fff;
@@ -80,6 +165,34 @@ const UserNameEditButton = styled.button`
   }
 `;
 
+const CheckButton = styled.button`
+  width: 62px;
+  height: 28px;
+  font-size: 100%;
+  background-color: #656565;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: #e6e6e6;
+    color: #656565;
+  }
+`;
+
+const EditInputValue = styled.input`
+  width: 100%;
+  height: 28px;
+  font-size: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 0px 12px;
+  text-align: center;
+  :focus {
+    outline: none;
+  }
+`;
+
 const PointButton = styled.button`
   margin-left: 68%;
   width: 180px;
@@ -89,11 +202,132 @@ const PointButton = styled.button`
   color: #656565;
   border: none;
   border-radius: 10px;
+  position: absolute;
+  top: 236px;
   &:hover {
     cursor: pointer;
     background-color: #e6e6e6;
     color: #656565;
   }
+`;
+
+const PointModalContainer = styled.div`
+  width: 800px;
+  height: 800px;
+  padding: 10%;
+  color: black;
+`;
+
+const PointImgWrapper = styled.div`
+  margin-bottom: 12px;
+  width: 100%;
+  font-size: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const CurrentPoint = styled.div`
+  margin-bottom: 24px;
+  padding: 12px 40px;
+  width: 100%;
+  height: 80px;
+  background-color: lightgray;
+  color: #656565;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+`;
+
+const PointDepositWithdrawWrapper = styled.div`
+  margin-bottom: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+`;
+
+const PointDepositButton = styled.button`
+  width: 50%;
+  height: 72px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  color: #656565;
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: #e6e6e6;
+    color: #656565;
+  }
+`;
+
+const PointWithdrawButton = styled.button`
+  width: 50%;
+  height: 72px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  color: #656565;
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: #e6e6e6;
+    color: #656565;
+  }
+`;
+
+const PointHistoryContainer = styled.div``;
+
+const PointHistoryWrapper = styled.div`
+  margin: 12px 0;
+  padding: 12px 24px;
+  width: 100%;
+  height: 360px;
+  background-color: #d9d9d9;
+  color: #737373;
+  border-radius: 10px;
+  margin-bottom: 24px;
+`;
+
+const PointHistory = styled.div`
+  margin: 12px 0;
+  width: 100%;
+  height: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #737373;
+`;
+
+const PointHistoryDate = styled.p`
+  width: 20%;
+`;
+const PointHistoryContent = styled.p`
+  width: 65%;
+`;
+const PointHistoryAmount = styled.p`
+  width: 15%;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  font-size: 24px;
+  font-weight: 600;
+  width: 40px;
+  height: 40px;
+  right: 12px;
+  top: 12px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const UserTimeWrapper = styled.div`
