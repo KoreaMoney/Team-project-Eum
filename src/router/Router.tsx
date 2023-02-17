@@ -6,6 +6,7 @@ import Home from '../pages/Home';
 import MyPage from '../pages/MyPage';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
+import Transaction from '../pages/Transaction';
 import WritePage from '../pages/WritePage';
 
 const Router = () => {
@@ -18,6 +19,10 @@ const Router = () => {
         <Route path="/editpage/:id" element={<EditPage />} />
         <Route path="/categorypage/:categoryName" element={<CategoryPage />} />
         <Route path="/mypage/:id" element={<MyPage />} />
+        <Route
+          path="/detail/:categoryName/:sellerId/:buyerId/:id"
+          element={<Transaction />}
+        />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

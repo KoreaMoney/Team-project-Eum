@@ -32,7 +32,7 @@ const Home = () => {
       Home <button onClick={logOut}>로그아웃</button>
       <button
         onClick={() => {
-          navigate(`/writepage/${id}`);
+          navigate('/writepage');
         }}
       >
         글쓰기
@@ -64,7 +64,9 @@ const Home = () => {
               <div style={{ display: 'flex', gap: '10px' }} key={item.id}>
                 <ul
                   style={{ border: '1px solid #000000' }}
-                  onClick={() => navigate(`/detail/${item.category}/${item.id}`)}
+                  onClick={() =>
+                    navigate(`/detail/${item.category}/${item.id}`)
+                  }
                 >
                   <li>제목 :{item.title}</li>
                   <li>내용 :{item.content}</li>

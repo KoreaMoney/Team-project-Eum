@@ -8,7 +8,7 @@ export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
   profileImg: string | null | undefined;
-  point: number | undefined;
+  point: string;
   contactTime: string;
   like: [];
   isDoneCount: number;
@@ -36,6 +36,24 @@ export interface commentType {
   createAt: number;
   writerNickName: string | null | undefined;
   isEdit: boolean;
+}
+
+export interface onSalePostType {
+  id: string;
+  postsId: string | undefined;
+  buyerUid: string | null | undefined;
+  sellerUid: string | null | undefined;
+  title: string;
+  content: string;
+  imgURL: [];
+  like: [];
+  views: number;
+  price: string;
+  category: string;
+  ceatedAt: number;
+  isDone: boolean;
+  isSellerCancel: boolean;
+  isBuyerCancel: boolean;
 }
 /**삭제하지 말아주세요 */
 
