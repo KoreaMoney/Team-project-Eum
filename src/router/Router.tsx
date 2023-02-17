@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Chat from '../components/chat/Chat';
 import CategoryPage from '../pages/CategoryPage';
 import Detail from '../pages/Detail';
 import EditPage from '../pages/EditPage';
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/mypage/:id" element={<MyPage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
     // 하나의 page
