@@ -51,7 +51,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 13
+      "views": 18
     },
     {
       "id": "6e9efc46-ebe8-497d-9716-fea45edd1274",
@@ -75,7 +75,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 4
+      "views": 6
     },
     {
       "id": "40fb88e4-301e-4a47-b7fd-752bd01d2d3c",
@@ -202,6 +202,33 @@
       "postId": "891ba902-8e48-4dc7-9962-3f82e57859cc",
       "content": "ㅁㄴㅇㄹ",
       "createAt": 1676547204395,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "f21cf844-bf81-4431-9e2e-a8ed158ce488",
+      "postId": "769c1dbb-9fe6-4b67-885d-e7a1cced11aa",
+      "content": "zz",
+      "createAt": 1676595214957,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "947eddbe-24e4-4069-a032-45aba9df5d9a",
+      "postId": "6e9efc46-ebe8-497d-9716-fea45edd1274",
+      "content": "gg",
+      "createAt": 1676595223044,
+      "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
+      "writerNickName": "동그라미",
+      "isEdit": false
+    },
+    {
+      "id": "c12b897c-6b35-4a82-8f8e-37f02e7259e9",
+      "postId": "6e9efc46-ebe8-497d-9716-fea45edd1274",
+      "content": "ss",
+      "createAt": 1676595227606,
       "writer": "jwJAw4LQaKZChlcXSE3ikDkqXOU2",
       "writerNickName": "동그라미",
       "isEdit": false
