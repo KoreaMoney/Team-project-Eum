@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -36,7 +37,7 @@ const CategoryPage = () => {
     },
     {cacheTime: 0}
   );
-  console.log('data: ', data);
+  
 
   const queryClient = useQueryClient();
   // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
@@ -100,6 +101,7 @@ const CategoryPage = () => {
               </PostContainer>
             );
           })}
+        {!data || data.length === 0 && <div>글이 없습니다.</div>}
       </PostsContainer>
     </PageContainer>
   );
