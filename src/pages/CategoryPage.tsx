@@ -1,10 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import SerchInput from '../components/etc/SerchInput';
 import { postType } from '../types';
 
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
@@ -35,9 +32,8 @@ const CategoryPage = () => {
       return response.data;
       // response의 data속성을 리턴한다.
     },
-    {cacheTime: 0}
+    { cacheTime: 0 }
   );
-  
 
   const queryClient = useQueryClient();
   // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
@@ -56,26 +52,6 @@ const CategoryPage = () => {
 
   return (
     <PageContainer>
-      <div>
-        <ul style={{ display: 'flex', gap: '10px' }}>
-          <Link to="/categorypage/all">
-            <li>all</li>
-          </Link>
-          <Link to="/categorypage/study">
-            <li>공부</li>
-          </Link>
-          <Link to="/categorypage/play">
-            <li>놀이</li>
-          </Link>
-          <Link to="/categorypage/advice">
-            <li>상담</li>
-          </Link>
-          <Link to="/categorypage/etc">
-            <li>기타</li>
-          </Link>
-        </ul>
-        <SerchInput />
-      </div>
       <NavContainer>
         <WriteButton
           onClick={() => {
@@ -101,7 +77,7 @@ const CategoryPage = () => {
               </PostContainer>
             );
           })}
-        {!data || data.length === 0 && <div>글이 없습니다.</div>}
+        {!data || (data.length === 0 && <div>글이 없습니다.</div>)}
       </PostsContainer>
     </PageContainer>
   );
