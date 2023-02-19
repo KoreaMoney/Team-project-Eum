@@ -4,16 +4,16 @@
       "id": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
       "nickName": "판매자",
       "profileImg": null,
-      "point": "7600",
+      "point": "9600",
       "contactTime": "",
       "like": [],
-      "isDoneCount": 2
+      "isDoneCount": 4
     },
     {
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
       "nickName": "구매자",
       "profileImg": null,
-      "point": "15000",
+      "point": "14000",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
@@ -26,6 +26,15 @@
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
+    },
+    {
+      "id": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "nickName": "묭묭이",
+      "profileImg": null,
+      "point": "-1000",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 1
     }
   ],
   "posts": [
@@ -39,7 +48,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 0,
+      "views": 4,
       "createAt": 1676612528057
     },
     {
@@ -54,6 +63,32 @@
       "like": [],
       "views": 0,
       "createAt": 1676619414560
+    },
+    {
+      "id": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
+      "title": "하이",
+      "nickName": "묭묭이",
+      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "content": "하이",
+      "price": "333",
+      "imgURL": [],
+      "category": "study",
+      "like": [],
+      "views": 2,
+      "createAt": 1676734627857
+    },
+    {
+      "id": "e2e9d558-ef42-4ba7-a921-9f34742dbfb3",
+      "title": "123",
+      "nickName": "묭묭이",
+      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "content": "123",
+      "price": "123",
+      "imgURL": [],
+      "category": "study",
+      "like": [],
+      "views": 0,
+      "createAt": 1676734673042
     }
   ],
   "comments": [],
@@ -141,6 +176,57 @@
       "isSellerCancel": true,
       "isBuyerCancel": false,
       "views": 0,
+      "like": []
+    },
+    {
+      "id": "ac5b839a-c21a-4438-8990-0d6a5ae16abe",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676695885589,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 0,
+      "like": []
+    },
+    {
+      "id": "3ad35ba2-a533-4c29-890b-7ae71073a096",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676713568783,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 0,
+      "like": []
+    },
+    {
+      "id": "64742636-be30-4c13-8a7b-f2eb735d184b",
+      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
+      "buyerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "title": "하이",
+      "content": "하이",
+      "imgURL": [],
+      "price": "333",
+      "category": "study",
+      "ceatedAt": 1676737506617,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 2,
       "like": []
     }
   ]
