@@ -55,6 +55,8 @@ export interface onSalePostType {
   isSellerCancel: boolean;
   isBuyerCancel: boolean;
 }
+
+
 /**삭제하지 말아주세요 */
 
 // import 'styled-components';

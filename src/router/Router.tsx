@@ -18,6 +18,7 @@ const Router = () => {
         <Route path="/writepage" element={<WritePage />} />
         <Route path="/editpage/:id" element={<EditPage />} />
         <Route path="/categorypage/:categoryName" element={<CategoryPage />} />
+        <Route path="/search/:categoryName/:select/:word" element={<CategoryPage />} />
         <Route path="/mypage/:id" element={<MyPage />} />
         <Route
           path="/detail/:categoryName/:sellerId/:buyerId/:id"

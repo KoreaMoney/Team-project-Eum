@@ -1,40 +1,46 @@
-import { uuidv4 } from '@firebase/util';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import SerchInput from '../components/etc/SerchInput';
 import { postType } from '../types';
 
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
 const CategoryPage = () => {
-  const { categoryName } = useParams();
+  const { categoryName, select, word } = useParams();
   const navigate = useNavigate();
-  console.log('categoryName: ', categoryName);
+  const { data } = useQuery(
+    ['posts', categoryName ?? 'all', select, word],
+    async () => {
+      //  useQuery를 사용해 queryKey posts로 데이터를 가져오는데,
+      // categoryName이 없으면 categoryName은 all이다.
+      const baseUrl = 'http://localhost:4000/posts';
+      let url = baseUrl;
 
-  const { data } = useQuery(['posts', categoryName ?? 'all'], async () => {
-    //  useQuery를 사용해 queryKey posts로 데이터를 가져오는데,
-    // categoryName이 없으면 categoryName은 all이다.
-    const url =
-      categoryName === 'all'
-        ? 'http://localhost:4000/posts'
-        : `http://localhost:4000/posts?category=${categoryName}`;
-    // categoryName이 all이면 url은 http://localhost:4000/posts 이고
-    //  all이 아니면 http://localhost:4000/posts?category=${categoryName} 이다.
-    const response = await axios.get(url);
-    //  get해올 url을 위에서 정의해서 가져와 response 변수에 담는다.
-    return response.data;
-    // response의 data속성을 리턴한다.
-  });
+      // serchInput의 submit함수에서 지정한 주소들을 가져와 그에 맞는 data를 검색할 수 있도록 url을 동적으로 바꿔준다.
+      // _like 는 json-server의 기능 중 하나로 부분문자열도 동일하다면 데이터를 가져온다.
+      if (categoryName !== 'all' && !word) {
+        url = `${baseUrl}?category=${categoryName}`;
+      } else if (categoryName === 'all' && word) {
+        url = `${baseUrl}?${select}_like=${word}`;
+      } else if (categoryName !== 'all' && word) {
+        url = `${baseUrl}?category=${categoryName}&${select}_like=${word}`;
+      }
+      console.log('url: ', url);
+
+      const response = await axios.get(url);
+      //  get해올 url을 위에서 정의해서 가져와 response 변수에 담는다.
+      return response.data;
+      // response의 data속성을 리턴한다.
+    },
+    {cacheTime: 0}
+  );
+  
 
   const queryClient = useQueryClient();
-  // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수, 
+  // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
   // QueryClient: 캐시,쿼리관리,상태업데이트 등을 처리하는 핵심객체, 데이터 업데이트 후 ui를 갱신하거나 서버에 데이터를 새로 요청하고 업데이트된 데이터를 받아와 ui를 갱신하는 등의 작업을 할 수 있다고 함.
   const handlePostClick = async (post: postType) => {
     await axios.patch(`http://localhost:4000/posts/${post.id}`, {
@@ -68,6 +74,7 @@ const CategoryPage = () => {
             <li>기타</li>
           </Link>
         </ul>
+        <SerchInput />
       </div>
       <NavContainer>
         <WriteButton
@@ -94,6 +101,7 @@ const CategoryPage = () => {
               </PostContainer>
             );
           })}
+        {!data || data.length === 0 && <div>글이 없습니다.</div>}
       </PostsContainer>
     </PageContainer>
   );
