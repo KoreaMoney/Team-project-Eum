@@ -35,6 +35,24 @@
       "contactTime": "",
       "like": [],
       "isDoneCount": 1
+    },
+    {
+      "id": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "nickName": "Hugh Kim",
+      "profileImg": "https://lh3.googleusercontent.com/a/AEdFTp4WgejcOHpakGsyJYNLLDTaP1VGP4sLoxeLUOsRqRw=s96-c",
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "XatyN0RDsXZTBImdYZL463k35f62",
+      "nickName": "chadonam",
+      "profileImg": null,
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
     }
   ],
   "posts": [
@@ -89,6 +107,17 @@
       "like": [],
       "views": 0,
       "createAt": 1676734673042
+    },
+    {
+      "id": "5458f42a-efa2-4397-bfb7-3b45acf06ca1",
+      "title": "sd",
+      "content": "dd",
+      "price": "ddd",
+      "imgURL": [],
+      "category": "",
+      "like": [],
+      "views": 0,
+      "createAt": 1676775983129
     }
   ],
   "comments": [],
