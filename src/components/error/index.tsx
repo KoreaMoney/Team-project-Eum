@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ChartItem = () => {
+const index = () => {
   return <div></div>;
 };
 
-export default ChartItem;
+export default index;

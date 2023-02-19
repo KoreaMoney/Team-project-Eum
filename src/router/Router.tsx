@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Chat from '../components/chat/Chat';
+import Layout from '../components/layout/Layout';
 import CategoryPage from '../pages/CategoryPage';
 import Detail from '../pages/Detail';
 import EditPage from '../pages/EditPage';
@@ -14,12 +15,17 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/detail/:categoryName/:id" element={<Detail />} />
-        <Route path="/writepage" element={<WritePage />} />
-        <Route path="/editpage/:id" element={<EditPage />} />
-        <Route path="/categorypage/:categoryName" element={<CategoryPage />} />
-        <Route path="/mypage/:id" element={<MyPage />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/detail/:categoryName/:id" element={<Detail />} />
+          <Route path="/writepage" element={<WritePage />} />
+          <Route path="/editpage/:id" element={<EditPage />} />
+          <Route
+            path="/categorypage/:categoryName"
+            element={<CategoryPage />}
+          />
+          <Route path="/mypage/:id" element={<MyPage />} />
+        </Route>
         <Route
           path="/detail/:categoryName/:sellerId/:buyerId/:id"
           element={<Transaction />}
