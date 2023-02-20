@@ -1,41 +1,92 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
+import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { searchState } from '../atom';
 import { auth } from '../firebase/Firebase';
 import { postType } from '../types';
-
+import { CustomFetchNextPageOptions } from '../types';
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
 const CategoryPage = () => {
-  const { categoryName, select, word } = useParams();
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const { data } = useQuery(
+  const PAGE_SIZE= 4;
+
+
+  const observerElem = useRef<HTMLDivElement | null>(null);
+  const fetchPosts = async (
+    key: string,
+    categoryName: string,
+    select: string,
+    word: string,
+    page = 0
+  ) => {
+    const baseUrl = 'http://localhost:4000/posts';
+    let url = baseUrl;
+    if (categoryName !== 'all' && !word) {
+      url = `${baseUrl}?category=${categoryName}`;
+    } else if (categoryName === 'all' && word) {
+      url = `${baseUrl}?${select}_like=${word}`;
+    } else if (categoryName !== 'all' && word) {
+      url = `${baseUrl}?category=${categoryName}&${select}_like=${word}`;
+    }
+    console.log('url: ', url);
+
+    const response = await axios.get(url, {
+      params: {
+        _page: page,
+        _limit: PAGE_SIZE,
+      },
+    });
+    return response.data;
+  };
+
+  const { categoryName, select, word } = useRecoilValue(searchState);
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+    status,
+  } = useInfiniteQuery(
     ['posts', categoryName ?? 'all', select, word],
-    async () => {
-      //  useQuery를 사용해 queryKey posts로 데이터를 가져오는데,
-      // categoryName이 없으면 categoryName은 all이다.
-      const baseUrl = 'http://localhost:4000/posts';
-      let url = baseUrl;
-
-      // serchInput의 submit함수에서 지정한 주소들을 가져와 그에 맞는 data를 검색할 수 있도록 url을 동적으로 바꿔준다.
-      // _like 는 json-server의 기능 중 하나로 부분문자열도 동일하다면 데이터를 가져온다.
-      if (categoryName !== 'all' && !word) {
-        url = `${baseUrl}?category=${categoryName}`;
-      } else if (categoryName === 'all' && word) {
-        url = `${baseUrl}?${select}_like=${word}`;
-      } else if (categoryName !== 'all' && word) {
-        url = `${baseUrl}?category=${categoryName}&${select}_like=${word}`;
-      }
-      console.log('url: ', url);
-
-      const response = await axios.get(url);
-      //  get해올 url을 위에서 정의해서 가져와 response 변수에 담는다.
-      return response.data;
-      // response의 data속성을 리턴한다.
-    },
-    { cacheTime: 0 }
+    ({ pageParam = 0 }) =>
+      fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+       const nextPage = allPages.length + 1;
+       return lastPage.length !== 0 ? nextPage : undefined;
+      },
+    }
   );
+
+  const handleObserver = useCallback(
+    (entries: any) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage]
+  );
+
+  useEffect(() => {
+    const element = observerElem.current;
+    if (element === null) return;
+    const option = { threshold: 0 };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+    observer.observe(element);
+    return () => observer.unobserve(element);
+  }, [fetchNextPage, hasNextPage, handleObserver]);
 
   const queryClient = useQueryClient();
   // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
@@ -65,9 +116,92 @@ const CategoryPage = () => {
           </WriteButton>
         </NavContainer>
       )}
-
       <PostsContainer>
-        {data &&
+        {data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.map((post: postType) => (
+              <PostContainer
+                key={post.id}
+                onClick={() => handlePostClick(post)}
+              >
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+                <p>제목 :{post.title}</p>
+                <p>내용 :{post.content}</p>
+                <p>가격 :{post.price}</p>
+              </PostContainer>
+            ))}
+          </Fragment>
+        ))}
+
+        <PostContainer ref={observerElem}>
+          {isFetching || isFetchingNextPage
+            ? 'Loading more...'
+            : hasNextPage
+            ? 'Scroll to load more posts'
+            : 'No more posts'}
+        </PostContainer>
+      </PostsContainer>
+    </PageContainer>
+  );
+};
+
+{
+  /* <PostsContainer>
+         {data?.pages.map((page) =>
+          page.items.map((post: postType) => (
+            <PostContainer key={post.id} onClick={() => handlePostClick(post)}>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+              <p>제목 :{post.title}</p>
+              <p>내용 :{post.content}</p>
+              <p>가격 :{post.price}</p>
+            </PostContainer>
+          ))
+        )}
+        {hasNextPage ? (
+          <PostContainer ref={observerElem}>
+            {isFetchingNextPage && hasNextPage
+              ? 'Loading...'
+              : 'No search left'}
+          </PostContainer>
+        ) : (
+          <p>마지막 글입니다</p>
+        )} 
+
+         {hasNextPage && (
+          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+          </button>
+        )} 
+
+       {data &&
           data.map((item: postType) => {
             return (
               <PostContainer
@@ -79,14 +213,12 @@ const CategoryPage = () => {
                 <p>제목 :{item.title}</p>
                 <p>내용 :{item.content}</p>
                 <p>가격 :{item.price}</p>
+                <p>조회수 :{item.views}</p>
               </PostContainer>
             );
           })}
-        {!data || (data.length === 0 && <div>글이 없습니다.</div>)}
-      </PostsContainer>
-    </PageContainer>
-  );
-};
+        {!data || (data.length === 0 && <div>글이 없습니다.</div>)}  */
+}
 
 export default CategoryPage;
 const PageContainer = styled.div`

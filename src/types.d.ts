@@ -54,6 +54,10 @@ export interface onSalePostType {
 export interface LocationState {
   from: Location;
 }
+
+export interface CustomFetchNextPageOptions extends FetchNextPageOptions {
+  _limit: number;
+}
 /**삭제하지 말아주세요 */
 // import 'styled-components';
 // declare module 'styled-components' {
