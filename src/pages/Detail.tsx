@@ -6,7 +6,10 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
-import { customInfoAlert } from '../components/modal/CustomAlert';
+import {
+  customInfoAlert,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
 import { onSalePostType, userType } from '../types';
 
@@ -14,6 +17,7 @@ const Detail = () => {
   const { id } = useParams();
   const { categoryName } = useParams();
   const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const location = useLocation();
   // 클릭한 글의 데이터를 가지고 옵니다.
   const { data: post, isLoading } = useQuery(['post', id], async () => {
@@ -28,9 +32,9 @@ const Detail = () => {
   );
 
   // 포인트 수정을 위해 유저 정보를 가지고 옵니다.
-  const { data: user } = useQuery(['user', auth.currentUser?.uid], async () => {
+  const { data: user } = useQuery(['user', saveUser?.uid], async () => {
     const response = await axios.get(
-      `http://localhost:4000/users/${auth.currentUser?.uid}`
+      `http://localhost:4000/users/${saveUser?.uid}`
     );
     return response.data;
   });
@@ -38,7 +42,7 @@ const Detail = () => {
 
   // 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(`http://localhost:4000/users/${auth.currentUser?.uid}`, newUser)
+    axios.patch(`http://localhost:4000/users/${saveUser?.uid}`, newUser)
   );
 
   if (isLoading) {
@@ -52,19 +56,19 @@ const Detail = () => {
   // 바로 신청하기 버튼 클릭 하면
   // user 데이터의 point가 price만큼 빠지고
   // mutate로 데이터를 저장합니다.
+
   const onClickApplyBuy = async () => {
     // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
-    if (auth?.currentUser) {
+    if (saveUser) {
       await updateUser({
         point: String(Number(user.point) - Number(post?.[0].price)),
       });
 
-      console.log('auth.currentUser?.uid,: ', auth.currentUser?.uid);
       const uuid = uuidv4();
       await onSalePosts({
         id: uuid,
         postsId: id,
-        buyerUid: auth.currentUser?.uid,
+        buyerUid: saveUser.uid,
         sellerUid: post?.[0].sellerUid,
         title: post?.[0].title,
         content: post?.[0].content,
@@ -78,9 +82,7 @@ const Detail = () => {
         views: post?.[0].views,
         like: post?.[0].like,
       });
-      navigate(
-        `/detail/${categoryName}/${id}/${auth.currentUser?.uid}/${uuid}`
-      );
+      navigate(`/detail/${categoryName}/${id}/${saveUser?.uid}/${uuid}`);
     } else {
       navigate('/signin', { state: { from: location.pathname } });
     }
@@ -116,7 +118,7 @@ const Detail = () => {
       </PostContentWrapper>
       <CommentsWrapper>
         <div>
-          {auth?.currentUser && <CommentInput />}
+          {saveUser && <CommentInput />}
           <CommentsList />
         </div>
       </CommentsWrapper>

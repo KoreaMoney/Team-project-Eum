@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth, storageService } from '../firebase/Firebase';
 import { postType } from '../types';
@@ -14,10 +14,13 @@ import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+import SignIn from './SignIn';
 const WritePage = () => {
-  auth.onAuthStateChanged((user) => {
-    if (!user) navigate(-1);
-  });
+  const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
+  
+
   const imgRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
@@ -57,7 +60,6 @@ const WritePage = () => {
   const sellerUid = auth.currentUser?.uid;
   const nickName = auth.currentUser?.displayName;
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { mutate, isError, isLoading } = useMutation((newPost: postType) =>
     axios.post('http://localhost:4000/posts', newPost)
@@ -164,6 +166,9 @@ const WritePage = () => {
     return doc.body.textContent || '';
   };
   // 서버통신은 다 비동기함수
+  if (!saveUser) {
+    return <SignIn />;
+  }
   return (
     <>
       <ImageContainer>

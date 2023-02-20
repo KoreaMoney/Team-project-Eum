@@ -9,6 +9,7 @@ import { postType } from '../types';
 const CategoryPage = () => {
   const { categoryName, select, word } = useParams();
   const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const { data } = useQuery(
     ['posts', categoryName ?? 'all', select, word],
     async () => {
@@ -53,7 +54,7 @@ const CategoryPage = () => {
 
   return (
     <PageContainer>
-      {auth?.currentUser && (
+      {saveUser && (
         <NavContainer>
           <WriteButton
             onClick={() => {
