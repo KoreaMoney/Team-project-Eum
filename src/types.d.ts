@@ -21,7 +21,7 @@ export interface postType {
   sellerUid: string | undefined;
   content: string;
   price: string;
-  imgURL: [];
+  imgURL: string;
   category: string;
   like: [];
   views: number;

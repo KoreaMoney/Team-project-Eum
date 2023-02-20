@@ -35,7 +35,6 @@ const Header = () => {
   };
 
   const authUid = auth.currentUser?.uid;
-  console.log(authUid);
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -64,7 +63,7 @@ const Header = () => {
           </Link>
         </LoGoSpan>
         <PageSpan>
-          {auth.currentUser && (
+          {authUid && (
             <>
               <Span>
                 <Link to="/mypage/:id">MY PAGE</Link>
