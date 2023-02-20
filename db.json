@@ -13,7 +13,7 @@
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
       "nickName": "구매자",
       "profileImg": null,
-      "point": "9000",
+      "point": "8800",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
@@ -66,7 +66,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 5,
+      "views": 7,
       "createAt": 1676612528057
     },
     {
@@ -92,7 +92,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 2,
+      "views": 3,
       "createAt": 1676734627857
     },
     {
@@ -380,6 +380,23 @@
       "price": "1000",
       "category": "study",
       "ceatedAt": 1676861106428,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 6,
+      "like": []
+    },
+    {
+      "id": "6b8d940a-f49e-4346-a215-f550aeeb91f3",
+      "postsId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "인스타 팔로우 팔아요",
+      "content": "인스타 팔로우 개당 200원",
+      "imgURL": [],
+      "price": "200",
+      "category": "etc",
+      "ceatedAt": 1676870282186,
       "isDone": false,
       "isSellerCancel": false,
       "isBuyerCancel": false,

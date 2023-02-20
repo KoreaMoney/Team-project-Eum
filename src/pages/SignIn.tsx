@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -66,6 +66,7 @@ const SignIn = () => {
   ): void => {
     setEmail(e.target.value);
   };
+  
   // x 버튼 누르면 email input 초기화
   const handleInputValueClickBT = () => {
     setEmail('');
@@ -131,8 +132,12 @@ const SignIn = () => {
         }
       });
   };
+  const handleOnKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      handleSubmit(onSubmitHandler)(e);
+    }
+  };
 
-  
   // 비밀번호 찾기 모달
   const [isModalActive, setIsModalActive] = useState(false);
   const onClickToggleModal = useCallback(() => {
@@ -146,53 +151,57 @@ const SignIn = () => {
           <InfoText>Daylog</InfoText>
         </InfoBox>
         <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
-          <InputContainer>
-            <ItemContainer>
-              <InputBox
-                type="email"
-                placeholder="이메일"
-                {...register('email')}
-                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
-                onChange={onChangeEmailHandler}
-                value={email}
+        <InputContainer>
+          <ItemContainer>
+            <InputBox
+              type="email"
+              placeholder="이메일"
+              {...register('email')}
+              style={{ borderColor: errors?.email?.message ? 'red' : '' }}
+              onChange={onChangeEmailHandler}
+              value={email}
+              onKeyDown={handleOnKeyPress}
+            />
+            {email ? (
+              <CloseIcon onClick={handleInputValueClickBT} />
+            ) : undefined}
+            {errors.email && errors.email.type === 'required' && (
+              <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
+            )}
+            {errors.email && errors.email.type === 'email' && (
+              <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
+            )}
+          </ItemContainer>
+          <ItemContainer>
+            <InputBox
+              type={isViewPW ? 'text' : 'password'}
+              placeholder="비밀번호"
+              {...register('pw')}
+              style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
+              onChange={onChangePwHandler}
+              value={pw}
+              onKeyDown={handleOnKeyPress}
+            />
+            {pw ? (
+              <ViewIcon
+                onClick={handleClickViewPW}
+                style={{ color: isViewPW ? 'black' : '#ddd' }}
               />
-              {email ? (
-                <CloseIcon onClick={handleInputValueClickBT} />
-              ) : undefined}
-              {errors.email && errors.email.type === 'required' && (
-                <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
-              )}
-              {errors.email && errors.email.type === 'email' && (
-                <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
-              )}
-            </ItemContainer>
-            <ItemContainer>
-              <InputBox
-                type={isViewPW ? 'text' : 'password'}
-                placeholder="비밀번호"
-                {...register('pw')}
-                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
-                onChange={onChangePwHandler}
-                value={pw}
-              />
-              {pw ? (
-                <ViewIcon
-                  onClick={handleClickViewPW}
-                  style={{ color: isViewPW ? 'black' : '#ddd' }}
-                />
-              ) : undefined}
-              {errors.pw && errors.pw.type === 'required' && (
-                <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
-              )}
-              {errors.pw && errors.pw.type === 'matches' && (
-                <ErrorMSG>
-                  비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
-                </ErrorMSG>
-              )}
-              <ErrorMSG>{err}</ErrorMSG>
-            </ItemContainer>
-          </InputContainer>
-          <LoginButton>계속하기</LoginButton>
+            ) : undefined}
+            {errors.pw && errors.pw.type === 'required' && (
+              <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
+            )}
+            {errors.pw && errors.pw.type === 'matches' && (
+              <ErrorMSG>
+                비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
+              </ErrorMSG>
+            )}
+            <ErrorMSG>{err}</ErrorMSG>
+          </ItemContainer>
+        </InputContainer>
+        <LoginButton type='submit'>
+          계속하기
+        </LoginButton>
         </FormTag>
         <PTag>SNS 로그인</PTag>
         <SocialLoginButtonContainer>
@@ -265,6 +274,7 @@ const InfoText = styled.p`
 
 const InputContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 1rem;
   margin: 6.2rem 0 0 0;
