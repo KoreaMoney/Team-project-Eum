@@ -8,9 +8,9 @@ export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
   profileImg: string | null | undefined;
-  point: number|undefined;
+  point: number | undefined;
   contactTime: string;
-  like: [],
+  like: [];
   isDoneCount: number;
 }
 
@@ -21,7 +21,7 @@ export interface postType {
   sellerUid: string | undefined;
   content: string;
   price: string;
-  imgURL: [];
+  imgURL: string;
   category: string;
   like: [];
   views: number;

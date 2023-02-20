@@ -104,6 +104,26 @@
       "category": "advice",
       "like": [],
       "views": 3
+    },
+    {
+      "id": "80fe9ca9-0e69-4b7d-9512-89d90649bf02",
+      "title": "ㅇ",
+      "content": "",
+      "price": "1",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0
+    },
+    {
+      "id": "2940c0de-13db-42d2-ac0a-581c441d46ea",
+      "title": "123",
+      "content": "<p>   </p>",
+      "price": "23",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0
     }
   ]
 }
