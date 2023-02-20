@@ -1,39 +1,206 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+import { wrap } from 'popmotion';
+import { useState } from 'react';
+import { images } from '../components/home/image-data';
+import styled from 'styled-components';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import {
+  swipeConfidenceThreshold,
+  swipePower,
+  variants,
+} from '../components/home/variants';
 
 const Home = () => {
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  const imageIndex = wrap(0, images.length, page);
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
+
   const navigate = useNavigate();
+
   const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/posts');
     return response.data;
   });
-  console.log('data: ', data);
 
   return (
-    <div>
+    <HomeContainer>
+      <SwiperWrapper>
+        <AnimatePresence initial={false} custom={direction}>
+          <Img
+            key={page}
+            src={images[imageIndex]}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: 'spring', stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+          />
+        </AnimatePresence>
+        <NextPrevWrapper>
+          <Prev onClick={() => paginate(-1)}>
+            <IoIosArrowBack />
+          </Prev>
+          <Next onClick={() => paginate(1)}>
+            <IoIosArrowForward />
+          </Next>
+        </NextPrevWrapper>
+      </SwiperWrapper>
       <div>
-        <h2>글목록</h2>
+        <TotalWrapper>
+          <h1>이음에서 가장 인기</h1>
+        </TotalWrapper>
+
         {data &&
           data.map((item: postType) => {
             return (
-              <div style={{ display: 'flex', gap: '10px' }} key={item.id}>
-                <ul
-                  style={{ border: '1px solid #000000' }}
+              <ListContaier key={item.id}>
+                <div
                   onClick={() =>
                     navigate(`/detail/${item.category}/${item.id}`)
                   }
                 >
-                  <li>제목 :{item.title}</li>
-                  <li>내용 :{item.content}</li>
-                  <li>가격 :{item.price}</li>
-                </ul>
-              </div>
+                  <ul>
+                    <Liwrapper>
+                      <li>제목 :{item.title}</li>
+                      <li>내용 :{item.content}</li>
+                      <li>가격 :{item.price}</li>
+                    </Liwrapper>
+                  </ul>
+                </div>
+              </ListContaier>
             );
           })}
       </div>
-    </div>
+      <TotalWrapper>
+        <h1>전체 글</h1>
+        <RecentBox>전체글 들어감</RecentBox>
+      </TotalWrapper>
+    </HomeContainer>
   );
 };
 export default Home;
+
+const HomeContainer = styled.div`
+  overflow: hidden;
+`;
+
+const SwiperWrapper = styled.div`
+  width: 60%;
+  height: 16em;
+  overflow: hidden;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .refresh {
+    padding: 10px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+`;
+const Img = styled(motion.img)`
+  position: absolute;
+  width: 70%;
+  height: 15rem;
+`;
+
+const NextPrevWrapper = styled.div`
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+`;
+const Next = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  font-size: 20px;
+  z-index: 2;
+  border-radius: 30px;
+  width: 40px;
+  height: 40px;
+  left: 50%;
+`;
+const Prev = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  font-size: 20px;
+  z-index: 2;
+  border-radius: 30px;
+  width: 40px;
+  height: 40px;
+  /* transform: scale(-1); */
+`;
+
+const ListContaier = styled.div`
+  background-color: tomato;
+  width: 70%;
+  margin: auto;
+  ul {
+  }
+
+  li {
+  }
+`;
+
+const Liwrapper = styled.div``;
+
+const TotalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  h1 {
+    font-size: 20px;
+    padding-left: 15%;
+    margin-bottom: 10px;
+  }
+`;
+const RecentBox = styled.div`
+  background-color: gray;
+  width: 70%;
+  height: 40rem;
+  margin: auto;
+  margin-bottom: 20px;
+  padding: 20px;
+`;

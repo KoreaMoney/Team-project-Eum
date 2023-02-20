@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaGithubSquare} from 'react-icons/fa';
+import { FaGithubSquare } from 'react-icons/fa';
 
 const Footer = () => {
   return (

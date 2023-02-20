@@ -53,6 +53,8 @@ table {
 }
 body{
   font-family: 'Source Sans Pro', sans-serif;
+  overflow-x:hidden
+
 }
 a{
   text-decoration: none;
