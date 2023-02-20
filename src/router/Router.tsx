@@ -10,7 +10,6 @@ import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import Transaction from '../pages/Transaction';
 import WritePage from '../pages/WritePage';
-
 const Router = () => {
   return (
     <BrowserRouter>
@@ -34,7 +33,6 @@ const Router = () => {
             element={<Transaction />}
           />
         </Route>
-
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/chat" element={<Chat />} />
@@ -43,5 +41,4 @@ const Router = () => {
     // 하나의 page
   );
 };
-
 export default Router;

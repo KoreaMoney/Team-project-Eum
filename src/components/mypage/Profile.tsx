@@ -1,14 +1,102 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 export default function Profile(params: any) {
+  const { id } = useParams();
+
+  const queryClient = useQueryClient();
+
+  const { data: getData, isLoading: getLoading } = useQuery(
+    ['users', id],
+    async () => {
+      const response = await axios.get(`http://localhost:4000/users?id=${id}`);
+      return response.data;
+    }
+  );
+
+  const [file, setFile] = useState('');
+
+  const handleFileChange = (event: any) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('profileImage', file);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+
+    const response = await axios.post(
+      `http://localhost:4000/users/${id}`,
+      formData,
+      config
+    );
+    return response.data;
+  };
+
+  const { mutate, isLoading } = useMutation(handleUpload, {
+    onSuccess: (data) => {
+      console.log('Profile image uploaded:', data);
+    },
+  });
+
+  // const { mutate: editMutate, isLoading: editLoading } = useMutation(
+  //   ['users', id],
+  //   async (photoURL: any) => {
+  //     await axios.patch(`http://localhost:4000/users/${id}`, photoURL);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(['users']);
+  //     },
+  //     onError: (error) => {
+  //       console.log('error: ', error);
+  //     },
+  //   }
+  // );
+
+  // const [photo, setPhoto] = useState('');
+
+  // function handleChange(e: any) {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setPhoto(file);
+  //   }
+  //   console.log('photo', photo);
+  // }
+
+  // async function handleClick() {
+  //   const formData = new FormData();
+  //   formData.append('profileImg', photo);
+  //   const config = {
+  //     headers: {
+  //       'content-type': 'multipart/form-data',
+  //     },
+  //   };
+  //   await editMutate({ profileImg: formData, config });
+  //   console.log('formdata', formData);
+  // }
+
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage alt="User Image" />
+        <MyImage src={getData?.[0].profileImg} alt="User Image" />
       </MyImageWrapper>
-      <InputImgFile type="file" />
-      <ImgSubmitButton>확인</ImgSubmitButton>
+      <InputImgFile type="file" onChange={handleFileChange} />
+      <ImgSubmitButton
+        onClick={() => {
+          mutate();
+        }}
+      >
+        확인
+      </ImgSubmitButton>
     </UserProfileImgContainer>
   );
 }

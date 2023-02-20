@@ -4,25 +4,19 @@ import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
 import { useQuery } from '@tanstack/react-query';
 import { getProfileImg } from '../api';
+import { auth } from '../firebase/Firebase';
 
 const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
 
-  const {
-    isLoading: getLoading,
-    isError,
-    data,
-    error,
-  } = useQuery(['users'], getProfileImg);
-  console.log('data', data?.data[0]);
+  const userUid = auth.currentUser?.uid;
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
   return (
     <MyPageContainer>
-      {data?.data && data.data.filter((t: any) => t.id === t.id)}
       <Profile />
       <UserNameWrapper>
         {isEdit ? (

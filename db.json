@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "id": "LyVGRDGq3zgMOJFit8z3Uyf7HS03",
       "nickName": "판매자",
       "profileImg": null,
       "point": "11600",
@@ -26,6 +26,20 @@
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
+    },
+    {
+      "id": "yjSa4NpW6ePpzNFiR79H3OdvfNn1",
+      "nickName": "qwerqwerqwer",
+      "profileImg": {},
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0,
+      "config": {
+        "headers": {
+          "content-type": "multipart/form-data"
+        }
+      }
     }
   ],
   "posts": [
@@ -65,7 +79,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 2,
+      "views": 3,
       "createAt": 1676734627857
     },
     {

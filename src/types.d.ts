@@ -3,7 +3,6 @@ export interface ISignUpForm {
   pw: string;
   checkPw: string;
 }
-
 export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
@@ -13,7 +12,6 @@ export interface userType {
   like: [];
   isDoneCount: number;
 }
-
 export interface postType {
   id: string | undefined;
   title: string;
@@ -21,13 +19,12 @@ export interface postType {
   sellerUid: string | undefined;
   content: string;
   price: string;
-  imgURL: [];
+  imgURL: string;
   category: string;
   like: [];
   views: number;
   createAt: number;
 }
-
 export interface commentType {
   id: string;
   postId: string | undefined;
@@ -37,7 +34,6 @@ export interface commentType {
   writerNickName: string | null | undefined;
   isEdit: boolean;
 }
-
 export interface onSalePostType {
   id: string;
   postsId: string | undefined;
@@ -55,12 +51,10 @@ export interface onSalePostType {
   isSellerCancel: boolean;
   isBuyerCancel: boolean;
 }
-
 export interface LocationState {
   from: Location;
 }
 /**삭제하지 말아주세요 */
-
 // import 'styled-components';
 // declare module 'styled-components' {
 //   export interface DefaultTheme {

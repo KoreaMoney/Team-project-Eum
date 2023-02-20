@@ -4,7 +4,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wrap } from 'popmotion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { images } from '../components/home/image-data';
 import styled from 'styled-components';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -13,29 +13,35 @@ import {
   swipePower,
   variants,
 } from '../components/home/variants';
-
 const Home = () => {
-  const [[page, direction], setPage] = useState([0, 0]);
-
-  const imageIndex = wrap(0, images.length, page);
-
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection]);
-  };
-
   const navigate = useNavigate();
-
+  const [[slider, direction], setSlider] = useState([0, 0]);
+  const imageRef = useRef(null);
+  const imageIndex = wrap(0, images.length, slider);
+  /**swiper pageination(각각 페이지로 인식하게 하기) */
+  const paginate = (newDirection: number) => {
+    setSlider([
+      (slider + newDirection + images.length) % images.length,
+      newDirection,
+    ]);
+  };
+  /**swiper autoplay(자동으로 넘기기) */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlider([slider + 1, 1]);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [slider]);
   const { data } = useQuery(['users'], async () => {
     const response = await axios.get('http://localhost:4000/posts');
     return response.data;
   });
-
   return (
     <HomeContainer>
       <SwiperWrapper>
         <AnimatePresence initial={false} custom={direction}>
           <Img
-            key={page}
+            key={slider}
             src={images[imageIndex]}
             custom={direction}
             variants={variants}
@@ -51,7 +57,6 @@ const Home = () => {
             dragElastic={1}
             onDragEnd={(e, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
-
               if (swipe < -swipeConfidenceThreshold) {
                 paginate(1);
               } else if (swipe > swipeConfidenceThreshold) {
@@ -73,7 +78,6 @@ const Home = () => {
         <TotalWrapper>
           <h1>이음에서 가장 인기</h1>
         </TotalWrapper>
-
         {data &&
           data.map((item: postType) => {
             return (
@@ -101,11 +105,9 @@ const Home = () => {
   );
 };
 export default Home;
-
 const HomeContainer = styled.div`
   overflow: hidden;
 `;
-
 const SwiperWrapper = styled.div`
   width: 60%;
   height: 16em;
@@ -115,7 +117,6 @@ const SwiperWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   .refresh {
     padding: 10px;
     position: absolute;
@@ -136,7 +137,6 @@ const Img = styled(motion.img)`
   width: 70%;
   height: 15rem;
 `;
-
 const NextPrevWrapper = styled.div`
   z-index: 5;
   display: flex;
@@ -170,13 +170,11 @@ const Prev = styled.div`
   height: 40px;
   /* transform: scale(-1); */
 `;
-
 const ListContaier = styled.div`
   background-color: gray;
   width: 70%;
   margin: auto;
 `;
-
 const TotalWrapper = styled.div`
   display: flex;
   flex-direction: column;
