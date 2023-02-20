@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 import React, { useCallback, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
+import Profile from '../components/mypage/Profile';
 
 const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
-
   const [isModalActive, setIsModalActive] = useState(false);
+
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
   return (
     <MyPageContainer>
-      <MyImageWrapper>
-        <div>프로필 이미지</div>
-      </MyImageWrapper>
+      <Profile />
       <UserNameWrapper>
         {isEdit ? (
           <>
@@ -112,23 +111,6 @@ export default MyPage;
 const MyPageContainer = styled.div`
   padding: 40px;
   width: 100%;
-`;
-
-const MyImageWrapper = styled.div`
-  background-color: lightgray;
-  margin: 20px auto;
-  width: 200px;
-  height: 200px;
-  border: 2px solid lightgray;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
 `;
 
 const UserNameWrapper = styled.div`
