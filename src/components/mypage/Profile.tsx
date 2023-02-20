@@ -14,17 +14,10 @@ export default function Profile(params: any) {
     }
   }
 
-  function handleClick() {
-    upload(photo, currentUser, setLoading);
+  async function handleClick() {
+    const photoURL = await upload(photo, currentUser, setLoading);
+    setPhotoURL(photoURL);
   }
-
-  useEffect(() => {
-    if (currentUser?.photoURL) {
-      setPhotoURL(currentUser?.photoURL);
-    }
-    console.log('123123', photoURL);
-  }, [currentUser]);
-  console.log('123123', photoURL);
 
   return (
     <UserProfileImgContainer>

@@ -42,4 +42,6 @@ export async function upload(file: any, currentUser: any, setLoading: any) {
 
   setLoading(false);
   alert('Uploaded file!');
+
+  return photoURL;
 }
