@@ -84,11 +84,9 @@ const Home = () => {
                   }
                 >
                   <ul>
-                    <Liwrapper>
-                      <li>제목 :{item.title}</li>
-                      <li>내용 :{item.content}</li>
-                      <li>가격 :{item.price}</li>
-                    </Liwrapper>
+                    <li>제목 :{item.title}</li>
+                    <li>내용 :{item.content}</li>
+                    <li>가격 :{item.price}</li>
                   </ul>
                 </div>
               </ListContaier>
@@ -174,17 +172,10 @@ const Prev = styled.div`
 `;
 
 const ListContaier = styled.div`
-  background-color: tomato;
+  background-color: gray;
   width: 70%;
   margin: auto;
-  ul {
-  }
-
-  li {
-  }
 `;
-
-const Liwrapper = styled.div``;
 
 const TotalWrapper = styled.div`
   display: flex;
