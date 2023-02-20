@@ -22,7 +22,9 @@ const SearchInput = () => {
     e.preventDefault();
     // select가 지정되어있으면 아래 주소로, 그렇지 않다면 검색되지 않게 함
     if (selectValue) {
-      navigate(`/search/${categoryName}/${selectValue}/${searchText}`);
+      categoryName
+        ? navigate(`/search/${categoryName}/${selectValue}/${searchText}`)
+        : navigate(`/search/all/${selectValue}/${searchText}`);
       setSearchText('');
       setSelectValue('');
     } else return;
