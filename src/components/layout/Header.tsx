@@ -35,7 +35,6 @@ const Header = () => {
   };
 
   const authUid = auth.currentUser?.uid;
-  console.log(authUid);
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -64,12 +63,16 @@ const Header = () => {
           </Link>
         </LoGoSpan>
         <PageSpan>
-          <Span>
-            <Link to="/mypage/:id">MY PAGE</Link>
-          </Span>
-          <Span>
-            <div>MY LIKE</div>
-          </Span>
+          {authUid && (
+            <>
+              <Span>
+                <Link to="/mypage/:id">MY PAGE</Link>
+              </Span>
+              <Span>
+                <div>MY LIKE</div>
+              </Span>
+            </>
+          )}
 
           <LogOutBtn onClick={() => handelClickLogOut()}>
             {!authUid ? 'LOGIN' : 'LOGOUT'}

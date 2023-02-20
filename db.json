@@ -4,16 +4,16 @@
       "id": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
       "nickName": "판매자",
       "profileImg": null,
-      "point": "9600",
+      "point": "11600",
       "contactTime": "",
       "like": [],
-      "isDoneCount": 4
+      "isDoneCount": 6
     },
     {
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
       "nickName": "구매자",
       "profileImg": null,
-      "point": "14000",
+      "point": "8800",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
@@ -66,7 +66,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 4,
+      "views": 7,
       "createAt": 1676612528057
     },
     {
@@ -79,7 +79,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 0,
+      "views": 8,
       "createAt": 1676619414560
     },
     {
@@ -92,7 +92,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 2,
+      "views": 3,
       "createAt": 1676734627857
     },
     {
@@ -116,154 +116,37 @@
       "imgURL": [],
       "category": "",
       "like": [],
-      "views": 0,
+      "views": 3,
       "createAt": 1676775983129
     },
     {
-      "id": "c74d801b-d5dd-4820-aa57-a6b4d171e4f3",
-      "title": "d",
-      "content": "<p><br></p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676869995404
-    },
-    {
-      "id": "c292cdf8-a34c-4b37-9f0b-fcbfc47a3142",
-      "title": "1",
-      "content": "<p><br></p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676870366260
-    },
-    {
-      "id": "d69548c6-ebd5-423b-adf2-5032e67392c0",
-      "title": "1",
-      "content": "<p>       </p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676870394226
-    },
-    {
-      "id": "4b6702a4-3c2d-4ca7-8542-dc976dcd05f1",
-      "title": "1",
-      "content": "<p><br></p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676874261582
-    },
-    {
-      "id": "40bed31d-5b1e-436a-9da3-d3d9a34b2485",
-      "title": "1",
-      "content": "",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676875862721
-    },
-    {
-      "id": "d04759a1-a5a3-46ed-91fd-ae4468734d6b",
-      "title": "1",
-      "content": "",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676875881584
-    },
-    {
-      "id": "e7e5d9df-adc5-4233-8893-0a48f8cfdec8",
-      "title": "1",
-      "content": "<p>1</p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676877626614
-    },
-    {
-      "id": "d99cd05c-3c33-4d85-918e-1f0668f08676",
-      "title": "1",
-      "content": "<p> </p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676877700619
-    },
-    {
-      "id": "30c246bf-0406-4dad-bba7-63f09e28dfd7",
-      "title": "제목",
-      "content": "<p>ㅇ</p>",
+      "id": "fcf4b02e-a680-469d-bb23-7b25b9ce540a",
+      "title": "123",
+      "content": "123",
       "price": "123",
-      "imgURL": "",
-      "category": "play",
+      "imgURL": [],
+      "category": "",
       "like": [],
-      "views": 0,
-      "createAt": 1676877887656
-    },
-    {
-      "id": "5313900f-8e76-411f-9171-8521258191c3",
-      "title": "ㅇㄴㅁㅇ",
-      "content": "<p>ㅁㄴㅇ</p>",
-      "price": "132",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676877933505
-    },
-    {
-      "id": "271f65a3-d31e-4850-92b1-cf937f044e86",
-      "title": "상담해줌",
-      "content": "<p>ㄱㄱ</p>",
-      "price": "10,000,000",
-      "imgURL": "",
-      "category": "advice",
-      "like": [],
-      "views": 0,
-      "createAt": 1676878023290
-    },
-    {
-      "id": "dfc80930-069b-4ac6-8606-9faf4a585137",
-      "title": "1",
-      "content": "<p> ㅁㄴㅇ</p>",
-      "price": "1",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676875902952
-    },
-    {
-      "id": "bef1937a-ad70-4f15-bc06-d7e19ef1419e",
-      "title": "ㅁㄴㅇ",
-      "content": "<p>ㅁㄴㅇ</p>",
-      "price": "123",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1676878288861
+      "views": 1,
+      "createAt": 1676797879195
     }
   ],
-  "comments": [],
+  "comments": [
+    {
+      "id": "b3f699d0-f125-4eb2-9c76-d28967dd737a",
+      "postId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "content": "a",
+      "createAt": 1676860889422,
+      "isEdit": false
+    },
+    {
+      "id": "30f0114d-ab37-4e93-8c8d-fb8837317b92",
+      "postId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "content": "sdf",
+      "createAt": 1676860889422,
+      "isEdit": false
+    }
+  ],
   "onSalePosts": [
     {
       "id": "7dbd3dbe-bd8f-49d2-9019-99b1b86c3f71",
@@ -399,6 +282,125 @@
       "isSellerCancel": false,
       "isBuyerCancel": false,
       "views": 2,
+      "like": []
+    },
+    {
+      "id": "616bc669-61f0-4fe5-8e65-966b0766f7b3",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676860134483,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 2,
+      "like": []
+    },
+    {
+      "id": "ce17ec0a-1b24-437e-805f-7053241247c8",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676860166745,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 2,
+      "like": []
+    },
+    {
+      "id": "811e9f01-8132-430a-aa83-99877354152e",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676860186394,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": true,
+      "views": 2,
+      "like": []
+    },
+    {
+      "id": "c9612649-7ae3-45c7-b30f-15f77b0a6195",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676860287088,
+      "isDone": false,
+      "isSellerCancel": true,
+      "isBuyerCancel": false,
+      "views": 3,
+      "like": []
+    },
+    {
+      "id": "c6fab144-9046-4c4c-8e01-9a36930675c3",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676860469916,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 4,
+      "like": []
+    },
+    {
+      "id": "6c2f8e3b-9f27-423f-8866-2acc86ff5cd1",
+      "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "숙제풀어드려요",
+      "content": "1문제당 1000원",
+      "imgURL": [],
+      "price": "1000",
+      "category": "study",
+      "ceatedAt": 1676861106428,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 6,
+      "like": []
+    },
+    {
+      "id": "6b8d940a-f49e-4346-a215-f550aeeb91f3",
+      "postsId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "title": "인스타 팔로우 팔아요",
+      "content": "인스타 팔로우 개당 200원",
+      "imgURL": [],
+      "price": "200",
+      "category": "etc",
+      "ceatedAt": 1676870282186,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 6,
       "like": []
     }
   ]

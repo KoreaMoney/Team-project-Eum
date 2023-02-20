@@ -56,6 +56,9 @@ export interface onSalePostType {
   isBuyerCancel: boolean;
 }
 
+export interface LocationState {
+  from: Location;
+}
 /**삭제하지 말아주세요 */
 
 // import 'styled-components';
