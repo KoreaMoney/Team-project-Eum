@@ -12,7 +12,6 @@ import {
 import { IoGameController } from 'react-icons/io5';
 import SearchInput from '../etc/SearchInput';
 import { motion } from 'framer-motion';
-
 const svg = {
   start: { pathLength: 0, fill: 'rgba(255, 255, 255, 0)' },
   end: {
@@ -20,10 +19,8 @@ const svg = {
     pathLength: 1,
   },
 };
-
 const Header = () => {
   const navigate = useNavigate();
-
   const handelClickLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -33,7 +30,6 @@ const Header = () => {
         console.dir('LoginErr:', error);
       });
   };
-
   const authUid = auth.currentUser?.uid;
   return (
     <HeaderContainer>
@@ -66,20 +62,18 @@ const Header = () => {
           {authUid && (
             <>
               <Span>
-                <Link to="/mypage/:id">MY PAGE</Link>
+                <Link to={`/mypage/${authUid}`}>MY PAGE</Link>
               </Span>
               <Span>
                 <div>MY LIKE</div>
               </Span>
             </>
           )}
-
           <LogOutBtn onClick={() => handelClickLogOut()}>
             {!authUid ? 'LOGIN' : 'LOGOUT'}
           </LogOutBtn>
         </PageSpan>
       </HeaderWrapper>
-
       <CategoriesWrapper>
         <Ul style={{ display: 'flex', gap: '10px' }}>
           <Link to="/categorypage/all">
@@ -117,9 +111,7 @@ const Header = () => {
     </HeaderContainer>
   );
 };
-
 export default Header;
-
 const HeaderContainer = styled.div`
   background-color: #fff;
   width: 100%;
@@ -144,7 +136,6 @@ const LogoWrapper = styled(motion.div)`
   justify-content: center;
   align-items: center;
 `;
-
 const Svg = styled.svg`
   width: 300px;
   height: 300px;
@@ -153,7 +144,6 @@ const Svg = styled.svg`
     stroke-width: 2;
   }
 `;
-
 const PageSpan = styled.span`
   display: flex;
   flex-direction: row;
@@ -163,7 +153,6 @@ const PageSpan = styled.span`
   align-items: center;
   font-size: 1rem;
 `;
-
 const Span = styled.span`
   color: black;
   transition: color 0.2s ease-in;
@@ -171,7 +160,6 @@ const Span = styled.span`
     color: #2196f3;
   }
 `;
-
 const LogOutBtn = styled.button`
   background-color: transparent;
   color: black;
@@ -194,7 +182,6 @@ const CategoriesWrapper = styled.div`
 const Ul = styled.ul`
   margin-left: 1%;
 `;
-
 const Icon = styled.span`
   display: flex;
   flex-direction: row;
@@ -205,7 +192,6 @@ const Icon = styled.span`
     color: #2196f3;
   }
 `;
-
 const SearchDiv = styled.div`
   margin-right: 4%;
 `;

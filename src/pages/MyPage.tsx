@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import React, { useCallback, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
+import { useQuery } from '@tanstack/react-query';
+import { getProfileImg } from '../api';
+import { auth } from '../firebase/Firebase';
 
 const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
+
+  const userUid = auth.currentUser?.uid;
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
