@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { auth } from '../firebase/Firebase';
 import { postType } from '../types';
 
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
@@ -52,15 +53,18 @@ const CategoryPage = () => {
 
   return (
     <PageContainer>
-      <NavContainer>
-        <WriteButton
-          onClick={() => {
-            navigate('/writepage');
-          }}
-        >
-          글쓰기
-        </WriteButton>
-      </NavContainer>
+      {auth?.currentUser && (
+        <NavContainer>
+          <WriteButton
+            onClick={() => {
+              navigate('/writepage');
+            }}
+          >
+            글쓰기
+          </WriteButton>
+        </NavContainer>
+      )}
+
       <PostsContainer>
         {data &&
           data.map((item: postType) => {

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -23,6 +23,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [err, setErr] = useState('');
   const [checkID, setCheckID] = useState(false);
+  const location = useLocation();
   const mutation = useMutation((newUser: userType) => {
     return axios
       .post('http://localhost:4000/users', newUser)
@@ -81,7 +82,7 @@ const SignIn = () => {
     } else {
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
-          navigate('/');
+          navigate(location.state?.from ? location.state.from : '/');
         })
         .catch((error) => {
           const errorMessage = error.message;
