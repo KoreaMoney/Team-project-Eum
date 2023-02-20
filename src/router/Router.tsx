@@ -29,11 +29,12 @@ const Router = () => {
             element={<CategoryPage />}
           />
           <Route path="/mypage/:id" element={<MyPage />} />
+          <Route
+            path="/detail/:categoryName/:sellerId/:buyerId/:id"
+            element={<Transaction />}
+          />
         </Route>
-        <Route
-          path="/detail/:categoryName/:sellerId/:buyerId/:id"
-          element={<Transaction />}
-        />
+
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/chat" element={<Chat />} />
