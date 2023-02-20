@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
+import { customInfoAlert } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
 import { onSalePostType, userType } from '../types';
 
@@ -13,6 +14,7 @@ const Detail = () => {
   const { id } = useParams();
   const { categoryName } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   // 클릭한 글의 데이터를 가지고 옵니다.
   const { data: post, isLoading } = useQuery(['post', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
@@ -32,10 +34,10 @@ const Detail = () => {
     );
     return response.data;
   });
-  console.log( 'user: ' ,user);
-  
+  console.log('user: ', user);
+
   // 포인트를 수정해주는 mutation 함수
-  const {mutate:updateUser} = useMutation((newUser: {point:string}) =>
+  const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
     axios.patch(`http://localhost:4000/users/${auth.currentUser?.uid}`, newUser)
   );
 
@@ -52,28 +54,36 @@ const Detail = () => {
   // mutate로 데이터를 저장합니다.
   const onClickApplyBuy = async () => {
     // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
-    await updateUser({point: String(Number(user.point) - Number(post?.[0].price))}) 
-    
-    console.log('auth.currentUser?.uid,: ', auth.currentUser?.uid);
-    const uuid = uuidv4();
-    await onSalePosts({
-      id: uuid,
-      postsId: id,
-      buyerUid: auth.currentUser?.uid,
-      sellerUid: post?.[0].sellerUid,
-      title: post?.[0].title,
-      content: post?.[0].content,
-      imgURL: post?.[0].imgURL,
-      price: post?.[0].price,
-      category: post?.[0].category,
-      ceatedAt: Date.now(),
-      isDone: false,
-      isSellerCancel: false,
-      isBuyerCancel: false,
-      views: post?.[0].views,
-      like: post?.[0].like,
-    });
-    navigate(`/detail/${categoryName}/${id}/${auth.currentUser?.uid}/${uuid}`);
+    if (auth?.currentUser) {
+      await updateUser({
+        point: String(Number(user.point) - Number(post?.[0].price)),
+      });
+
+      console.log('auth.currentUser?.uid,: ', auth.currentUser?.uid);
+      const uuid = uuidv4();
+      await onSalePosts({
+        id: uuid,
+        postsId: id,
+        buyerUid: auth.currentUser?.uid,
+        sellerUid: post?.[0].sellerUid,
+        title: post?.[0].title,
+        content: post?.[0].content,
+        imgURL: post?.[0].imgURL,
+        price: post?.[0].price,
+        category: post?.[0].category,
+        ceatedAt: Date.now(),
+        isDone: false,
+        isSellerCancel: false,
+        isBuyerCancel: false,
+        views: post?.[0].views,
+        like: post?.[0].like,
+      });
+      navigate(
+        `/detail/${categoryName}/${id}/${auth.currentUser?.uid}/${uuid}`
+      );
+    } else {
+      navigate('/signin', { state: { from: location.pathname } });
+    }
   };
   return (
     <DetailContainer>
@@ -106,7 +116,7 @@ const Detail = () => {
       </PostContentWrapper>
       <CommentsWrapper>
         <div>
-          <CommentInput />
+          {auth?.currentUser && <CommentInput />}
           <CommentsList />
         </div>
       </CommentsWrapper>
