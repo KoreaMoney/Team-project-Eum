@@ -118,7 +118,7 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-  background-color: #e4e1e1;
+  background-color: #fff;
   width: 100%;
   height: 10rem;
 `;
@@ -176,7 +176,6 @@ const LogOutBtn = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
-  margin-top: 4px;
   font-size: 0.95rem;
   transition: color 0.2s ease-in;
   &:hover {
