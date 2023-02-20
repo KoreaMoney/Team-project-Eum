@@ -1,33 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useAuth, upload } from '../../firebase/Firebase';
 
 export default function Profile(params: any) {
-  const currentUser = useAuth();
-  const [photo, setPhoto] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoURL, setPhotoURL] = useState('/assets/profileAvatar.png');
-
-  function handleChange(e: any) {
-    if (e.target.files[0]) {
-      setPhoto(e.target.files[0]);
-    }
-  }
-
-  async function handleClick() {
-    const photoURL = await upload(photo, currentUser, setLoading);
-    setPhotoURL(photoURL);
-  }
-
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage src={photoURL} alt="User Image" />
+        <MyImage alt="User Image" />
       </MyImageWrapper>
-      <InputImgFile type="file" onChange={handleChange} />
-      <ImgSubmitButton disabled={loading || !photo} onClick={handleClick}>
-        확인
-      </ImgSubmitButton>
+      <InputImgFile type="file" />
+      <ImgSubmitButton>확인</ImgSubmitButton>
     </UserProfileImgContainer>
   );
 }

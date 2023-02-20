@@ -65,7 +65,7 @@ const Header = () => {
         </LoGoSpan>
         <PageSpan>
           <Span>
-            <Link to="/mypage/:id">MY PAGE</Link>
+            <Link to={`/mypage/${authUid}`}>MY PAGE</Link>
           </Span>
           <Span>
             <div>MY LIKE</div>
