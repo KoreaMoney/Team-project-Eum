@@ -48,6 +48,7 @@ const WritePage = () => {
     'video',
     'width',
   ];
+
   const modules = {
     toolbar: {
       container: toolbarOptions,
@@ -57,9 +58,11 @@ const WritePage = () => {
   const nickName = auth.currentUser?.displayName;
   const { id } = useParams();
   const navigate = useNavigate();
+
   const { mutate, isError, isLoading } = useMutation((newPost: postType) =>
     axios.post('http://localhost:4000/posts', newPost)
   );
+
   // jsx문법에서 받아온 post를 useMutation의 인자에 보낸다. 그리고 axios를 통해 post한다.
   // post() 괄호 안에는 어디로 보낼것인가를 지정해주는 곳인 것 같다.
   // http://localhost:4000/posts 해당 api주소에 newPost를 추가한다는 코드
@@ -99,6 +102,7 @@ const WritePage = () => {
   };
   const onChangePricec = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
+
     setPost({
       ...post,
       price: value.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
@@ -113,6 +117,7 @@ const WritePage = () => {
   };
   const shrotenUrl = async (img: string) => {
     const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
+
     const imgDataUrl = img;
     let downloadUrl;
     if (imgDataUrl) {
