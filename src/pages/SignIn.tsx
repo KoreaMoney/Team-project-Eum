@@ -81,7 +81,7 @@ const SignIn = () => {
     } else {
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
-          navigate('/home');
+          navigate('/');
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -97,7 +97,6 @@ const SignIn = () => {
 
   // 구글, 깃허브 로그인
   const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
 
   const onGoogleClick = async () => {
     await signInWithPopup(auth, googleProvider)
@@ -110,8 +109,8 @@ const SignIn = () => {
             id: uid,
             nickName: auth.currentUser?.displayName,
             profileImg: auth.currentUser?.photoURL,
-            point: undefined,
-            contactTime: '22102330',
+            point: '0',
+            contactTime: '',
             like: [],
             isDoneCount: 0,
           });
@@ -119,7 +118,7 @@ const SignIn = () => {
         } else {
           console.log('데이터 추가XX: ');
         }
-        navigate('/home');
+        navigate('/');
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -132,39 +131,7 @@ const SignIn = () => {
       });
   };
 
-  const onGithubClick = async () => {
-    await signInWithPopup(auth, githubProvider)
-      .then((result) => {
-        const user = result.user;
-        const uid = auth.currentUser?.uid;
-        const isId = idList.includes(auth.currentUser?.uid);
-        if (!isId) {
-          mutation.mutate({
-            id: uid,
-            nickName: auth.currentUser?.displayName,
-            profileImg: auth.currentUser?.photoURL,
-            point: undefined,
-            contactTime: '22102330',
-            like: [],
-            isDoneCount: 0,
-          });
-          console.log('데이터 추가: ');
-        } else {
-          console.log('데이터 추가XX: ');
-        }
-        navigate('/home');
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        if (
-          errorMessage.includes('auth/account-exists-with-different-credential')
-        ) {
-          setErr('이미 가입된 회원입니다.');
-          return;
-        }
-      });
-  };
-
+  
   // 비밀번호 찾기 모달
   const [isModalActive, setIsModalActive] = useState(false);
   const onClickToggleModal = useCallback(() => {
@@ -229,7 +196,6 @@ const SignIn = () => {
         <PTag>SNS 로그인</PTag>
         <SocialLoginButtonContainer>
           <GoogleIcon onClick={onGoogleClick} />
-          <GitIcon onClick={onGithubClick} />
         </SocialLoginButtonContainer>
         <MoveSignUpButton onClick={() => navigate('/signup')}>
           아직 회원이 아니신가요?

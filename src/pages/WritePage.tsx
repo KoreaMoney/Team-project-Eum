@@ -7,9 +7,17 @@ import { postType } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import ReactQuill from 'react-quill';
+import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import {
+  customInfoAlert,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
 const WritePage = () => {
+  auth.onAuthStateChanged((user) => {
+    if (!user) navigate(-1);
+  });
   const imgRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
@@ -58,7 +66,6 @@ const WritePage = () => {
   // jsx문법에서 받아온 post를 useMutation의 인자에 보낸다. 그리고 axios를 통해 post한다.
   // post() 괄호 안에는 어디로 보낼것인가를 지정해주는 곳인 것 같다.
   // http://localhost:4000/posts 해당 api주소에 newPost를 추가한다는 코드
-
   const [post, setPost] = useState<postType>({
     id: uuidv4(),
     title: '',
@@ -70,6 +77,7 @@ const WritePage = () => {
     category: '',
     like: [],
     views: 0,
+    createAt: Date.now(),
   });
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price, imgURL, category } = post;
@@ -80,8 +88,7 @@ const WritePage = () => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const resultImg = reader.result;
-        console.log(resultImg);
-        // shrotenUrl(resultImg as string);
+        shrotenUrl(resultImg as string);
       };
     }
   };
@@ -121,34 +128,40 @@ const WritePage = () => {
   };
   // 유효성 검사
   const validation = () => {
-    if (!title) {
-      titleRef.current?.focus();
-      return true;
-    }
-    if (content.trim.length === 0) {
-      contentsRef.current?.focus();
-      return true;
-    }
-    if (!price) {
-      priceRef.current?.focus();
-      return true;
-    }
     if (!category) {
+      customInfoAlert('카테고리를 선택해주세요');
       categoryRef.current?.focus();
       return true;
     }
+    if (!title.trim()) {
+      customWarningAlert('제목을 입력해주세요');
+      titleRef.current?.focus();
+      return true;
+    }
+    if (!price.trim()) {
+      customWarningAlert('가격을 입력해주세요');
+      priceRef.current?.focus();
+      return true;
+    }
+    if (!parsingHtml(content).trim()) {
+      customWarningAlert('내용을 입력해주세요');
+      contentsRef.current?.focus();
+      return true;
+    }
   };
-  console.log(post);
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validation()) {
-      console.log('컷');
       return;
     }
     await mutate(post); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
     // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
     // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
-    navigate(`/categorypage/${post.category}/${post.id}`);
+    navigate(`/detail/${post.category}/${post.id}`);
+  };
+  const parsingHtml = (html: string): string => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
   };
   // 서버통신은 다 비동기함수
   return (
@@ -216,7 +229,7 @@ const WritePage = () => {
             }}
           />
         </QuilWrapper>
-        <button>엄준식</button>
+        <button>작성완료</button>
       </Container>
     </>
   );
