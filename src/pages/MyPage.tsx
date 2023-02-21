@@ -3,24 +3,28 @@ import React, { useCallback, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
-import { useQuery } from '@tanstack/react-query';
-import { getProfile } from '../api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getProfileNickName, updateProfileNickName } from '../api';
 
 const MyPage = () => {
+  const queryClient = useQueryClient();
+
   const [isEdit, setIsEdit] = useState(false);
-
   const [isModalActive, setIsModalActive] = useState(false);
-
-  const onClickToggleModal = useCallback(() => {
-    setIsModalActive(!isModalActive);
-  }, [isModalActive]);
 
   const {
     isLoading: getLoading,
     isError,
     data,
     error,
-  } = useQuery(['users'], getProfile);
+  } = useQuery(['users'], getProfileNickName);
+
+  const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
+    useMutation(updateProfileNickName);
+
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
 
   const currentUser =
     data?.data &&
@@ -28,16 +32,47 @@ const MyPage = () => {
       return auth.currentUser?.uid === user.id;
     });
 
+  const [editNickNameValue, setEditNickNameValue] = useState(
+    currentUser?.[0]?.nickName
+  );
+
+  const EditNickName = async (id: string) => {
+    const editNickName = editNickNameValue?.trim();
+    if (!editNickName) {
+      setEditNickNameValue('');
+      return alert('닉네임을 작성해 주세요.');
+    }
+    const newNickName = {
+      id: currentUser?.[0]?.id,
+      nickName: editNickNameValue,
+    };
+    await editNickNameMutate(newNickName, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['users']);
+      },
+    });
+    setIsEdit(false);
+  };
+
   return (
     <MyPageContainer>
       <Profile />
       <UserNameWrapper>
         {isEdit ? (
           <>
-            <EditInputValue />
+            <EditInputValue
+              onChange={(e) => {
+                setEditNickNameValue(e.target.value);
+              }}
+              type="text"
+              value={editNickNameValue}
+              autoFocus={true}
+              placeholder="수정할 닉네임을 입력해주세요."
+              maxLength={16}
+            />
             <CheckButton
               onClick={() => {
-                setIsEdit(false);
+                EditNickName(currentUser?.[0]?.id);
               }}
             >
               확인
