@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
-import { useQuery } from '@tanstack/react-query';
-import { getProfileImg } from '../api';
 import { auth } from '../firebase/Firebase';
+
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from '../api';
+
 import { useRecoilState } from 'recoil';
 import { loginUserCheckState } from '../atom';
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +18,24 @@ const MyPage = () => {
   const navigate = useNavigate();
 
 
+
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
+
+
+  const {
+    isLoading: getLoading,
+    isError,
+    data,
+    error,
+  } = useQuery(['users'], getProfile);
+
+  const currentUser =
+    data?.data &&
+    data.data.filter((user: any) => {
+      return auth.currentUser?.uid === user.id;
+    });
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
@@ -26,6 +43,7 @@ const MyPage = () => {
     if (!saveUser) {
       return <SignIn />
     }
+
 
 
 
@@ -46,7 +64,7 @@ const MyPage = () => {
           </>
         ) : (
           <>
-            <UserName>닉네임</UserName>
+            <UserName>{currentUser?.[0]?.nickName}</UserName>
             <UserNameEditButton
               onClick={() => {
                 setIsEdit(true);

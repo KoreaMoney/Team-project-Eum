@@ -40,6 +40,33 @@
           "content-type": "multipart/form-data"
         }
       }
+    },
+    {
+      "id": "YfvvQLlemQdIlg1iC2qxln64zrE2",
+      "nickName": "qwert",
+      "profileImg": null,
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "pMqQWNn46GZdWki8sdyBeph8dXB2",
+      "nickName": "qwer",
+      "profileImg": null,
+      "point": "-333",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "u8dPFFnL62OLZcF027PfuUUnFEh1",
+      "nickName": "qwerq",
+      "profileImg": null,
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
     }
   ],
   "posts": [
@@ -839,6 +866,22 @@
       "like": []
     },
     {
+      "id": "bc8b74c0-7967-47e0-b03c-a1fb982121ed",
+      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
+      "buyerUid": "pMqQWNn46GZdWki8sdyBeph8dXB2",
+      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
+      "title": "하이",
+      "content": "하이",
+      "imgURL": [],
+      "price": "333",
+      "category": "study",
+      "ceatedAt": 1676996340649,
+      "isDone": false,
+      "isSellerCancel": false,
+      "isBuyerCancel": true,
+      "views": 3,
+      "like": []
+},{
       "id": "11e32a2e-c3e6-4150-8621-31f1eec104f6",
       "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
       "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",

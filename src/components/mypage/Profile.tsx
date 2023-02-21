@@ -1,102 +1,42 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useAuth, upload, auth } from '../../firebase/Firebase';
 
 export default function Profile(params: any) {
-  const { id } = useParams();
+  const currentUser = useAuth();
+  const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [photoURL, setPhotoURL] = useState<any>(auth.currentUser?.photoURL);
 
-  const queryClient = useQueryClient();
-
-  const { data: getData, isLoading: getLoading } = useQuery(
-    ['users', id],
-    async () => {
-      const response = await axios.get(`http://localhost:4000/users?id=${id}`);
-      return response.data;
+  function handleChange(e: any) {
+    if (e.target.files[0]) {
+      setPhoto(e.target.files[0]);
     }
-  );
+  }
 
-  const [file, setFile] = useState('');
-
-  const handleFileChange = (event: any) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append('profileImage', file);
-
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
+  async function handleClick() {
+    await upload(photo, currentUser, setLoading);
+    const photoURL = async () => {
+      await setPhotoURL(currentUser?.photoURL);
     };
+    photoURL();
+  }
 
-    const response = await axios.post(
-      `http://localhost:4000/users/${id}`,
-      formData,
-      config
-    );
-    return response.data;
-  };
-
-  const { mutate, isLoading } = useMutation(handleUpload, {
-    onSuccess: (data) => {
-      console.log('Profile image uploaded:', data);
-    },
-  });
-
-  // const { mutate: editMutate, isLoading: editLoading } = useMutation(
-  //   ['users', id],
-  //   async (photoURL: any) => {
-  //     await axios.patch(`http://localhost:4000/users/${id}`, photoURL);
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(['users']);
-  //     },
-  //     onError: (error) => {
-  //       console.log('error: ', error);
-  //     },
-  //   }
-  // );
-
-  // const [photo, setPhoto] = useState('');
-
-  // function handleChange(e: any) {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setPhoto(file);
-  //   }
-  //   console.log('photo', photo);
-  // }
-
-  // async function handleClick() {
-  //   const formData = new FormData();
-  //   formData.append('profileImg', photo);
-  //   const config = {
-  //     headers: {
-  //       'content-type': 'multipart/form-data',
-  //     },
-  //   };
-  //   await editMutate({ profileImg: formData, config });
-  //   console.log('formdata', formData);
-  // }
+  useEffect(() => {
+    if (!auth.currentUser?.photoURL) {
+      setPhotoURL('/assets/profileAvatar.png');
+    }
+  }, []);
 
   return (
     <UserProfileImgContainer>
-      <MyImageWrapper>
-        <MyImage src={getData?.[0].profileImg} alt="User Image" />
-      </MyImageWrapper>
-      <InputImgFile type="file" onChange={handleFileChange} />
-      <ImgSubmitButton
-        onClick={() => {
-          mutate();
-        }}
-      >
+      <InputImgFile type="file" onChange={handleChange} />
+      <ImgSubmitButton disabled={loading || !photo} onClick={handleClick}>
         확인
       </ImgSubmitButton>
+      <MyImageWrapper>
+        <MyImage src={photoURL} alt="User Image" />
+      </MyImageWrapper>
     </UserProfileImgContainer>
   );
 }
