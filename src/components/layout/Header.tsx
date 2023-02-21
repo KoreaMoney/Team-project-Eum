@@ -20,6 +20,8 @@ const svg = {
   },
 };
 const Header = () => {
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  
   const navigate = useNavigate();
   const handelClickLogOut = () => {
     signOut(auth)
@@ -30,7 +32,7 @@ const Header = () => {
         console.dir('LoginErr:', error);
       });
   };
-  const authUid = auth.currentUser?.uid;
+  // const authUid = auth.currentUser?.uid;
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -59,10 +61,10 @@ const Header = () => {
           </Link>
         </LoGoSpan>
         <PageSpan>
-          {authUid && (
+          {saveUser && (
             <>
               <Span>
-                <Link to={`/mypage/${authUid}`}>MY PAGE</Link>
+                <Link to={`/mypage/${saveUser.uid}`}>MY PAGE</Link>
               </Span>
               <Span>
                 <div>MY LIKE</div>
@@ -70,7 +72,7 @@ const Header = () => {
             </>
           )}
           <LogOutBtn onClick={() => handelClickLogOut()}>
-            {!authUid ? 'LOGIN' : 'LOGOUT'}
+            {!saveUser ? 'LOGIN' : 'LOGOUT'}
           </LogOutBtn>
         </PageSpan>
       </HeaderWrapper>

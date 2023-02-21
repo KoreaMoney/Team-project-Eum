@@ -1,23 +1,77 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { auth } from '../../firebase/Firebase';
 import { commentType } from '../../types';
 import { customConfirm } from '../modal/CustomAlert';
 
 const CommentsList = () => {
-  const { id } = useParams();
+  const observerElem = useRef<HTMLDivElement | null>(null);
+  const { id } = useParams<{ id?: string }>();
   const queryClient = useQueryClient();
-  console.log('idid', auth.currentUser?.uid);
-  // 댓글을 불러오는 코드
-  // postId와 url id가 동일한 부분만 출력할 수 있게 해줍니다.
-  const { data } = useQuery(['comments'], async () => {
-    const response = await axios.get(
-      `http://localhost:4000/comments?postId=${id}`
-    );
+  const PAGE_SIZE = 6;
+  const fetchComments = async (page = 0) => {
+    const url = `http://localhost:4000/comments?postId=${id}`;
+
+    const response = await axios.get(url, {
+      params: {
+        _page: page,
+        _limit: PAGE_SIZE,
+      },
+    });
+    console.log('response.data: ', response.data);
     return response.data;
-  });
+  };
+
+  const {
+    data,
+    isSuccess,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    ['comments', id],
+    ({ pageParam = 0 }) => fetchComments(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        return lastPage.length !== 0 ? nextPage : undefined;
+      },
+    }
+  );
+
+  const handleObserver = useCallback(
+    (entries: any) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage]
+  );
+
+  useEffect(() => {
+    const element = observerElem.current;
+    if (element === null) return;
+    const option = { threshold: 0 };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+    observer.observe(element);
+    return () => observer.unobserve(element);
+  }, [fetchNextPage, hasNextPage, handleObserver]);
 
   // 댓글을 삭제하는 코드.
   // onClickDeleteComment 함수에서 commentId를 받아와 클릭한 댓글만 삭제될 수 있도록 합니다.
@@ -67,27 +121,51 @@ const CommentsList = () => {
 
   return (
     <div>
-      <h1>Comment : {data?.length}</h1>
-      {data &&
-        data.map((item: commentType) => {
-          return (
-            <div
-              style={{ display: 'flex', marginBottom: '10px' }}
-              key={item.id}
-            >
-              <ul style={{ border: '1px solid #000000' }}>
-                <li>닉네임 :{item.writerNickName}</li>
-                <li>댓글내용 :{item.content}</li>
-                <li>글작성시간 :{getTimegap(item.createAt)}</li>
-              </ul>
-              <button onClick={() => onClickDeleteComment(item.id)}>
-                삭제
-              </button>
-            </div>
-          );
-        })}
+      <div></div>
+      <div>
+        {data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.map((comment: commentType) => (
+              <div key={comment.id}>
+                <p>작성자 :{comment.writerNickName}</p>
+                <p>내용 :{comment.content}</p>
+                <p>작성시간 :{comment.createAt}</p>
+                <button>삭제</button>
+              </div>
+            ))}
+          </Fragment>
+        ))}
+
+        <div ref={observerElem}>
+          {isFetching || isFetchingNextPage
+            ? 'Loading more...'
+            : hasNextPage
+            ? 'Scroll to load more posts'
+            : 'No more posts'}
+        </div>
+      </div>
     </div>
   );
 };
+//     <div>
+//       {isSuccess &&
+//         data.pages.map((page, i) => (
+//           <React.Fragment key={i}>
+//             {page.map((comment: commentType) => (
+//               <div key={comment.id}>
+//                 <p>{comment.content}</p>
+//                 <p>{getTimegap(comment.createAt)}</p>
+//                 <p>{comment.writerNickName}</p>
+//                 <button onClick={() => onClickDeleteComment(comment.id)}>삭제</button>
+//               </div>
+//             ))}
+//           </React.Fragment>
+//         ))}
+      
+//       {isFetching && <div>Loading...</div>}
+//       <div ref={observerElem}></div>
+//     </div>
+//   );
+// };
 
 export default CommentsList;
