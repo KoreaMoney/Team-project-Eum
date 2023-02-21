@@ -1,3 +1,8 @@
+import { User } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { loginUserCheckState } from './atom';
+import { auth } from './firebase/Firebase';
 import Router from './router/Router';
 import GlobalStyle from './styles/GlobalStyle';
 
@@ -12,6 +17,8 @@ const App = () => {
    * ReactQueryDevtools는 react query통신 여부 확인을 위한 라이브러리 입니다
    */
   // const isDark = useRecoilValue(isDarkAtom);
+
+  
 
   return (
     <>

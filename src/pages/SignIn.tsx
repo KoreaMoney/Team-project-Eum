@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  User,
 } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import { ISignUpForm, userType } from '../types';
@@ -24,6 +25,19 @@ const SignIn = () => {
   const [err, setErr] = useState('');
   const [checkID, setCheckID] = useState(false);
   const location = useLocation();
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const authObserver = auth.onAuthStateChanged((user) => {
+      if (user) {
+        sessionStorage.setItem('user', JSON.stringify(user));
+      } else {
+        sessionStorage.removeItem('user');
+      }
+    });
+    return () => authObserver();
+  }, []);
+  
+  console.log('user: ', user);
   const mutation = useMutation((newUser: userType) => {
     return axios
       .post('http://localhost:4000/users', newUser)

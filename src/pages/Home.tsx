@@ -26,7 +26,9 @@ const Home = () => {
       newDirection,
     ]);
   };
-
+  const saveUser = sessionStorage.getItem('user');
+  console.log( 'saveUser: ' ,saveUser);
+  
   /**swiper autoplay(자동으로 넘기기) */
   useEffect(() => {
     const interval = setInterval(() => {

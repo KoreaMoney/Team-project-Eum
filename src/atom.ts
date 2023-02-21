@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth';
 import { atom, selector } from 'recoil';
 /**여기에서 default는 기본값이 필요하기 때문에 사용됩니다
  * 다크모드 임시적으로 recoil setting을 위해 넣었습니다
@@ -38,6 +39,11 @@ export const categoryState = atom<Categories>({
 export const toDoState = atom<IToDo[]>({
   key: 'toDo',
   default: [],
+});
+
+export const loginUserCheckState = atom<User | null>({
+  key: 'loginUserCheck',
+  default: null,
 });
 
 /**todo의 모든 데이터는 get됩니다
