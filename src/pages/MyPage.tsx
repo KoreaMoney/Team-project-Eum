@@ -2,19 +2,32 @@ import styled from 'styled-components';
 import React, { useCallback, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
-import { useQuery } from '@tanstack/react-query';
-import { getProfileImg } from '../api';
 import { auth } from '../firebase/Firebase';
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from '../api';
 
 const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const [isModalActive, setIsModalActive] = useState(false);
 
-  const userUid = auth.currentUser?.uid;
+  const [isModalActive, setIsModalActive] = useState(false);
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
+
+  const {
+    isLoading: getLoading,
+    isError,
+    data,
+    error,
+  } = useQuery(['users'], getProfile);
+
+  const currentUser =
+    data?.data &&
+    data.data.filter((user: any) => {
+      return auth.currentUser?.uid === user.id;
+    });
+
   return (
     <MyPageContainer>
       <Profile />
@@ -32,7 +45,7 @@ const MyPage = () => {
           </>
         ) : (
           <>
-            <UserName>닉네임</UserName>
+            <UserName>{currentUser?.[0]?.nickName}</UserName>
             <UserNameEditButton
               onClick={() => {
                 setIsEdit(true);

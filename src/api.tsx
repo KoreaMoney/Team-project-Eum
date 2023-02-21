@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // profile img 출력하기
-export const getProfileImg = async (id: any) => {
-  return await axios.get(`http://localhost:4000/users?id=${id}`);
+export const getProfile = async () => {
+  return await axios.get(`http://localhost:4000/users`);
 };
 
 // profile img 수정하기
