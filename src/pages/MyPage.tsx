@@ -4,16 +4,20 @@ import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProfileNickName, updateProfileNickName } from '../api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
+import { editPostType } from '../types';
+import axios from 'axios';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
-
+  const {id} = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
 
+
+  
   const {
     isLoading: getLoading,
     isError,

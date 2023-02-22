@@ -12,10 +12,17 @@
     {
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
       "nickName": "구매자1",
-      "profileImg": null,
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5",
       "point": "11600",
       "contactTime": "",
-      "like": [],
+      "like": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
       "isDoneCount": 0
     },
     {
@@ -112,7 +119,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 11,
+      "views": 13,
       "createAt": 1676612528057
     },
     {
@@ -151,7 +158,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 5,
+      "views": 6,
       "createAt": 1676734673042
     },
     {
@@ -188,7 +195,7 @@
       "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677053474723?alt=media&token=60a3bafd-3f68-40cb-9bd8-018eb60b7132",
       "category": "advice",
       "like": [],
-      "views": 1,
+      "views": 4,
       "createAt": 1677053471098
     },
     {
@@ -201,7 +208,7 @@
       "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677053524535?alt=media&token=0ba9959b-6b2f-4655-af28-f0fbd7650a18",
       "category": "study",
       "like": [],
-      "views": 2,
+      "views": 3,
       "createAt": 1677053518558
     },
     {
@@ -253,7 +260,7 @@
       "imgURL": "",
       "category": "advice",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677054986860
     },
     {
@@ -279,7 +286,7 @@
       "imgURL": "",
       "category": "etc",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677055007330
     },
     {
@@ -305,7 +312,7 @@
       "imgURL": "",
       "category": "study",
       "like": [],
-      "views": 1,
+      "views": 2,
       "createAt": 1677055071989
     },
     {
@@ -409,7 +416,7 @@
       "imgURL": "",
       "category": "study",
       "like": [],
-      "views": 1,
+      "views": 2,
       "createAt": 1677055071989
     },
     {
@@ -772,74 +779,6 @@
       "like": []
     },
     {
-      "id": "89306f34-9884-4a8c-822a-ec41d1e8e1b0",
-      "postsId": "86e44fcb-2a9f-4ac3-9fd6-1c4097260a02",
-      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "title": "팔아요",
-      "content": "<p>안녕하세요. 공부 팔아요</p>",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131676893180505?alt=media&token=d67cf998-057a-42c9-b32b-4f9ddbe6c70a",
-      "price": "1,000",
-      "category": "study",
-      "ceatedAt": 1676898188882,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "01f731bf-9ccc-49cc-ad57-2680e9cd8d11",
-      "postsId": "86e44fcb-2a9f-4ac3-9fd6-1c4097260a02",
-      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "title": "팔아요",
-      "content": "<p>안녕하세요. 공부 팔아요</p>",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131676893180505?alt=media&token=d67cf998-057a-42c9-b32b-4f9ddbe6c70a",
-      "price": "1,000",
-      "category": "study",
-      "ceatedAt": 1676898387602,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 3,
-      "like": []
-    },
-    {
-      "id": "f901e230-8107-4ff8-ad23-3b83adb5d518",
-      "postsId": "86e44fcb-2a9f-4ac3-9fd6-1c4097260a02",
-      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "title": "팔아요",
-      "content": "<p>안녕하세요. 공부 팔아요</p>",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131676893180505?alt=media&token=d67cf998-057a-42c9-b32b-4f9ddbe6c70a",
-      "price": "1,000",
-      "category": "study",
-      "ceatedAt": 1676898413751,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 3,
-      "like": []
-    },
-    {
-      "id": "ef13fdd3-97df-445b-b416-6ea658926163",
-      "postsId": "86e44fcb-2a9f-4ac3-9fd6-1c4097260a02",
-      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "title": "팔아요",
-      "content": "<p>안녕하세요. 공부 팔아요</p>",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131676893180505?alt=media&token=d67cf998-057a-42c9-b32b-4f9ddbe6c70a",
-      "price": "1,000",
-      "category": "study",
-      "ceatedAt": 1676898435951,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 3,
-      "like": []
-    },
-    {
       "id": "197ee13c-79ce-48af-8c7f-5abf0ebb5c09",
       "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
       "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
@@ -872,142 +811,56 @@
       "isBuyerCancel": false,
       "views": 5,
       "like": []
+    }
+  ],
+  "comments": [
+    {
+      "id": "71df26e4-d63d-4b4f-9df7-34a0b33bd83a",
+      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
+      "content": "dd",
+      "createAt": 1677083210824,
+      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "writerNickName": "구매자",
+      "isEdit": false
     },
     {
-      "id": "b3809844-1a97-4924-9d1c-5db984ffd8a1",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676898892938,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 1,
-      "like": []
+      "id": "24b89cb0-4aad-4e22-81f8-0c33e0099473",
+      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
+      "content": "daa",
+      "createAt": 1677083210824,
+      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "writerNickName": "구매자",
+      "isEdit": false
     },
     {
-      "id": "f8fe048b-0a98-4654-866c-0da5ff84c957",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899586697,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
+      "id": "707c3304-4304-44cb-b36c-3ad5d702e4c8",
+      "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "content": "d",
+      "createAt": 1677084402611,
+      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "writerNickName": "구매자",
+      "isEdit": false,
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5"
     },
     {
-      "id": "bf6ee858-0ae9-42a0-a574-16987156cf4a",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899598516,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
+      "id": "a856f63c-0f72-4be8-96de-58cf3c8de264",
+      "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "content": "adfsdfsdf",
+      "createAt": 1677084402611,
+      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "writerNickName": "구매자",
+      "isEdit": false,
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5"
     },
     {
-      "id": "d199651f-f5c6-4def-8473-0e4e444a6142",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899742165,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "65c57dc5-f6a4-4f32-9a42-94a015ee5683",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899775859,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "a34d2cfc-c7fd-4213-9f1d-3fc33c922326",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899785036,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "1660f3cb-0b13-4077-9181-4c6a982cb829",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899823501,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "819bb15b-4927-4288-8bd0-0151d5673975",
-      "postsId": "ef4e644b-d730-4ab2-aed9-139072de83ea",
-      "buyerUid": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
-      "sellerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
-      "title": "ㅌㅅㅌ",
-      "content": "<p>ㅇㅇ</p>",
-      "imgURL": "",
-      "price": "1",
-      "category": "play",
-      "ceatedAt": 1676899827319,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
+      "id": "3d635856-39e4-490b-b299-7954f18355e1",
+      "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "content": "안녕하세요. ",
+      "createAt": 1677084402611,
+      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "writerNickName": "구매자",
+      "isEdit": false,
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5"
     }
   ]
 }

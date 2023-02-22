@@ -6,6 +6,7 @@ export interface ISignUpForm {
 export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
+  profileImg: string | null | undefined;
   point: string;
   contactTime: string;
   like: [];
@@ -36,6 +37,7 @@ export interface commentType {
   postId: string | undefined;
   writer: string | null | undefined;
   content: string;
+  profileImg: string | null | undefined;
   createAt: number;
   writerNickName: string | null | undefined;
   isEdit: boolean;

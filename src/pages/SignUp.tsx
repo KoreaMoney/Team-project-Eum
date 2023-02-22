@@ -156,6 +156,7 @@ const SignUp = () => {
             point: '0',
             contactTime: '',
             like: [],
+            profileImg: null,
             isDoneCount: 0,
           });
 
