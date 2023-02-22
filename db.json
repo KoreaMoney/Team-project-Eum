@@ -11,7 +11,7 @@
     },
     {
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "nickName": "구매자",
+      "nickName": "구매자1",
       "profileImg": null,
       "point": "NaN",
       "contactTime": "",
@@ -80,7 +80,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 8,
+      "views": 9,
       "createAt": 1676612528057
     },
     {
@@ -93,7 +93,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 10,
+      "views": 11,
       "createAt": 1676619414560
     },
     {
@@ -881,7 +881,8 @@
       "isBuyerCancel": true,
       "views": 3,
       "like": []
-},{
+    },
+    {
       "id": "11e32a2e-c3e6-4150-8621-31f1eec104f6",
       "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
       "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",

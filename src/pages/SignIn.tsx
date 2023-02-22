@@ -36,7 +36,7 @@ const SignIn = () => {
     });
     return () => authObserver();
   }, []);
-  
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   console.log('user: ', user);
   const mutation = useMutation((newUser: userType) => {
     return axios
@@ -52,7 +52,7 @@ const SignIn = () => {
     return response.data;
   });
 
-  const idList = data?.map((user: userType) => user.id);
+  
 
   const [isViewPW, setIsViewPW] = useState(false);
   const handleClickViewPW = () => {
@@ -119,12 +119,12 @@ const SignIn = () => {
       .then((result) => {
         const user = result.user;
         const uid = auth.currentUser?.uid;
-        const isId = idList.includes(auth.currentUser?.uid);
+        const idList = data?.map((user: userType) => user.id); //리팩토링 필요
+        const isId = idList.includes(saveUser.uid);
         if (!isId) {
           mutation.mutate({
             id: uid,
             nickName: auth.currentUser?.displayName,
-            profileImg: auth.currentUser?.photoURL,
             point: '0',
             contactTime: '',
             like: [],

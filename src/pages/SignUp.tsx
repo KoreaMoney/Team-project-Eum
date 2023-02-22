@@ -151,7 +151,6 @@ const SignUp = () => {
           await mutate({
             id: auth.currentUser?.uid,
             nickName,
-            profileImg: auth.currentUser?.photoURL,
             point: '0',
             contactTime: '',
             like: [],
