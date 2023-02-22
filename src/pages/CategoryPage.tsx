@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth } from '../firebase/Firebase';
 import { postType } from '../types';
+import parse from 'html-react-parser';
 
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
 const CategoryPage = () => {
@@ -76,7 +77,7 @@ const CategoryPage = () => {
                 }}
               >
                 <p>제목 :{item.title}</p>
-                <p>내용 :{item.content}</p>
+                <p>내용 :{parse(item.content)}</p>
                 <p>가격 :{item.price}</p>
               </PostContainer>
             );

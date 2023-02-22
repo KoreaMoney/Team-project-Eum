@@ -40,6 +40,24 @@
           "content-type": "multipart/form-data"
         }
       }
+    },
+    {
+      "id": "2gK7BxgVAOhH0UPEw9hTo3UxPm73",
+      "nickName": "몰라12",
+      "profileImg": null,
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "nickName": "ㅇㅇ",
+      "profileImg": null,
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
     }
   ],
   "posts": [
@@ -66,7 +84,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 0,
+      "views": 2,
       "createAt": 1676619414560
     },
     {
@@ -79,7 +97,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 3,
+      "views": 4,
       "createAt": 1676734627857
     },
     {
@@ -105,6 +123,225 @@
       "like": [],
       "views": 0,
       "createAt": 1676775983129
+    },
+    {
+      "id": "3dcd67de-83da-4a4d-b5b4-194129a23de0",
+      "title": "상담해드려요",
+      "content": "<p>상담해드려요</p>",
+      "price": "100000",
+      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Zpf50c5UrYbIo6SqzJhn1rwFNVz21677025197440?alt=media&token=40ed5c61-4f2a-4dd2-89fc-f6f17743221e",
+      "category": "play",
+      "like": [],
+      "views": 10,
+      "createAt": 1676888908534
+    },
+    {
+      "id": "5d0e5e31-9bfc-461e-b9aa-d96f09ce2f6a",
+      "title": "asd",
+      "nickName": "몰라12",
+      "sellerUid": "2gK7BxgVAOhH0UPEw9hTo3UxPm73",
+      "content": "<p>asdㅇㄹ</p>",
+      "price": "123",
+      "imgURL": "",
+      "category": "study",
+      "like": [],
+      "views": 1,
+      "createAt": 1676943045073
+    },
+    {
+      "id": "4bb879c7-8259-4ccd-bb4a-04ca10d4f245",
+      "title": "수학 문제 풀어드려요",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>2022 수능 수학 6등급입니다.</p>",
+      "price": "100,000",
+      "imgURL": "",
+      "category": "study",
+      "like": [],
+      "views": 0,
+      "createAt": 1677026060880
+    },
+    {
+      "id": "1d919536-36ab-4161-bef6-c3c712f9fd26",
+      "title": "롤 듀오해드려요",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>아이언 3티어 아칼리 장인입니다.</p>",
+      "price": "100000",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677026169071
+    },
+    {
+      "id": "1575c2ee-f9b3-4724-8155-606eda82f69c",
+      "title": "ㅁㅁㄴㅇ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅎㅇㅎㅇ</p>",
+      "price": "123312",
+      "imgURL": "",
+      "category": "advice",
+      "like": [],
+      "views": 0,
+      "createAt": 1677027476668
+    },
+    {
+      "id": "313240b0-50cb-4f4e-9db2-8efdd136add0",
+      "title": "기타",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>기타</p>",
+      "price": "123000",
+      "imgURL": "",
+      "category": "etc",
+      "like": [],
+      "views": 0,
+      "createAt": 1677027503053
+    },
+    {
+      "id": "aff83095-149f-4ab6-b053-139ff8bbe37a",
+      "title": "실험",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅁㄴㅇ</p>",
+      "price": "123123",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 1,
+      "createAt": 1677027794853
+    },
+    {
+      "id": "2ad778db-06b9-424c-a90a-35b3958553ef",
+      "title": "ㅁㄴㅇ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅀㅇㄴ</p>",
+      "price": "5433",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677027844020
+    },
+    {
+      "id": "aea1553c-b9e9-4302-8d71-5eee305b0640",
+      "title": "ㅎㅇㅀ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅎㄹㅇㅎ</p>",
+      "price": "131",
+      "imgURL": "",
+      "category": "study",
+      "like": [],
+      "views": 0,
+      "createAt": 1677027879781
+    },
+    {
+      "id": "e75ebd40-a0fe-459c-8347-88094dccd74c",
+      "title": "ㄹㄴㅇㄹ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅗㅠㅇ홍ㄹ호</p>",
+      "price": "53534",
+      "imgURL": "",
+      "category": "study",
+      "like": [],
+      "views": 0,
+      "createAt": 1677027893029
+    },
+    {
+      "id": "d584edac-d8cb-4a13-bcf6-cbbe00946383",
+      "title": "안아줘요",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>안아줘요</p>",
+      "price": "1000",
+      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Zpf50c5UrYbIo6SqzJhn1rwFNVz21677028320432?alt=media&token=2ef63724-1c41-4dbb-9d1f-f6a23aa98b9b",
+      "category": "play",
+      "like": [],
+      "views": 1,
+      "createAt": 1677028316756
+    },
+    {
+      "id": "404ebd54-fd2d-4600-8885-c62933af55c3",
+      "title": "ㅁㄴㅇㅁㅇ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅁㄴㅇㅁ</p>",
+      "price": "1231",
+      "imgURL": "",
+      "category": "study",
+      "like": [],
+      "views": 0,
+      "createAt": 1677029376764
+    },
+    {
+      "id": "2d9cf287-f33f-4ba6-9b40-bc60f9a56bf9",
+      "title": "ㄴㅁㅇㅁㄴ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㄹㅇㄴㄹㅇㄴ</p>",
+      "price": "12312",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677030015940
+    },
+    {
+      "id": "92b0b047-b180-49df-9f0b-41d0726d6b57",
+      "title": "ㅗㄹ호",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅇㅀㅇㄹ</p>",
+      "price": "124",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677030023060
+    },
+    {
+      "id": "30a4fac4-6950-4ab5-b7f3-095df9ac394d",
+      "title": "ㅎㅇㅀㄴ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅎㅇㅀㅇ</p>",
+      "price": "23423",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677030030844
+    },
+    {
+      "id": "0fc2231b-521e-48ea-933b-f90e0db4fa74",
+      "title": "ㅇㄴㅀㄴㅇㄹ",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㄹㄴㅇㄹㄴㅇ</p>",
+      "price": "1341231",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677030253894
+    },
+    {
+      "id": "de7e77d8-ba07-4b94-b084-9d07b2158b4b",
+      "title": "sdㅀㄴㅇㄹ2",
+      "nickName": "ㅇㅇ",
+      "sellerUid": "Zpf50c5UrYbIo6SqzJhn1rwFNVz2",
+      "content": "<p>ㅎㅇㅀㄴㅇㅀsdfahfghf</p>",
+      "price": "4234",
+      "imgURL": "",
+      "category": "play",
+      "like": [],
+      "views": 0,
+      "createAt": 1677030261116
     }
   ],
   "comments": [],
