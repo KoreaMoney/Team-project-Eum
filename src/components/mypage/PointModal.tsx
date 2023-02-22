@@ -30,7 +30,10 @@ const PointModal = () => {
     <>
       <PointButton onClick={onClickToggleModal}>
         <p>포인트</p>
-        <div> {currentUser?.[0]?.point} P</div>
+        <div>
+          {' '}
+          {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+        </div>
       </PointButton>
       {isModalActive ? (
         <CustomModal
@@ -46,7 +49,10 @@ const PointModal = () => {
                 <img src="/assets/walletmoney.png" />
                 <h3>　내 포인트</h3>
               </PointImgWrapper>
-              <CurrentPoint>{currentUser?.[0]?.point} P</CurrentPoint>
+              <CurrentPoint>
+                {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                P
+              </CurrentPoint>
               <PointDepositWithdrawWrapper>
                 <PointDepositButton>
                   <img src="/assets/moneysend.png" />

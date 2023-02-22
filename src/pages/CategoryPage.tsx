@@ -20,14 +20,13 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const PAGE_SIZE = 12;
-  const { categoryName } = useParams();
-  const [totalPosts, setTotalPosts] = useState(0);
+  const { categoryName, select, word } = useParams();
   const observerElem = useRef<HTMLDivElement | null>(null);
   const fetchPosts = async (
     key: string,
     categoryName: string,
-    select: string,
-    word: string,
+    select: string | undefined,
+    word: string | undefined,
     page = 0
   ) => {
     const baseUrl = 'http://localhost:4000/posts';
@@ -52,15 +51,12 @@ const CategoryPage = () => {
     return response.data;
   };
 
-  const { select, word } = useRecoilValue(searchState);
-
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isFetching,
-    status,
   } = useInfiniteQuery(
     ['posts', categoryName ?? 'all', select, word],
     ({ pageParam = 0 }) =>
@@ -69,11 +65,6 @@ const CategoryPage = () => {
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages.length + 1;
         return lastPage.length !== 0 ? nextPage : undefined;
-      },
-      onSettled: (data) => {
-        const totalPosts = data?.pages.reduce((acc, page) => acc + page.length, 0);
-        console.log('totalPosts:', totalPosts);
-        setTotalPosts(totalPosts);
       },
     }
   );
@@ -99,7 +90,6 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  
   const queryClient = useQueryClient();
   // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
   // QueryClient: 캐시,쿼리관리,상태업데이트 등을 처리하는 핵심객체, 데이터 업데이트 후 ui를 갱신하거나 서버에 데이터를 새로 요청하고 업데이트된 데이터를 받아와 ui를 갱신하는 등의 작업을 할 수 있다고 함.
@@ -114,7 +104,7 @@ const CategoryPage = () => {
     // axios로 patch요청을 보낸 후 45번줄을 호출해서 post목록 쿼리를 다시 가져와서 최신의 데이터를 가져올 수 있다고 한다.
     navigate(`/detail/${post.category}/${post.id}`);
   };
-  
+
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
   const getTimegap = (posting: number) => {
     const msgap = Date.now() - posting;
@@ -125,8 +115,7 @@ const CategoryPage = () => {
     }
     if (hourgap > 24) {
       const time = new Date(posting);
-      const timegap =
-        time.toJSON().substring(0, 10) + ' ' + time.toJSON().substring(11, 16);
+      const timegap = time.toJSON().substring(0, 10);
       return <p>{timegap}</p>;
     }
     if (minutegap > 59) {
@@ -185,7 +174,10 @@ const CategoryPage = () => {
                       <NickNameText>{post.nickName}</NickNameText>
                     </LeftContainer>
                     <RightContainer>
-                      <LikeIcon />
+                      <LikeIconContainer>
+                        <LikeIcon />
+                        <LikeCountText>{post.like.length}</LikeCountText>
+                      </LikeIconContainer>
                       <PriceText>
                         {post.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
                       </PriceText>
@@ -300,13 +292,13 @@ const LeftContainer = styled.div`
   align-items: center;
 `;
 const ProfileIMG = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.7rem;
+  height: 1.7rem;
   border-radius: 100%;
   background-image: url(${auth.currentUser?.photoURL});
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 `;
 const NickNameText = styled.p`
   font-size: ${(props) => props.theme.fontSize.label12};
@@ -317,9 +309,29 @@ const RightContainer = styled.div`
   gap: 0.5rem;
   align-items: center;
 `;
+
+const LikeIconContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  margin-right:0.5rem;
+`;
 const LikeIcon = styled(AiFillHeart)`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   color: red;
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 30px; // props로 변경해야함.
+`;
+const LikeCountText = styled.span`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: ${(props) => props.theme.fontSize.label12};
+  color: ${(props) => props.theme.colors.gray10};
+  height: ${(props) => props.theme.fontSize.title24};
+  line-height: ${(props) => props.theme.fontSize.title24};
 `;
 const PriceText = styled.p`
   font-size: ${(props) => props.theme.fontSize.bottom20};

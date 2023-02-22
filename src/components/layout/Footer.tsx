@@ -2,43 +2,47 @@ import styled from 'styled-components';
 import { FaGithubSquare } from 'react-icons/fa';
 
 const Footer = () => {
+  const url = 'https://github.com/KoreaMoney/Final-Project-Client.git';
+
   return (
     <FooterContainer>
       <FooterWrapper>
+        <FooterMiniWrapper>
+          <FooterDiv>
+            <div>웹 소개</div>
+            <span>웹 프로젝트 소개</span>
+          </FooterDiv>
+          <FooterDiv>
+            <div>팀 블로그</div>
+            <button
+              onClick={() => {
+                window.open(url);
+              }}
+            >
+              <FaGithubSquare size={30} />
+            </button>
+          </FooterDiv>
+          <FooterDiv>
+            <div>고객안내</div>
+            <span>이용약관</span>
+            <span>이용안내</span>
+          </FooterDiv>
+          <FooterDiv>
+            <div>고객센터</div>
+            <span>공지사항</span>
+            <span>자주하는 질문</span>
+          </FooterDiv>
+        </FooterMiniWrapper>
         <FooterDiv>
-          <div>웹 소개</div>
-          <span>웹 프로젝트 소개</span>
-        </FooterDiv>
-        <FooterDiv>
-          <div>팀 블로그</div>
-          <a
-            rel="noreferrer"
-            target="_blank"
-            href="https://github.com/KoreaMoney/Final-Project-Client.git"
-          >
-            <FaGithubSquare size={25} />
-          </a>
-        </FooterDiv>
-        <FooterDiv>
-          <div>고객안내</div>
-          <span>이용약관</span>
-          <span>이용안내</span>
-        </FooterDiv>
-        <FooterDiv>
-          <div>고객센터</div>
-          <span>공지사항</span>
-          <span>자주하는 질문</span>
+          <NameDiv>
+            <div>대표: 김미영 | 디자이너: 김예은</div>
+
+            <TeamMember>팀원: 김도원, 정진수, 김남규</TeamMember>
+            <span>주소: 서울특별시 강남구 테헤란로44길</span>
+            <span>전화: 1522-8016</span>
+          </NameDiv>
         </FooterDiv>
       </FooterWrapper>
-      <FooterDiv>
-        <NameDiv>
-          <div>대표: 김미영 | 디자이너: 김예은</div>
-
-          <TeamMember>팀원: 김도원, 정진수, 김남규</TeamMember>
-          <span>주소: 서울특별시 강남구 테헤란로44길</span>
-          <span>전화: 1522-8016</span>
-        </NameDiv>
-      </FooterDiv>
     </FooterContainer>
   );
 };
@@ -46,20 +50,26 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
-  background-color: #e4e1e1;
   width: 100%;
-  height: 9rem;
+  background-color: ${(props) => props.theme.colors.brandColor};
+  color: ${(props) => props.theme.colors.gray40};
+`;
+
+const FooterWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 30px;
-  color: #757575;
+  margin: 0 auto;
+  width: 70%;
 `;
-const FooterWrapper = styled.div`
+
+const FooterMiniWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 50%;
+  margin-top: 2rem;
 `;
+
 const FooterDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,23 +83,35 @@ const FooterDiv = styled.div`
   span {
     margin-bottom: 5px;
   }
+
+  button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: ${(props) => props.theme.colors.gray40};
+
+    &:hover {
+      color: ${(props) => props.theme.colors.black};
+    }
+  }
 `;
+
 const NameDiv = styled.div`
-  margin-bottom: 0.5em;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   margin-right: 10px;
+  margin-top: 2rem;
 
   div {
-    font-size: 18px;
+    font-size: ${(props) => props.theme.fontSize.bottom20};
   }
 
   span {
-    display: flex;
-    font-size: 15px;
+    font-size: ${(props) => props.theme.fontSize.body16};
   }
 `;
 const TeamMember = styled.p`
-  font-size: 13px;
+  font-size: ${(props) => props.theme.fontSize.body16};
   margin-top: 5px;
   margin-bottom: 10px;
 `;
