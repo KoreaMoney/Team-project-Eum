@@ -4,7 +4,7 @@ import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getProfileNickName, updateProfileNickName, getProfile } from '../api';
+import { getProfileNickName, updateProfileNickName } from '../api';
 import { useRecoilState } from 'recoil';
 import { loginUserCheckState } from '../atom';
 import { useNavigate } from 'react-router-dom';
@@ -16,10 +16,6 @@ const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
   const navigate = useNavigate();
-
-  const onClickToggleModal = useCallback(() => {
-    setIsModalActive(!isModalActive);
-  }, [isModalActive]);
 
   const {
     isLoading: getLoading,
