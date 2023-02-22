@@ -3,8 +3,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { customConfirm } from '../components/modal/CustomAlert';
+import {
+  customConfirm,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
+import SignIn from './SignIn';
 
 const Transaction = () => {
   const { id } = useParams();
@@ -13,7 +17,7 @@ const Transaction = () => {
   const [current, setCurrent] = useState(false);
   const queryClient = useQueryClient();
   auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
-
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const { data, isLoading } = useQuery(['salePost', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
@@ -32,6 +36,8 @@ const Transaction = () => {
       return response.data;
     }
   );
+  console.log('sellerData: ', sellerData);
+
   // 구매자의 user 데이터를 가지고 옵니다.
   const { data: buyerData } = useQuery(
     ['buyerData', data?.[0].buyerUid],
@@ -41,16 +47,15 @@ const Transaction = () => {
       );
       return response.data;
     }
-    // {
-    //   staleTime: 1000*5,
-    // }
   );
-  console.log('buyerData: ', buyerData);
 
   // user의 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string; isDoneCount: number }) =>
-      axios.patch(`http://localhost:4000/users/${data[0].sellerUid}`, newUser),
+      axios.patch(
+        `http://localhost:4000/users/${data?.[0].sellerUid}`,
+        newUser
+      ),
     {
       onSuccess: () => queryClient.invalidateQueries(['sellerData']),
     }
@@ -84,7 +89,7 @@ const Transaction = () => {
       onSuccess: () => queryClient.invalidateQueries(['buyerData']),
     }
   );
-  console.log('data?.[0].buyerUid: ', data?.[0].buyerUid);
+  // console.log('data?.[0].buyerUid: ', data?.[0].buyerUid);
 
   // 구매자가 완료버튼을 누르면 판매자에게 price만큼 포인트를 더해주고,
   // 등급을 위한 user의 isDoneCount 데이터도 +1을 해줍니다.
@@ -106,7 +111,7 @@ const Transaction = () => {
       '구매자, 판매자 전부 취소버튼을 눌러야 취소됩니다.',
       '확인',
       async () => {
-        if (auth.currentUser?.uid === data[0].sellerUid) {
+        if (saveUser.uid === data[0].sellerUid) {
           await cancel({
             isSellerCancel: true,
             isBuyerCancel: data[0].isBuyerCancel,
@@ -130,12 +135,12 @@ const Transaction = () => {
 
   // 둘다 취소하면 포인트를 구매자에게 돌려줍니다.
   useEffect(() => {
-      if (data?.[0].isSellerCancel && data?.[0].isBuyerCancel) {
-        console.log(1);
-        giveBackPoint({
-          point: String(Number(buyerData?.point) + Number(data?.[0].price)),
-        });
-      }
+    if (data?.[0].isSellerCancel && data?.[0].isBuyerCancel) {
+      console.log(1);
+      giveBackPoint({
+        point: String(Number(buyerData?.point) + Number(data?.[0].price)),
+      });
+    }
   }, [data]);
 
   if (isLoading) {
@@ -146,7 +151,9 @@ const Transaction = () => {
     console.log('데이터없음');
     return <div>Mo data found</div>;
   }
-
+  if (!saveUser) {
+    return <SignIn />;
+  }
   return (
     <>
       <DetailContainer>
@@ -174,16 +181,21 @@ const Transaction = () => {
               <p>가격:{data[0].price}</p>
             </PostPrice>
             <CancelCompleteButtonContainer>
-              <PostLikeButton>찜</PostLikeButton>
-              {auth.currentUser?.uid === data[0].buyerUid ? (
+              {saveUser?.uid === data[0].buyerUid ||
+              saveUser?.uid === data[0].sellerUid ? (
+                <PostLikeButton>찜</PostLikeButton>
+              ) : (
+                <PostLikeButton></PostLikeButton>
+              )}
+              {saveUser?.uid === data[0].buyerUid ? (
                 <ClearButton onClick={onClickClearRequest}>완료</ClearButton>
               ) : null}
             </CancelCompleteButtonContainer>
-            {auth.currentUser?.uid === data[0].buyerUid ||
-            auth.currentUser?.uid === data[0].sellerUid ? (
+            {saveUser?.uid === data[0].buyerUid ||
+            saveUser?.uid === data[0].sellerUid ? (
               <CancelButton onClick={onClickCancel}>취소요청</CancelButton>
             ) : (
-              <CancelButton>로딩중...</CancelButton>
+              <CancelButton></CancelButton>
             )}
           </PostInfoWrapper>
         </PostContainer>

@@ -1,6 +1,11 @@
+import { User } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { loginUserCheckState } from '../atom';
 import Chat from '../components/chat/Chat';
 import Layout from '../components/layout/Layout';
+import { auth } from '../firebase/Firebase';
 import CategoryPage from '../pages/CategoryPage';
 import Detail from '../pages/Detail';
 import EditPage from '../pages/EditPage';
@@ -11,6 +16,7 @@ import SignUp from '../pages/SignUp';
 import Transaction from '../pages/Transaction';
 import WritePage from '../pages/WritePage';
 const Router = () => {
+  
   return (
     <BrowserRouter>
       <Routes>

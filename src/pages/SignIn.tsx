@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  User,
 } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import { ISignUpForm, userType } from '../types';
@@ -24,6 +25,19 @@ const SignIn = () => {
   const [err, setErr] = useState('');
   const [checkID, setCheckID] = useState(false);
   const location = useLocation();
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const authObserver = auth.onAuthStateChanged((user) => {
+      if (user) {
+        sessionStorage.setItem('user', JSON.stringify(user));
+      } else {
+        sessionStorage.removeItem('user');
+      }
+    });
+    return () => authObserver();
+  }, []);
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  console.log('user: ', user);
   const mutation = useMutation((newUser: userType) => {
     return axios
       .post('http://localhost:4000/users', newUser)
@@ -38,7 +52,7 @@ const SignIn = () => {
     return response.data;
   });
 
-  const idList = data?.map((user: userType) => user.id);
+  
 
   const [isViewPW, setIsViewPW] = useState(false);
   const handleClickViewPW = () => {
@@ -105,12 +119,12 @@ const SignIn = () => {
       .then((result) => {
         const user = result.user;
         const uid = auth.currentUser?.uid;
-        const isId = idList.includes(auth.currentUser?.uid);
+        const idList = data?.map((user: userType) => user.id); //리팩토링 필요
+        const isId = idList.includes(saveUser.uid);
         if (!isId) {
           mutation.mutate({
             id: uid,
             nickName: auth.currentUser?.displayName,
-            profileImg: auth.currentUser?.photoURL,
             point: '0',
             contactTime: '',
             like: [],

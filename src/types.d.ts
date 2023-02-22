@@ -6,7 +6,6 @@ export interface ISignUpForm {
 export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
-  profileImg: string | null | undefined;
   point: string;
   contactTime: string;
   like: [];
@@ -60,6 +59,10 @@ export interface onSalePostType {
 }
 export interface LocationState {
   from: Location;
+}
+
+export interface CustomFetchNextPageOptions extends FetchNextPageOptions {
+  _limit: number;
 }
 /**삭제하지 말아주세요 */
 // import 'styled-components';

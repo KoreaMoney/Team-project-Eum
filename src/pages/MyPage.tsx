@@ -1,30 +1,92 @@
 import styled from 'styled-components';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CustomModal } from '../components/modal/CustomModal';
 import Profile from '../components/mypage/Profile';
-import { useQuery } from '@tanstack/react-query';
-import { getProfileImg } from '../api';
 import { auth } from '../firebase/Firebase';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getProfileNickName, updateProfileNickName } from '../api';
+import { useRecoilState } from 'recoil';
+import { loginUserCheckState } from '../atom';
+import { useNavigate } from 'react-router-dom';
+import SignIn from './SignIn';
 
 const MyPage = () => {
+  const queryClient = useQueryClient();
+
   const [isEdit, setIsEdit] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
+  const navigate = useNavigate();
 
-  const userUid = auth.currentUser?.uid;
+  const {
+    isLoading: getLoading,
+    isError,
+    data,
+    error,
+  } = useQuery(['users'], getProfileNickName);
+
+  const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
+    useMutation(updateProfileNickName);
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
+
+  const currentUser =
+    data?.data &&
+    data.data.filter((user: any) => {
+      return auth.currentUser?.uid === user.id;
+    });
+
+  const [editNickNameValue, setEditNickNameValue] = useState(
+    currentUser?.[0]?.nickName
+  );
+
+  const EditNickName = async (id: string) => {
+    const editNickName = editNickNameValue?.trim();
+    if (!editNickName) {
+      setEditNickNameValue('');
+      return alert('닉네임을 작성해 주세요.');
+    }
+    const newNickName = {
+      id: currentUser?.[0]?.id,
+      nickName: editNickNameValue,
+    };
+    await editNickNameMutate(newNickName, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['users']);
+      },
+    });
+    setIsEdit(false);
+  };
+
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+console.log('saveUser.photoURL: ', saveUser.photoURL);
+
+
+    if (!saveUser) {
+      return <SignIn />
+    }
+
+
   return (
     <MyPageContainer>
       <Profile />
       <UserNameWrapper>
         {isEdit ? (
           <>
-            <EditInputValue />
+            <EditInputValue
+              onChange={(e) => {
+                setEditNickNameValue(e.target.value);
+              }}
+              type="text"
+              value={editNickNameValue}
+              autoFocus={true}
+              placeholder="수정할 닉네임을 입력해주세요."
+              maxLength={16}
+            />
             <CheckButton
               onClick={() => {
-                setIsEdit(false);
+                EditNickName(currentUser?.[0]?.id);
               }}
             >
               확인
@@ -32,7 +94,7 @@ const MyPage = () => {
           </>
         ) : (
           <>
-            <UserName>닉네임</UserName>
+            <UserName>{currentUser?.[0]?.nickName}</UserName>
             <UserNameEditButton
               onClick={() => {
                 setIsEdit(true);

@@ -116,13 +116,12 @@ const SignUp = () => {
         return;
       } else {
         await createUserWithEmailAndPassword(auth, email, pw)
-          .then( () => {
+          .then(() => {
             setEmail('');
             setPw('');
             setCheckPw('');
             setErr('');
             setNickName('');
-            
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -135,7 +134,6 @@ const SignUp = () => {
           await mutate({
             id: auth.currentUser?.uid,
             nickName,
-            profileImg: auth.currentUser?.photoURL,
             point: '0',
             contactTime: '',
             like: [],
@@ -150,12 +148,8 @@ const SignUp = () => {
       }
     }
   };
-  console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
-  const handleOnKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      handleSubmit(onSubmitHandler)(e);
-    }
-  };
+  console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
+
   return (
     <>
       <Container>
@@ -173,7 +167,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.email?.message ? 'red' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
-                onKeyDown={handleOnKeyPress}
               />
               {email ? (
                 <CloseIcon onClick={handleInputValueClickBT} />
@@ -193,7 +186,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
-                onKeyDown={handleOnKeyPress}
               />
               {pw ? (
                 <ViewIcon
@@ -218,7 +210,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.checkPw?.message ? 'red' : '' }}
                 onChange={onChangecheckPwHandler}
                 value={checkPw}
-                onKeyDown={handleOnKeyPress}
               />
               {checkPw ? (
                 <ViewIcon
@@ -242,7 +233,6 @@ const SignUp = () => {
               style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
               onChange={onChangeNickNameHandler}
               value={nickName}
-              onKeyDown={handleOnKeyPress}
             />
             <CheckBT type="button" onClick={handleCheckOverlapNickName}>
               중복확인
