@@ -5,8 +5,8 @@ import { loginUserCheckState } from './atom';
 import { auth } from './firebase/Firebase';
 import Router from './router/Router';
 import GlobalStyle from './styles/GlobalStyle';
-
-// import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/theme';
 // import { isDarkAtom } from './atom';
 // import { useRecoilValue } from 'recoil';
 // import { darkTheme, lightTheme } from './theme';
@@ -18,14 +18,12 @@ const App = () => {
    */
   // const isDark = useRecoilValue(isDarkAtom);
 
-  
-
   return (
     <>
-      {/* <ThemeProvider theme={isDark ? darkTheme : lightTheme}> */}
-      <GlobalStyle />
-      <Router />
-      {/* </ThemeProvider> */}
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Router />
+      </ThemeProvider>
     </>
   );
 };
