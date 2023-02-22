@@ -13,10 +13,10 @@
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
       "nickName": "구매자1",
       "profileImg": null,
-      "point": "11600",
+      "point": "11933",
       "contactTime": "",
       "like": [],
-      "isDoneCount": 0
+      "isDoneCount": 1
     },
     {
       "id": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
@@ -71,7 +71,7 @@
     {
       "id": "1aGJ87fFYremZXLWyIAWWSCtYv42",
       "nickName": "Hugh Kim",
-      "point": "0",
+      "point": "-333",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
@@ -240,7 +240,7 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677054976250
     },
     {
@@ -1007,6 +1007,23 @@
       "isSellerCancel": false,
       "isBuyerCancel": false,
       "views": 2,
+      "like": []
+    },
+    {
+      "id": "3e98072c-27dc-4048-8f8f-f1362985ad1f",
+      "postsId": "d49d40e8-bb1d-4fb7-b690-cf58eea764ae",
+      "buyerUid": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "title": "asdf",
+      "content": "<p>asdf</p>",
+      "imgURL": "",
+      "price": "333",
+      "category": "play",
+      "ceatedAt": 1677084211173,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 1,
       "like": []
     }
   ]
