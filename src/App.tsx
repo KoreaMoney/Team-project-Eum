@@ -1,8 +1,3 @@
-import { User } from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { loginUserCheckState } from './atom';
-import { auth } from './firebase/Firebase';
 import Router from './router/Router';
 import GlobalStyle from './styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
