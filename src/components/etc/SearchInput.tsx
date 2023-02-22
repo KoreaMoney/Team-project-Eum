@@ -66,7 +66,7 @@ const SearchWrapper = styled.label`
     outline: none;
     background-color: ${(props) => props.theme.colors.white};
     height: 2.5em;
-    border-radius: 10px 0 0 10px;
+    border-radius: 3px 0 0 3px;
   }
 
   button {
@@ -81,7 +81,7 @@ const SearchWrapper = styled.label`
     outline: none;
     background-color: ${(props) => props.theme.colors.white};
     height: 2.5em;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 3px 3px 0;
     width: 150%;
   }
 `;

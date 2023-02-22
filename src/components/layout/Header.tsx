@@ -3,6 +3,8 @@ import { auth } from '../../firebase/Firebase';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import SearchInput from '../etc/SearchInput';
+import { motion } from 'framer-motion';
 import {
   HiQueueList,
   HiPencil,
@@ -10,8 +12,6 @@ import {
   HiEllipsisHorizontalCircle,
 } from 'react-icons/hi2';
 import { IoGameController } from 'react-icons/io5';
-import SearchInput from '../etc/SearchInput';
-import { motion } from 'framer-motion';
 
 const svg = {
   start: { pathLength: 0, fill: 'rgba(255, 255, 255, 0)' },
@@ -136,7 +136,7 @@ const Div = styled.div`
 `;
 const LoGoSpan = styled.span`
   margin-top: 2rem;
-  color: black;
+  color: ${(props) => props.theme.colors.black};
 `;
 const LogoWrapper = styled(motion.div)`
   display: flex;
@@ -155,7 +155,7 @@ const Svg = styled.svg`
   }
 `;
 
-const Eum = styled.span`
+const Eum = styled.div`
   font-size: ${(props) => props.theme.fontSize.title36};
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
