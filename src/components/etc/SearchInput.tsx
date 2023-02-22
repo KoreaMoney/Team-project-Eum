@@ -62,26 +62,26 @@ const SearchWrapper = styled.label`
   align-items: center;
 
   select {
-    background-color: #eeeeee;
     border: none;
     outline: none;
+    background-color: ${(props) => props.theme.colors.white};
     height: 2.5em;
     border-radius: 10px 0 0 10px;
   }
 
   button {
-    background-color: #eeeeee;
     border: none;
     outline: none;
+    background-color: ${(props) => props.theme.colors.white};
     height: 2.5em;
   }
 
   input {
     border: none;
     outline: none;
+    background-color: ${(props) => props.theme.colors.white};
     height: 2.5em;
-    background-color: #eeeeee;
     border-radius: 0 10px 10px 0;
-    width: 100%;
+    width: 150%;
   }
 `;

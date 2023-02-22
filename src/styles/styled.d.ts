@@ -12,6 +12,7 @@ declare module 'styled-components' {
       gray60: string;
       red: string;
       brandColor: string;
+      button: string;
     };
     fontSize: {
       headline48: string;
@@ -20,6 +21,7 @@ declare module 'styled-components' {
       body16: string;
       label12: string;
       bottom20: string;
+      like30: string;
     };
     fontWeight: {
       bold: number;
