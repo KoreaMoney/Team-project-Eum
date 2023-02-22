@@ -11,6 +11,7 @@ enum Colors {
   'BLACK' = '#000000',
   'BRAND_COLOR' = '#FFDA18',
   'RED' = '#FF0000',
+  'BUTTON' = '#FF8868',
 }
 
 const theme: DefaultTheme = {
@@ -25,6 +26,7 @@ const theme: DefaultTheme = {
     gray60: Colors.GRAY60,
     brandColor: Colors.BRAND_COLOR,
     red: Colors.RED,
+    button: Colors.BUTTON,
   },
   fontSize: {
     headline48: '48px',

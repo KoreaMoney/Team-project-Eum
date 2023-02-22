@@ -12,6 +12,7 @@ declare module 'styled-components' {
       gray60: string;
       red: string;
       brandColor: string;
+      button: string;
     };
     fontSize: {
       headline48: string;
