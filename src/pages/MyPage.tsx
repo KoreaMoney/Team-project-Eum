@@ -8,16 +8,21 @@ import {
   getTradePoint,
   updateProfileNickName,
 } from '../api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
+import { editPostType } from '../types';
+import axios from 'axios';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
+  const {id} = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
   const navigate = useNavigate();
 
+
+  
   const {
     isLoading: getLoading,
     isError,
