@@ -13,6 +13,7 @@ import React, {
   useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { auth } from '../../firebase/Firebase';
 import { commentType } from '../../types';
 import { customConfirm } from '../modal/CustomAlert';
@@ -22,9 +23,10 @@ const CommentsList = () => {
   const { id } = useParams<{ id?: string }>();
   const queryClient = useQueryClient();
   const PAGE_SIZE = 6;
+
   const fetchComments = async (page = 0) => {
     const url = `http://localhost:4000/comments?postId=${id}`;
-
+    
     const response = await axios.get(url, {
       params: {
         _page: page,
@@ -34,6 +36,7 @@ const CommentsList = () => {
     console.log('response.data: ', response.data);
     return response.data;
   };
+  
 
   const {
     data,
@@ -51,8 +54,8 @@ const CommentsList = () => {
         return lastPage.length !== 0 ? nextPage : undefined;
       },
     }
-  );
-
+    );
+  
   const handleObserver = useCallback(
     (entries: any) => {
       const [target] = entries;
@@ -122,50 +125,95 @@ const CommentsList = () => {
   return (
     <div>
       <div></div>
-      <div>
+      <CommentsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((comment: commentType) => (
-              <div key={comment.id}>
-                <p>작성자 :{comment.writerNickName}</p>
-                <p>내용 :{comment.content}</p>
-                <p>작성시간 :{comment.createAt}</p>
-                <button>삭제</button>
-              </div>
+              <CommentContainer key={comment.id}>
+                <LeftContainer>
+                  <ProfileIMG profileIMG={comment.profileImg} />
+                  <NickName>{comment.writerNickName}</NickName>
+                  <CommentContent>{comment.content}</CommentContent>
+                </LeftContainer>
+                <RightContainer>
+                  <CreateAt>{getTimegap(comment.createAt)}</CreateAt>
+                  <DeleteButton onClick={() => onClickDeleteComment(comment.id)}>
+                    삭제
+                  </DeleteButton>
+                </RightContainer>
+              </CommentContainer>
             ))}
           </Fragment>
         ))}
 
-        <div ref={observerElem}>
+        <CommentContainer ref={observerElem}>
           {isFetching || isFetchingNextPage
             ? 'Loading more...'
             : hasNextPage
             ? 'Scroll to load more posts'
             : 'No more posts'}
-        </div>
-      </div>
+        </CommentContainer>
+      </CommentsContainer>
     </div>
   );
 };
-//     <div>
-//       {isSuccess &&
-//         data.pages.map((page, i) => (
-//           <React.Fragment key={i}>
-//             {page.map((comment: commentType) => (
-//               <div key={comment.id}>
-//                 <p>{comment.content}</p>
-//                 <p>{getTimegap(comment.createAt)}</p>
-//                 <p>{comment.writerNickName}</p>
-//                 <button onClick={() => onClickDeleteComment(comment.id)}>삭제</button>
-//               </div>
-//             ))}
-//           </React.Fragment>
-//         ))}
-      
-//       {isFetching && <div>Loading...</div>}
-//       <div ref={observerElem}></div>
-//     </div>
-//   );
-// };
 
 export default CommentsList;
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const CommentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+const CommentContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #ffda18;
+  padding: 0.5rem 0;
+`;
+
+const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
+width: 40px;
+height: 40px;
+border-radius: 100%;
+  background-image: url(${(props) => props.profileIMG});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
+
+const NickName = styled.p`
+  font-size: ${(props) => props.theme.fontSize.body16};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  margin: 0 2rem 0 0.5rem;
+`;
+
+const CommentContent = styled.p`
+  font-size: ${(props) => props.theme.fontSize.body16};
+`;
+
+const CreateAt = styled.p`
+  font-size: ${(props) => props.theme.fontSize.label12};
+  color: ${(props) => props.theme.colors.gray20};
+`;
+
+const DeleteButton = styled.button`
+  font-size: ${(props) => props.theme.fontSize.body16};
+  border: none;
+  background-color: #ffda18;
+  width: 3rem;
+  height: 35px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
