@@ -30,18 +30,25 @@ export default function Profile(params: any) {
 
   return (
     <UserProfileImgContainer>
-      <InputImgFile type="file" onChange={handleChange} />
-      <ImgSubmitButton disabled={loading || !photo} onClick={handleClick}>
-        확인
-      </ImgSubmitButton>
       <MyImageWrapper>
         <MyImage src={photoURL} alt="User Image" />
       </MyImageWrapper>
+      <EditImgWrapper>
+        <InputImgFile type="file" onChange={handleChange} />
+        <ImgSubmitButton disabled={loading || !photo} onClick={handleClick}>
+          확인
+        </ImgSubmitButton>
+      </EditImgWrapper>
     </UserProfileImgContainer>
   );
 }
 
-const UserProfileImgContainer = styled.div``;
+const UserProfileImgContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const MyImageWrapper = styled.div`
   background-color: lightgray;
@@ -68,12 +75,17 @@ const MyImage = styled.img`
   }
 `;
 
+const EditImgWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
+
 const InputImgFile = styled.input`
-  margin-left: 52%;
-  top: 220px;
+  width: 8rem;
   background-color: #656565;
   color: #fff;
-  position: absolute;
   &:hover {
     cursor: pointer;
     background-color: #e6e6e6;
@@ -99,7 +111,4 @@ const ImgSubmitButton = styled.button`
     background-color: #e6e6e6;
     color: #656565;
   }
-  margin-left: 52%;
-  top: 248px;
-  position: absolute;
 `;

@@ -1,20 +1,17 @@
 import styled from 'styled-components';
-import React, { useCallback, useEffect, useState } from 'react';
-import { CustomModal } from '../components/modal/CustomModal';
+import { useState } from 'react';
 import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProfileNickName, updateProfileNickName } from '../api';
-import { useRecoilState } from 'recoil';
-import { loginUserCheckState } from '../atom';
 import { useNavigate } from 'react-router-dom';
 import SignIn from './SignIn';
+import PointModal from '../components/mypage/PointModal';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
 
   const [isEdit, setIsEdit] = useState(false);
-  const [isModalActive, setIsModalActive] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -26,10 +23,6 @@ const MyPage = () => {
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
-
-  const onClickToggleModal = useCallback(() => {
-    setIsModalActive(!isModalActive);
-  }, [isModalActive]);
 
   const currentUser =
     data?.data &&
@@ -60,115 +53,74 @@ const MyPage = () => {
   };
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-console.log('saveUser.photoURL: ', saveUser.photoURL);
+  console.log('saveUser.photoURL: ', saveUser.photoURL);
 
-
-    if (!saveUser) {
-      return <SignIn />
-    }
-
+  if (!saveUser) {
+    return <SignIn />;
+  }
 
   return (
     <MyPageContainer>
-      <Profile />
-      <UserNameWrapper>
-        {isEdit ? (
-          <>
-            <EditInputValue
-              onChange={(e) => {
-                setEditNickNameValue(e.target.value);
-              }}
-              type="text"
-              value={editNickNameValue}
-              autoFocus={true}
-              placeholder="수정할 닉네임을 입력해주세요."
-              maxLength={16}
-            />
-            <CheckButton
-              onClick={() => {
-                EditNickName(currentUser?.[0]?.id);
-              }}
-            >
-              확인
-            </CheckButton>
-          </>
-        ) : (
-          <>
-            <UserName>{currentUser?.[0]?.nickName}</UserName>
-            <UserNameEditButton
-              onClick={() => {
-                setIsEdit(true);
-              }}
-            >
-              수정
-            </UserNameEditButton>
-          </>
-        )}
-      </UserNameWrapper>
-      <PointButton onClick={onClickToggleModal}>포인트</PointButton>
-      {isModalActive ? (
-        <CustomModal
-          modal={isModalActive}
-          setModal={setIsModalActive}
-          width="800"
-          height="800"
-          element={
-            <PointModalContainer>
-              <CloseButton onClick={onClickToggleModal}>X</CloseButton>
-
-              <PointImgWrapper>
-                <img src="/assets/walletmoney.png" />
-                <h3>　내 포인트</h3>
-              </PointImgWrapper>
-              <CurrentPoint>3,500,000P</CurrentPoint>
-              <PointDepositWithdrawWrapper>
-                <PointDepositButton>
-                  <img src="/assets/moneysend.png" />
-                  <h3>　충전하기</h3>
-                </PointDepositButton>
-                <PointWithdrawButton>
-                  <img src="/assets/emptywalletadd.png" />
-                  <h3>　출금하기</h3>
-                </PointWithdrawButton>
-              </PointDepositWithdrawWrapper>
-              <PointHistoryContainer>
-                <h3>　전체</h3>
-                <PointHistoryWrapper>
-                  <PointHistory>
-                    <PointHistoryDate>2.14</PointHistoryDate>
-                    <PointHistoryContent>
-                      인스타그램 친구추가
-                    </PointHistoryContent>
-                    <PointHistoryAmount>200P</PointHistoryAmount>
-                  </PointHistory>
-                  <PointHistory>
-                    <PointHistoryDate>2.12</PointHistoryDate>
-                    <PointHistoryContent>수학문제 풀이</PointHistoryContent>
-                    <PointHistoryAmount>300P</PointHistoryAmount>
-                  </PointHistory>
-                </PointHistoryWrapper>
-              </PointHistoryContainer>
-            </PointModalContainer>
-          }
-        />
-      ) : (
-        ''
-      )}
-      <UserTimeWrapper>
-        <div>연락가능한 시간 : 09:00 - 21:00</div>
-      </UserTimeWrapper>
-      <UserRatingWrapper>등급표시</UserRatingWrapper>
-      <div>내가 쓴 글</div>
-      <UserSellBuyWrapper>
-        <UserSellWrapper>팝니다</UserSellWrapper>
-        <UserBuyWrapper>삽니다</UserBuyWrapper>
-      </UserSellBuyWrapper>
-      <div>내가 가진 배지</div>
-      <UserbadgeWrapper>배지</UserbadgeWrapper>
-      <div>찜한 목록</div>
-      <UserLikeWrapper>찜 List</UserLikeWrapper>
-      <div>후기 관리</div>
-      <CommentsList>후기 List</CommentsList>
+      <UserProfileWrapper>
+        <Profile />
+        <UserNameWrapper>
+          {isEdit ? (
+            <>
+              <EditInputValue
+                onChange={(e) => {
+                  setEditNickNameValue(e.target.value);
+                }}
+                type="text"
+                value={editNickNameValue}
+                autoFocus={true}
+                placeholder="닉네임을 입력해주세요."
+                maxLength={12}
+              />
+              <CheckButton
+                onClick={() => {
+                  EditNickName(currentUser?.[0]?.id);
+                }}
+              >
+                확인
+              </CheckButton>
+            </>
+          ) : (
+            <>
+              <UserName>{currentUser?.[0]?.nickName}</UserName>
+              <UserNameEditButton
+                onClick={() => {
+                  setIsEdit(true);
+                }}
+              >
+                수정
+              </UserNameEditButton>
+            </>
+          )}
+        </UserNameWrapper>
+        <PointModal />
+        <UserTimeWrapper>
+          <UserTime>연락가능한 시간 : 09:00 - 21:00</UserTime>
+        </UserTimeWrapper>
+        <UserRatingWrapper>등급표시</UserRatingWrapper>
+      </UserProfileWrapper>
+      <UserPostWrapper>
+        <ProfileNavWrapper>
+          <LikeListBar>관심목록</LikeListBar>
+          <SellListBar>판매내역</SellListBar>
+          <BuyListBar>구매내역</BuyListBar>
+          <CommentsListBar>후기관리</CommentsListBar>
+        </ProfileNavWrapper>
+        <UserSellBuyWrapper>
+          <UserSellWrapper>팝니다</UserSellWrapper>
+          <UserBuyWrapper>삽니다</UserBuyWrapper>
+        </UserSellBuyWrapper>
+        <div>내가 가진 배지</div>
+        <UserbadgeWrapper>배지</UserbadgeWrapper>
+        <div>찜한 목록</div>
+        <UserLikeWrapper>찜 List</UserLikeWrapper>
+        <div>후기 관리</div>
+        <CommentsList>후기 List</CommentsList>
+      </UserPostWrapper>
     </MyPageContainer>
   );
 };
@@ -178,12 +130,25 @@ export default MyPage;
 const MyPageContainer = styled.div`
   padding: 40px;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
+const UserProfileWrapper = styled.div`
+  width: 24rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const UserPostWrapper = styled.div`
+  width: 72rem;
 `;
 
 const UserNameWrapper = styled.div`
   padding-left: 62px;
-  width: 32%;
-  margin: 10px auto;
+  margin: 10px auto 30px auto;
   border-bottom: 2px solid #e6e6e6;
   display: flex;
   justify-content: center;
@@ -191,7 +156,7 @@ const UserNameWrapper = styled.div`
 `;
 
 const UserName = styled.div`
-  width: 100%;
+  width: 14rem;
   height: 28px;
   font-size: 100%;
   display: flex;
@@ -230,7 +195,7 @@ const CheckButton = styled.button`
 `;
 
 const EditInputValue = styled.input`
-  width: 100%;
+  width: 14rem;
   height: 28px;
   font-size: 100%;
   border: none;
@@ -242,161 +207,29 @@ const EditInputValue = styled.input`
   }
 `;
 
-const PointButton = styled.button`
-  margin-left: 68%;
-  width: 180px;
-  height: 72px;
-  font-size: 100%;
-  background-color: lightgray;
-  color: #656565;
-  border: none;
-  border-radius: 10px;
-  position: absolute;
-  top: 236px;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
-`;
-
-const PointModalContainer = styled.div`
-  width: 800px;
-  height: 800px;
-  padding: 10%;
-  color: black;
-`;
-
-const PointImgWrapper = styled.div`
-  margin-bottom: 12px;
-  width: 100%;
-  font-size: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const CurrentPoint = styled.div`
-  margin-bottom: 24px;
-  padding: 12px 40px;
-  width: 100%;
-  height: 80px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-`;
-
-const PointDepositWithdrawWrapper = styled.div`
-  margin-bottom: 24px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-`;
-
-const PointDepositButton = styled.button`
-  width: 50%;
-  height: 72px;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: lightgray;
-  color: #656565;
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
-`;
-
-const PointWithdrawButton = styled.button`
-  width: 50%;
-  height: 72px;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: lightgray;
-  color: #656565;
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
-`;
-
-const PointHistoryContainer = styled.div``;
-
-const PointHistoryWrapper = styled.div`
-  margin: 12px 0;
-  padding: 12px 24px;
-  width: 100%;
-  height: 360px;
-  background-color: #d9d9d9;
-  color: #737373;
-  border-radius: 10px;
-  margin-bottom: 24px;
-`;
-
-const PointHistory = styled.div`
-  margin: 12px 0;
-  width: 100%;
-  height: 1.5rem;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #737373;
-`;
-
-const PointHistoryDate = styled.p`
-  width: 20%;
-`;
-const PointHistoryContent = styled.p`
-  width: 65%;
-`;
-const PointHistoryAmount = styled.p`
-  width: 15%;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  font-size: 24px;
-  font-weight: 600;
-  width: 40px;
-  height: 40px;
-  right: 12px;
-  top: 12px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`;
-
 const UserTimeWrapper = styled.div`
-  margin: 12px auto;
-  width: 68%;
+  margin-bottom: 2rem;
+  width: 18rem;
   display: flex;
-  justify-content: right;
+  justify-content: center;
+  align-items: center;
+`;
+
+const UserTime = styled.div`
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 `;
 
 const UserRatingWrapper = styled.div`
-  margin: 12px auto;
-  width: 68%;
+  margin-bottom: 2rem;
+  width: 18rem;
   display: flex;
   justify-content: left;
   align-items: center;
 `;
 
 const UserSellBuyWrapper = styled.div`
-  height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -465,4 +298,76 @@ const CommentsList = styled.div`
   justify-content: space-around;
   align-items: center;
   margin-bottom: 24px;
+`;
+
+const ProfileNavWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+`;
+
+const LikeListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+
+const SellListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+
+const BuyListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+
+const CommentsListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
 `;
