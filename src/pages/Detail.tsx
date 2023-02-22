@@ -12,7 +12,7 @@ import {
 } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
 import { onSalePostType, userType } from '../types';
-
+import parse from 'html-react-parser';
 const Detail = () => {
   const { id } = useParams();
   const { categoryName } = useParams();
@@ -25,7 +25,7 @@ const Detail = () => {
     const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
     return response.data;
   });
-
+  console.log('post', post);
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
     axios.post('http://localhost:4000/onSalePosts', newSalePosts)
@@ -90,7 +90,7 @@ const Detail = () => {
   return (
     <DetailContainer>
       <PostContainer>
-        <PostImage>사진 혹은 영상</PostImage>
+        <PostImage img={post[0].imgURL} />
         <PostInfoWrapper>
           <SellBuyWrapper>
             <SellButton>팝니다</SellButton>
@@ -108,7 +108,7 @@ const Detail = () => {
       </PostContainer>
       <PostContentWrapper>
         <PostContent>
-          <p>내용:{post[0].content}</p>
+          <p>내용:{parse(post[0].content)}</p>
         </PostContent>
         <PostUserInfo>
           <p>카테고리:{post[0].category}</p>
@@ -142,7 +142,7 @@ const PostContainer = styled.div`
   margin-bottom: 24px;
 `;
 
-const PostImage = styled.div`
+const PostImage = styled.div<{ img: string }>`
   width: 50%;
   height: 320px;
   background-color: lightgray;
@@ -151,6 +151,9 @@ const PostImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: cover;
+  background-image: url(${(props) => props.img});
+  background-position: center center;
 `;
 
 const PostInfoWrapper = styled.div`

@@ -12,12 +12,13 @@ import { searchState } from '../atom';
 import { auth } from '../firebase/Firebase';
 import { postType } from '../types';
 import { CustomFetchNextPageOptions } from '../types';
+import parse from 'html-react-parser';
+
 // 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
 const CategoryPage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const PAGE_SIZE= 4;
-
+  const PAGE_SIZE = 4;
 
   const observerElem = useRef<HTMLDivElement | null>(null);
   const fetchPosts = async (
@@ -62,8 +63,8 @@ const CategoryPage = () => {
       fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-       const nextPage = allPages.length + 1;
-       return lastPage.length !== 0 ? nextPage : undefined;
+        const nextPage = allPages.length + 1;
+        return lastPage.length !== 0 ? nextPage : undefined;
       },
     }
   );
@@ -158,67 +159,6 @@ const CategoryPage = () => {
     </PageContainer>
   );
 };
-
-{
-  /* <PostsContainer>
-         {data?.pages.map((page) =>
-          page.items.map((post: postType) => (
-            <PostContainer key={post.id} onClick={() => handlePostClick(post)}>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-              <p>제목 :{post.title}</p>
-              <p>내용 :{post.content}</p>
-              <p>가격 :{post.price}</p>
-            </PostContainer>
-          ))
-        )}
-        {hasNextPage ? (
-          <PostContainer ref={observerElem}>
-            {isFetchingNextPage && hasNextPage
-              ? 'Loading...'
-              : 'No search left'}
-          </PostContainer>
-        ) : (
-          <p>마지막 글입니다</p>
-        )} 
-
-         {hasNextPage && (
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? 'Loading more...' : 'Load More'}
-          </button>
-        )} 
-
-       {data &&
-          data.map((item: postType) => {
-            return (
-              <PostContainer
-                key={item.id}
-                onClick={() => {
-                  handlePostClick(item);
-                }}
-              >
-                <p>제목 :{item.title}</p>
-                <p>내용 :{item.content}</p>
-                <p>가격 :{item.price}</p>
-                <p>조회수 :{item.views}</p>
-              </PostContainer>
-            );
-          })}
-        {!data || (data.length === 0 && <div>글이 없습니다.</div>)}  */
-}
 
 export default CategoryPage;
 const PageContainer = styled.div`

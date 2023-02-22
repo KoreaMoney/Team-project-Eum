@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -7,11 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { ISignUpForm, userType } from '../types';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  User,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -28,19 +24,6 @@ const SignUp = () => {
   const [checkNick, setCheckNick] = useState(0);
   const [errMsg, setErrMsg] = useState('');
 
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    const authObserver = auth.onAuthStateChanged((user) => {
-      if (user) {
-        
-        sessionStorage.setItem('user', JSON.stringify(user));
-      } else {
-        sessionStorage.removeItem('user');
-      }
-    });
-    return () => authObserver();
-  }, []);
-  console.log('user: ', user);
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
   const passwordRule =
@@ -166,11 +149,7 @@ const SignUp = () => {
     }
   };
   console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
-  const handleOnKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      handleSubmit(onSubmitHandler)(e);
-    }
-  };
+
   return (
     <>
       <Container>
@@ -188,7 +167,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.email?.message ? 'red' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
-                onKeyDown={handleOnKeyPress}
               />
               {email ? (
                 <CloseIcon onClick={handleInputValueClickBT} />
@@ -208,7 +186,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
-                onKeyDown={handleOnKeyPress}
               />
               {pw ? (
                 <ViewIcon
@@ -233,7 +210,6 @@ const SignUp = () => {
                 style={{ borderColor: errors?.checkPw?.message ? 'red' : '' }}
                 onChange={onChangecheckPwHandler}
                 value={checkPw}
-                onKeyDown={handleOnKeyPress}
               />
               {checkPw ? (
                 <ViewIcon
@@ -257,7 +233,6 @@ const SignUp = () => {
               style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
               onChange={onChangeNickNameHandler}
               value={nickName}
-              onKeyDown={handleOnKeyPress}
             />
             <CheckBT type="button" onClick={handleCheckOverlapNickName}>
               중복확인

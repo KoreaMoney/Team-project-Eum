@@ -24,6 +24,13 @@ export interface postType {
   views: number;
   createAt: number;
 }
+export interface editPostType {
+  title: string;
+  content: string;
+  price: string;
+  imgURL: string;
+  category: string;
+}
 export interface commentType {
   id: string;
   postId: string | undefined;
