@@ -137,6 +137,7 @@ const SignUp = () => {
             point: '0',
             contactTime: '',
             like: [],
+            profileImg: null,
             isDoneCount: 0,
           });
           await updateProfile(auth.currentUser, {

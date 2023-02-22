@@ -130,6 +130,7 @@ const SignIn = () => {
             nickName: auth.currentUser?.displayName,
             point: '0',
             contactTime: '',
+            profileImg: null,
             like: [],
             isDoneCount: 0,
           });

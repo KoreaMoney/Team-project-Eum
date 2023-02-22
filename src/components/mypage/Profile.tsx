@@ -1,41 +1,83 @@
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth, upload, auth } from '../../firebase/Firebase';
+import { useAuth, upload, auth, storageService } from '../../firebase/Firebase';
+import { customSuccessAlert } from '../modal/CustomAlert';
 
 export default function Profile(params: any) {
-  const currentUser = useAuth();
-  const [photo, setPhoto] = useState(null);
+  const imgRef = useRef<HTMLInputElement>(null);
+  const { id } = useParams();
+  const [photo, setPhoto] = useState('');
   const [loading, setLoading] = useState(false);
-  const [photoURL, setPhotoURL] = useState<any>(auth.currentUser?.photoURL);
+  const queryClient = useQueryClient();
+  const { data } = useQuery(['users'], () =>
+    axios.get(`http://localhost:4000/users?id=${id}`).then((res) => res.data)
+  );
+  console.log('data: ', data);
 
-  function handleChange(e: any) {
-    if (e.target.files[0]) {
-      setPhoto(e.target.files[0]);
+  const { mutate: editUser } = useMutation(
+    (user: { id: string; profileImg: string }) =>
+      axios.patch(`http://localhost:4000/users/${id}`, {
+        profileImg: user.profileImg,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['users']);
+        customSuccessAlert('프로필 이미지를 수정하였습니다.');
+      },
     }
-  }
+  );
+  
+  const saveImgFile = () => {
+    if (imgRef.current?.files) {
+      const file = imgRef.current.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const resultImg = reader.result;
+        shrotenUrl(resultImg as string);
+      };
+    }
 
-  async function handleClick() {
-    await upload(photo, currentUser, setLoading);
-    const photoURL = async () => {
-      await setPhotoURL(currentUser?.photoURL);
+    const shrotenUrl = async (img: string) => {
+      const imgRef = ref(
+        storageService,
+        `${auth.currentUser?.uid}${Date.now()}`
+      );
+
+      const imgDataUrl = img;
+      let downloadUrl;
+      if (imgDataUrl) {
+        const response = await uploadString(imgRef, imgDataUrl, 'data_url');
+        downloadUrl = await getDownloadURL(response.ref);
+        setPhoto(downloadUrl);
+        console.log('photo: ', photo);console.log('downloadUrl: ', downloadUrl);
+      }
     };
-    photoURL();
-  }
-
-  useEffect(() => {
-    if (!auth.currentUser?.photoURL) {
-      setPhotoURL('/assets/profileAvatar.png');
-    }
-  }, []);
-
+  };
+  const handleClick = async () => {
+    await editUser({
+      ...data,
+      profileImg: photo,
+    });
+  };
+  console.log('photo1: ', photo);
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage src={photoURL} alt="User Image" />
+        <MyImage src={photo} alt="User Image" />
       </MyImageWrapper>
       <EditImgWrapper>
-        <InputImgFile type="file" onChange={handleChange} />
-        <ImgSubmitButton disabled={loading || !photo} onClick={handleClick}>
+        <InputImgFile
+          type="file"
+          id="changeimg"
+          onChange={saveImgFile}
+          ref={imgRef}
+        />
+        <ImgSubmitButton onClick={handleClick} disabled={loading || !photo}>
           확인
         </ImgSubmitButton>
       </EditImgWrapper>
