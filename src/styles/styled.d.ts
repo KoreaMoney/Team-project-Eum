@@ -3,20 +3,23 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       white: string;
+      black: string;
       gray10: string;
       gray20: string;
       gray30: string;
       gray40: string;
       gray50: string;
       gray60: string;
-      black: string;
+      red: string;
+      brandColor: string;
     };
     fontSize: {
-      headline: string;
-      title: string;
-      body: string;
-      lable: string;
-      botton: string;
+      headline48: string;
+      title24: string;
+      title36: string;
+      body16: string;
+      label12: string;
+      bottom20: string;
     };
     fontWeight: {
       bold: number;
