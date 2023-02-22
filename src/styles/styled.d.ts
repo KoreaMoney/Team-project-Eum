@@ -21,6 +21,7 @@ declare module 'styled-components' {
       body16: string;
       label12: string;
       bottom20: string;
+      like30: string;
     };
     fontWeight: {
       bold: number;

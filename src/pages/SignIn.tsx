@@ -19,10 +19,12 @@ import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { customInfoAlert } from '../components/modal/CustomAlert';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [err, setErr] = useState('');
+  const [authenticating, setAuthenticating] = useState<boolean>(false);
   const [checkID, setCheckID] = useState(false);
   const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
@@ -52,8 +54,6 @@ const SignIn = () => {
     return response.data;
   });
 
-  
-
   const [isViewPW, setIsViewPW] = useState(false);
   const handleClickViewPW = () => {
     setIsViewPW(!isViewPW);
@@ -80,7 +80,7 @@ const SignIn = () => {
   ): void => {
     setEmail(e.target.value);
   };
-  
+
   // x 버튼 누르면 email input 초기화
   const handleInputValueClickBT = () => {
     setEmail('');
@@ -95,14 +95,17 @@ const SignIn = () => {
     if (errors.checkPw || errors.email) {
       return;
     } else {
+      setAuthenticating(true);
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
           navigate(location.state?.from ? location.state.from : '/');
         })
         .catch((error) => {
+          setAuthenticating(false);
           const errorMessage = error.message;
           if (errorMessage.includes('user-not-found')) {
             setErr('가입된 회원이 아닙니다.');
+
             return;
           } else if (errorMessage.includes('wrong-password')) {
             setErr('비밀번호가 일치하지 않습니다.');
@@ -130,9 +133,8 @@ const SignIn = () => {
             like: [],
             isDoneCount: 0,
           });
-          console.log('데이터 추가: ');
         } else {
-          console.log('데이터 추가XX: ');
+          console.dir('데이터 추가XX: ');
         }
         navigate('/');
       })
@@ -142,6 +144,7 @@ const SignIn = () => {
           errorMessage.includes('auth/account-exists-with-different-credential')
         ) {
           setErr('이미 가입된 회원입니다.');
+          navigate('/');
           return;
         }
       });
@@ -165,57 +168,55 @@ const SignIn = () => {
           <InfoText>Daylog</InfoText>
         </InfoBox>
         <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
-        <InputContainer>
-          <ItemContainer>
-            <InputBox
-              type="email"
-              placeholder="이메일"
-              {...register('email')}
-              style={{ borderColor: errors?.email?.message ? 'red' : '' }}
-              onChange={onChangeEmailHandler}
-              value={email}
-              onKeyDown={handleOnKeyPress}
-            />
-            {email ? (
-              <CloseIcon onClick={handleInputValueClickBT} />
-            ) : undefined}
-            {errors.email && errors.email.type === 'required' && (
-              <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
-            )}
-            {errors.email && errors.email.type === 'email' && (
-              <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
-            )}
-          </ItemContainer>
-          <ItemContainer>
-            <InputBox
-              type={isViewPW ? 'text' : 'password'}
-              placeholder="비밀번호"
-              {...register('pw')}
-              style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
-              onChange={onChangePwHandler}
-              value={pw}
-              onKeyDown={handleOnKeyPress}
-            />
-            {pw ? (
-              <ViewIcon
-                onClick={handleClickViewPW}
-                style={{ color: isViewPW ? 'black' : '#ddd' }}
+          <InputContainer>
+            <ItemContainer>
+              <InputBox
+                type="email"
+                placeholder="이메일"
+                {...register('email')}
+                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
+                onChange={onChangeEmailHandler}
+                value={email}
+                onKeyDown={handleOnKeyPress}
               />
-            ) : undefined}
-            {errors.pw && errors.pw.type === 'required' && (
-              <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
-            )}
-            {errors.pw && errors.pw.type === 'matches' && (
-              <ErrorMSG>
-                비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
-              </ErrorMSG>
-            )}
-            <ErrorMSG>{err}</ErrorMSG>
-          </ItemContainer>
-        </InputContainer>
-        <LoginButton type='submit'>
-          계속하기
-        </LoginButton>
+              {email ? (
+                <CloseIcon onClick={handleInputValueClickBT} />
+              ) : undefined}
+              {errors.email && errors.email.type === 'required' && (
+                <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
+              )}
+              {errors.email && errors.email.type === 'email' && (
+                <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
+              )}
+            </ItemContainer>
+            <ItemContainer>
+              <InputBox
+                type={isViewPW ? 'text' : 'password'}
+                placeholder="비밀번호"
+                {...register('pw')}
+                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
+                onChange={onChangePwHandler}
+                value={pw}
+                onKeyDown={handleOnKeyPress}
+              />
+              {pw ? (
+                <ViewIcon
+                  onClick={handleClickViewPW}
+                  style={{ color: isViewPW ? 'black' : '#ddd' }}
+                />
+              ) : undefined}
+              {errors.pw && errors.pw.type === 'required' && (
+                <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
+              )}
+              {errors.pw && errors.pw.type === 'matches' && (
+                <ErrorMSG>
+                  비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
+                </ErrorMSG>
+              )}
+              <ErrorMSG>{err}</ErrorMSG>
+            </ItemContainer>
+          </InputContainer>
+          <LoginButton type="submit">계속하기</LoginButton>
         </FormTag>
         <PTag>SNS 로그인</PTag>
         <SocialLoginButtonContainer>
