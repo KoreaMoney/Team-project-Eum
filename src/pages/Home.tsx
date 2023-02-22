@@ -18,7 +18,7 @@ const Home = () => {
   const [[slider, direction], setSlider] = useState([0, 0]);
   const imageRef = useRef(null);
   const imageIndex = wrap(0, images.length, slider);
-  
+
   /**swiper pageination(각각 페이지로 인식하게 하기) */
   const paginate = (newDirection: number) => {
     setSlider([
@@ -27,8 +27,8 @@ const Home = () => {
     ]);
   };
   const saveUser = sessionStorage.getItem('user');
-  console.log( 'saveUser: ' ,saveUser);
-  
+  console.log('saveUser: ', saveUser);
+
   /**swiper autoplay(자동으로 넘기기) */
   useEffect(() => {
     const interval = setInterval(() => {
