@@ -84,7 +84,7 @@ const Home = () => {
           <h1>이음에서 가장 인기</h1>
         </TotalWrapper>
         {data &&
-          data.map((item: postType) => {
+          data?.map((item: postType) => {
             return (
               <ListContaier key={item.id}>
                 <div

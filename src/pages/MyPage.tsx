@@ -60,6 +60,7 @@ const MyPage = () => {
   };
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+console.log('saveUser.photoURL: ', saveUser.photoURL);
 
 
     if (!saveUser) {

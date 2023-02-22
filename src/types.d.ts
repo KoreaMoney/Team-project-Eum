@@ -6,7 +6,6 @@ export interface ISignUpForm {
 export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
-  profileImg: string | null | undefined;
   point: string;
   contactTime: string;
   like: [];
