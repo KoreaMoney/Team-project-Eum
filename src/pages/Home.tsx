@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wrap } from 'popmotion';

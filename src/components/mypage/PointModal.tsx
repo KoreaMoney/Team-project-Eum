@@ -26,6 +26,14 @@ const PointModal = () => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
 
+  const pointChargehandle = () => {
+    alert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
+  };
+
+  const pointWithdrawhandle = () => {
+    alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
+  };
+
   return (
     <>
       <PointButton onClick={onClickToggleModal}>
@@ -54,11 +62,19 @@ const PointModal = () => {
                 P
               </CurrentPoint>
               <PointDepositWithdrawWrapper>
-                <PointDepositButton>
+                <PointDepositButton
+                  onClick={() => {
+                    pointChargehandle();
+                  }}
+                >
                   <img src="/assets/moneysend.png" />
                   <h3>　충전하기</h3>
                 </PointDepositButton>
-                <PointWithdrawButton>
+                <PointWithdrawButton
+                  onClick={() => {
+                    pointWithdrawhandle();
+                  }}
+                >
                   <img src="/assets/emptywalletadd.png" />
                   <h3>　출금하기</h3>
                 </PointWithdrawButton>
