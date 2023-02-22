@@ -9,25 +9,30 @@ enum Colors {
   'GRAY50' = '#555555',
   'GRAY60' = '#2F3233',
   'BLACK' = '#000000',
+  'BRAND_COLOR' = '#FFDA18',
+  'RED' = '#FF0000',
 }
 
 const theme: DefaultTheme = {
   colors: {
     white: Colors.WHITE,
+    black: Colors.BLACK,
     gray10: Colors.GRAY10,
     gray20: Colors.GRAY20,
     gray30: Colors.GRAY30,
     gray40: Colors.GRAY40,
     gray50: Colors.GRAY50,
     gray60: Colors.GRAY60,
-    black: Colors.BLACK,
+    brandColor: Colors.BRAND_COLOR,
+    red: Colors.RED,
   },
   fontSize: {
-    headline: '48px',
-    title: '24px',
-    body: '16px',
-    lable: '12px',
-    botton: '20px',
+    headline48: '48px',
+    title24: '24px',
+    title36: '36px',
+    body16: '16px',
+    label12: '12px',
+    bottom20: '20px',
   },
   fontWeight: {
     bold: 800,
