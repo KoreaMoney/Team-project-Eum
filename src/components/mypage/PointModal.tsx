@@ -2,7 +2,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { getProfilePoint } from '../../api';
-import { auth } from '../../firebase/Firebase';
 import { CustomModal } from '../modal/CustomModal';
 import PointHistoryList from './PointHistoryList';
 const PointModal = () => {
@@ -17,21 +16,19 @@ const PointModal = () => {
 
   console.log('profileData: ', profileData?.[0]);
 
-
   // 커스텀모달을 불러옵니다.
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
 
-   const pointChargehandle = () => {
-     alert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
-   };
+  const pointChargehandle = () => {
+    alert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
+  };
 
-   const pointWithdrawhandle = () => {
-     alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
-   };
-  
+  const pointWithdrawhandle = () => {
+    alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
+  };
   return (
     <>
       <PointButton onClick={onClickToggleModal}>
@@ -40,7 +37,9 @@ const PointModal = () => {
           {' '}
           {profileData?.[0] &&
             profileData?.[0].point &&
-            profileData?.[0].point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            profileData?.[0].point
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           P
         </div>
       </PointButton>
@@ -60,10 +59,9 @@ const PointModal = () => {
               <CurrentPoint>
                 {profileData?.[0] &&
                   profileData[0].point &&
-                  profileData[0].point.toString().replace(
-                    /\B(?=(\d{3})+(?!\d))/g,
-                    ','
-                  )}{' '}
+                  profileData[0].point
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                 P
               </CurrentPoint>
               <PointDepositWithdrawWrapper>

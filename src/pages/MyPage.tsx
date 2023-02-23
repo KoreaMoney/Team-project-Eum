@@ -4,7 +4,6 @@ import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  getPostList,
   getProfileNickName,
   getTradePoint,
   updateProfileNickName,
@@ -12,9 +11,6 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
-import { editPostType } from '../types';
-import axios from 'axios';
-
 const MyPage = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -25,14 +21,15 @@ const MyPage = () => {
   const [category, setCategory] = useState('likelist');
   console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
 
+  // 로그인한 유저 정보를 받아옵니다.
   const {
     isLoading: getLoading,
     isError,
     data,
     error,
   } = useQuery(['users'], getProfileNickName);
-  console.log('data보여주세요: ', data);
 
+  // 거래 목록을 받아옵니다.
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -40,6 +37,7 @@ const MyPage = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
+  // 거래 완료 목록을 받아옵니다.
   const isDoneTradeList =
     tradeData?.data &&
     tradeData.data.filter((post: any) => {
@@ -50,18 +48,18 @@ const MyPage = () => {
     useMutation(updateProfileNickName);
 
   const [editNickNameValue, setEditNickNameValue] = useState('');
-  // console.log('data?.users?.[0]: ', data?.[0]);
-  console.log('data?.[0]?.nickName: ', data?.[0].nickName);
-  console.log('editNickNameValue: ', editNickNameValue);
 
+  // 로그인한 유저의 판매 목록을 출력합니다.
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser.uid === user?.sellerUid;
   });
 
+  // 로그인한 유저의 구매 목록을 출력합니다.
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser.uid === user?.buyerUid;
   });
 
+  // 닉네임을 수정합니다.
   const EditNickName = async (id: string) => {
     const editNickName = editNickNameValue?.trim();
     if (!editNickName) {
@@ -72,8 +70,6 @@ const MyPage = () => {
       id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
-    console.log('newNickName: ', newNickName);
-
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -81,10 +77,11 @@ const MyPage = () => {
     });
     setIsEdit(false);
   };
-
   if (!saveUser) {
     return <SignIn />;
   }
+
+  // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
     color: `#656565`,
     borderBottom: `2px solid #666666`,
@@ -199,17 +196,13 @@ const MyPage = () => {
               })
             : null}
 
-          <div>찜한 목록</div>
           <UserLikeWrapper>찜 List</UserLikeWrapper>
-          <div>후기 관리</div>
         </CategoryListWrapper>
       </UserPostWrapper>
     </MyPageContainer>
   );
 };
-
 export default MyPage;
-
 const MyPageContainer = styled.div`
   padding: 40px;
   width: 100%;
@@ -217,18 +210,15 @@ const MyPageContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 `;
-
 const UserProfileWrapper = styled.div`
   width: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const UserPostWrapper = styled.div`
   width: 72rem;
 `;
-
 const UserNameWrapper = styled.div`
   padding-left: 62px;
   margin: 10px auto 30px auto;
@@ -237,7 +227,6 @@ const UserNameWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserName = styled.div`
   width: 14rem;
   height: 28px;
@@ -246,7 +235,6 @@ const UserName = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserNameEditButton = styled.button`
   width: 62px;
   height: 28px;
@@ -261,7 +249,6 @@ const UserNameEditButton = styled.button`
     color: #656565;
   }
 `;
-
 const CheckButton = styled.button`
   width: 62px;
   height: 28px;
@@ -276,7 +263,6 @@ const CheckButton = styled.button`
     color: #656565;
   }
 `;
-
 const EditInputValue = styled.input`
   width: 14rem;
   height: 28px;
@@ -289,7 +275,6 @@ const EditInputValue = styled.input`
     outline: none;
   }
 `;
-
 const UserTimeWrapper = styled.div`
   margin-bottom: 2rem;
   width: 18rem;
@@ -297,14 +282,12 @@ const UserTimeWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserTime = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
 const UserRatingWrapper = styled.div`
   margin-bottom: 2rem;
   width: 18rem;
@@ -312,7 +295,6 @@ const UserRatingWrapper = styled.div`
   justify-content: left;
   align-items: center;
 `;
-
 const UserbadgeWrapper = styled.div`
   padding: 12px;
   width: 18rem;
@@ -325,7 +307,6 @@ const UserbadgeWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const UserSellBuyWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -333,7 +314,6 @@ const UserSellBuyWrapper = styled.div`
   gap: 2.5rem;
   margin-bottom: 24px;
 `;
-
 const UserSellWrapper = styled.div`
   padding: 12px;
   width: 50%;
@@ -345,7 +325,6 @@ const UserSellWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-
 const UserBuyWrapper = styled.div`
   padding: 12px;
   width: 50%;
@@ -357,7 +336,6 @@ const UserBuyWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-
 const UserLikeWrapper = styled.div`
   padding: 12px;
   width: 100%;
@@ -370,7 +348,6 @@ const UserLikeWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const CommentsList = styled.div`
   padding: 12px;
   width: 100%;
@@ -383,7 +360,6 @@ const CommentsList = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const ProfileNavWrapper = styled.div`
   width: 100%;
   margin-bottom: 2rem;
@@ -391,7 +367,6 @@ const ProfileNavWrapper = styled.div`
   justify-content: left;
   align-items: center;
 `;
-
 const CategoryListWrapper = styled.div`
   padding: 12px;
   width: 100%;
@@ -404,7 +379,6 @@ const CategoryListWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const LikeListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -420,7 +394,6 @@ const LikeListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const SellListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -436,7 +409,6 @@ const SellListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const BuyListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -452,7 +424,6 @@ const BuyListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const CommentsListBar = styled.button`
   width: 8rem;
   height: 32px;
