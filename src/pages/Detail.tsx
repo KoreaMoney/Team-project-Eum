@@ -24,13 +24,18 @@ const Detail = () => {
   // 클릭한 글의 데이터를 가지고 옵니다.
   const { data: post, isLoading } = useQuery(['post', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-    const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
+    const response = await axios.get(
+      `https://orchid-sprinkle-snapdragon.glitch.me/posts?id=${id}`
+    );
     return response.data;
   });
   console.log('post', post);
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
-    axios.post('http://localhost:4000/onSalePosts', newSalePosts)
+    axios.post(
+      'https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts',
+      newSalePosts
+    )
   );
 
   // 포인트 수정을 위해 유저 정보를 가지고 옵니다.
@@ -38,7 +43,7 @@ const Detail = () => {
     ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${saveUser?.uid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`
       );
       return response.data;
     },
@@ -53,7 +58,7 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${post?.[0].sellerUid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${post?.[0].sellerUid}`
       );
       return response.data;
     },
@@ -62,11 +67,13 @@ const Detail = () => {
     }
   );
   console.log('seller', seller);
-  
 
   // 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(`http://localhost:4000/users/${saveUser?.uid}`, newUser)
+    axios.patch(
+      `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`,
+      newUser
+    )
   );
 
   if (isLoading) {
@@ -174,10 +181,7 @@ const Detail = () => {
         </PostInfoWrapper>
       </PostContainer>
       <PostContentWrapper>
-        <PostContent>
-          {parse(post[0].content)}
-        </PostContent>
-        
+        <PostContent>{parse(post[0].content)}</PostContent>
       </PostContentWrapper>
       <CommentsWrapper>
         <div>
@@ -461,6 +465,4 @@ const PostUserInfo = styled.div`
   align-items: center; */
 `;
 
-const CommentsWrapper = styled.div`
-  
-`;
+const CommentsWrapper = styled.div``;

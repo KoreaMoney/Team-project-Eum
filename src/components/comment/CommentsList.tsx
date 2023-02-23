@@ -25,8 +25,8 @@ const CommentsList = () => {
   const PAGE_SIZE = 6;
 
   const fetchComments = async (page = 0) => {
-    const url = `http://localhost:4000/comments?postId=${id}`;
-    
+    const url = `https://orchid-sprinkle-snapdragon.glitch.me/comments?postId=${id}`;
+
     const response = await axios.get(url, {
       params: {
         _page: page,
@@ -36,7 +36,6 @@ const CommentsList = () => {
     console.log('response.data: ', response.data);
     return response.data;
   };
-  
 
   const {
     data,
@@ -54,8 +53,8 @@ const CommentsList = () => {
         return lastPage.length !== 0 ? nextPage : undefined;
       },
     }
-    );
-  
+  );
+
   const handleObserver = useCallback(
     (entries: any) => {
       const [target] = entries;
@@ -80,7 +79,9 @@ const CommentsList = () => {
   // onClickDeleteComment 함수에서 commentId를 받아와 클릭한 댓글만 삭제될 수 있도록 합니다.
   const { mutate: deleteComment } = useMutation(
     (commentId: string) =>
-      axios.delete(`http://localhost:4000/comments/${commentId}`),
+      axios.delete(
+        `https://orchid-sprinkle-snapdragon.glitch.me/comments/${commentId}`
+      ),
     {
       // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
       onSuccess: () => {
@@ -137,7 +138,9 @@ const CommentsList = () => {
                 </LeftContainer>
                 <RightContainer>
                   <CreateAt>{getTimegap(comment.createAt)}</CreateAt>
-                  <DeleteButton onClick={() => onClickDeleteComment(comment.id)}>
+                  <DeleteButton
+                    onClick={() => onClickDeleteComment(comment.id)}
+                  >
                     삭제
                   </DeleteButton>
                 </RightContainer>
@@ -172,7 +175,7 @@ const LeftContainer = styled.div`
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 const CommentContainer = styled.div`
   width: 100%;
   display: flex;
@@ -183,9 +186,9 @@ const CommentContainer = styled.div`
 `;
 
 const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
-width: 40px;
-height: 40px;
-border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
   background-image: url(${(props) => props.profileIMG});
   background-position: center;
   background-repeat: no-repeat;

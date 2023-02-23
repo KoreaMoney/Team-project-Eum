@@ -13,7 +13,10 @@ const CommentInput = () => {
   // 데이터를 저장해줍니다.
   const { mutate } = useMutation(
     (newComment: commentType) =>
-      axios.post(`http://localhost:4000/comments`, newComment),
+      axios.post(
+        `https://orchid-sprinkle-snapdragon.glitch.me/comments`,
+        newComment
+      ),
     {
       // 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해줍니다.
       onSuccess: () => queryClient.invalidateQueries(['comments']),
@@ -24,7 +27,7 @@ const CommentInput = () => {
     ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${saveUser?.uid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`
       );
       return response.data;
     },

@@ -29,7 +29,7 @@ const CategoryPage = () => {
     word: string | undefined,
     page = 0
   ) => {
-    const baseUrl = 'http://localhost:4000/posts';
+    const baseUrl = 'https://orchid-sprinkle-snapdragon.glitch.me/posts';
     let url = baseUrl;
     if (categoryName !== 'all' && !word) {
       url = `${baseUrl}?category=${categoryName}`;
@@ -51,23 +51,18 @@ const CategoryPage = () => {
     return response.data;
   };
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useInfiniteQuery(
-    ['posts', categoryName ?? 'all', select, word],
-    ({ pageParam = 0 }) =>
-      fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage = allPages.length + 1;
-        return lastPage.length !== 0 ? nextPage : undefined;
-      },
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+    useInfiniteQuery(
+      ['posts', categoryName ?? 'all', select, word],
+      ({ pageParam = 0 }) =>
+        fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
+      {
+        getNextPageParam: (lastPage, allPages) => {
+          const nextPage = allPages.length + 1;
+          return lastPage.length !== 0 ? nextPage : undefined;
+        },
+      }
+    );
   console.log('data: ', data);
 
   const handleObserver = useCallback(
@@ -94,9 +89,12 @@ const CategoryPage = () => {
   // useQueryClient() : QueryClient 객체를 가져올 수 있는 함수,
   // QueryClient: 캐시,쿼리관리,상태업데이트 등을 처리하는 핵심객체, 데이터 업데이트 후 ui를 갱신하거나 서버에 데이터를 새로 요청하고 업데이트된 데이터를 받아와 ui를 갱신하는 등의 작업을 할 수 있다고 함.
   const handlePostClick = async (post: postType) => {
-    await axios.patch(`http://localhost:4000/posts/${post.id}`, {
-      views: post.views + 1, // 글 클릭하면 조회수 1씩 늘리기!!
-    });
+    await axios.patch(
+      `https://orchid-sprinkle-snapdragon.glitch.me/posts/${post.id}`,
+      {
+        views: post.views + 1, // 글 클릭하면 조회수 1씩 늘리기!!
+      }
+    );
     // 특정 데이터만을 업데이트 하고싶으면 위 방법을 통해 가능합니다.
     //  ${post.id} 라는건 http://localho1st:4000/posts 주소의 데이터에서 내가 받은 post.id와 동일한 객체를 찾아줍니다.
     queryClient.fetchQuery(['posts', categoryName ?? 'all']);
@@ -313,7 +311,7 @@ const RightContainer = styled.div`
 const LikeIconContainer = styled.div`
   position: relative;
   display: inline-block;
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
 `;
 const LikeIcon = styled(AiFillHeart)`
   position: absolute;
