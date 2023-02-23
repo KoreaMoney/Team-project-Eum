@@ -8,11 +8,12 @@ import { useAuth, upload, auth, storageService } from '../../firebase/Firebase';
 import { customSuccessAlert } from '../modal/CustomAlert';
 
 export default function Profile(params: any) {
+  const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
   const [photo, setPhoto] = useState('');
   const [loading, setLoading] = useState(false);
-  const queryClient = useQueryClient();
+
   const { data } = useQuery(['users'], () =>
     axios.get(`http://localhost:4000/users?id=${id}`).then((res) => res.data)
   );
@@ -30,7 +31,7 @@ export default function Profile(params: any) {
       },
     }
   );
-  
+
   const saveImgFile = () => {
     if (imgRef.current?.files) {
       const file = imgRef.current.files[0];
@@ -54,7 +55,8 @@ export default function Profile(params: any) {
         const response = await uploadString(imgRef, imgDataUrl, 'data_url');
         downloadUrl = await getDownloadURL(response.ref);
         setPhoto(downloadUrl);
-        console.log('photo: ', photo);console.log('downloadUrl: ', downloadUrl);
+        console.log('photo: ', photo);
+        console.log('downloadUrl: ', downloadUrl);
       }
     };
   };

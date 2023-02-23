@@ -1,33 +1,45 @@
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
+import axios, { AxiosResponse } from 'axios';
 import { useNavigate, useLocation } from 'react-router';
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  User,
-} from 'firebase/auth';
-import { auth } from '../firebase/Firebase';
-import { ISignUpForm, userType } from '../types';
+import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
+import { IoIosGitMerge } from 'react-icons/io';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { auth } from '../firebase/Firebase';
+import { ISignUpForm, userType } from '../types';
 import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
-import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { customInfoAlert } from '../components/modal/CustomAlert';
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
+import styled from 'styled-components';
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [isViewPW, setIsViewPW] = useState(false);
   const [err, setErr] = useState('');
   const [authenticating, setAuthenticating] = useState<boolean>(false);
-  const [checkID, setCheckID] = useState(false);
-  const location = useLocation();
-  const [user, setUser] = useState<User | null>(null);
+
+  /**순서
+   * user섹션 저장하기
+   * 새로운 유저 정보 받기
+   * 이메일
+   * 비밀번호
+   * 유효성검사
+   * 소셜로그인
+   * 비밀번호 찾기
+   */
+
+  //user섹션에 데이터 저장하기
   useEffect(() => {
     const authObserver = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -36,10 +48,11 @@ const SignIn = () => {
         sessionStorage.removeItem('user');
       }
     });
+
     return () => authObserver();
   }, []);
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log('user: ', user);
+
+  //새로운 유저 정보 post하기
   const mutation = useMutation((newUser: userType) => {
     return axios
       .post('http://localhost:4000/users', newUser)
@@ -54,27 +67,10 @@ const SignIn = () => {
     return response.data;
   });
 
-  const [isViewPW, setIsViewPW] = useState(false);
-  const handleClickViewPW = () => {
-    setIsViewPW(!isViewPW);
-  };
+  //새로 고침 진행 시 uid session저장하기
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  const passwordRule =
-    /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
-  const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    pw: yup.string().matches(passwordRule).required(),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignUpForm>({
-    resolver: yupResolver(schema),
-  });
-
-  const [email, setEmail] = useState('');
+  //이메일 작성
   const onChangeEmailHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -86,11 +82,32 @@ const SignIn = () => {
     setEmail('');
   };
 
-  const [pw, setPw] = useState('');
+  //비밀번호 확인
+  const handleClickViewPW = () => {
+    setIsViewPW(!isViewPW);
+  };
+  const passwordRule =
+    /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    pw: yup.string().matches(passwordRule).required(),
+  });
+
+  //비밀번호 유효성 검사
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISignUpForm>({
+    resolver: yupResolver(schema),
+  });
+
+  //비밀번호 작성
   const onChangePwHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPw(e.target.value);
   };
 
+  //이메일 비밀번호 최종 유효성 검사
   const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
     if (errors.checkPw || errors.email) {
       return;
@@ -114,12 +131,13 @@ const SignIn = () => {
     }
   };
 
-  // 구글, 깃허브 로그인
+  // 소셜 로그인 (구글)
   const googleProvider = new GoogleAuthProvider();
 
   const onGoogleClick = async () => {
     await signInWithPopup(auth, googleProvider)
       .then((result) => {
+        navigate('/');
         const user = result.user;
         const uid = auth.currentUser?.uid;
         const idList = data?.map((user: userType) => user.id); //리팩토링 필요
@@ -134,10 +152,7 @@ const SignIn = () => {
             like: [],
             isDoneCount: 0,
           });
-        } else {
-          console.dir('데이터 추가XX: ');
         }
-        navigate('/');
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -150,6 +165,8 @@ const SignIn = () => {
         }
       });
   };
+
+  //enter로 form제출 가능하게 하기
   const handleOnKeyPress = (e: any) => {
     if (e.key === 'Enter') {
       handleSubmit(onSubmitHandler)(e);
@@ -161,13 +178,20 @@ const SignIn = () => {
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
+
   return (
     <>
       <Container>
-        <InfoBox>
-          <InfoText>당신 곁의 개인 비서</InfoText>
-          <InfoText>Daylog</InfoText>
-        </InfoBox>
+        <div>
+          <MainText>
+            세상 모든 재능을 이어주다
+            <span>우리가 별거아니라고 생각한 재능들을 가치있게 만드세요</span>
+            <div>
+              <IoIosGitMerge />
+              eum
+            </div>
+          </MainText>
+        </div>
         <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
           <InputContainer>
             <ItemContainer>
@@ -175,7 +199,7 @@ const SignIn = () => {
                 type="email"
                 placeholder="이메일"
                 {...register('email')}
-                style={{ borderColor: errors?.email?.message ? 'red' : '' }}
+                style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
                 onChange={onChangeEmailHandler}
                 value={email}
                 onKeyDown={handleOnKeyPress}
@@ -195,7 +219,7 @@ const SignIn = () => {
                 type={isViewPW ? 'text' : 'password'}
                 placeholder="비밀번호"
                 {...register('pw')}
-                style={{ borderColor: errors?.pw?.message ? 'red' : '' }}
+                style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
                 onChange={onChangePwHandler}
                 value={pw}
                 onKeyDown={handleOnKeyPress}
@@ -203,7 +227,7 @@ const SignIn = () => {
               {pw ? (
                 <ViewIcon
                   onClick={handleClickViewPW}
-                  style={{ color: isViewPW ? 'black' : '#ddd' }}
+                  style={{ color: isViewPW ? '#000' : '#ddd' }}
                 />
               ) : undefined}
               {errors.pw && errors.pw.type === 'required' && (
@@ -217,11 +241,14 @@ const SignIn = () => {
               <ErrorMSG>{err}</ErrorMSG>
             </ItemContainer>
           </InputContainer>
-          <LoginButton type="submit">계속하기</LoginButton>
+          <LoginButton type="submit">로그인 하기</LoginButton>
         </FormTag>
         <PTag>SNS 로그인</PTag>
         <SocialLoginButtonContainer>
-          <GoogleIcon onClick={onGoogleClick} />
+          <button onClick={onGoogleClick}>
+            <GoogleIcon />
+            구글 로그인 하기
+          </button>
         </SocialLoginButtonContainer>
         <MoveSignUpButton onClick={() => navigate('/signup')}>
           아직 회원이 아니신가요?
@@ -238,9 +265,9 @@ const SignIn = () => {
             width="600"
             height="300"
             element={
-              <ComponentSpace>
+              <div>
                 <FindPW />
-              </ComponentSpace>
+              </div>
             }
           />
         ) : (
@@ -253,138 +280,73 @@ const SignIn = () => {
 
 export default SignIn;
 
-const ComponentSpace = styled.div`
-  color: black;
-`;
-const ErrorMSG = styled.p`
-  color: red;
-  font-size: 0.8rem;
-`;
-
-const FormTag = styled.form`
-  width: 100%;
-`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 25.7rem;
-  margin: 0 auto;
+  width: 27rem;
+  margin: auto;
 `;
 
-const InfoBox = styled.div`
+const MainText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  background-color: #f0f0f0;
-  padding: 0.2rem 0;
+  height: 12rem;
+  gap: 1.5rem;
+  font-size: ${(props) => props.theme.fontSize.like30};
+  cursor: default;
+  span {
+    font-size: ${(props) => props.theme.fontSize.body16};
+  }
 `;
 
-const InfoText = styled.p`
-  font-size: 1.4rem;
-  text-align: center;
-  margin: 1rem;
-  color: #878787;
-  cursor: default;
+const FormTag = styled.form`
+  width: 100%;
 `;
 
 const InputContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
   gap: 1rem;
-  margin: 6.2rem 0 0 0;
 `;
 
 const ItemContainer = styled.div`
   position: relative;
-  height: 2.8rem;
+  height: 3rem;
 `;
 
 const InputBox = styled.input`
   width: 100%;
-  height: 2.4rem;
-  padding: 0 3rem 0 1rem;
+  height: 2.6rem;
   font-size: 1rem;
-  background-color: #fafafa;
-  border: 1.3px solid #ddd;
-  border-radius: 8px;
+  padding: 0.7rem;
+  box-shadow: 0.5px 1px 2px 0.5px ${(props) => props.theme.colors.gray20};
+  background-color: ${(props) => props.theme.colors.white};
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  border-radius: 10px;
   &::placeholder {
-    color: #d1d1d1;
+    color: ${(props) => props.theme.colors.gray20};
   }
   &:focus {
     outline: none;
   }
 `;
 
-const PwLossButton = styled.button`
-  margin-top: 0.3rem;
-  border: none;
-  background-color: white;
-  color: #bbbbbb;
-  padding: 0;
-  cursor: pointer;
-  &:hover {
-    color: blue;
-  }
-`;
-
-const PwLossButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 23.5rem;
-`;
-
-const LoginButton = styled.button`
-  width: 100%;
-  height: 50px;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-size: 1.1rem;
-  background-color: #e4e4e4;
-  margin: 4rem 0 2.5rem 0;
-  cursor: pointer;
-  &:hover {
-    background-color: #e1e1e1;
-  }
-`;
-
-const PTag = styled.p`
-  font-size: 0.8rem;
-  color: #bbbbbb;
-`;
-
-const SocialLoginButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-`;
-
-const MoveSignUpButton = styled.button`
-  border: none;
-  background-color: white;
-  color: #bbbbbb;
-  padding: 0;
-  margin-top: 3rem;
-  cursor: pointer;
-  &:hover {
-    color: blue;
-  }
-`;
-
-// ICON
 const CloseIcon = styled(AiFillCloseCircle)`
   position: absolute;
-  bottom: 13px;
-  right: 20px;
-  font-size: 26px;
-  color: #ddd;
+  right: 1rem;
+  top: 0.55rem;
+  font-size: ${(props) => props.theme.fontSize.title24};
+  color: ${(props) => props.theme.colors.gray20};
   cursor: pointer;
   &:hover {
-    color: #d1d1d1;
+    color: ${(props) => props.theme.colors.gray40};
   }
 `;
 
@@ -392,20 +354,110 @@ const ViewIcon = styled(AiFillEye)`
   position: absolute;
   bottom: 10px;
   right: 18px;
-  font-size: 30px;
-  color: #ddd;
+  font-size: ${(props) => props.theme.fontSize.like30};
+  cursor: pointer;
+`;
+
+const ErrorMSG = styled.p`
+  padding: 0.2rem;
+  color: ${(props) => props.theme.colors.red};
+  font-size: ${(props) => props.theme.fontSize.label12};
+`;
+
+const LoginButton = styled.button`
+  width: 100%;
+  height: 3rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  color: ${(props) => props.theme.colors.gray40};
+  font-size: ${(props) => props.theme.fontSize.bottom20};
+  background-color: ${(props) => props.theme.colors.brandColor};
+  border: none;
   cursor: pointer;
   &:hover {
-    color: #d1d1d1;
+    border: 4px solid ${(props) => props.theme.colors.button};
+    color: ${(props) => props.theme.colors.black};
+  }
+  &:active {
+    background-color: ${(props) => props.theme.colors.white};
+  }
+`;
+
+const PTag = styled.span`
+  font-size: ${(props) => props.theme.fontSize.body16};
+  color: ${(props) => props.theme.colors.gray30};
+  margin-top: 2rem;
+`;
+
+const SocialLoginButtonContainer = styled.div`
+  width: 100%;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    gap: 1rem;
+    font-size: ${(props) => props.theme.fontSize.bottom20};
+    color: ${(props) => props.theme.colors.gray40};
+    background-color: ${(props) => props.theme.colors.brandColor};
+    cursor: pointer;
+    &:hover {
+      border: 4px solid ${(props) => props.theme.colors.button};
+      color: ${(props) => props.theme.colors.black};
+    }
+    &:active {
+      background-color: ${(props) => props.theme.colors.white};
+    }
   }
 `;
 
 const GoogleIcon = styled(FcGoogle)`
-  font-size: 4rem;
-  cursor: pointer;
+  font-size: 2rem;
 `;
 
-const GitIcon = styled(AiFillGithub)`
-  font-size: 4rem;
+const MoveSignUpButton = styled.button`
+  border: none;
+  background-color: white;
+  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.body16};
+  margin-top: 1rem;
   cursor: pointer;
+  transition: color 0.1s ease-in;
+  &:hover {
+    color: ${(props) => props.theme.colors.button};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+  }
+`;
+
+const PwLossButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 23rem;
+  cursor: pointer;
+  transition: color 0.1s ease-in;
+  &:hover {
+    color: ${(props) => props.theme.colors.button};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+  }
+`;
+
+const PwLossButton = styled.button`
+  margin-top: 0.3rem;
+  border: none;
+  background-color: transparent;
+  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.body16};
+  cursor: pointer;
+  transition: color 0.1s ease-in;
+  &:hover {
+    color: ${(props) => props.theme.colors.button};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+  }
 `;

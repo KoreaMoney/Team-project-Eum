@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wrap } from 'popmotion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { images } from '../components/home/image-data';
 import styled from 'styled-components';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -13,10 +13,10 @@ import {
   swipePower,
   variants,
 } from '../components/home/variants';
+
 const Home = () => {
   const navigate = useNavigate();
   const [[slider, direction], setSlider] = useState([0, 0]);
-  const imageRef = useRef(null);
   const imageIndex = wrap(0, images.length, slider);
 
   /**swiper pageination(각각 페이지로 인식하게 하기) */
@@ -26,14 +26,11 @@ const Home = () => {
       newDirection,
     ]);
   };
-  const saveUser = sessionStorage.getItem('user');
-  console.log('saveUser: ', saveUser);
-
   /**swiper autoplay(자동으로 넘기기) */
   useEffect(() => {
     const interval = setInterval(() => {
       setSlider([slider + 1, 1]);
-    }, 5000);
+    }, 8000);
     return () => clearInterval(interval);
   }, [slider]);
 
@@ -86,7 +83,7 @@ const Home = () => {
         {data &&
           data?.map((item: postType) => {
             return (
-              <ListContaier key={item.id}>
+              <ListContainer key={item.id}>
                 <div
                   onClick={() =>
                     navigate(`/detail/${item.category}/${item.id}`)
@@ -98,7 +95,7 @@ const Home = () => {
                     <li>가격 :{item.price}</li>
                   </ul>
                 </div>
-              </ListContaier>
+              </ListContainer>
             );
           })}
       </div>
@@ -141,7 +138,7 @@ const Img = styled(motion.img)`
   position: absolute;
   width: 70%;
   height: 15rem;
-  border-radius: 10px;
+  border-radius: 6px;
 `;
 const NextPrevWrapper = styled.div`
   z-index: 5;
@@ -176,7 +173,7 @@ const Prev = styled.div`
   height: 40px;
   /* transform: scale(-1); */
 `;
-const ListContaier = styled.div`
+const ListContainer = styled.div`
   background-color: gray;
   width: 70%;
   margin: auto;

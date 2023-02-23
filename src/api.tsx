@@ -22,3 +22,8 @@ export const getTradePoint = async () => {
   const response = await axios.get(`http://localhost:4000/onSalePosts`);
   return response.data;
 };
+
+// post 정보 출력하기
+export const getPostList = async () => {
+  return await axios.get(`http://localhost:4000/posts`);
+};

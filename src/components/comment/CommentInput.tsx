@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth } from '../../firebase/Firebase';
 import { commentType } from '../../types';
-
 const CommentInput = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -33,7 +32,6 @@ const CommentInput = () => {
       enabled: Boolean(saveUser?.uid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
-  console.log('user: ', user);
   // uuidv4()를 변수로 지정해서 넣으면 uuid가 바뀌지 않는 이슈가 있습니다.
   // id에 uuidv4를 바로 할당해 지속적으로 바뀔 수 있게 해줍니다.
   const [comment, setComment] = useState({
@@ -46,9 +44,9 @@ const CommentInput = () => {
     isEdit: false,
     profileImg: '',
   });
-
   // comment state가 객체형태이기 때문에 구조분해 할당을 통해 content만 변경될 수 있게 해줍니다.
   const { content } = comment;
+
   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment({
       ...comment,
@@ -56,7 +54,6 @@ const CommentInput = () => {
     });
   };
   console.log('comment: ', comment);
-
   // 글 등록 버튼을 누르면 실행되는 함수입니다.
   const onSubmitCommentHandler = async (
     e: React.FormEvent<HTMLFormElement>
@@ -68,9 +65,7 @@ const CommentInput = () => {
       id: uuidv4(),
       writer: auth.currentUser?.uid,
       writerNickName: auth.currentUser?.displayName,
-      profileImg: user.profileImg,
     });
-
     // 저장 후 textarea를 초기화 시켜줍니다.
     // uuidv4()를 다시 할당해줘서 uuid가 바뀌게 해줍니다.
     setComment({
@@ -79,6 +74,7 @@ const CommentInput = () => {
       id: uuidv4(),
     });
   };
+
   return (
     <div>
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
@@ -89,14 +85,11 @@ const CommentInput = () => {
     </div>
   );
 };
-
 export default CommentInput;
-
 const CommentTitleText = styled.p`
   font-size: ${(props) => props.theme.fontSize.title24};
   margin: 3rem 0 1rem;
 `;
-
 const CommentContainer = styled.form`
   display: flex;
   justify-content: space-between;
@@ -105,13 +98,12 @@ const InputTag = styled.input`
   width: 90%;
   font-size: ${(props) => props.theme.fontSize.body16};
   padding: 0.5rem;
-  border: 2px solid #ffda18;
-  background-color: #fffcef;
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  background-color: ${(props) => props.theme.colors.white};
   &:focus {
     outline: none;
   }
 `;
-
 const AddCommentButton = styled.button`
   border: none;
   background-color: black;

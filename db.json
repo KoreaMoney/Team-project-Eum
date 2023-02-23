@@ -33,24 +33,10 @@
       "isDoneCount": 0
     },
     {
-      "id": "yjSa4NpW6ePpzNFiR79H3OdvfNn1",
-      "nickName": "qwerqwerqwer",
-      "profileImg": {},
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0,
-      "config": {
-        "headers": {
-          "content-type": "multipart/form-data"
-        }
-      }
-    },
-    {
       "id": "YfvvQLlemQdIlg1iC2qxln64zrE2",
       "nickName": "qwert",
       "profileImg": null,
-      "point": "0",
+      "point": "10000",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
@@ -59,19 +45,19 @@
       "id": "pMqQWNn46GZdWki8sdyBeph8dXB2",
       "nickName": "qwer",
       "profileImg": null,
-      "point": "-333",
+      "point": "10000",
       "contactTime": "",
       "like": [],
       "isDoneCount": 0
     },
     {
       "id": "u8dPFFnL62OLZcF027PfuUUnFEh1",
-      "nickName": "굳",
-      "profileImg": null,
+      "nickName": "ㅁㅁㄴㅇ",
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/u8dPFFnL62OLZcF027PfuUUnFEh11677118716300?alt=media&token=6a501f16-6c36-4872-b028-afec3f7a0694",
       "point": "0",
       "contactTime": "",
       "like": [],
-      "isDoneCount": 0
+      "isDoneCount": 2
     },
     {
       "id": "1aGJ87fFYremZXLWyIAWWSCtYv42",
@@ -79,6 +65,39 @@
       "point": "0",
       "contactTime": "",
       "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "Tv1BG1Gi2VbPKCgP6G2UU6LKfN92",
+      "nickName": "한국인",
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "KUCNE4nWSTaviYdQE6OTh7jdf3U2",
+      "nickName": "코코아",
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "neP0DxPCsMTUjNWydPsnN13Us0X2",
+      "nickName": "이음러브",
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "isDoneCount": 0
+    },
+    {
+      "id": "6pUsJtXOghQS6xkN4W9aBaUqS9F3",
+      "nickName": "sssss",
+      "point": "0",
+      "contactTime": "",
+      "like": [],
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/6pUsJtXOghQS6xkN4W9aBaUqS9F31677119161354?alt=media&token=0ba7092a-2e89-4f9b-b31d-0f9ac75412e2",
       "isDoneCount": 0
     }
   ],
@@ -94,6 +113,7 @@
       "category": "etc",
       "like": [],
       "views": 19,
+
       "createAt": 1676612528057
     },
     {
@@ -106,7 +126,9 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 1,
+
+      "views": 3,
+
       "createAt": 1676619414560
     },
     {
@@ -195,7 +217,7 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677053679483
     },
     {
@@ -208,8 +230,10 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 2,
-      "createAt": 1677054155243
+
+      "views": 3,
+      "createAt": 1676619414560
+
     },
     {
       "id": "d49d40e8-bb1d-4fb7-b690-cf58eea764ae",
@@ -221,7 +245,7 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677054976250
     },
     {
@@ -234,7 +258,7 @@
       "imgURL": "",
       "category": "advice",
       "like": [],
-      "views": 1,
+      "views": 2,
       "createAt": 1677054986860
     },
     {
@@ -247,7 +271,7 @@
       "imgURL": "",
       "category": "study",
       "like": [],
-      "views": 0,
+      "views": 4,
       "createAt": 1677054997853
     },
     {
@@ -563,19 +587,7 @@
       "views": 2,
       "createAt": 1677055071989
     },
-    {
-      "id": "29516437-1551-4f0d-aedb-0b4513a9c751",
-      "title": "이거사면됨",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>dzdz</p>",
-      "price": "3000",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 1,
-      "createAt": 1677093182329
-    }
+
   ],
   "onSalePosts": [
     {
@@ -698,40 +710,6 @@
       "like": []
     },
     {
-      "id": "64742636-be30-4c13-8a7b-f2eb735d184b",
-      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
-      "buyerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "title": "하이",
-      "content": "하이",
-      "imgURL": [],
-      "price": "333",
-      "category": "study",
-      "ceatedAt": 1676737506617,
-      "isDone": true,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "bc8b74c0-7967-47e0-b03c-a1fb982121ed",
-      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
-      "buyerUid": "pMqQWNn46GZdWki8sdyBeph8dXB2",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "title": "하이",
-      "content": "하이",
-      "imgURL": [],
-      "price": "333",
-      "category": "study",
-      "ceatedAt": 1676996340649,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": true,
-      "views": 3,
-      "like": []
-    },
-    {
       "id": "11e32a2e-c3e6-4150-8621-31f1eec104f6",
       "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
       "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
@@ -819,24 +797,6 @@
   ],
   "comments": [
     {
-      "id": "71df26e4-d63d-4b4f-9df7-34a0b33bd83a",
-      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
-      "content": "dd",
-      "createAt": 1677083210824,
-      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "writerNickName": "구매자",
-      "isEdit": false
-    },
-    {
-      "id": "24b89cb0-4aad-4e22-81f8-0c33e0099473",
-      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
-      "content": "daa",
-      "createAt": 1677083210824,
-      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "writerNickName": "구매자",
-      "isEdit": false
-    },
-    {
       "id": "707c3304-4304-44cb-b36c-3ad5d702e4c8",
       "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
       "content": "d",
@@ -865,6 +825,46 @@
       "writerNickName": "구매자",
       "isEdit": false,
       "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5"
+    },
+    {
+      "id": "d0810f62-1514-4ccc-b0e3-bb026c8dcb7c",
+      "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
+      "content": "댓글 잘  달립니다.",
+      "createAt": 1677118926427,
+      "writer": "u8dPFFnL62OLZcF027PfuUUnFEh1",
+      "writerNickName": "qwerq",
+      "isEdit": false,
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/u8dPFFnL62OLZcF027PfuUUnFEh11677118716300?alt=media&token=6a501f16-6c36-4872-b028-afec3f7a0694"
+    },
+    {
+      "id": "236590ef-d48f-46a7-ab3d-4bc480ff4e8a",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "ㅇㅇㅇㅇ",
+      "createAt": 1677119624116,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
+    },
+    {
+      "id": "c8003c41-9878-43f0-8584-1fb449f7d6f6",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "ㅇㅇㅇㅇㅇ",
+      "createAt": 1677119624116,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
+    },
+    {
+      "id": "fc400d92-5853-46ab-a915-1f4e6fa6c5e6",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "sss",
+      "createAt": 1677121492824,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
     }
   ]
 }

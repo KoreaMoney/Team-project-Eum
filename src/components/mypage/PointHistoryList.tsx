@@ -7,7 +7,13 @@ import { auth } from '../../firebase/Firebase';
 const PointHistoryList = () => {
   const [category, setCategory] = useState(0);
   const queryClient = useQueryClient();
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
+  const [category, setCategoey] = useState('all');
+
+  // 거래 목록을 받아옵니다.
+
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -15,88 +21,97 @@ const PointHistoryList = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
-  console.log('tradeData: ', tradeData);
 
-  const buyTradeList =
-    tradeData &&
-    tradeData.filter((user: any) => {
-      return saveUser?.uid === user?.buyerUid;
+  // 거래 완료 목록을 받아옵니다.
+  const isDoneTradeList =
+    tradeData?.data &&
+    tradeData.data.filter((post: any) => {
+      return post.isDone === true;
     });
   console.log('buyTradeList: ', buyTradeList);
 
-  const sellTradeList =
-    tradeData &&
-    tradeData.filter((user: any) => {
-      return saveUser?.uid === user?.sellerUid;
-    });
-  console.log('sellTradeList: ', sellTradeList);
 
-  let NewTradeList;
-  if (buyTradeList && sellTradeList) {
-    NewTradeList = [...buyTradeList, ...sellTradeList];
-  } else {
-    NewTradeList = undefined;
-  }
+  // 완료 목록 중 로그인 한 유저가 판매자 or 구매자인 목록을 나타냅니다.
+  const allTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === (user?.sellerUid || user?.buyerUid);
+  });
+
+  // 완료 목록 중 로그인 한 유저가 판매자인 목록을 나타냅니다.
+  const sellTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === user?.sellerUid;
+  });
+
+  // 완료 목록 중 로그인 한 유저가 구매자인 목록을 나타냅니다.
+  const buyTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === user?.buyerUid;
+  });
+
+  // 포인트모달창 내의 nav클릭시 스타일을 지정합니다.
+  const categoryStyle = {
+    border: 'none',
+    borderBottom: '2px solid #000000',
+    color: '#000000',
+  };
+
 
   return (
     <PointHistoryContainer>
       <PointHistoryCategoryWrapper>
-        <PointHistoryAllList onClick={() => setCategory(0)}>
+
+        <PointHistoryAllList
+          onClick={() => setCategoey('all')}
+          style={category === 'all' ? categoryStyle : undefined}
+        >
           전체
         </PointHistoryAllList>
-        <PointHistorySellList onClick={() => setCategory(1)}>
+        <PointHistorySellList
+          onClick={() => setCategoey('sell')}
+          style={category === 'sell' ? categoryStyle : undefined}
+        >
           판매
         </PointHistorySellList>
-        <PointHistoryBuyList onClick={() => setCategory(2)}>
+        <PointHistoryBuyList
+          onClick={() => setCategoey('buy')}
+          style={category === 'buy' ? categoryStyle : undefined}
+        >
           구매
         </PointHistoryBuyList>
       </PointHistoryCategoryWrapper>
       <PointHistoryWrapper>
-        {getTradeListLoading ? (
-          <div>Loading...</div>
-        ) : category === 0 ? (
-          NewTradeList?.map((prev: any) => (
-            <PointHistory key={prev.id}>
-              {prev.buyerUid === saveUser.uid ? (
-                <BuyOrSellerText>구매</BuyOrSellerText>
-              ) : prev.sellerUid ? (
-                <BuyOrSellerText>판매</BuyOrSellerText>
-              ) : (
-                '에러'
-              )}
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
-              <PointHistoryAmount>
-                {prev.buyerUid === saveUser.uid ? (
-                  <PlusOrMinus>-</PlusOrMinus>
-                ) : prev.sellerUid ? (
-                  <PlusOrMinus>+</PlusOrMinus>
-                ) : (
-                  '에러'
-                )}
-                {prev.price}
-              </PointHistoryAmount>
-            </PointHistory>
-          ))
-        ) : category === 1 ? (
-          sellTradeList?.map((prev: any) => (
-            <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
-              <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
-            </PointHistory>
-          ))
-        ) : category === 2 && buyTradeList ? (
-          buyTradeList.map((prev: any) => (
-            <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
-              <PointHistoryAmount>-{prev.price}</PointHistoryAmount>
-            </PointHistory>
-          ))
-        ) : (
-          <>Error</>
-        )}
+
+        {category === 'all'
+          ? allTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
+        {category === 'sell'
+          ? sellTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
+        {category === 'buy'
+          ? buyTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
       </PointHistoryWrapper>
     </PointHistoryContainer>
   );
