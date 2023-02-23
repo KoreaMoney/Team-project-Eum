@@ -14,7 +14,6 @@ import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import { editPostType } from '../types';
 import axios from 'axios';
-
 const MyPage = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -22,8 +21,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   console.log('saveUser: ', saveUser);
-console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
-
+  console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
   const {
     isLoading: getLoading,
     isError,
@@ -31,15 +29,12 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
     error,
   } = useQuery(['users'], getProfileNickName);
   console.log('data: ', data);
-
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
-
   const [editNickNameValue, setEditNickNameValue] = useState(
     data?.[0]?.nickName
   );
   // console.log('data?.users?.[0]: ', data?.[0]);
-
   const EditNickName = async (id: string) => {
     const editNickName = editNickNameValue?.trim();
     if (!editNickName) {
@@ -51,7 +46,6 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
       nickName: editNickNameValue,
     };
     console.log('newNickName: ', newNickName);
-
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -59,7 +53,6 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
     });
     setIsEdit(false);
   };
-
   if (!saveUser) {
     return <SignIn />;
   }
@@ -128,9 +121,7 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
     </MyPageContainer>
   );
 };
-
 export default MyPage;
-
 const MyPageContainer = styled.div`
   padding: 40px;
   width: 100%;
@@ -138,18 +129,15 @@ const MyPageContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 `;
-
 const UserProfileWrapper = styled.div`
   width: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const UserPostWrapper = styled.div`
   width: 72rem;
 `;
-
 const UserNameWrapper = styled.div`
   padding-left: 62px;
   margin: 10px auto 30px auto;
@@ -158,7 +146,6 @@ const UserNameWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserName = styled.div`
   width: 14rem;
   height: 28px;
@@ -167,7 +154,6 @@ const UserName = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserNameEditButton = styled.button`
   width: 62px;
   height: 28px;
@@ -182,7 +168,6 @@ const UserNameEditButton = styled.button`
     color: #656565;
   }
 `;
-
 const CheckButton = styled.button`
   width: 62px;
   height: 28px;
@@ -197,7 +182,6 @@ const CheckButton = styled.button`
     color: #656565;
   }
 `;
-
 const EditInputValue = styled.input`
   width: 14rem;
   height: 28px;
@@ -210,7 +194,6 @@ const EditInputValue = styled.input`
     outline: none;
   }
 `;
-
 const UserTimeWrapper = styled.div`
   margin-bottom: 2rem;
   width: 18rem;
@@ -218,14 +201,12 @@ const UserTimeWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const UserTime = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
 const UserRatingWrapper = styled.div`
   margin-bottom: 2rem;
   width: 18rem;
@@ -233,7 +214,6 @@ const UserRatingWrapper = styled.div`
   justify-content: left;
   align-items: center;
 `;
-
 const UserbadgeWrapper = styled.div`
   padding: 12px;
   width: 18rem;
@@ -246,7 +226,6 @@ const UserbadgeWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const UserSellBuyWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -254,7 +233,6 @@ const UserSellBuyWrapper = styled.div`
   gap: 2.5rem;
   margin-bottom: 24px;
 `;
-
 const UserSellWrapper = styled.div`
   padding: 12px;
   width: 50%;
@@ -266,7 +244,6 @@ const UserSellWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-
 const UserBuyWrapper = styled.div`
   padding: 12px;
   width: 50%;
@@ -278,7 +255,6 @@ const UserBuyWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-
 const UserLikeWrapper = styled.div`
   padding: 12px;
   width: 100%;
@@ -291,7 +267,6 @@ const UserLikeWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const CommentsList = styled.div`
   padding: 12px;
   width: 100%;
@@ -304,7 +279,6 @@ const CommentsList = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const ProfileNavWrapper = styled.div`
   width: 100%;
   margin-bottom: 2rem;
@@ -312,7 +286,6 @@ const ProfileNavWrapper = styled.div`
   justify-content: left;
   align-items: center;
 `;
-
 const CategoryListWrapper = styled.div`
   padding: 12px;
   width: 100%;
@@ -325,7 +298,6 @@ const CategoryListWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
 `;
-
 const LikeListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -341,7 +313,6 @@ const LikeListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const SellListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -357,7 +328,6 @@ const SellListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const BuyListBar = styled.button`
   width: 8rem;
   height: 32px;
@@ -373,7 +343,6 @@ const BuyListBar = styled.button`
     border-bottom: 2px solid #666666;
   }
 `;
-
 const CommentsListBar = styled.button`
   width: 8rem;
   height: 32px;
