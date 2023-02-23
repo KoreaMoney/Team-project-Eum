@@ -7,7 +7,7 @@ export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
   profileImg: string | null | undefined;
-  point: string;
+  point: number;
   contactTime: string;
   like: [];
   isDoneCount: number;
@@ -18,7 +18,7 @@ export interface postType {
   nickName: string | null | undefined;
   sellerUid: string | undefined;
   content: string;
-  price: string;
+  price: number | string;
   imgURL: string;
   category: string;
   like: [];
@@ -29,7 +29,7 @@ export interface postType {
 export interface editPostType {
   title: string;
   content: string;
-  price: string;
+  price: number | string;
   imgURL: string;
   category: string;
 }
@@ -53,7 +53,7 @@ export interface onSalePostType {
   imgURL: [];
   like: [];
   views: number;
-  price: string;
+  price: number | string;
   category: string;
   createdAt: number;
   isDone: boolean;

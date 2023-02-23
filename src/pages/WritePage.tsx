@@ -69,7 +69,10 @@ const WritePage = () => {
       axios.post(`${process.env.REACT_APP_JSON}/posts`, newPost),
     {
       onSuccess: () => {
-        navigate(`/detail/${post.category}/${post.id}`);
+        setTimeout(() => {
+          navigate(`/detail/${post.category}/${post.id}`);
+        }, 500);
+        
       },
     }
   );
@@ -86,7 +89,7 @@ const WritePage = () => {
     nickName,
     sellerUid,
     content: '',
-    price: '',
+    price: 0,
     imgURL: '',
     category: '',
     like: [],
@@ -137,8 +140,9 @@ const WritePage = () => {
 
     setPost({
       ...post,
-      price: value.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      price: value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
     });
+    console.log('dd: ', typeof post.price);
   };
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -166,7 +170,7 @@ const WritePage = () => {
       titleRef.current?.focus();
       return true;
     }
-    if (!price.trim()) {
+    if (!price) {
       customWarningAlert('가격을 입력해주세요');
       priceRef.current?.focus();
       return true;
@@ -186,7 +190,7 @@ const WritePage = () => {
     }
     const newPost: postType = {
       ...post,
-      price: price.replace(/[^0-9]/g, ''),
+      price: Number(price.toString().replace(/[^0-9]/g, '')),
     };
     await mutate(newPost); //
   };

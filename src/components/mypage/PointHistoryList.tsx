@@ -17,34 +17,61 @@ const PointHistoryList = () => {
     getTradePoint
   );
 
+  const isDoneTradeList =
   //거래 List작성하기
   const buyTradeList =
     tradeData &&
-    tradeData.filter((user: any) => {
-      return saveUser?.uid === user?.buyerUid;
+    tradeData.filter((post: any) => {
+      return post.isDone === true;
     });
+  console.log('isDoneTradeList', isDoneTradeList);
 
-  //판매 List작성하기
-  const sellTradeList =
-    tradeData &&
-    tradeData.filter((user: any) => {
-      return saveUser?.uid === user?.sellerUid;
-    });
+  // 거래완료 목록 중 내 판매목록
+  const buyTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser?.uid === user?.buyerUid;
+  });
+  console.log('buyTradeList', buyTradeList);
 
-  //새로운 거래 List
+  // 거래완료 목룩 중 내 구매목록
+  const sellTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser?.uid === user?.sellerUid;
+  });
+  console.log('sellTradeList', sellTradeList);
+
+  // 내 전체 거래 목록
   let NewTradeList;
   if (buyTradeList && sellTradeList) {
     NewTradeList = [...buyTradeList, ...sellTradeList];
   } else {
     NewTradeList = undefined;
   }
+  console.log('NewTradeList', NewTradeList);
 
+  const categoryStyle = {
+    color: `#656565`,
+    borderBottom: `2px solid #666666`,
+  };
   return (
     <PointHistoryContainer>
       <PointHistoryCategoryWrapper>
-        <PointWrapper onClick={() => setCategory(0)}>전체</PointWrapper>
-        <PointWrapper onClick={() => setCategory(1)}>판매</PointWrapper>
-        <PointWrapper onClick={() => setCategory(2)}>구매</PointWrapper>
+        <PointHistoryAllList
+          onClick={() => setCategory(0)}
+          style={category === 0 ? categoryStyle : undefined}
+        >
+          전체
+        </PointHistoryAllList>
+        <PointHistorySellList
+          onClick={() => setCategory(1)}
+          style={category === 1 ? categoryStyle : undefined}
+        >
+          판매
+        </PointHistorySellList>
+        <PointHistoryBuyList
+          onClick={() => setCategory(2)}
+          style={category === 2 ? categoryStyle : undefined}
+        >
+          구매
+        </PointHistoryBuyList>
       </PointHistoryCategoryWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
@@ -52,14 +79,14 @@ const PointHistoryList = () => {
         ) : category === 0 ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              {prev.buyerUid === saveUser.uid ? (
-                <BuyOrSellerText>구매</BuyOrSellerText>
-              ) : prev.sellerUid ? (
-                <BuyOrSellerText>판매</BuyOrSellerText>
-              ) : (
-                '에러'
-              )}
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryDate>
+                {prev.buyerUid === saveUser.uid
+                  ? '구매'
+                  : prev.sellerUid
+                  ? '판매'
+                  : '에러'}
+              </PointHistoryDate>
+
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>
                 {prev.buyerUid === saveUser.uid ? (
@@ -90,7 +117,7 @@ const PointHistoryList = () => {
             </PointHistory>
           ))
         ) : (
-          <>Error</>
+          <>없음</>
         )}
       </PointHistoryWrapper>
     </PointHistoryContainer>
@@ -99,7 +126,14 @@ const PointHistoryList = () => {
 export default PointHistoryList;
 
 const PointHistoryContainer = styled.div``;
+const PlusOrMinus = styled.span`
+  width: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const PointHistoryCategoryWrapper = styled.div``;
+
 const PointWrapper = styled.button`
   width: 8rem;
   height: 32px;
@@ -134,18 +168,30 @@ const PointHistory = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 12px 0;
+  margin: 1rem 0;
   width: 100%;
   height: 1.5rem;
   font-size: 1rem;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 `;
-const PointHistoryDate = styled.p`
-  width: 20%;
+const PointHistoryDate = styled.div`
+  width: 10rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+`;
+const PointHistoryContent = styled.div`
+  width: 25rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 `;
 const PointHistoryContent = styled.p`
   width: 65%;
 `;
-const PointHistoryAmount = styled.p`
-  width: 15%;
+const PointHistoryAmount = styled.div`
+  width: 6rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 `;

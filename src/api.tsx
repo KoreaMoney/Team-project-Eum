@@ -6,6 +6,10 @@ export const getProfileNickName = async (user: any) => {
     `${process.env.REACT_APP_JSON}/users/${user.id}`
   );
   return response.data;
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/users/${user.id}`
+  );
+  return response.data;
 };
 
 // profile nickname 수정하기
@@ -24,6 +28,8 @@ export const getProfilePoint = async (user: any) => {
 
 // 거래내역 point 출력하기
 export const getTradePoint = async () => {
+  const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
+  return response.data;
   const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
   return response.data;
 };

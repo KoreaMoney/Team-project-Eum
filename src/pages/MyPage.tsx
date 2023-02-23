@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getProfileNickName, updateProfileNickName } from '../api';
+import {
+  getProfileNickName,
+  getTradePoint,
+  updateProfileNickName,
+} from '../api';
+import { useNavigate, useParams } from 'react-router-dom';
 import SignIn from './SignIn';
 import Profile from '../components/mypage/Profile';
 import PointModal from '../components/mypage/PointModal';
@@ -16,20 +21,49 @@ const MyPage = () => {
   const queryClient = useQueryClient();
   const [isEdit, setIsEdit] = useState(false);
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  console.log('saveUser: ', saveUser);
+  const [category, setCategory] = useState('likelist');
+  console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
 
-  const { isLoading: getLoading, data } = useQuery(
-    ['users'],
-    getProfileNickName
-  );
+  // 로그인한 유저 정보를 받아옵니다.
+  const {
+    isLoading: getLoading,
+    isError,
+    data,
+    error,
+  } = useQuery(['users'], getProfileNickName);
+
+  // 거래 목록을 받아옵니다.
+  const {
+    isLoading: getTradeListLoading,
+    isError: getTradeListIsError,
+    data: tradeData,
+    error: getTradeListError,
+  } = useQuery(['onSalePosts'], getTradePoint);
+
+  // 거래 완료 목록을 받아옵니다.
+  const isDoneTradeList =
+    tradeData?.data &&
+    tradeData.data.filter((post: any) => {
+      return post.isDone === true;
+    });
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
-  const [editNickNameValue, setEditNickNameValue] = useState(
-    data?.[0]?.nickName
-  );
+  const [editNickNameValue, setEditNickNameValue] = useState('');
 
-  //닉네임 part
+  // 로그인한 유저의 판매 목록을 출력합니다.
+  const sellTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser.uid === user?.sellerUid;
+  });
+
+  // 로그인한 유저의 구매 목록을 출력합니다.
+  const buyTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser.uid === user?.buyerUid;
+  });
+
+  // 닉네임을 수정합니다.
   const EditNickName = async (id: string) => {
     //닉네임 수정하기
     const editNickName = editNickNameValue?.trim();
@@ -42,7 +76,6 @@ const MyPage = () => {
       id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
-
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -55,6 +88,12 @@ const MyPage = () => {
   if (!saveUser) {
     return <SignIn />;
   }
+
+  // 마이페이지 Nav 클릭시 Nav 이미지
+  const categoryStyle = {
+    color: `#656565`,
+    borderBottom: `2px solid #666666`,
+  };
 
   return (
     <MyPageContainer>
@@ -96,34 +135,82 @@ const MyPage = () => {
         </UserNameWrapper>
         <PointModal />
         <UserTimeWrapper>
-          <UserTime>연락가능한 시간 : 09:00 - 21:00</UserTime>
+          <UserTime>
+            <p>연락가능한 시간 : </p>
+            <input type="time" />
+          </UserTime>
         </UserTimeWrapper>
-        <UserRatingWrapper>등급표시</UserRatingWrapper>
+        <UserRatingWrapper>내가 가진 배지</UserRatingWrapper>
+        <UserbadgeWrapper>배지</UserbadgeWrapper>
       </UserProfileWrapper>
       <UserPostWrapper>
         <ProfileNavWrapper>
-          <ListWrapper>관심목록</ListWrapper>
-          <ListWrapper>판매내역</ListWrapper>
-          <ListWrapper>구매내역</ListWrapper>
-          <ListWrapper>후기관리</ListWrapper>
+          <LikeListBar
+            onClick={() => setCategory('likelist')}
+            style={category === 'likelist' ? categoryStyle : undefined}
+          >
+            관심목록
+          </LikeListBar>
+          <SellListBar
+            onClick={() => setCategory('selllist')}
+            style={category === 'selllist' ? categoryStyle : undefined}
+          >
+            판매내역
+          </SellListBar>
+          <BuyListBar
+            onClick={() => setCategory('buylist')}
+            style={category === 'buylist' ? categoryStyle : undefined}
+          >
+            구매내역
+          </BuyListBar>
+          <CommentsListBar
+            onClick={() => setCategory('commentlist')}
+            style={category === 'commentlist' ? categoryStyle : undefined}
+          >
+            후기관리
+          </CommentsListBar>
         </ProfileNavWrapper>
-        <UserSellBuyWrapper>
-          <UserWrapper>팝니다</UserWrapper>
-          <UserWrapper>삽니다</UserWrapper>
-        </UserSellBuyWrapper>
-        <div>내가 가진 배지</div>
-        <UserBadgeWrapper>배지</UserBadgeWrapper>
-        <div>찜한 목록</div>
-        <UserWrapper>찜 List</UserWrapper>
-        <div>후기 관리</div>
-        <UserWrapper>후기 List</UserWrapper>
+        <CategoryListWrapper>
+          {category === 'likelist'
+            ? sellTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserSellWrapper>팝니다</UserSellWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'selllist'
+            ? sellTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserSellWrapper>팝니다</UserSellWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'buylist'
+            ? buyTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserBuyWrapper>삽니다</UserBuyWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'commentlist'
+            ? sellTradeList?.map((list: any) => {
+                return <CommentsList key={list.id}>후기 List</CommentsList>;
+              })
+            : null}
+
+          <UserLikeWrapper>찜 List</UserLikeWrapper>
+        </CategoryListWrapper>
       </UserPostWrapper>
     </MyPageContainer>
   );
 };
-
 export default MyPage;
-
 const MyPageContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -131,18 +218,15 @@ const MyPageContainer = styled.div`
   padding: 40px;
   width: 100%;
 `;
-
 const UserProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 24rem;
 `;
-
 const UserPostWrapper = styled.div`
   width: 72rem;
 `;
-
 const UserNameWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -151,12 +235,17 @@ const UserNameWrapper = styled.div`
   margin: 10px auto 30px auto;
   border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
 `;
-
-const EditInputValue = styled.input`
-  text-align: center;
+const UserName = styled.div`
   width: 14rem;
   height: 28px;
-  padding: 0px 12px;
+  font-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const UserNameEditButton = styled.button`
+  width: 62px;
+  height: 28px;
   font-size: 100%;
   border: none;
   border-radius: 8px;
@@ -164,7 +253,6 @@ const EditInputValue = styled.input`
     outline: none;
   }
 `;
-
 const CheckButton = styled.button`
   width: 62px;
   height: 28px;
@@ -179,11 +267,7 @@ const CheckButton = styled.button`
     color: ${(props) => props.theme.colors.gray30};
   }
 `;
-
-const UserName = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const EditInputValue = styled.input`
   width: 14rem;
   height: 28px;
   font-size: 100%;
@@ -203,7 +287,6 @@ const UserNameEditButton = styled.button`
     color: ${(props) => props.theme.colors.gray30};
   }
 `;
-
 const UserTimeWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -211,14 +294,12 @@ const UserTimeWrapper = styled.div`
   margin-bottom: 2rem;
   width: 18rem;
 `;
-
 const UserTime = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
-
 const UserRatingWrapper = styled.div`
   display: flex;
   justify-content: left;
@@ -227,10 +308,7 @@ const UserRatingWrapper = styled.div`
   width: 18rem;
 `;
 
-const UserBadgeWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+const UserbadgeWrapper = styled.div`
   padding: 12px;
   width: 18rem;
   height: 6rem;
@@ -239,7 +317,6 @@ const UserBadgeWrapper = styled.div`
   border-radius: 10px;
   margin-bottom: 24px;
 `;
-
 const UserSellBuyWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -248,27 +325,63 @@ const UserSellBuyWrapper = styled.div`
   margin-bottom: 24px;
 `;
 
-const UserWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+const UserSellWrapper = styled.div`
   padding: 12px;
   width: 50%;
   height: 320px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
+  background-color: lightgray;
+  color: #656565;
   border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
 
+const UserBuyWrapper = styled.div`
+  padding: 12px;
+  width: 50%;
+  height: 320px;
+  background-color: lightgray;
+  color: #656565;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const UserLikeWrapper = styled.div`
+  padding: 12px;
+  width: 100%;
+  height: 320px;
+  background-color: lightgray;
+  color: #656565;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 24px;
+`;
+
+const CommentsList = styled.div`
+  padding: 12px;
+  width: 100%;
+  height: 320px;
+  background-color: lightgray;
+  color: #656565;
+  border-radius: 10px;
+`;
 const ProfileNavWrapper = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
+`;
+
+const CategoryListWrapper = styled.div`
+  padding: 12px;
   width: 100%;
   margin-bottom: 2rem;
 `;
-
-const ListWrapper = styled.button`
+const LikeListBar = styled.button`
   width: 8rem;
   height: 32px;
   font-size: 100%;
@@ -278,7 +391,53 @@ const ListWrapper = styled.button`
   border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
   &:hover {
     cursor: pointer;
-    color: ${(props) => props.theme.colors.gray30};
-    border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+const SellListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+const BuyListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
+  }
+`;
+const CommentsListBar = styled.button`
+  width: 8rem;
+  height: 32px;
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #cccccc;
+  border: none;
+  border-bottom: 2px solid #e6e6e6;
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #656565;
+    border-bottom: 2px solid #666666;
   }
 `;

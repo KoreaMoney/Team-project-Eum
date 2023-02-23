@@ -56,7 +56,7 @@ const Transaction = () => {
 
   // user의 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
-    (newUser: { point: string; isDoneCount: number }) =>
+    (newUser: { point: number; isDoneCount: number }) =>
       axios.patch(
         `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`,
 
@@ -112,7 +112,7 @@ const Transaction = () => {
 
   const onClickClearRequest = async () => {
     await updateUser({
-      point: String(Number(sellerData.point) + Number(data?.[0]?.price)),
+      point: Number(sellerData?.point) + Number(data?.[0]?.price),
       isDoneCount: sellerData.isDoneCount + 1,
     });
     await clearRequest({
@@ -176,12 +176,7 @@ const Transaction = () => {
         </ClearDivContainer>
       )}
       <EditDeleteButtonContainer>
-        {saveUser?.uid === sellerData?.id && (
-          <>
-            <EditDeleteButton>수정</EditDeleteButton>
-            <EditDeleteButton>삭제</EditDeleteButton>
-          </>
-        )}
+      
       </EditDeleteButtonContainer>
       <PostContainer>
         <PostImage img={data?.[0]?.imgURL} />

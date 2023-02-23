@@ -71,8 +71,12 @@ const Detail = () => {
   );
 
   // 포인트를 수정해주는 mutation 함수
-  const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(`${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`, newUser)
+  const { mutate: updateUser } = useMutation(
+    (newUser: { point: string | number | undefined }) =>
+      axios.patch(
+        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`,
+        newUser
+      )
   );
 
   // 글 찜(즐겨찾기)기능
@@ -98,7 +102,23 @@ const Detail = () => {
     }
   );
 
-  //좋아요 개수 체크
+  // 글 삭제
+  const { mutate: deletePost } = useMutation(
+    (postId: string) =>
+      axios.delete(`${process.env.REACT_APP_JSON}/posts/${id}`),
+    {
+      // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
+      onSuccess: () => {
+        queryClient.invalidateQueries(['posts']);
+        navigate('/categorypage/all');
+      },
+    }
+  );
+  const onClickDeleteComment = async (postId: string) => {
+    customConfirm('정말 삭제하시겠습니까?', '내 글 삭제', '삭제', async () => {
+      await deletePost(postId);
+    });
+  };
   const postCounter = async () => {
     if (saveUser) {
       if (postCountCheck) {
@@ -129,15 +149,22 @@ const Detail = () => {
    * 3. 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
    */
   const onClickApplyBuy = async () => {
-    if (saveUser) {
-      await updateUser({
-        point: String(parseInt(user?.point) - parseInt(post?.[0]?.price)),
-      });
+    if (!saveUser) {
+      navigate('/signin', { state: { from: location.pathname } });
+      return;
+    }
+
+    const point = Number(user?.point) || 0; // null인 경우 0으로 초기화
+    const price = Number(post?.[0]?.price) || 0; // null인 경우 0으로 초기화
+
+    if (point >= price) {
+      // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
+      await updateUser({ point: point - price });
       const uuid = uuidv4();
       await onSalePosts({
         id: uuid,
         postsId: id,
-        buyerUid: saveUser?.uid,
+        buyerUid: saveUser.uid,
         sellerUid: post?.[0]?.sellerUid,
         title: post?.[0]?.title,
         content: post?.[0]?.content,
@@ -152,10 +179,10 @@ const Detail = () => {
         like: post?.[0]?.like,
       });
       setTimeout(() => {
-        navigate(`/detail/${categoryName}/${id}/${saveUser?.uid}/${uuid}`);
+        navigate(`/detail/${categoryName}/${id}/${user.uid}/${uuid}`);
       }, 500);
     } else {
-      navigate('/signin', { state: { from: location.pathname } });
+      customWarningAlert('포인트가 부족합니다.');
     }
   };
 
@@ -164,8 +191,12 @@ const Detail = () => {
       <EditDeleteButtonContainer>
         {saveUser?.uid === seller?.id && (
           <>
-            <EditDeleteButton>수정</EditDeleteButton>
-            <EditDeleteButton>삭제</EditDeleteButton>
+            <EditDeleteButton onClick={() => navigate(`/editpage/${id}`)}>
+              수정
+            </EditDeleteButton>
+            <EditDeleteButton onClick={() => onClickDeleteComment(post[0].id)}>
+              삭제
+            </EditDeleteButton>
           </>
         )}
       </EditDeleteButtonContainer>
@@ -173,7 +204,9 @@ const Detail = () => {
         <PostImage img={post[0].imgURL} />
         <PostInfoWrapper>
           <TitleText>{post[0].title}</TitleText>
-          <PostPrice>{post[0].price} 원</PostPrice>
+          <PostPrice>
+            {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
+          </PostPrice>
           <SellerText>판매자</SellerText>
           <SellerProfileContainer>
             <SellerProfileTopDiv>
