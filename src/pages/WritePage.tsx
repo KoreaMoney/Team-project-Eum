@@ -64,7 +64,10 @@ const WritePage = () => {
       axios.post(`${process.env.REACT_APP_JSON}/posts`, newPost),
     {
       onSuccess: () => {
-        navigate(`/detail/${post.category}/${post.id}`);
+        setTimeout(() => {
+          navigate(`/detail/${post.category}/${post.id}`);
+        }, 500);
+        
       },
     }
   );
@@ -78,7 +81,7 @@ const WritePage = () => {
     nickName,
     sellerUid,
     content: '',
-    price: '',
+    price: 0,
     imgURL: '',
     category: '',
     like: [],
@@ -125,12 +128,13 @@ const WritePage = () => {
   };
 
   const onChangePricec = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-
+    const value = e.target.value.toString().replace(/[^0-9]/g, '');
+    
     setPost({
       ...post,
-      price: value.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      price: value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
     });
+    console.log('dd: ', typeof post.price);
   };
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만들어줬다. 더 간편한 방법이 있을까??
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -158,7 +162,7 @@ const WritePage = () => {
       titleRef.current?.focus();
       return true;
     }
-    if (!price.trim()) {
+    if (!price) {
       customWarningAlert('가격을 입력해주세요');
       priceRef.current?.focus();
       return true;
@@ -178,7 +182,7 @@ const WritePage = () => {
     }
     const newPost: postType = {
       ...post,
-      price: price.replace(/[^0-9]/g, ''),
+      price: Number(price.toString().replace(/[^0-9]/g, '')),
     };
     await mutate(newPost); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
     // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
@@ -273,7 +277,7 @@ const WritePage = () => {
 export default WritePage;
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0 auto;
 `;
 const BorderBox = styled.div`

@@ -157,7 +157,7 @@ console.log( 'data: ' ,data);
           await mutate({
             id: auth.currentUser?.uid,
             nickName,
-            point: '10000000',
+            point: 10000000,
             contactTime: '',
             like: [],
             profileImg: null,

@@ -178,7 +178,10 @@ const CategoryPage = () => {
                         <LikeCountText>{post.like.length}</LikeCountText>
                       </LikeIconContainer>
                       <PriceText>
-                        {post.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
+                        {post.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                        원
                       </PriceText>
                     </RightContainer>
                   </BottomContainer>

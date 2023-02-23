@@ -57,7 +57,7 @@ const Transaction = () => {
 
   // user의 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
-    (newUser: { point: string; isDoneCount: number }) =>
+    (newUser: { point: number; isDoneCount: number }) =>
       axios.patch(
         `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`,
 
@@ -110,13 +110,15 @@ const Transaction = () => {
   // isDone도 true로 변경되어 판매,구매가 완료됩니다.
   const onClickClearRequest = async () => {
     await updateUser({
-      point: String(Number(sellerData.point) + Number(data?.[0]?.price)),
+      point: Number(sellerData?.point) + Number(data?.[0]?.price),
       isDoneCount: sellerData.isDoneCount + 1,
     });
     await clearRequest({
       isDone: true,
     });
   };
+
+  
 
   // 판매자,구매자가 취소버튼을 누르면 실행되는 함수입니다.
   const onClickCancel = () => {
