@@ -26,7 +26,6 @@ const PointModal = () => {
       return auth.currentUser?.uid === user.id;
     });
 
-
   // 커스텀모달을 불러옵니다.
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);

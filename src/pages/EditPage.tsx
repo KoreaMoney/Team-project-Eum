@@ -32,7 +32,7 @@ const EditPage = () => {
     ['editPost', id],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/posts?id=${id}`
+        `${process.env.REACT_APP_JSON}/posts?id=${id}`
       );
       return response.data;
     },
@@ -48,10 +48,7 @@ const EditPage = () => {
     isLoading: patchLoading,
   } = useMutation(
     (editPost: editPostType) =>
-      axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/posts/${id}`,
-        editPost
-      ),
+      axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, editPost),
     {
       onSuccess: () => {
         navigate(`/detail/${category}/${id}`);
