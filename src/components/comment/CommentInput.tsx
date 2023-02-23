@@ -1,7 +1,7 @@
 import { uuidv4 } from '@firebase/util';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth } from '../../firebase/Firebase';
@@ -10,15 +10,6 @@ const CommentInput = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  // 데이터를 저장해줍니다.
-  const { mutate } = useMutation(
-    (newComment: commentType) =>
-      axios.post(`${process.env.REACT_APP_JSON}/comments`, newComment),
-    {
-      // 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해줍니다.
-      onSuccess: () => queryClient.invalidateQueries(['comments']),
-    }
-  );
   // 글쓴이 프로필이미지 가져오려고..
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
@@ -28,10 +19,18 @@ const CommentInput = () => {
       );
       return response.data;
     },
+
+  );
+  // 데이터를 저장해줍니다.
+  const { mutate } = useMutation(
+    (newComment: commentType) =>
+      axios.post(`${process.env.REACT_APP_JSON}/comments`, newComment),
     {
-      enabled: Boolean(saveUser?.uid), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      // 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해줍니다.
+      onSuccess: () => queryClient.invalidateQueries(['comments']),
     }
   );
+
   // uuidv4()를 변수로 지정해서 넣으면 uuid가 바뀌지 않는 이슈가 있습니다.
   // id에 uuidv4를 바로 할당해 지속적으로 바뀔 수 있게 해줍니다.
   const [comment, setComment] = useState({
@@ -39,10 +38,10 @@ const CommentInput = () => {
     postId: id,
     content: '',
     createAt: Date.now(),
-    writer: auth.currentUser?.uid,
-    writerNickName: auth.currentUser?.displayName,
+    writer: saveUser.uid,
+    writerNickName: user?.nickName,
     isEdit: false,
-    profileImg: '',
+    profileImg: user?.profileImg,
   });
   // comment state가 객체형태이기 때문에 구조분해 할당을 통해 content만 변경될 수 있게 해줍니다.
   const { content } = comment;
@@ -59,13 +58,8 @@ const CommentInput = () => {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    await mutate({
-      ...comment,
-      content,
-      id: uuidv4(),
-      writer: auth.currentUser?.uid,
-      writerNickName: auth.currentUser?.displayName,
-    });
+  
+    await mutate(comment);
     // 저장 후 textarea를 초기화 시켜줍니다.
     // uuidv4()를 다시 할당해줘서 uuid가 바뀌게 해줍니다.
     setComment({
@@ -74,6 +68,14 @@ const CommentInput = () => {
       id: uuidv4(),
     });
   };
+  useEffect(() => {
+    setComment({
+      ...comment,
+      writer: user?.id,
+      writerNickName: user?.nickName,
+      profileImg: user?.profileImg,
+    });
+  }, [user]);
 
   return (
     <div>

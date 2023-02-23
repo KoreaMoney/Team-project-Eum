@@ -24,6 +24,7 @@ export interface postType {
   like: [];
   views: number;
   createAt: number;
+  profileImg: string;
 }
 export interface editPostType {
   title: string;
