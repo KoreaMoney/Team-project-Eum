@@ -8,6 +8,7 @@ const PointHistoryList = () => {
   const queryClient = useQueryClient();
   const [category, setCategoey] = useState('all');
 
+  // 거래 목록을 받아옵니다.
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -15,24 +16,29 @@ const PointHistoryList = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
+  // 거래 완료 목록을 받아옵니다.
   const isDoneTradeList =
     tradeData?.data &&
     tradeData.data.filter((post: any) => {
       return post.isDone === true;
     });
 
+  // 완료 목록 중 로그인 한 유저가 판매자 or 구매자인 목록을 나타냅니다.
   const allTradeList = isDoneTradeList?.filter((user: any) => {
     return auth?.currentUser?.uid === (user?.sellerUid || user?.buyerUid);
   });
 
+  // 완료 목록 중 로그인 한 유저가 판매자인 목록을 나타냅니다.
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return auth?.currentUser?.uid === user?.sellerUid;
   });
 
+  // 완료 목록 중 로그인 한 유저가 구매자인 목록을 나타냅니다.
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return auth?.currentUser?.uid === user?.buyerUid;
   });
 
+  // 포인트모달창 내의 nav클릭시 스타일을 지정합니다.
   const categoryStyle = {
     border: 'none',
     borderBottom: '2px solid #000000',

@@ -3,12 +3,15 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { getProfilePoint } from '../../api';
 import { auth } from '../../firebase/Firebase';
+import { customSuccessAlert } from '../modal/CustomAlert';
 import { CustomModal } from '../modal/CustomModal';
 import PointHistoryList from './PointHistoryList';
 
 const PointModal = () => {
   const queryClient = useQueryClient();
   const [isModalActive, setIsModalActive] = useState(false);
+
+  // 유저 정보를 받아옵니다.
   const {
     isLoading: getProfilePintLoading,
     isError: getProfilePintIsError,
@@ -16,20 +19,24 @@ const PointModal = () => {
     error: getProfilePintError,
   } = useQuery(['users'], getProfilePoint);
 
+  // 파이어베이스 auth와 db.json을 비교해 동일 id를 찾습니다.
   const currentUser =
     profileData?.data &&
     profileData.data.filter((user: any) => {
       return auth.currentUser?.uid === user.id;
     });
 
+  // 커스텀모달을 불러옵니다.
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
 
+  // 충전하기 버튼 클릭시
   const pointChargehandle = () => {
     alert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
   };
 
+  // 출금하기 버튼 클릭시
   const pointWithdrawhandle = () => {
     alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
   };
