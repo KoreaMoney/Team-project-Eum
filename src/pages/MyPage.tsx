@@ -1,36 +1,26 @@
-import styled from 'styled-components';
 import { useState } from 'react';
-import Profile from '../components/mypage/Profile';
-import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  getPostList,
-  getProfileNickName,
-  getTradePoint,
-  updateProfileNickName,
-} from '../api';
-import { useNavigate, useParams } from 'react-router-dom';
+import { getProfileNickName, updateProfileNickName } from '../api';
 import SignIn from './SignIn';
+import Profile from '../components/mypage/Profile';
 import PointModal from '../components/mypage/PointModal';
-import { editPostType } from '../types';
-import axios from 'axios';
+import styled from 'styled-components';
+
+/**순서
+ * 1. React-query 통신하기
+ * 2. 닉네임 수정하기 넣기
+ * 3. 로그인 여부 확인하기
+ */
 
 const MyPage = () => {
   const queryClient = useQueryClient();
-  const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log('saveUser: ', saveUser);
-console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
 
-  const {
-    isLoading: getLoading,
-    isError,
-    data,
-    error,
-  } = useQuery(['users'], getProfileNickName);
-  console.log('data: ', data);
+  const { isLoading: getLoading, data } = useQuery(
+    ['users'],
+    getProfileNickName
+  );
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
@@ -38,19 +28,20 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
   const [editNickNameValue, setEditNickNameValue] = useState(
     data?.[0]?.nickName
   );
-  // console.log('data?.users?.[0]: ', data?.[0]);
 
+  //닉네임 part
   const EditNickName = async (id: string) => {
+    //닉네임 수정하기
     const editNickName = editNickNameValue?.trim();
     if (!editNickName) {
       setEditNickNameValue('');
       return alert('닉네임을 작성해 주세요.');
     }
+    //새로운 닉네임
     const newNickName = {
       id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
-    console.log('newNickName: ', newNickName);
 
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
@@ -60,9 +51,11 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
     setIsEdit(false);
   };
 
+  //로그인 안 할 시 로그인 화면으로 유도
   if (!saveUser) {
     return <SignIn />;
   }
+
   return (
     <MyPageContainer>
       <UserProfileWrapper>
@@ -109,21 +102,21 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
       </UserProfileWrapper>
       <UserPostWrapper>
         <ProfileNavWrapper>
-          <LikeListBar>관심목록</LikeListBar>
-          <SellListBar>판매내역</SellListBar>
-          <BuyListBar>구매내역</BuyListBar>
-          <CommentsListBar>후기관리</CommentsListBar>
+          <ListWrapper>관심목록</ListWrapper>
+          <ListWrapper>판매내역</ListWrapper>
+          <ListWrapper>구매내역</ListWrapper>
+          <ListWrapper>후기관리</ListWrapper>
         </ProfileNavWrapper>
         <UserSellBuyWrapper>
-          <UserSellWrapper>팝니다</UserSellWrapper>
-          <UserBuyWrapper>삽니다</UserBuyWrapper>
+          <UserWrapper>팝니다</UserWrapper>
+          <UserWrapper>삽니다</UserWrapper>
         </UserSellBuyWrapper>
         <div>내가 가진 배지</div>
-        <UserbadgeWrapper>배지</UserbadgeWrapper>
+        <UserBadgeWrapper>배지</UserBadgeWrapper>
         <div>찜한 목록</div>
-        <UserLikeWrapper>찜 List</UserLikeWrapper>
+        <UserWrapper>찜 List</UserWrapper>
         <div>후기 관리</div>
-        <CommentsList>후기 List</CommentsList>
+        <UserWrapper>후기 List</UserWrapper>
       </UserPostWrapper>
     </MyPageContainer>
   );
@@ -132,18 +125,18 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
 export default MyPage;
 
 const MyPageContainer = styled.div`
-  padding: 40px;
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  padding: 40px;
+  width: 100%;
 `;
 
 const UserProfileWrapper = styled.div`
-  width: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 24rem;
 `;
 
 const UserPostWrapper = styled.div`
@@ -151,35 +144,24 @@ const UserPostWrapper = styled.div`
 `;
 
 const UserNameWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-left: 62px;
   margin: 10px auto 30px auto;
-  border-bottom: 2px solid #e6e6e6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
 `;
 
-const UserName = styled.div`
+const EditInputValue = styled.input`
+  text-align: center;
   width: 14rem;
   height: 28px;
+  padding: 0px 12px;
   font-size: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const UserNameEditButton = styled.button`
-  width: 62px;
-  height: 28px;
-  font-size: 100%;
-  background-color: #656565;
-  color: #fff;
   border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
+  border-radius: 8px;
+  :focus {
+    outline: none;
   }
 `;
 
@@ -187,63 +169,74 @@ const CheckButton = styled.button`
   width: 62px;
   height: 28px;
   font-size: 100%;
-  background-color: #656565;
-  color: #fff;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.gray30};
   border: none;
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
+    background-color: ${(props) => props.theme.colors.gray10};
+    color: ${(props) => props.theme.colors.gray30};
   }
 `;
 
-const EditInputValue = styled.input`
+const UserName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 14rem;
   height: 28px;
   font-size: 100%;
+`;
+
+const UserNameEditButton = styled.button`
+  width: 62px;
+  height: 28px;
+  font-size: 100%;
+  background-color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.white};
   border: none;
-  border-radius: 8px;
-  padding: 0px 12px;
-  text-align: center;
-  :focus {
-    outline: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.gray10};
+    color: ${(props) => props.theme.colors.gray30};
   }
 `;
 
 const UserTimeWrapper = styled.div`
-  margin-bottom: 2rem;
-  width: 18rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 2rem;
+  width: 18rem;
 `;
 
 const UserTime = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 
 const UserRatingWrapper = styled.div`
-  margin-bottom: 2rem;
-  width: 18rem;
   display: flex;
   justify-content: left;
   align-items: center;
+  margin-bottom: 2rem;
+  width: 18rem;
 `;
 
-const UserbadgeWrapper = styled.div`
-  padding: 12px;
-  width: 18rem;
-  height: 6rem;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
+const UserBadgeWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 12px;
+  width: 18rem;
+  height: 6rem;
+  background-color: ${(props) => props.theme.colors.gray10};
+  color: ${(props) => props.theme.colors.gray30};
+  border-radius: 10px;
   margin-bottom: 24px;
 `;
 
@@ -255,137 +248,37 @@ const UserSellBuyWrapper = styled.div`
   margin-bottom: 24px;
 `;
 
-const UserSellWrapper = styled.div`
+const UserWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   padding: 12px;
   width: 50%;
   height: 320px;
-  background-color: lightgray;
-  color: #656565;
+  background-color: ${(props) => props.theme.colors.gray10};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const UserBuyWrapper = styled.div`
-  padding: 12px;
-  width: 50%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const UserLikeWrapper = styled.div`
-  padding: 12px;
-  width: 100%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
-`;
-
-const CommentsList = styled.div`
-  padding: 12px;
-  width: 100%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
 `;
 
 const ProfileNavWrapper = styled.div`
-  width: 100%;
-  margin-bottom: 2rem;
   display: flex;
   justify-content: left;
   align-items: center;
-`;
-
-const CategoryListWrapper = styled.div`
-  padding: 12px;
   width: 100%;
-  height: 50rem;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
 `;
 
-const LikeListBar = styled.button`
+const ListWrapper = styled.button`
   width: 8rem;
   height: 32px;
   font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray20};
   border: none;
-  border-bottom: 2px solid #e6e6e6;
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
   &:hover {
     cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-
-const SellListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-
-const BuyListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-
-const CommentsListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
+    color: ${(props) => props.theme.colors.gray30};
+    border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
   }
 `;

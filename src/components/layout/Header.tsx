@@ -153,7 +153,7 @@ const Svg = styled.svg`
   width: 100%;
   height: 3rem;
   path {
-    stroke: #000;
+    stroke: ${(props) => props.theme.colors.black};
     stroke-width: 2;
   }
 `;

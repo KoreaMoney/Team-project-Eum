@@ -1,35 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import {
-  customConfirm,
-  customWarningAlert,
-} from '../components/modal/CustomAlert';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { customConfirm } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
+import styled from 'styled-components';
 import SignIn from './SignIn';
 import parse from 'html-react-parser';
-import { AiFillLike, AiFillHeart, AiOutlineLike } from 'react-icons/ai';
-import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import basicIMG from '../styles/basicIMG.png';
+
+/**순서
+ * 1. query-key만들기
+ * 2. 판매자, 구매자 데이터 가져오기
+ * 3. 포인트 취소, 완료, 환불 기능추가하기
+ */
+
 const Transaction = () => {
   const { id } = useParams();
-  const { categoryName } = useParams();
-  const navigate = useNavigate();
+
   const [current, setCurrent] = useState(false);
   const queryClient = useQueryClient();
+
   auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
+  //쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   const { data, isLoading } = useQuery(['salePost', id], async () => {
-    // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
       `${process.env.REACT_APP_JSON}/onSalePosts?id=${id}`
     );
     return response.data;
   });
-  console.log('data: ', data);
 
   // 판매자의 user 데이터를 가지고 옵니다.
   const { data: sellerData } = useQuery(
@@ -41,7 +42,6 @@ const Transaction = () => {
       return response.data;
     }
   );
-  console.log('data?.[0]?.sellerUid: ', data?.[0]?.sellerUid);
 
   // 구매자의 user 데이터를 가지고 옵니다.
   const { data: buyerData } = useQuery(
@@ -53,7 +53,6 @@ const Transaction = () => {
       return response.data;
     }
   );
-  console.log('data?.[0]?.buyerUid: ', data?.[0]?.buyerUid);
 
   // user의 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
@@ -91,6 +90,7 @@ const Transaction = () => {
       onSuccess: () => queryClient.invalidateQueries(['salePost']),
     }
   );
+
   // 취소 시 구매자의 point를 복구시켜주는 함수
   const { mutate: giveBackPoint } = useMutation(
     (newUser: { point: string }) =>
@@ -103,11 +103,13 @@ const Transaction = () => {
       onSuccess: () => queryClient.invalidateQueries(['buyerData']),
     }
   );
-  // console.log('data?.[0].buyerUid: ', data?.[0].buyerUid);
 
-  // 구매자가 완료버튼을 누르면 판매자에게 price만큼 포인트를 더해주고,
-  // 등급을 위한 user의 isDoneCount 데이터도 +1을 해줍니다.
-  // isDone도 true로 변경되어 판매,구매가 완료됩니다.
+  /** 포인트 순서
+   * 1. 구매자가 완료버튼을 누르면 판매자에게 price만큼 포인트를 더한다
+   * 2. 등급을 위한 user의 isDoneCount 데이터도 +1 추가
+   * 3. isDone도 true로 변경되어 판매,구매가 완료
+   */
+
   const onClickClearRequest = async () => {
     await updateUser({
       point: String(Number(sellerData.point) + Number(data?.[0]?.price)),
@@ -136,11 +138,6 @@ const Transaction = () => {
             isBuyerCancel: true,
           });
         }
-
-        console.log('😀data[0].isSellerCancel: ', data?.[0]?.isSellerCancel);
-        console.log('😀data[0].isBuyerCancel: ', data?.[0]?.isBuyerCancel);
-
-        console.log('😀data[0].price: ', data?.[0]?.price);
       }
     );
   };
@@ -155,18 +152,16 @@ const Transaction = () => {
     }
   }, [data]);
 
+  //로딩 구간
   if (isLoading) {
-    console.log('로딩중');
-    return <div>Lodding...</div>;
+    return <div>Now Loading...</div>;
   }
   if (!data || data.length === 0) {
-    console.log('데이터없음');
-    return <div>Mo data found</div>;
+    return <div>추가적인 데이터가 없습니다</div>;
   }
   if (!saveUser) {
     return <SignIn />;
   }
-  console.log('sellerData?.profileImg: ', sellerData?.profileImg);
 
   return (
     <DetailContainer>
@@ -245,12 +240,16 @@ const Transaction = () => {
 };
 
 export default Transaction;
-const NoLikeIcon = styled(AiOutlineLike)``;
-const LikeIcon = styled(AiFillLike)`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
+
+const DetailContainer = styled.div`
+  width: 60%;
+  margin: 0 auto;
 `;
-const NoHeartIcon = styled(FcLikePlaceholder)``;
+
 const ClearDivContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -259,18 +258,12 @@ const ClearDivContainer = styled.div`
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
+
 const ClearText = styled.h1`
   text-align: center;
   font-weight: 800;
   font-size: 50px;
-`;
-const DetailContainer = styled.div`
-  width: 60%;
-  margin: 0 auto;
 `;
 
 const EditDeleteButtonContainer = styled.div`
@@ -309,6 +302,13 @@ const PostInfoWrapper = styled.div`
   height: 490px;
 `;
 
+const TopRightContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 70%;
+  margin-bottom: 0.5rem;
+`;
+
 const TitleText = styled.h2`
   font-size: ${(props) => props.theme.fontSize.title24};
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -329,7 +329,7 @@ const SellerText = styled.p`
 const SellerProfileContainer = styled.div`
   width: 100%;
   height: 240px;
-  box-shadow: 1px 1px 5px #d1d1d1;
+  box-shadow: 1px 1px 5px ${(props) => props.theme.colors.gray20};
 `;
 
 const SellerProfileTopDiv = styled.div`
@@ -344,20 +344,12 @@ const TopLeftContainer = styled.div`
   width: 30%;
 `;
 
-const TopRightContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  width: 70%;
-  margin-bottom: 0.5rem;
-`;
-
 const SellerNickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.bottom20};
 `;
 
 const ProfileIMG = styled.div<{ profileIMG: string }>`
   position: absolute;
-
   width: 100px;
   height: 100px;
   left: 50%;
@@ -422,44 +414,10 @@ const ProfileButtons = styled.button`
   }
 `;
 
-const RightButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-// const LikeIcon = styled(AiFillLike)`
-//   font-size: ${(props) => props.theme.fontSize.bottom20};
-// `;
-
-const LikeCounter = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
-`;
-
 const LikeAndSubmitContainer = styled.div`
   display: flex;
   gap: 3rem;
 `;
-
-const PostLikeButtonContainer = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  height: 65px;
-  font-size: ${(props) => props.theme.fontSize.title36};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
-  background-color: ${(props) => props.theme.colors.white};
-  &:hover {
-    cursor: pointer;
-    color: ${(props) => props.theme.colors.gray30};
-  }
-`;
-
-// const HeartIcon = styled(AiFillHeart)`
-//   color: ${(props) => props.theme.colors.red};
-// `;
 
 const OrderButton = styled.button`
   display: flex;
@@ -474,7 +432,7 @@ const OrderButton = styled.button`
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    box-shadow: 1px 1px 3px #d1d1d1;
+    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
   }
 `;
 
@@ -494,8 +452,6 @@ const PostContent = styled.div`
   border: 2px solid ${(props) => props.theme.colors.brandColor};
 `;
 
-const CommentsWrapper = styled.div``;
-
 const EditDeleteButton = styled.button`
   width: 5rem;
   height: 2.5rem;
@@ -504,6 +460,6 @@ const EditDeleteButton = styled.button`
   background-color: ${(props) => props.theme.colors.brandColor};
   cursor: pointer;
   &:hover {
-    box-shadow: 1px 1px 3px #d1d1d1;
+    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
   }
 `;

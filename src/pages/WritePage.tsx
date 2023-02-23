@@ -1,20 +1,23 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { auth, storageService } from '../firebase/Firebase';
-import { postType } from '../types';
+import React, { useState, useRef } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import ReactQuill from 'react-quill';
-import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { auth, storageService } from '../firebase/Firebase';
+import { postType } from '../types';
 import SignIn from './SignIn';
+
+/**순서
+ * 1.
+ */
 const WritePage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -32,7 +35,10 @@ const WritePage = () => {
     [{ color: [] }],
     ['video'],
   ];
-  // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
+
+  /** 옵션에 상응하는 포맷
+   * 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
+   */
   const formats = [
     'header',
     'font',
@@ -57,9 +63,8 @@ const WritePage = () => {
   };
   const sellerUid = auth.currentUser?.uid;
   const nickName = auth.currentUser?.displayName;
-  const { id } = useParams();
 
-  const { mutate, isError, isLoading } = useMutation(
+  const { mutate } = useMutation(
     (newPost: postType) =>
       axios.post(`${process.env.REACT_APP_JSON}/posts`, newPost),
     {
@@ -69,9 +74,12 @@ const WritePage = () => {
     }
   );
 
-  // jsx문법에서 받아온 post를 useMutation의 인자에 보낸다. 그리고 axios를 통해 post한다.
-  // post() 괄호 안에는 어디로 보낼것인가를 지정해주는 곳인 것 같다.
-  // http://localhost:4000/posts 해당 api주소에 newPost를 추가한다는 코드
+  /**순서
+   * 1. jsx문법에서 받아온 post를 useMutation의 인자 보낸다
+   * 2. axios를 통해 post한다
+   * 3. post() 괄호 안에는 어디로 보낼것인가를 지정해준다
+   * 4. http://localhost:4000/posts 해당 api주소에 newPost를 추가한다는 코드
+   */
   const [post, setPost] = useState<postType>({
     id: uuidv4(),
     title: '',
@@ -84,10 +92,10 @@ const WritePage = () => {
     like: [],
     views: 0,
     createAt: Date.now(),
-    profileImg:'',
+    profileImg: '',
   });
-  // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
 
+  // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price, imgURL, category } = post;
 
   //이미지 저장
@@ -98,14 +106,14 @@ const WritePage = () => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const resultImg = reader.result;
-        shrotenUrl(resultImg as string);
+        shortenUrl(resultImg as string);
       };
     }
   };
-  // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경
-  const shrotenUrl = async (img: string) => {
-    const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
 
+  // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경
+  const shortenUrl = async (img: string) => {
+    const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
     const imgDataUrl = img;
     let downloadUrl;
     if (imgDataUrl) {
@@ -115,7 +123,7 @@ const WritePage = () => {
     }
   };
 
-  // 한번에 value를 저장해주기 위해..
+  // value 저장
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPost({
@@ -124,7 +132,7 @@ const WritePage = () => {
     });
   };
 
-  const onChangePricec = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
 
     setPost({
@@ -132,7 +140,7 @@ const WritePage = () => {
       price: value.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
     });
   };
-  // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만들어줬다. 더 간편한 방법이 있을까??
+  // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPost({
       ...post,
@@ -140,7 +148,7 @@ const WritePage = () => {
     });
   };
 
-  // React-quill 웹 에디터의 value는 html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거한다.
+  // React-quill 웹 에디터의 value -> html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거
   const parsingHtml = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
@@ -170,9 +178,9 @@ const WritePage = () => {
     }
   };
 
+  //비동기 처리를 하는 함수라서 await으로 진행
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (validation()) {
       return;
     }
@@ -180,15 +188,14 @@ const WritePage = () => {
       ...post,
       price: price.replace(/[^0-9]/g, ''),
     };
-    await mutate(newPost); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
-    // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
-    // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
+    await mutate(newPost); //
   };
 
   // 서버통신은 다 비동기함수
   if (!saveUser) {
     return <SignIn />;
   }
+
   return (
     <Container>
       <BorderBox>
@@ -201,11 +208,21 @@ const WritePage = () => {
                 onChange={onChangeCategory}
                 ref={categoryRef}
               >
-                <option value="">--선택--</option>
-                <option value="play">놀이</option>
-                <option value="study">공부</option>
-                <option value="advice">상담</option>
-                <option value="etc">기타</option>
+                <option value="" aria-label="선택하기">
+                  --선택--
+                </option>
+                <option value="play" aria-label="놀이">
+                  놀이
+                </option>
+                <option value="study" aria-label="공부">
+                  공부
+                </option>
+                <option value="advice" aria-label="상담">
+                  상담
+                </option>
+                <option value="etc" aria-label="기타">
+                  기타
+                </option>
               </SelectCategory>
               <TitleInput
                 ref={titleRef}
@@ -226,7 +243,7 @@ const WritePage = () => {
                 type="text"
                 name="price"
                 value={price}
-                onChange={onChangePricec}
+                onChange={onChangePrice}
                 placeholder="가격"
                 maxLength={11}
                 min={0}
@@ -234,10 +251,10 @@ const WritePage = () => {
               원
             </div>
           </InputWrap>
-          <QuilWrapper>
+          <QuillWrapper>
             <ReactQuill
-              ref={contentsRef}
               theme="snow"
+              ref={contentsRef}
               modules={modules}
               formats={formats}
               value={content}
@@ -245,20 +262,22 @@ const WritePage = () => {
                 setPost({ ...post, content: value });
               }}
             />
-          </QuilWrapper>
+          </QuillWrapper>
           <Button>
-            <button>작성완료</button>
+            <button aria-label="작성완료">작성완료</button>
           </Button>
         </FormWrapper>
         <ImageContainer>
           <ImageWrapper>
             <ImgBox img={imgURL} />
             <ImageSelectButton>
-              <ImageLabel htmlFor="changeimg">사진 올리기</ImageLabel>
+              <ImageLabel htmlFor="changeImg" aria-label="사진 올리기">
+                사진 올리기
+              </ImageLabel>
             </ImageSelectButton>
             <input
               hidden
-              id="changeimg"
+              id="changeImg"
               type="file"
               placeholder="파일선택"
               onChange={saveImgFile}
@@ -271,9 +290,9 @@ const WritePage = () => {
   );
 };
 export default WritePage;
+
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
   margin: 0 auto;
 `;
 const BorderBox = styled.div`
@@ -286,7 +305,7 @@ const FormWrapper = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-color: black;
+  border-color: ${(props) => props.theme.colors.black};
 `;
 const InputWrap = styled.div`
   display: flex;
@@ -320,7 +339,7 @@ const PriceInput = styled.input`
     margin: 0;
   }
 `;
-const QuilWrapper = styled.div`
+const QuillWrapper = styled.div`
   width: 70%;
   .ql-container {
     width: 100%;
@@ -351,7 +370,6 @@ const ImageWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin: 0 auto;
   width: 70%;
 `;
