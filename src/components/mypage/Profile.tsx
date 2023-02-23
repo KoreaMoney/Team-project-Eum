@@ -15,7 +15,8 @@ export default function Profile(params: any) {
 
   const { data } = useQuery(['users'], () =>
     axios
-      .get(`https://orchid-sprinkle-snapdragon.glitch.me/users?id=`+id)
+
+      .get(`${process.env.REACT_APP_JSON}/users?id=${id}`)
       .then((res) => res.data)
   );
   console.log('id: ', id);
@@ -24,7 +25,7 @@ export default function Profile(params: any) {
 
   const { mutate: editUser } = useMutation(
     (user: { id: string; profileImg: string }) =>
-      axios.patch(`https://orchid-sprinkle-snapdragon.glitch.me/users/${id}`, {
+      axios.patch(`${process.env.REACT_APP_JSON}/users/${id}`, {
         profileImg: user.profileImg,
       }),
     {

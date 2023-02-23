@@ -1,12 +1,9 @@
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
-
 
 import styled from 'styled-components';
 import CommentInput from '../components/comment/CommentInput';
@@ -25,7 +22,6 @@ import parse from 'html-react-parser';
 import SignIn from './SignIn';
 import { DocumentData } from 'firebase/firestore';
 
-
 const Detail = () => {
   const navigate = useNavigate();
 
@@ -43,17 +39,14 @@ const Detail = () => {
   const { data: post, isLoading } = useQuery(['post', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
-      `https://orchid-sprinkle-snapdragon.glitch.me/posts?id=${id}`
+      `${process.env.REACT_APP_JSON}/posts?id=${id}`
     );
     return response.data;
   });
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
-    axios.post(
-      'https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts',
-      newSalePosts
-    )
+    axios.post(`${process.env.REACT_APP_JSON}/onSalePosts`, newSalePosts)
   );
 
   // 판매자의 프로필이미지를 위해 데이터 가져오기
@@ -61,7 +54,9 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/`+post?.[0].sellerUid
+
+        `${process.env.REACT_APP_JSON}/users/${post?.[0].sellerUid}`
+
       );
       return response.data;
     },
@@ -77,7 +72,7 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
     ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${post?.[0].sellerUid}`
+        `${process.env.REACT_APP_JSON}/users/${post?.[0].sellerUid}`
       );
       return response.data;
     },
@@ -86,22 +81,17 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
     }
   );
 
-
   // 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(
-      `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`,
-      newUser
-    )
+    axios.patch(`${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`, newUser)
   );
 
   // 좋아요 기능을 위해
   const { mutate: updateSeller } = useMutation(
     (newUser: { like: string[] }) =>
-      axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${seller?.id}`,
-        newUser
-      ),
+
+      axios.patch(`${process.env.REACT_APP_JSON}/users/${seller?.id}`, newUser),
+
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['user', seller?.id]);
@@ -124,10 +114,9 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
 
   const { mutate: updatePost } = useMutation(
     (newPosts: { like: string[] }) =>
-      axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/posts/${id}`,
-        newPosts
-      ),
+
+      axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, newPosts),
+
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['post', id]);
@@ -299,18 +288,14 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
 
 export default Detail;
 
-const NoLikeIcon = styled(AiOutlineLike)`
-
-`;
+const NoLikeIcon = styled(AiOutlineLike)``;
 
 const NoHeartIcon = styled(FcLikePlaceholder)``;
-
 
 const DetailContainer = styled.div`
   width: 60%;
   margin: 0 auto;
 `;
-
 
 const EditDeleteButtonContainer = styled.div`
   display: flex;
@@ -319,8 +304,6 @@ const EditDeleteButtonContainer = styled.div`
   margin: 1rem 0;
 `;
 
-
-
 const PostContainer = styled.div`
   display: flex;
   align-items: center;
@@ -328,8 +311,6 @@ const PostContainer = styled.div`
   gap: 4rem;
   margin-bottom: 24px;
 `;
-
-
 
 const PostImage = styled.div<{ img: string }>`
   display: flex;
@@ -536,10 +517,7 @@ const PostContent = styled.div`
   border: 2px solid ${(props) => props.theme.colors.brandColor};
 `;
 
-
 const CommentsWrapper = styled.div``;
-
-
 
 const EditDeleteButton = styled.button`
   width: 5rem;

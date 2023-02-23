@@ -55,7 +55,7 @@ const SignIn = () => {
   //새로운 유저 정보 post하기
   const mutation = useMutation((newUser: userType) => {
     return axios
-      .post('https://orchid-sprinkle-snapdragon.glitch.me/users', newUser)
+      .post(`${process.env.REACT_APP_JSON}/users`, newUser)
       .then((response: AxiosResponse) => {
         return response;
       });
@@ -63,9 +63,7 @@ const SignIn = () => {
 
   // uid 중복검사
   const { data } = useQuery(['users'], async () => {
-    const response = await axios.get(
-      'https://orchid-sprinkle-snapdragon.glitch.me/users'
-    );
+    const response = await axios.get(`${process.env.REACT_APP_JSON}/users`);
     return response.data;
   });
 

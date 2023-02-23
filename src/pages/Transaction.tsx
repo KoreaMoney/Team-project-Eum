@@ -18,24 +18,24 @@ const Transaction = () => {
   const queryClient = useQueryClient();
   auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const { data, isLoading } = useQuery(
-    ['salePost', id],
-    async () => {
-      // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-      const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts?id=` + id
-      );
-      return response.data;
-    },
-  );
-console.log( 'data: ' ,data);
+
+  const { data, isLoading } = useQuery(['salePost', id], async () => {
+    // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
+    const response = await axios.get(
+      `${process.env.REACT_APP_JSON}/onSalePosts?id=${id}`
+    );
+    return response.data;
+  });
+
 
   // 판매자의 user 데이터를 가지고 옵니다.
   const { data: sellerData } = useQuery(
     ['sellerData', data?.[0]?.sellerUid],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/`+data?.[0]?.sellerUid
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`
+
       );
       return response.data;
     }
@@ -47,7 +47,9 @@ console.log( 'data: ' ,data);
     ['buyerData', data?.[0]?.buyerUid],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0]?.buyerUid}`
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`
+
       );
       return response.data;
     }
@@ -57,7 +59,9 @@ console.log( 'data: ' ,data);
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string; isDoneCount: number }) =>
       axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0]?.sellerUid}`,
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0].sellerUid}`,
+
         newUser
       ),
     {
@@ -69,7 +73,7 @@ console.log( 'data: ' ,data);
   const { mutate: clearRequest } = useMutation(
     (newSalePost: { isDone: boolean }) =>
       axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts/${id}`,
+        `${process.env.REACT_APP_JSON}/onSalePosts/${id}`,
         newSalePost
       ),
     {
@@ -84,7 +88,7 @@ console.log( 'data: ' ,data);
       isBuyerCancel: boolean;
     }) =>
       axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts/${id}`,
+        `${process.env.REACT_APP_JSON}/onSalePosts/${id}`,
         newSalePost
       ),
     {
@@ -95,7 +99,9 @@ console.log( 'data: ' ,data);
   const { mutate: giveBackPoint } = useMutation(
     (newUser: { point: string }) =>
       axios.patch(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0]?.buyerUid}`,
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`,
+
         newUser
       ),
     {

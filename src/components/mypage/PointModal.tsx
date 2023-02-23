@@ -17,6 +17,9 @@ const PointModal = () => {
 
   console.log('profileData: ', profileData?.[0]);
 
+
+  // 커스텀모달을 불러옵니다.
+
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
