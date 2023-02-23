@@ -61,7 +61,7 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-        `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/`+post?.[0].sellerUid
       );
       return response.data;
     },
@@ -69,7 +69,9 @@ const Detail = () => {
       enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
+console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
 
+  
   // 포인트 수정을 위한 유저정보 get
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
@@ -96,7 +98,10 @@ const Detail = () => {
   // 좋아요 기능을 위해
   const { mutate: updateSeller } = useMutation(
     (newUser: { like: string[] }) =>
-      axios.patch(`http://localhost:4000/users/${seller?.id}`, newUser),
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${seller?.id}`,
+        newUser
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['user', seller?.id]);
@@ -119,7 +124,10 @@ const Detail = () => {
 
   const { mutate: updatePost } = useMutation(
     (newPosts: { like: string[] }) =>
-      axios.patch(`http://localhost:4000/posts/${id}`, newPosts),
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/posts/${id}`,
+        newPosts
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['post', id]);
@@ -185,7 +193,7 @@ const Detail = () => {
     // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
     if (saveUser) {
       await updateUser({
-        point: String(Number(user.point) - Number(post?.[0].price)),
+        point: String(Number(user?.point) - Number(post?.[0]?.price)),
       });
       const uuid = uuidv4();
       await onSalePosts({

@@ -11,15 +11,16 @@ export default function Profile(params: any) {
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
-  const [photo, setPhoto] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { data } = useQuery(['users'], () =>
     axios
-      .get(`https://orchid-sprinkle-snapdragon.glitch.me/users?id=${id}`)
+      .get(`https://orchid-sprinkle-snapdragon.glitch.me/users?id=`+id)
       .then((res) => res.data)
   );
+  console.log('id: ', id);
   console.log('data: ', data);
+  const [photo, setPhoto] = useState(data?.[0]?.profileImg);
 
   const { mutate: editUser } = useMutation(
     (user: { id: string; profileImg: string }) =>
@@ -62,17 +63,19 @@ export default function Profile(params: any) {
       }
     };
   };
+  console.log('photo: ', photo);
   const handleClick = async () => {
     await editUser({
       ...data,
       profileImg: photo,
     });
   };
-  console.log('photo1: ', data?.[0].profileImg);
+
+  console.log('photo1: ', data?.[0]?.profileImg);
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage src={data?.[0].profileImg} alt="User Image" />
+        <MyImage src={data?.[0]?.profileImg} alt="User Image" />
       </MyImageWrapper>
       <EditImgWrapper>
         <InputImgFile
