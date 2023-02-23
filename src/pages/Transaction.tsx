@@ -26,6 +26,7 @@ const Transaction = () => {
     );
     return response.data;
   });
+console.log( 'data: ' ,data);
 
 
   // 판매자의 user 데이터를 가지고 옵니다.
