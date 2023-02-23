@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { AiFillLike, AiFillHeart } from 'react-icons/ai';
-import { onSalePostType } from '../types';
-import axios from 'axios';
+
+
+
 import styled from 'styled-components';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
@@ -28,7 +28,6 @@ import { DocumentData } from 'firebase/firestore';
 
 const Detail = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { id } = useParams();
   const { categoryName } = useParams();
@@ -283,7 +282,10 @@ const Detail = () => {
 
 export default Detail;
 
-const HeartIcon = styled(FcLike)``;
+const NoLikeIcon = styled(AiOutlineLike)`
+
+`;
+
 const NoHeartIcon = styled(FcLikePlaceholder)``;
 
 
@@ -301,22 +303,6 @@ const EditDeleteButtonContainer = styled.div`
 `;
 
 
-const LikeCounter = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
-`;
-const LikeIcon = styled(AiFillLike)`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-const NoLikeIcon = styled(AiOutlineLike)`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-const BottomBottomContainer = styled.div`
-  height: 50%;
-`;
-const ProfileButtonContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  margin-bottom: 1.5rem;
 
 const PostContainer = styled.div`
   display: flex;
@@ -326,18 +312,6 @@ const PostContainer = styled.div`
   margin-bottom: 24px;
 `;
 
-const ProfileButtons = styled.button`
-  width: 100%;
-  height: 64px;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: #ffda18;
-  border: none;
-  &:hover {
-    box-shadow: 2px 2px 4px #d5d5d5;
-    cursor: pointer;
-  }
-`;
-const RightButtonContainer = styled.div`
 
 
 const PostImage = styled.div<{ img: string }>`

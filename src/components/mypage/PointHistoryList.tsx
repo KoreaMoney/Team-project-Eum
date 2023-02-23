@@ -5,7 +5,6 @@ import { getTradePoint } from '../../api';
 import { auth } from '../../firebase/Firebase';
 
 const PointHistoryList = () => {
-  const [category, setCategory] = useState(0);
   const queryClient = useQueryClient();
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -28,7 +27,6 @@ const PointHistoryList = () => {
     tradeData.data.filter((post: any) => {
       return post.isDone === true;
     });
-  console.log('buyTradeList: ', buyTradeList);
 
 
   // 완료 목록 중 로그인 한 유저가 판매자 or 구매자인 목록을 나타냅니다.
