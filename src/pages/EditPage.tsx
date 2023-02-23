@@ -184,92 +184,130 @@ const EditPage = () => {
   if (isLoading) return <div> </div>;
 
   return (
-    <>
-      <ImageContainer>
-        <ImageWrapper img={imgURL}></ImageWrapper>
-        <button>
-          <ImageLabel htmlFor="changeimg">파일선택</ImageLabel>
-        </button>
-        <input
-          hidden
-          id="changeimg"
-          type="file"
-          placeholder="파일선택"
-          onChange={saveImgFile}
-          ref={imgRef}
-        />
-      </ImageContainer>
-      <Container onSubmit={onSubmitHandler}>
-        <TitleCategoryWrap>
-          <select
-            value={category || ''}
-            name="pets"
-            id="pet-select"
-            onChange={onChangeCategory}
-            ref={categoryRef}
-          >
-            <option value="">--선택--</option>
-            <option value="play">놀이</option>
-            <option value="study">공부</option>
-            <option value="advice">상담</option>
-            <option value="etc">기타</option>
-          </select>
-          <input
-            ref={titleRef}
-            type="text"
-            name="title"
-            value={title || ''}
-            onChange={onChange}
-            placeholder="제목"
-            maxLength={16}
-          />
-          <PriceInput
-            ref={priceRef}
-            onKeyDown={(e) =>
-              ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-            }
-            type="text"
-            name="price"
-            value={price || ''}
-            onChange={onChangePricec}
-            placeholder="가격"
-            maxLength={11}
-            min={0}
-          />
-        </TitleCategoryWrap>
-        <QuilWrapper>
-          <ReactQuill
-            ref={contentsRef}
-            theme="snow"
-            modules={modules}
-            formats={formats}
-            value={content || ''}
-            onChange={(value) => {
-              setContent(value);
-            }}
-          />
-        </QuilWrapper>
-        <button>작성완료</button>
-      </Container>
-    </>
+    <Container>
+      <BorderBox>
+        <FormWrapper onSubmit={onSubmitHandler}>
+          <InputWrap>
+            <TitleCategoryWrap>
+              <SelectCategory
+                value={category || ''}
+                name="pets"
+                id="pet-select"
+                onChange={onChangeCategory}
+                ref={categoryRef}
+              >
+                <option value="">--선택--</option>
+                <option value="play">놀이</option>
+                <option value="study">공부</option>
+                <option value="advice">상담</option>
+                <option value="etc">기타</option>
+              </SelectCategory>
+              <TitleInput
+                ref={titleRef}
+                type="text"
+                name="title"
+                value={title || ''}
+                onChange={onChange}
+                placeholder="제목"
+                maxLength={16}
+              />
+            </TitleCategoryWrap>
+            <div>
+              <PriceInput
+                ref={priceRef}
+                onKeyDown={(e) =>
+                  ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                }
+                type="text"
+                name="price"
+                value={price || ''}
+                onChange={onChangePricec}
+                placeholder="가격"
+                maxLength={11}
+                min={0}
+              />
+              원
+            </div>
+          </InputWrap>
+          <QuilWrapper>
+            <ReactQuill
+              ref={contentsRef}
+              theme="snow"
+              modules={modules}
+              formats={formats}
+              value={content || ''}
+              onChange={(value) => {
+                setContent(value);
+              }}
+            />
+          </QuilWrapper>
+          <Button>
+            <button>작성완료</button>
+          </Button>
+        </FormWrapper>
+
+        <ImageContainer>
+          <ImageWrapper>
+            <ImgBox img={imgURL} />
+            <ImageSelectButton>
+              <ImageLabel htmlFor="changeimg">파일선택</ImageLabel>
+            </ImageSelectButton>
+            <input
+              hidden
+              id="changeimg"
+              type="file"
+              placeholder="파일선택"
+              onChange={saveImgFile}
+              ref={imgRef}
+            />
+          </ImageWrapper>
+        </ImageContainer>
+      </BorderBox>
+    </Container>
   );
 };
 
 export default EditPage;
-const Container = styled.form`
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+`;
+const BorderBox = styled.div`
+  width: 70%;
+  margin: 5px auto;
+`;
+const FormWrapper = styled.form`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 25.7rem;
-  margin: 0 auto;
+  border-color: black;
+`;
+const InputWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3em;
+  width: 70%;
 `;
 const TitleCategoryWrap = styled.div`
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  height: 1.5rem;
+`;
+const SelectCategory = styled.select`
+  height: 100%;
+`;
+const TitleInput = styled.input`
+  height: 100%;
 `;
 const PriceInput = styled.input`
+  height: 1.5rem;
+  outline: none;
+  text-align: end;
+
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -280,25 +318,57 @@ const PriceInput = styled.input`
   }
 `;
 const QuilWrapper = styled.div`
+  width: 70%;
   .ql-container {
-    width: 40rem;
+    width: 100%;
     height: 25rem;
   }
 `;
-const ImageWrapper = styled.div<{ img: string }>`
-  width: 25rem;
-  height: 25rem;
+const Button = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 2em;
+  width: 70%;
+  button {
+    background-color: ${(props) => props.theme.colors.brandColor};
+    border: none;
+    width: 15%;
+    height: 1.5rem;
+    &:hover {
+      border: 2px solid ${(props) => props.theme.colors.button};
+    }
+  }
+`;
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0 auto;
+  width: 70%;
+`;
+const ImgBox = styled.div<{ img: string }>`
+  width: 25%;
+  height: 13rem;
   background-size: cover;
   background-image: url(${(props) => props.img});
   background-position: center center;
 `;
 const ImageLabel = styled.label`
   cursor: pointer;
-  padding: 20px;
 `;
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
+const ImageSelectButton = styled.button`
+  background-color: ${(props) => props.theme.colors.brandColor};
+  border: none;
+  width: 15%;
+  height: 1.5rem;
+  &:hover {
+    border: 2px solid ${(props) => props.theme.colors.button};
+  }
 `;
