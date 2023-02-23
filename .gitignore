@@ -26,7 +26,9 @@ yarn-error.log*
 yarn.lock
 
 # db.json
+
 db.json 
 
 # env
 .env
+
