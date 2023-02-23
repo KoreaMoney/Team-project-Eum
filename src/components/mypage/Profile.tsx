@@ -8,11 +8,12 @@ import { useAuth, upload, auth, storageService } from '../../firebase/Firebase';
 import { customSuccessAlert } from '../modal/CustomAlert';
 
 export default function Profile(params: any) {
+  const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
   const [photo, setPhoto] = useState('');
   const [loading, setLoading] = useState(false);
-  const queryClient = useQueryClient();
+
   const { data } = useQuery(['users'], () =>
     axios.get(`http://localhost:4000/users?id=${id}`).then((res) => res.data)
   );

@@ -4,6 +4,7 @@ import Profile from '../components/mypage/Profile';
 import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  getPostList,
   getProfileNickName,
   getTradePoint,
   updateProfileNickName,
@@ -16,13 +17,12 @@ import axios from 'axios';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
-  const {id} = useParams();
+  const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
   const navigate = useNavigate();
 
-
-  
+  // 유저의 정보를 받아옵니다.
   const {
     isLoading: getLoading,
     isError,
@@ -30,6 +30,7 @@ const MyPage = () => {
     error,
   } = useQuery(['users'], getProfileNickName);
 
+  // 거래 정보를 받아옵니다.
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -37,34 +38,56 @@ const MyPage = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
+  // 게시글 정보를 받아옵니다.
+  const {
+    isLoading: getPostListLoading,
+    isError: getPostListIsError,
+    data: postData,
+    error: getPostListError,
+  } = useQuery(['posts'], getPostList);
+
+  // 관심 목록을 나타냅니다.
+  const isLikePostList =
+    postData?.data &&
+    postData.data.filter((post: any) => {
+      return auth.currentUser?.uid === post.id;
+    });
+
+  // 완료된 거래목록을 나타냅니다.
   const isDoneTradeList =
     tradeData?.data &&
     tradeData.data.filter((post: any) => {
       return post.isDone === true;
     });
 
+  // 로그인한 유저가 판매한 목록을 나타냅니다.
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return auth?.currentUser?.uid === user?.sellerUid;
   });
 
+  // 로그인한 유저가 구매한 목록을 나타냅니다.
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return auth?.currentUser?.uid === user?.buyerUid;
   });
 
+  // 닉네임을 수정하도록 접근합니다.
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
+  // 파이어베이스 auth와 db.json을 비교해 동일 id를 찾습니다.
   const currentUser =
     data?.data &&
     data.data.filter((user: any) => {
       return auth.currentUser?.uid === user.id;
     });
 
+  // 수정할 닉네임을 저장하며, 초기값으로 db.json에 저장된 닉네임을 받아옵니다.
   const [editNickNameValue, setEditNickNameValue] = useState(
     currentUser?.[0]?.nickName
   );
 
-  const EditNickName = async (id: string) => {
+  // 닉네임을 수정합니다.
+  const EditNickName = async (id: any) => {
     const editNickName = editNickNameValue?.trim();
     if (!editNickName) {
       setEditNickNameValue('');
@@ -173,7 +196,7 @@ const MyPage = () => {
             ? sellTradeList?.map((list: any) => {
                 return (
                   <UserSellBuyWrapper key={list.id}>
-                    <UserSellWrapper>팝니다</UserSellWrapper>
+                    <UserLikeWrapper>찜 List</UserLikeWrapper>
                   </UserSellBuyWrapper>
                 );
               })
@@ -201,10 +224,6 @@ const MyPage = () => {
                 return <CommentsList key={list.id}>후기 List</CommentsList>;
               })
             : null}
-
-          <div>찜한 목록</div>
-          <UserLikeWrapper>찜 List</UserLikeWrapper>
-          <div>후기 관리</div>
         </CategoryListWrapper>
       </UserPostWrapper>
     </MyPageContainer>
