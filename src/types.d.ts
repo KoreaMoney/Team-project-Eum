@@ -7,7 +7,7 @@ export interface userType {
   id: string | undefined;
   nickName: string | null | undefined;
   profileImg: string | null | undefined;
-  point: number | string;
+  point: number;
   contactTime: string;
   like: [];
   isDoneCount: number;

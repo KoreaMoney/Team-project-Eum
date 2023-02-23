@@ -118,8 +118,6 @@ const Transaction = () => {
     });
   };
 
-  
-
   // 판매자,구매자가 취소버튼을 누르면 실행되는 함수입니다.
   const onClickCancel = () => {
     customConfirm(
@@ -183,12 +181,7 @@ const Transaction = () => {
         </ClearDivContainer>
       )}
       <EditDeleteButtonContainer>
-        {saveUser?.uid === sellerData?.id && (
-          <>
-            <EditDeleteButton>수정</EditDeleteButton>
-            <EditDeleteButton>삭제</EditDeleteButton>
-          </>
-        )}
+      
       </EditDeleteButtonContainer>
       <PostContainer>
         <PostImage img={data?.[0]?.imgURL} />

@@ -36,8 +36,8 @@ const PointModal = () => {
         <div>
           {' '}
           {profileData?.[0] &&
-            profileData[0].point &&
-            profileData[0].point
+            profileData?.[0].point &&
+            profileData?.[0].point
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           P
