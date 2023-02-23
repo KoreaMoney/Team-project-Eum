@@ -61,7 +61,7 @@ const WritePage = () => {
 
   const { mutate, isError, isLoading } = useMutation(
     (newPost: postType) =>
-      axios.post('https://orchid-sprinkle-snapdragon.glitch.me/posts', newPost),
+      axios.post(`${process.env.REACT_APP_JSON}/posts`, newPost),
     {
       onSuccess: () => {
         navigate(`/detail/${post.category}/${post.id}`);

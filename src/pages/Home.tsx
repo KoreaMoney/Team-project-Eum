@@ -35,9 +35,7 @@ const Home = () => {
   }, [slider]);
 
   const { data } = useQuery(['users'], async () => {
-    const response = await axios.get(
-      'https://orchid-sprinkle-snapdragon.glitch.me/posts'
-    );
+    const response = await axios.get(`${process.env.REACT_APP_JSON}/posts`);
     return response.data;
   });
   return (

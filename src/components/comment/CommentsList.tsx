@@ -25,7 +25,7 @@ const CommentsList = () => {
   const PAGE_SIZE = 6;
 
   const fetchComments = async (page = 0) => {
-    const url = `https://orchid-sprinkle-snapdragon.glitch.me/comments?postId=${id}`;
+    const url = `${process.env.REACT_APP_JSON}/comments?postId=${id}`;
 
     const response = await axios.get(url, {
       params: {
@@ -79,9 +79,7 @@ const CommentsList = () => {
   // onClickDeleteComment 함수에서 commentId를 받아와 클릭한 댓글만 삭제될 수 있도록 합니다.
   const { mutate: deleteComment } = useMutation(
     (commentId: string) =>
-      axios.delete(
-        `https://orchid-sprinkle-snapdragon.glitch.me/comments/${commentId}`
-      ),
+      axios.delete(`${process.env.REACT_APP_JSON}/comments/${commentId}`),
     {
       // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
       onSuccess: () => {
