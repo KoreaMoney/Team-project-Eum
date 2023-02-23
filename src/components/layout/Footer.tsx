@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FaGithubSquare } from 'react-icons/fa';
+import MoveTop from '../modal/MoveTop';
 
 const Footer = () => {
   const url = 'https://github.com/KoreaMoney/Final-Project-Client.git';
@@ -43,6 +44,7 @@ const Footer = () => {
           </NameDiv>
         </FooterDiv>
       </FooterWrapper>
+      <MoveTop />
     </FooterContainer>
   );
 };

@@ -46,6 +46,7 @@ const CommentInput = () => {
   });
   // comment state가 객체형태이기 때문에 구조분해 할당을 통해 content만 변경될 수 있게 해줍니다.
   const { content } = comment;
+
   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment({
       ...comment,
@@ -73,6 +74,7 @@ const CommentInput = () => {
       id: uuidv4(),
     });
   };
+
   return (
     <div>
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
@@ -96,8 +98,8 @@ const InputTag = styled.input`
   width: 90%;
   font-size: ${(props) => props.theme.fontSize.body16};
   padding: 0.5rem;
-  border: 2px solid #ffda18;
-  background-color: #fffcef;
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  background-color: ${(props) => props.theme.colors.white};
   &:focus {
     outline: none;
   }

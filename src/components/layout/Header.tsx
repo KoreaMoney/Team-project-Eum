@@ -123,6 +123,9 @@ const HeaderContainer = styled.div`
   background-color: ${(props) => props.theme.colors.brandColor};
   width: 100%;
   height: 10rem;
+  /* position: sticky; //상단 고정
+  top: 0px; //상단고정
+  z-index: 10; //상단 고정 */
 `;
 const HeaderWrapper = styled.div`
   width: 70%;

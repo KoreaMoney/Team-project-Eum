@@ -72,7 +72,7 @@ const PointHistoryList = () => {
           ? allTradeList?.map((list: any) => {
               return (
                 <PointHistory key={list.id}>
-                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
                   <PointHistoryContent>{list.title}</PointHistoryContent>
                   <PointHistoryAmount>{list.price}</PointHistoryAmount>
                 </PointHistory>
@@ -83,7 +83,7 @@ const PointHistoryList = () => {
           ? sellTradeList?.map((list: any) => {
               return (
                 <PointHistory key={list.id}>
-                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
                   <PointHistoryContent>{list.title}</PointHistoryContent>
                   <PointHistoryAmount>{list.price}</PointHistoryAmount>
                 </PointHistory>
@@ -94,7 +94,7 @@ const PointHistoryList = () => {
           ? buyTradeList?.map((list: any) => {
               return (
                 <PointHistory key={list.id}>
-                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryDate>{list.createdAt}</PointHistoryDate>
                   <PointHistoryContent>{list.title}</PointHistoryContent>
                   <PointHistoryAmount>{list.price}</PointHistoryAmount>
                 </PointHistory>
