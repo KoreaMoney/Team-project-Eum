@@ -15,13 +15,15 @@ export default function Profile(params: any) {
   const [loading, setLoading] = useState(false);
 
   const { data } = useQuery(['users'], () =>
-    axios.get(`http://localhost:4000/users?id=${id}`).then((res) => res.data)
+    axios
+      .get(`https://orchid-sprinkle-snapdragon.glitch.me/users?id=${id}`)
+      .then((res) => res.data)
   );
   console.log('data: ', data);
 
   const { mutate: editUser } = useMutation(
     (user: { id: string; profileImg: string }) =>
-      axios.patch(`http://localhost:4000/users/${id}`, {
+      axios.patch(`https://orchid-sprinkle-snapdragon.glitch.me/users/${id}`, {
         profileImg: user.profileImg,
       }),
     {

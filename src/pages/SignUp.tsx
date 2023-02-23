@@ -54,12 +54,14 @@ const SignUp = () => {
 
   // 회원가입 성공 시 users에 data 추가
   const { mutate } = useMutation((newUser: userType) =>
-    axios.post('http://localhost:4000/users', newUser)
+    axios.post('https://orchid-sprinkle-snapdragon.glitch.me/users', newUser)
   );
   // 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
   // 닉네임 중복 확인을 위해 데이터를 가져옴
   const { data } = useQuery(['users'], async () => {
-    const response = await axios.get('http://localhost:4000/users');
+    const response = await axios.get(
+      'https://orchid-sprinkle-snapdragon.glitch.me/users'
+    );
     return response.data;
   });
 

@@ -31,7 +31,9 @@ const EditPage = () => {
   const { data: postdata, isLoading } = useQuery(
     ['editPost', id],
     async () => {
-      const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
+      const response = await axios.get(
+        `https://orchid-sprinkle-snapdragon.glitch.me/posts?id=${id}`
+      );
       return response.data;
     },
     {
@@ -46,7 +48,10 @@ const EditPage = () => {
     isLoading: patchLoading,
   } = useMutation(
     (editPost: editPostType) =>
-      axios.patch(`http://localhost:4000/posts/${id}`, editPost),
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/posts/${id}`,
+        editPost
+      ),
     {
       onSuccess: () => {
         navigate(`/detail/${category}/${id}`);

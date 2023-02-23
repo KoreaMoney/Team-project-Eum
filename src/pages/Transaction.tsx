@@ -21,7 +21,7 @@ const Transaction = () => {
   const { data, isLoading } = useQuery(['salePost', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
-      `http://localhost:4000/onSalePosts?id=${id}`
+      `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts?id=${id}`
     );
     return response.data;
   });
@@ -31,7 +31,7 @@ const Transaction = () => {
     ['sellerData', data?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${data?.[0].sellerUid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0].sellerUid}`
       );
       return response.data;
     }
@@ -43,7 +43,7 @@ const Transaction = () => {
     ['buyerData', data?.[0].buyerUid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${data?.[0].buyerUid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0].buyerUid}`
       );
       return response.data;
     }
@@ -53,7 +53,7 @@ const Transaction = () => {
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string; isDoneCount: number }) =>
       axios.patch(
-        `http://localhost:4000/users/${data?.[0].sellerUid}`,
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0].sellerUid}`,
         newUser
       ),
     {
@@ -64,7 +64,10 @@ const Transaction = () => {
   // 완료 시 isDone을 true로 만들기 위한 함수
   const { mutate: clearRequest } = useMutation(
     (newSalePost: { isDone: boolean }) =>
-      axios.patch(`http://localhost:4000/onSalePosts/${id}`, newSalePost),
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts/${id}`,
+        newSalePost
+      ),
     {
       onSuccess: () => queryClient.invalidateQueries(['salePost']),
     }
@@ -76,7 +79,11 @@ const Transaction = () => {
       isSellerCancel: boolean;
       isBuyerCancel: boolean;
       isClearCancel: boolean;
-    }) => axios.patch(`http://localhost:4000/onSalePosts/${id}`, newSalePost),
+    }) =>
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts/${id}`,
+        newSalePost
+      ),
     {
       onSuccess: () => queryClient.invalidateQueries(['salePost']),
     }
@@ -84,7 +91,10 @@ const Transaction = () => {
   // 취소 시 구매자의 point를 복구시켜주는 함수
   const { mutate: giveBackPoint } = useMutation(
     (newUser: { point: string }) =>
-      axios.patch(`http://localhost:4000/users/${data?.[0].buyerUid}`, newUser),
+      axios.patch(
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${data?.[0].buyerUid}`,
+        newUser
+      ),
     {
       onSuccess: () => queryClient.invalidateQueries(['buyerData']),
     }

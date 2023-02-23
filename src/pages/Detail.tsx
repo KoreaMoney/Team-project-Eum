@@ -42,13 +42,19 @@ const Detail = () => {
   // 클릭한 글의 데이터를 가지고 옵니다.
 
   const { data: post, isLoading } = useQuery(['post', id], async () => {
-    const response = await axios.get(`http://localhost:4000/posts?id=${id}`);
+    // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
+    const response = await axios.get(
+      `https://orchid-sprinkle-snapdragon.glitch.me/posts?id=${id}`
+    );
     return response.data;
   });
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
-    axios.post('http://localhost:4000/onSalePosts', newSalePosts)
+    axios.post(
+      'https://orchid-sprinkle-snapdragon.glitch.me/onSalePosts',
+      newSalePosts
+    )
   );
 
   // 판매자의 프로필이미지를 위해 데이터 가져오기
@@ -56,7 +62,7 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${post?.[0].sellerUid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`
       );
       return response.data;
     },
@@ -70,7 +76,7 @@ const Detail = () => {
     ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
-        `http://localhost:4000/users/${saveUser?.uid}`
+        `https://orchid-sprinkle-snapdragon.glitch.me/users/${post?.[0].sellerUid}`
       );
       return response.data;
     },
@@ -82,7 +88,10 @@ const Detail = () => {
 
   // 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(`http://localhost:4000/users/${saveUser?.uid}`, newUser)
+    axios.patch(
+      `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`,
+      newUser
+    )
   );
 
   // 좋아요 기능을 위해
@@ -547,6 +556,8 @@ const PostContent = styled.div`
 
 
 const CommentsWrapper = styled.div``;
+
+
 
 const EditDeleteButton = styled.button`
   width: 5rem;
