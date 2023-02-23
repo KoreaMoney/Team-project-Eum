@@ -197,16 +197,22 @@ const Detail = () => {
   console.log('구매자포인트: ', typeof post?.[0]?.price);
 
   const onClickApplyBuy = async () => {
-    // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
-    if (saveUser) {
-      await updateUser({
-        point: Number(user?.point) - Number(post?.[0]?.price),
-      });
+    if (!saveUser) {
+      navigate('/signin', { state: { from: location.pathname } });
+      return;
+    }
+
+    const point = Number(user?.point) || 0; // null인 경우 0으로 초기화
+    const price = Number(post?.[0]?.price) || 0; // null인 경우 0으로 초기화
+
+    if (point >= price) {
+      // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
+      await updateUser({ point: point - price });
       const uuid = uuidv4();
       await onSalePosts({
         id: uuid,
         postsId: id,
-        buyerUid: saveUser?.uid,
+        buyerUid: saveUser.uid,
         sellerUid: post?.[0]?.sellerUid,
         title: post?.[0]?.title,
         content: post?.[0]?.content,
@@ -221,10 +227,10 @@ const Detail = () => {
         like: post?.[0]?.like,
       });
       setTimeout(() => {
-        navigate(`/detail/${categoryName}/${id}/${saveUser?.uid}/${uuid}`);
+        navigate(`/detail/${categoryName}/${id}/${user.uid}/${uuid}`);
       }, 500);
     } else {
-      navigate('/signin', { state: { from: location.pathname } });
+      customWarningAlert('포인트가 부족합니다.');
     }
   };
   return (
