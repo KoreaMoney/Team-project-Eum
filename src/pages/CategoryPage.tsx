@@ -165,7 +165,11 @@ const CategoryPage = () => {
                   <ContentText>{parse(post.content)}</ContentText>
                   <BottomContainer>
                     <LeftContainer>
-                      <ProfileIMG />
+                      <ProfileIMG
+                        profileIMG={
+                          post?.profileImg ? post?.profileImg : basicIMG
+                        }
+                      />
                       <NickNameText>{post.nickName}</NickNameText>
                     </LeftContainer>
                     <RightContainer>
@@ -246,6 +250,7 @@ const PostContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  height: 247px;
   padding: 1.5rem 2rem 1rem;
   display: flex;
   flex-direction: column;
@@ -286,11 +291,11 @@ const LeftContainer = styled.div`
   gap: 0.5rem;
   align-items: center;
 `;
-const ProfileIMG = styled.div`
+const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
   width: 1.7rem;
   height: 1.7rem;
   border-radius: 100%;
-  background-image: url(${auth.currentUser?.photoURL});
+  background-image: url(${(props) => props.profileIMG});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
