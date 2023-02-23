@@ -1,10 +1,12 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { getTradePoint } from '../../api';
 import { auth } from '../../firebase/Firebase';
 
 const PointHistoryList = () => {
   const queryClient = useQueryClient();
+  const [category, setCategoey] = useState('all');
 
   const {
     isLoading: getTradeListLoading,
@@ -13,35 +15,86 @@ const PointHistoryList = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
-  const buyTradeList =
+  const isDoneTradeList =
     tradeData?.data &&
-    tradeData.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.buyerUid;
+    tradeData.data.filter((post: any) => {
+      return post.isDone === true;
     });
 
-  const sellTradeList =
-    tradeData?.data &&
-    tradeData.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.sellerUid;
-    });
+  const allTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === (user?.sellerUid || user?.buyerUid);
+  });
+
+  const sellTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === user?.sellerUid;
+  });
+
+  const buyTradeList = isDoneTradeList?.filter((user: any) => {
+    return auth?.currentUser?.uid === user?.buyerUid;
+  });
+
+  const categoryStyle = {
+    border: 'none',
+    borderBottom: '2px solid #000000',
+    color: '#000000',
+  };
+
   return (
     <PointHistoryContainer>
       <PointHistoryCategoryWrapper>
-        <PointHistoryAllList>전체</PointHistoryAllList>
-        <PointHistorySellList>판매</PointHistorySellList>
-        <PointHistoryBuyList>구매</PointHistoryBuyList>
+        <PointHistoryAllList
+          onClick={() => setCategoey('all')}
+          style={category === 'all' ? categoryStyle : undefined}
+        >
+          전체
+        </PointHistoryAllList>
+        <PointHistorySellList
+          onClick={() => setCategoey('sell')}
+          style={category === 'sell' ? categoryStyle : undefined}
+        >
+          판매
+        </PointHistorySellList>
+        <PointHistoryBuyList
+          onClick={() => setCategoey('buy')}
+          style={category === 'buy' ? categoryStyle : undefined}
+        >
+          구매
+        </PointHistoryBuyList>
       </PointHistoryCategoryWrapper>
       <PointHistoryWrapper>
-        <PointHistory>
-          <PointHistoryDate>2.14</PointHistoryDate>
-          <PointHistoryContent>인스타그램 친구추가</PointHistoryContent>
-          <PointHistoryAmount>200P</PointHistoryAmount>
-        </PointHistory>
-        <PointHistory>
-          <PointHistoryDate>2.12</PointHistoryDate>
-          <PointHistoryContent>수학문제 풀이</PointHistoryContent>
-          <PointHistoryAmount>300P</PointHistoryAmount>
-        </PointHistory>
+        {category === 'all'
+          ? allTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
+        {category === 'sell'
+          ? sellTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
+        {category === 'buy'
+          ? buyTradeList?.map((list: any) => {
+              return (
+                <PointHistory key={list.id}>
+                  <PointHistoryDate>{list.ceatedAt}</PointHistoryDate>
+                  <PointHistoryContent>{list.title}</PointHistoryContent>
+                  <PointHistoryAmount>{list.price}</PointHistoryAmount>
+                </PointHistory>
+              );
+            })
+          : null}
       </PointHistoryWrapper>
     </PointHistoryContainer>
   );
