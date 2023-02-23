@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 // profile nickname 출력하기
-export const getProfileNickName = async () => {
-  return await axios.get(`http://localhost:4000/users`);
+export const getProfileNickName = async (user: any) => {
+  const response = await axios.get(`http://localhost:4000/users/${user.id}`);
+  return response.data
 };
 
 // profile nickname 수정하기
@@ -11,11 +12,13 @@ export const updateProfileNickName = async (user: any) => {
 };
 
 // profile point 출력하기
-export const getProfilePoint = async () => {
-  return await axios.get(`http://localhost:4000/users`);
+export const getProfilePoint = async (user: any) => {
+  const response = await axios.get(`http://localhost:4000/users/${user.id}`);
+  return response.data;
 };
 
 // 거래내역 point 출력하기
 export const getTradePoint = async () => {
-  return await axios.get(`http://localhost:4000/onSalePosts`);
+  const response = await axios.get(`http://localhost:4000/onSalePosts`);
+  return response.data;
 };

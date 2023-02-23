@@ -16,11 +16,8 @@ const PointModal = () => {
     error: getProfilePintError,
   } = useQuery(['users'], getProfilePoint);
 
-  const currentUser =
-    profileData?.data &&
-    profileData.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.id;
-    });
+console.log( 'profileData: ' ,profileData?.[0]);
+
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
@@ -32,7 +29,10 @@ const PointModal = () => {
         <p>포인트</p>
         <div>
           {' '}
-          {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+          {profileData?.[0] &&
+            profileData[0].point &&
+            profileData[0].point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+          P
         </div>
       </PointButton>
       {isModalActive ? (
@@ -50,7 +50,12 @@ const PointModal = () => {
                 <h3>　내 포인트</h3>
               </PointImgWrapper>
               <CurrentPoint>
-                {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {profileData?.[0] &&
+                  profileData[0].point &&
+                  profileData[0].point.replace(
+                    /\B(?=(\d{3})+(?!\d))/g,
+                    ','
+                  )}{' '}
                 P
               </CurrentPoint>
               <PointDepositWithdrawWrapper>

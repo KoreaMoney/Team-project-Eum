@@ -12,31 +12,29 @@ import axios from 'axios';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
-  const {id} = useParams();
+  const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  console.log('saveUser: ', saveUser);
 
-
-  
   const {
     isLoading: getLoading,
     isError,
     data,
     error,
-  } = useQuery(['users'], getProfileNickName);
+  } = useQuery(['users'], getProfileNickName );
+  console.log('data: ', data);
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
-  const currentUser =
-    data?.data &&
-    data.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.id;
-    });
+
 
   const [editNickNameValue, setEditNickNameValue] = useState(
-    currentUser?.[0]?.nickName
+    data?.[0]?.nickName
   );
+  // console.log('data?.users?.[0]: ', data?.[0]);
 
   const EditNickName = async (id: string) => {
     const editNickName = editNickNameValue?.trim();
@@ -45,9 +43,11 @@ const MyPage = () => {
       return alert('닉네임을 작성해 주세요.');
     }
     const newNickName = {
-      id: currentUser?.[0]?.id,
+      id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
+    console.log( 'newNickName: ' ,newNickName);
+    
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -55,8 +55,6 @@ const MyPage = () => {
     });
     setIsEdit(false);
   };
-
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   if (!saveUser) {
     return <SignIn />;
@@ -81,7 +79,7 @@ const MyPage = () => {
               />
               <CheckButton
                 onClick={() => {
-                  EditNickName(currentUser?.[0]?.id);
+                  EditNickName(data?.[0]?.uid);
                 }}
               >
                 확인
@@ -89,7 +87,7 @@ const MyPage = () => {
             </>
           ) : (
             <>
-              <UserName>{currentUser?.[0]?.nickName}</UserName>
+              <UserName>{data?.[0]?.nickName}</UserName>
               <UserNameEditButton
                 onClick={() => {
                   setIsEdit(true);

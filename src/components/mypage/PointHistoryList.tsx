@@ -1,11 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { getTradePoint } from '../../api';
 import { auth } from '../../firebase/Firebase';
 
 const PointHistoryList = () => {
+  const [category, setCategory] = useState(0);
   const queryClient = useQueryClient();
-
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -13,40 +15,100 @@ const PointHistoryList = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
+  console.log('tradeData: ', tradeData);
+
   const buyTradeList =
-    tradeData?.data &&
-    tradeData.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.buyerUid;
+    tradeData &&
+    tradeData.filter((user: any) => {
+      return saveUser?.uid === user?.buyerUid;
     });
+  console.log('buyTradeList: ', buyTradeList);
 
   const sellTradeList =
-    tradeData?.data &&
-    tradeData.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.sellerUid;
+    tradeData &&
+    tradeData.filter((user: any) => {
+      return saveUser?.uid === user?.sellerUid;
     });
+  console.log('sellTradeList: ', sellTradeList);
+
+  let NewTradeList;
+  if (buyTradeList && sellTradeList) {
+    NewTradeList = [...buyTradeList, ...sellTradeList];
+  } else {
+    NewTradeList = undefined;
+  }
+
   return (
     <PointHistoryContainer>
       <PointHistoryCategoryWrapper>
-        <PointHistoryAllList>전체</PointHistoryAllList>
-        <PointHistorySellList>판매</PointHistorySellList>
-        <PointHistoryBuyList>구매</PointHistoryBuyList>
+        <PointHistoryAllList onClick={() => setCategory(0)}>
+          전체
+        </PointHistoryAllList>
+        <PointHistorySellList onClick={() => setCategory(1)}>
+          판매
+        </PointHistorySellList>
+        <PointHistoryBuyList onClick={() => setCategory(2)}>
+          구매
+        </PointHistoryBuyList>
       </PointHistoryCategoryWrapper>
       <PointHistoryWrapper>
-        <PointHistory>
-          <PointHistoryDate>2.14</PointHistoryDate>
-          <PointHistoryContent>인스타그램 친구추가</PointHistoryContent>
-          <PointHistoryAmount>200P</PointHistoryAmount>
-        </PointHistory>
-        <PointHistory>
-          <PointHistoryDate>2.12</PointHistoryDate>
-          <PointHistoryContent>수학문제 풀이</PointHistoryContent>
-          <PointHistoryAmount>300P</PointHistoryAmount>
-        </PointHistory>
+        {getTradeListLoading ? (
+          <div>Loading...</div>
+        ) : category === 0 ? (
+          NewTradeList?.map((prev: any) => (
+            <PointHistory key={prev.id}>
+              {prev.buyerUid === saveUser.uid ? (
+                <BuyOrSellerText>구매</BuyOrSellerText>
+              ) : prev.sellerUid ? (
+                <BuyOrSellerText>판매</BuyOrSellerText>
+              ) : (
+                '에러'
+              )}
+              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointHistoryAmount>
+                {prev.buyerUid === saveUser.uid ? (
+                  <PlusOrMinus>-</PlusOrMinus>
+                ) : prev.sellerUid ? (
+                  <PlusOrMinus>+</PlusOrMinus>
+                ) : (
+                  '에러'
+                )}
+                {prev.price}
+              </PointHistoryAmount>
+            </PointHistory>
+          ))
+        ) : category === 1 ? (
+          sellTradeList?.map((prev: any) => (
+            <PointHistory key={prev.id}>
+              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
+            </PointHistory>
+          ))
+        ) : category === 2 && buyTradeList ? (
+          buyTradeList.map((prev: any) => (
+            <PointHistory key={prev.id}>
+              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointHistoryAmount>-{prev.price}</PointHistoryAmount>
+            </PointHistory>
+          ))
+        ) : (
+          <>Error</>
+        )}
       </PointHistoryWrapper>
     </PointHistoryContainer>
   );
 };
+export default PointHistoryList;
 
+const BuyOrSellerText = styled.span`
+  
+`
+const PlusOrMinus = styled.span`
+  
+`
 const PointHistoryContainer = styled.div``;
 
 const PointHistoryCategoryWrapper = styled.div``;
@@ -108,6 +170,7 @@ const PointHistoryWrapper = styled.div`
   color: #737373;
   border-radius: 10px;
   margin-bottom: 24px;
+  overflow-y: auto;
 `;
 
 const PointHistory = styled.div`
@@ -131,4 +194,4 @@ const PointHistoryAmount = styled.p`
   width: 15%;
 `;
 
-export default PointHistoryList;
+
