@@ -287,7 +287,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   width: 27rem;
-  margin: 0 auto;
+  margin: auto;
 `;
 
 const MainText = styled.div`

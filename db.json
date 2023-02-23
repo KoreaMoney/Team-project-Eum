@@ -35,20 +35,6 @@
       "isDoneCount": 0
     },
     {
-      "id": "yjSa4NpW6ePpzNFiR79H3OdvfNn1",
-      "nickName": "qwerqwerqwer",
-      "profileImg": {},
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0,
-      "config": {
-        "headers": {
-          "content-type": "multipart/form-data"
-        }
-      }
-    },
-    {
       "id": "YfvvQLlemQdIlg1iC2qxln64zrE2",
       "nickName": "qwert",
       "profileImg": null,
@@ -74,38 +60,6 @@
       "contactTime": "",
       "like": [],
       "isDoneCount": 2
-    },
-    {
-      "id": "1aGJ87fFYremZXLWyIAWWSCtYv42",
-      "nickName": "Hugh Kim",
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0
-    },
-    {
-      "id": "Tv1BG1Gi2VbPKCgP6G2UU6LKfN92",
-      "nickName": "한국인",
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0
-    },
-    {
-      "id": "KUCNE4nWSTaviYdQE6OTh7jdf3U2",
-      "nickName": "코코아",
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0
-    },
-    {
-      "id": "neP0DxPCsMTUjNWydPsnN13Us0X2",
-      "nickName": "이음러브",
-      "point": "0",
-      "contactTime": "",
-      "like": [],
-      "isDoneCount": 0
     }
   ],
   "posts": [
@@ -119,7 +73,7 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 13,
+      "views": 14,
       "createAt": 1676612528057
     },
     {
@@ -132,110 +86,8 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 0,
+      "views": 3,
       "createAt": 1676619414560
-    },
-    {
-      "id": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
-      "title": "하이",
-      "nickName": "묭묭이",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "content": "하이",
-      "price": "333",
-      "imgURL": [],
-      "category": "study",
-      "like": [],
-      "views": 4,
-      "createAt": 1676734627857
-    },
-    {
-      "id": "e2e9d558-ef42-4ba7-a921-9f34742dbfb3",
-      "title": "123",
-      "nickName": "묭묭이",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "content": "123",
-      "price": "123",
-      "imgURL": [],
-      "category": "study",
-      "like": [],
-      "views": 6,
-      "createAt": 1676734673042
-    },
-    {
-      "id": "5458f42a-efa2-4397-bfb7-3b45acf06ca1",
-      "title": "sd",
-      "content": "dd",
-      "price": "ddd",
-      "imgURL": [],
-      "category": "",
-      "like": [],
-      "views": 0,
-      "createAt": 1676775983129
-    },
-    {
-      "id": "827b05bd-e132-4a75-b771-a0c4977d3961",
-      "title": "상담해드려요",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>공부방법,숙제공부,커리어 등 상담해드립니다.</p><p>가격은 1시간에 3천원입니다. </p><p>예약제, 댓글주세요</p>",
-      "price": "3000",
-      "imgURL": "",
-      "category": "advice",
-      "like": [],
-      "views": 3,
-      "createAt": 1677051468865
-    },
-    {
-      "id": "470c4904-6660-4925-ae20-505f1bdcda86",
-      "title": "상담해드려요",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>1분 1000원</p>",
-      "price": "1000",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677053474723?alt=media&token=60a3bafd-3f68-40cb-9bd8-018eb60b7132",
-      "category": "advice",
-      "like": [],
-      "views": 4,
-      "createAt": 1677053471098
-    },
-    {
-      "id": "c2b5328f-5ba6-47f8-afea-923136f587f3",
-      "title": "이건 어떻게 나오나?",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>ㅇㅇ?</p>",
-      "price": "1",
-      "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677053524535?alt=media&token=0ba9959b-6b2f-4655-af28-f0fbd7650a18",
-      "category": "study",
-      "like": [],
-      "views": 3,
-      "createAt": 1677053518558
-    },
-    {
-      "id": "a345e44e-1553-4041-ae25-5a3457509686",
-      "title": "ㄴㅇㄹ",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>ㅁㄴㅇㄹ</p>",
-      "price": "33",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 0,
-      "createAt": 1677053679483
-    },
-    {
-      "id": "f6ba2611-8e9f-4e8e-89e4-b87f6cdf248b",
-      "title": "ㅇㄹㅇㄹ",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅍ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 1,
-      "createAt": 1677054155243
     },
     {
       "id": "d49d40e8-bb1d-4fb7-b690-cf58eea764ae",
@@ -247,7 +99,7 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 0,
+      "views": 1,
       "createAt": 1677054976250
     },
     {
@@ -260,7 +112,7 @@
       "imgURL": "",
       "category": "advice",
       "like": [],
-      "views": 1,
+      "views": 2,
       "createAt": 1677054986860
     },
     {
@@ -273,197 +125,8 @@
       "imgURL": "",
       "category": "study",
       "like": [],
-      "views": 0,
+      "views": 4,
       "createAt": 1677054997853
-    },
-    {
-      "id": "a602dde5-9c92-4c9e-9f76-a743fac9f366",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>asdf</p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "etc",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055007330
-    },
-    {
-      "id": "82d58cb9-5137-457e-8b38-461fff3e7724",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<p>asdf</p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "advice",
-      "like": [],
-      "views": 0,
-      "createAt": 1677055040189
-    },
-    {
-      "id": "8c264079-419d-471c-b73f-c41aee6b0668",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 2,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "1",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "2",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "3",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "4",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "5",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "6",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "7",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "8",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 2,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "9",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "10",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677055071989
-    },
-    {
-      "id": "11",
-      "title": "asdf",
-      "nickName": "구매자",
-      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "content": "<h1>asdfasdf</h1><p><strong>asdf</strong></p><h2><strong>asdf</strong></h2><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>adf</p><p>adf</p><p>adf</p><p>asdf</p><p>adsf</p><p>asdf</p><p>af</p><p><br></p>",
-      "price": "333",
-      "imgURL": "",
-      "category": "study",
-      "like": [
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3
-      ],
-      "views": 2,
-      "createAt": 1677055071989
     },
     {
       "id": "8da166e8-7dd4-4d36-a7cc-60caad6db4f5",
@@ -475,7 +138,7 @@
       "imgURL": "",
       "category": "play",
       "like": [],
-      "views": 1,
+      "views": 2,
       "createAt": 1677080113905
     },
     {
@@ -639,40 +302,6 @@
       "like": []
     },
     {
-      "id": "64742636-be30-4c13-8a7b-f2eb735d184b",
-      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
-      "buyerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "title": "하이",
-      "content": "하이",
-      "imgURL": [],
-      "price": "333",
-      "category": "study",
-      "ceatedAt": 1676737506617,
-      "isDone": true,
-      "isSellerCancel": false,
-      "isBuyerCancel": false,
-      "views": 2,
-      "like": []
-    },
-    {
-      "id": "bc8b74c0-7967-47e0-b03c-a1fb982121ed",
-      "postsId": "6f43e2ab-2f6f-4e1e-af14-fa41bd74ceae",
-      "buyerUid": "pMqQWNn46GZdWki8sdyBeph8dXB2",
-      "sellerUid": "Mzpk4HqW7RfWnKPHGjVFTPtIZgl1",
-      "title": "하이",
-      "content": "하이",
-      "imgURL": [],
-      "price": "333",
-      "category": "study",
-      "ceatedAt": 1676996340649,
-      "isDone": false,
-      "isSellerCancel": false,
-      "isBuyerCancel": true,
-      "views": 3,
-      "like": []
-    },
-    {
       "id": "11e32a2e-c3e6-4150-8621-31f1eec104f6",
       "postsId": "9432588a-88a9-47a4-ab5c-cdca00341b2d",
       "buyerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
@@ -743,24 +372,6 @@
   ],
   "comments": [
     {
-      "id": "71df26e4-d63d-4b4f-9df7-34a0b33bd83a",
-      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
-      "content": "dd",
-      "createAt": 1677083210824,
-      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "writerNickName": "구매자",
-      "isEdit": false
-    },
-    {
-      "id": "24b89cb0-4aad-4e22-81f8-0c33e0099473",
-      "postId": "8c264079-419d-471c-b73f-c41aee6b0668",
-      "content": "daa",
-      "createAt": 1677083210824,
-      "writer": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "writerNickName": "구매자",
-      "isEdit": false
-    },
-    {
       "id": "707c3304-4304-44cb-b36c-3ad5d702e4c8",
       "postId": "b57d358a-ac1e-41cc-af0a-736c975bc4ef",
       "content": "d",
@@ -789,6 +400,36 @@
       "writerNickName": "구매자",
       "isEdit": false,
       "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5"
+    },
+    {
+      "id": "236590ef-d48f-46a7-ab3d-4bc480ff4e8a",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "ㅇㅇㅇㅇ",
+      "createAt": 1677119624116,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
+    },
+    {
+      "id": "c8003c41-9878-43f0-8584-1fb449f7d6f6",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "ㅇㅇㅇㅇㅇ",
+      "createAt": 1677119624116,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
+    },
+    {
+      "id": "fc400d92-5853-46ab-a915-1f4e6fa6c5e6",
+      "postId": "81efe92d-65d9-4cd2-8b4e-e7d7ee5d00b9",
+      "content": "sss",
+      "createAt": 1677121492824,
+      "writer": "1aGJ87fFYremZXLWyIAWWSCtYv42",
+      "writerNickName": "Hugh Kim",
+      "isEdit": false,
+      "profileImg": ""
     }
   ]
 }

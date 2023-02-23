@@ -30,7 +30,7 @@ export default function Profile(params: any) {
       },
     }
   );
-  
+
   const saveImgFile = () => {
     if (imgRef.current?.files) {
       const file = imgRef.current.files[0];
@@ -54,7 +54,8 @@ export default function Profile(params: any) {
         const response = await uploadString(imgRef, imgDataUrl, 'data_url');
         downloadUrl = await getDownloadURL(response.ref);
         setPhoto(downloadUrl);
-        console.log('photo: ', photo);console.log('downloadUrl: ', downloadUrl);
+        console.log('photo: ', photo);
+        console.log('downloadUrl: ', downloadUrl);
       }
     };
   };
