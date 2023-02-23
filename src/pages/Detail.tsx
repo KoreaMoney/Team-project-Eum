@@ -1,27 +1,27 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { AiFillLike, AiFillHeart } from 'react-icons/ai';
+import { onSalePostType } from '../types';
+import axios from 'axios';
+import styled from 'styled-components';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
 import basicIMG from '../styles/basicIMG.png';
-import { AiFillLike, AiFillHeart } from 'react-icons/ai';
-import {
-  customInfoAlert,
-  customWarningAlert,
-} from '../components/modal/CustomAlert';
-import { auth } from '../firebase/Firebase';
-import { onSalePostType, userType } from '../types';
 import parse from 'html-react-parser';
+
 const Detail = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
   const { categoryName } = useParams();
-  const navigate = useNavigate();
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const location = useLocation();
-  // 클릭한 글의 데이터를 가지고 옵니다.
+
+  /**클릭한 글의 데이터를 가지고 옵니다.
+   * 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
+   */
   const { data: post, isLoading } = useQuery(['post', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
@@ -29,7 +29,7 @@ const Detail = () => {
     );
     return response.data;
   });
-  console.log('post', post);
+
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
     axios.post(
@@ -38,9 +38,9 @@ const Detail = () => {
     )
   );
 
-  // 포인트 수정을 위해 유저 정보를 가지고 옵니다.
-  const { data: user } = useQuery(
-    ['user', saveUser?.uid],
+  // 판매자의 프로필이미지를 위해 데이터 가져오기
+  const { data: seller } = useQuery(
+    ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
         `https://orchid-sprinkle-snapdragon.glitch.me/users/${saveUser?.uid}`
@@ -48,14 +48,13 @@ const Detail = () => {
       return response.data;
     },
     {
-      enabled: Boolean(saveUser?.uid), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
-  console.log('user: ', user);
 
-  // 판매자의 프로필이미지를 위해 데이터 가져오기
-  const { data: seller } = useQuery(
-    ['user', post?.[0].sellerUid],
+  // 포인트 수정을 위한 유저정보 get
+  const { data: user } = useQuery(
+    ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
         `https://orchid-sprinkle-snapdragon.glitch.me/users/${post?.[0].sellerUid}`
@@ -63,10 +62,9 @@ const Detail = () => {
       return response.data;
     },
     {
-      enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      enabled: Boolean(saveUser?.uid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
-  console.log('seller', seller);
 
   // 포인트를 수정해주는 mutation 함수
   const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
@@ -77,13 +75,12 @@ const Detail = () => {
   );
 
   if (isLoading) {
-    console.log('로딩중');
-    return <div>Lodding...</div>;
+    return <div>Loading...</div>;
   }
   if (!post || post.length === 0) {
-    console.log('데이터없음');
-    return <div>Mo data found</div>;
+    return <div>No data found</div>;
   }
+
   // 바로 신청하기 버튼 클릭 하면
   // user 데이터의 point가 price만큼 빠지고
   // mutate로 데이터를 저장합니다.
@@ -94,7 +91,6 @@ const Detail = () => {
       await updateUser({
         point: String(Number(user.point) - Number(post?.[0].price)),
       });
-
       const uuid = uuidv4();
       await onSalePosts({
         id: uuid,
@@ -106,7 +102,7 @@ const Detail = () => {
         imgURL: post?.[0].imgURL,
         price: post?.[0].price,
         category: post?.[0].category,
-        ceatedAt: Date.now(),
+        createdAt: Date.now(),
         isDone: false,
         isSellerCancel: false,
         isBuyerCancel: false,
@@ -120,14 +116,14 @@ const Detail = () => {
   };
   return (
     <DetailContainer>
-      <EditDeletButtonContainer>
+      <EditDeleteButtonContainer>
         {saveUser && (
           <>
-            <EditDeletButton>수정</EditDeletButton>
-            <EditDeletButton>삭제</EditDeletButton>
+            <EditDeleteButton>수정</EditDeleteButton>
+            <EditDeleteButton>삭제</EditDeleteButton>
           </>
         )}
-      </EditDeletButtonContainer>
+      </EditDeleteButtonContainer>
       <PostContainer>
         <PostImage img={post[0].imgURL} />
         <PostInfoWrapper>
@@ -183,77 +179,105 @@ const Detail = () => {
       <PostContentWrapper>
         <PostContent>{parse(post[0].content)}</PostContent>
       </PostContentWrapper>
-      <CommentsWrapper>
+      <div>
         <div>
           {saveUser && <CommentInput />}
           <CommentsList />
         </div>
-      </CommentsWrapper>
+      </div>
     </DetailContainer>
   );
 };
 
 export default Detail;
-const HeartIcon = styled(AiFillHeart)`
-  color: red;
-`;
 
-const LikeAndSubmitContainer = styled.div`
-  display: flex;
-  gap: 3rem;
-`;
-
-const LikeCounter = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
-`;
-const LikeIcon = styled(AiFillLike)`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-const BottomBottomContainer = styled.div`
-  height: 50%;
-`;
-const ProfileButtonContainer = styled.div`
-  width: 90%;
+const DetailContainer = styled.div`
+  width: 60%;
   margin: 0 auto;
-  margin-bottom: 1.5rem;
+`;
+
+const EditDeleteButtonContainer = styled.div`
+  display: flex;
+  justify-content: right;
+  gap: 0.5rem;
+  margin: 1rem 0;
+`;
+
+const PostContainer = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
+  gap: 4rem;
+  margin-bottom: 24px;
 `;
-const ProfileButtons = styled.button`
-  width: 100%;
-  height: 64px;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: #ffda18;
-  border: none;
-  &:hover {
-    box-shadow: 2px 2px 4px #d5d5d5;
-  }
-`;
-const RightButtonContainer = styled.div`
+
+const PostImage = styled.div<{ img: string }>`
   display: flex;
-  gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  width: 60%;
+  height: 490px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.gray10};
+  background-size: cover;
+  background-position: center center;
+  background-image: url(${(props) => props.img});
 `;
+
+const PostInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+  height: 490px;
+`;
+
+const TitleText = styled.h2`
+  font-size: ${(props) => props.theme.fontSize.title24};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  color: ${(props) => props.theme.colors.gray60};
+`;
+
+const PostPrice = styled.p`
+  width: 100%;
+  font-size: ${(props) => props.theme.fontSize.bottom20};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  text-align: right;
+`;
+
 const SellerText = styled.p`
   font-size: ${(props) => props.theme.fontSize.bottom20};
 `;
+
 const SellerProfileContainer = styled.div`
   width: 100%;
   height: 240px;
   box-shadow: 1px 1px 5px #d1d1d1;
 `;
+
 const SellerProfileTopDiv = styled.div`
-  width: 100%;
-  height: 70px;
-  background-color: #ffda18;
   display: flex;
+  width: 100%;
+  height: 5rem;
+  background-color: rgba(255, 218, 24, 0.8);
 `;
 
 const TopLeftContainer = styled.div`
-  width: 30%;
   position: relative;
+  width: 30%;
 `;
+
+const TopRightContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 70%;
+  margin-bottom: 0.5rem;
+`;
+
+const SellerNickName = styled.p`
+  font-size: ${(props) => props.theme.fontSize.bottom20};
+`;
+
 const ProfileIMG = styled.div<{ profileIMG: string }>`
   position: absolute;
   width: 100px;
@@ -267,25 +291,19 @@ const ProfileIMG = styled.div<{ profileIMG: string }>`
   background-repeat: no-repeat;
   background-size: cover;
 `;
-const TopRightContainer = styled.div`
-  width: 70%;
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 0.5rem;
-`;
-const SellerNickName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
+
 const SellerProfileBottomDiv = styled.div`
   width: 100%;
-  height: 171px;
+  height: 11rem;
 `;
+
 const BottomTopContainer = styled.div`
   display: flex;
   justify-content: right;
   align-items: flex-start;
   height: 50%;
 `;
+
 const ContactTimeContainer = styled.div`
   display: flex;
   justify-content: right;
@@ -293,116 +311,57 @@ const ContactTimeContainer = styled.div`
   padding: 0.7rem 1.5rem;
   gap: 0.5rem;
 `;
+
 const ContactTimeTitleText = styled.p`
   font-size: ${(props) => props.theme.fontSize.bottom20};
 `;
+
 const ContactTimeContentText = styled.span`
   font-size: ${(props) => props.theme.fontSize.label12};
   color: ${(props) => props.theme.colors.gray20};
 `;
-const EditDeletButtonContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  gap: 0.5rem;
-  margin: 1rem 0;
+
+const BottomBottomContainer = styled.div`
+  height: 50%;
 `;
 
-const EditDeletButton = styled.button`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  width: 5rem;
-  height: 2.5rem;
-  border: none;
-  background-color: #ffda18;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 1px 1px 3px #d1d1d1;
-  }
-`;
-const DetailContainer = styled.div`
-  width: 60%;
+const ProfileButtonContainer = styled.div`
+  width: 90%;
   margin: 0 auto;
-`;
-
-const PostContainer = styled.div`
-  height: 100%;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 4rem;
-  margin-bottom: 24px;
 `;
 
-const PostImage = styled.div<{ img: string }>`
-  width: 60%;
-  height: 490px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-size: cover;
-  background-image: url(${(props) => props.img});
-  background-position: center center;
-`;
-
-const PostInfoWrapper = styled.div`
-  width: 50%;
-  height: 490px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const SellBuyWrapper = styled.div`
+const ProfileButtons = styled.button`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SellButton = styled.button`
-  width: 50%;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
+  height: 64px;
+  font-size: ${(props) => props.theme.fontSize.body16};
+  background-color: ${(props) => props.theme.colors.brandColor};
   border: none;
-  border-bottom: 2px solid #e6e6e6;
   &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
+    box-shadow: 2px 2px 4px #d5d5d5;
   }
 `;
 
-const BuyButton = styled.button`
-  width: 50%;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
+const RightButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
-const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
-`;
-
-const PostPrice = styled.p`
-  width: 100%;
+const LikeIcon = styled(AiFillLike)`
   font-size: ${(props) => props.theme.fontSize.bottom20};
-  text-align: right;
-  font-weight: ${(props) => props.theme.fontWeight.bold};
+`;
+
+const LikeCounter = styled.p`
+  font-size: ${(props) => props.theme.fontSize.body16};
+`;
+
+const LikeAndSubmitContainer = styled.div`
+  display: flex;
+  gap: 3rem;
 `;
 
 const PostLikeButtonContainer = styled.button`
@@ -412,25 +371,29 @@ const PostLikeButtonContainer = styled.button`
   width: 14%;
   height: 65px;
   font-size: ${(props) => props.theme.fontSize.title36};
-  border: 2px solid #ffda18;
-  background-color: #ffffff;
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  background-color: ${(props) => props.theme.colors.white};
   &:hover {
     cursor: pointer;
-    color: #656565;
+    color: ${(props) => props.theme.colors.gray30};
   }
 `;
 
+const HeartIcon = styled(AiFillHeart)`
+  color: ${(props) => props.theme.colors.red};
+`;
+
 const OrderButton = styled.button`
-  width: 100%;
-  height: 65px;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: #ffda18;
-  color: #656565;
-  border: none;
-  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 4rem;
+  color: ${(props) => props.theme.colors.gray40};
+  font-size: ${(props) => props.theme.fontSize.bottom20};
+  background-color: ${(props) => props.theme.colors.brandColor};
+  border: none;
+  border-radius: 10px;
   &:hover {
     cursor: pointer;
     box-shadow: 1px 1px 3px #d1d1d1;
@@ -438,10 +401,10 @@ const OrderButton = styled.button`
 `;
 
 const PostContentWrapper = styled.div`
-  height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  height: 100%;
   gap: 2.5rem;
   margin-bottom: 24px;
 `;
@@ -449,20 +412,19 @@ const PostContentWrapper = styled.div`
 const PostContent = styled.div`
   padding: 2rem;
   width: 100%;
-  min-height: 320px;
-  border: 2px solid #ffda18;
-`;
-
-const PostUserInfo = styled.div`
-  padding: 12px;
-  width: 50%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
+  min-height: 20rem;
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
 `;
 
 const CommentsWrapper = styled.div``;
+const EditDeleteButton = styled.button`
+  width: 5rem;
+  height: 2.5rem;
+  border: none;
+  font-size: ${(props) => props.theme.fontSize.bottom20};
+  background-color: ${(props) => props.theme.colors.brandColor};
+  cursor: pointer;
+  &:hover {
+    box-shadow: 1px 1px 3px #d1d1d1;
+  }
+`;

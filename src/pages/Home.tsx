@@ -13,6 +13,7 @@ import {
   swipePower,
   variants,
 } from '../components/home/variants';
+
 const Home = () => {
   const navigate = useNavigate();
   const [[slider, direction], setSlider] = useState([0, 0]);
