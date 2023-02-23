@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth, upload, auth, storageService } from '../../firebase/Firebase';
+import { auth, storageService } from '../../firebase/Firebase';
 import { customSuccessAlert } from '../modal/CustomAlert';
 
 export default function Profile(params: any) {

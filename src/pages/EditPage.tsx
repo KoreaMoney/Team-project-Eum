@@ -163,7 +163,7 @@ const EditPage = () => {
     }
     const post = {
       title,
-      price: price.replace(/[^0-9]/g, ''),
+      price: Number(price.replace(/[^0-9]/g, '')),
       imgURL,
       category,
       content,
@@ -178,7 +178,7 @@ const EditPage = () => {
     setTitle(postdata?.title);
     setContent(postdata?.content);
     setCategory(postdata?.category);
-    setPrice(postdata?.price.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+    setPrice(postdata?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   }, [postdata]);
 
   if (isLoading) return <div> </div>;
