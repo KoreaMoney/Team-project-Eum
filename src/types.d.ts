@@ -54,7 +54,7 @@ export interface onSalePostType {
   views: number;
   price: string;
   category: string;
-  ceatedAt: number;
+  createdAt: number;
   isDone: boolean;
   isSellerCancel: boolean;
   isBuyerCancel: boolean;
