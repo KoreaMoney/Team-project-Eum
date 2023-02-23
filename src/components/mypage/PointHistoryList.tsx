@@ -1,39 +1,38 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getTradePoint } from '../../api';
-import { auth } from '../../firebase/Firebase';
 
+/**순서
+ *1. 완료된 리스트 분류하기
+ *2. 판매목록보기
+ *3. 구매목록보기
+ *4. 전체거래 목록 보기
+ */
 const PointHistoryList = () => {
   const [category, setCategory] = useState(0);
-  const queryClient = useQueryClient();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const {
-    isLoading: getTradeListLoading,
-    isError: getTradeListIsError,
-    data: tradeData,
-    error: getTradeListError,
-  } = useQuery(['onSalePosts'], getTradePoint);
-  console.log('tradeData', tradeData);
+
+  const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
+    ['onSalePosts'],
+    getTradePoint
+  );
 
   const isDoneTradeList =
     tradeData &&
     tradeData.filter((post: any) => {
       return post.isDone === true;
     });
-  console.log('isDoneTradeList', isDoneTradeList);
 
   // 거래완료 목록 중 내 판매목록
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.buyerUid;
   });
-  console.log('buyTradeList', buyTradeList);
 
   // 거래완료 목룩 중 내 구매목록
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.sellerUid;
   });
-  console.log('sellTradeList', sellTradeList);
 
   // 내 전체 거래 목록
   let NewTradeList;
@@ -42,34 +41,34 @@ const PointHistoryList = () => {
   } else {
     NewTradeList = undefined;
   }
-  console.log('NewTradeList', NewTradeList);
 
   const categoryStyle = {
     color: `#656565`,
     borderBottom: `2px solid #666666`,
   };
+
   return (
-    <PointHistoryContainer>
-      <PointHistoryCategoryWrapper>
-        <PointHistoryAllList
+    <div>
+      <div>
+        <PointWrapper
           onClick={() => setCategory(0)}
           style={category === 0 ? categoryStyle : undefined}
         >
           전체
-        </PointHistoryAllList>
-        <PointHistorySellList
+        </PointWrapper>
+        <PointWrapper
           onClick={() => setCategory(1)}
           style={category === 1 ? categoryStyle : undefined}
         >
           판매
-        </PointHistorySellList>
-        <PointHistoryBuyList
+        </PointWrapper>
+        <PointWrapper
           onClick={() => setCategory(2)}
           style={category === 2 ? categoryStyle : undefined}
         >
           구매
-        </PointHistoryBuyList>
-      </PointHistoryCategoryWrapper>
+        </PointWrapper>
+      </div>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
           <div>Loading...</div>
@@ -83,7 +82,6 @@ const PointHistoryList = () => {
                   ? '판매'
                   : '에러'}
               </PointHistoryDate>
-
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>
                 {prev.buyerUid === saveUser.uid ? (
@@ -117,87 +115,53 @@ const PointHistoryList = () => {
           <>없음</>
         )}
       </PointHistoryWrapper>
-    </PointHistoryContainer>
+    </div>
   );
 };
 export default PointHistoryList;
 
-const PointHistoryContainer = styled.div``;
-
 const PlusOrMinus = styled.span`
-  width: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 1rem;
 `;
-const PointHistoryCategoryWrapper = styled.div``;
 
-const PointHistoryAllList = styled.button`
+const PointWrapper = styled.button`
   width: 8rem;
   height: 32px;
   font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray20};
   border: none;
-  border-bottom: 2px solid #e6e6e6;
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
   &:hover {
     cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
+    color: ${(props) => props.theme.colors.gray30};
+    border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
   }
 `;
-const PointHistorySellList = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-const PointHistoryBuyList = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
+
 const PointHistoryWrapper = styled.div`
   margin: 12px 0;
   padding: 12px 24px;
   width: 100%;
   height: 360px;
-  background-color: #d9d9d9;
-  color: #737373;
+  background-color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   margin-bottom: 24px;
   overflow-y: auto;
 `;
-
 const PointHistory = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 1rem 0;
   width: 100%;
   height: 1.5rem;
   font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #737373;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray30};
 `;
 const PointHistoryDate = styled.div`
   width: 10rem;
@@ -206,14 +170,14 @@ const PointHistoryDate = styled.div`
   align-items: center;
 `;
 const PointHistoryContent = styled.div`
-  width: 25rem;
   display: flex;
   justify-content: left;
   align-items: center;
+  width: 25rem;
 `;
 const PointHistoryAmount = styled.div`
-  width: 6rem;
   display: flex;
   justify-content: left;
   align-items: center;
+  width: 6rem;
 `;

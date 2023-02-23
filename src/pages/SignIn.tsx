@@ -139,11 +139,8 @@ const SignIn = () => {
       .then((result) => {
         const uid = auth?.currentUser?.uid;
         const idList = data?.map((user: userType) => user.id); //리팩토링 필요
-        console.log('idList: ', saveUser?.uid);
         const isId = idList.includes(saveUser?.uid);
-        console.log( 'result: ' ,result);
-        
-        
+    
         if (!isId) {
           mutation.mutate({
             id: uid,
@@ -155,7 +152,7 @@ const SignIn = () => {
             isDoneCount: 0,
           });
         }
-        navigate('/')
+        navigate('/');
       })
       .catch((error) => {
         const errorMessage = error.message;

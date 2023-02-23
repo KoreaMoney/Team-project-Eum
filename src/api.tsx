@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 // profile nickname 출력하기
-
 export const getProfileNickName = async (user: any) => {
   const response = await axios.get(
     `${process.env.REACT_APP_JSON}/users/${user.id}`
@@ -18,7 +17,6 @@ export const updateProfileNickName = async (user: any) => {
 };
 
 // profile point 출력하기
-
 export const getProfilePoint = async (user: any) => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/users`);
   return response.data;

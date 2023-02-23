@@ -1,8 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { useEffect, useState } from 'react';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,

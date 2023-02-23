@@ -40,7 +40,7 @@ const Container = styled.div<{ width: string; height: string }>`
   padding: 8px;
   background-color: #f2f3f4;
   border-radius: 8px;
-  z-index: 2000;
+  z-index: 10;
   color: white;
   display: flex;
   justify-content: center;
@@ -57,7 +57,7 @@ const Canvas = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.1);
-  z-index: 53;
+  z-index: 3;
 `;
 
 const Wrapper = styled.div`

@@ -3,9 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosSearch } from 'react-icons/io';
 import styled from 'styled-components';
 
+/**순서
+ * 1. 검색 데이터 변경넣기
+ * 2. 선택 데이터 변경하기
+ */
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectValue, setSelectValue] = useState<string>('');
   const { categoryName } = useParams();
 
   const navigate = useNavigate();

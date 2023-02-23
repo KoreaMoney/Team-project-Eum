@@ -1,17 +1,17 @@
-import parse from 'html-react-parser';
-import styled from 'styled-components';
 import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import ReactQuill from 'react-quill';
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { editPostType } from '../types';
 import { auth, storageService } from '../firebase/Firebase';
-import ReactQuill from 'react-quill';
-import axios from 'axios';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+
 const EditPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -28,6 +28,16 @@ const EditPage = () => {
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
 
+  /**순서
+   * 1. query를 먼저 지정
+   * 2. 상단에 위치한 툴바 생성
+   * 3. 툴바내 있는 사진 저장 눌렀을 시 사진 저장
+   * 4. firebase storage에 저장
+   * 5. react-quill사용하여 textArea진행
+   * 6. 작성에 대한 유효성 검사
+   */
+
+  //React-query (Query)
   const { data: postdata, isLoading } = useQuery(
     ['editPost', id],
     async () => {
@@ -42,11 +52,9 @@ const EditPage = () => {
       },
     }
   );
-  const {
-    mutate,
-    isError,
-    isLoading: patchLoading,
-  } = useMutation(
+
+  //React-query (Mutation)
+  const { mutate } = useMutation(
     (editPost: editPostType) =>
       axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, editPost),
     {
@@ -55,6 +63,8 @@ const EditPage = () => {
       },
     }
   );
+
+  //툴바 영역
   const toolbarOptions = [
     [{ header: [1, 2, 3, false] }],
     [{ align: [] }],
@@ -63,6 +73,7 @@ const EditPage = () => {
     [{ color: [] }],
     ['video'],
   ];
+
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
   const formats = [
     'header',
@@ -80,6 +91,7 @@ const EditPage = () => {
     'video',
     'width',
   ];
+
   const modules = {
     toolbar: {
       container: toolbarOptions,
@@ -94,15 +106,14 @@ const EditPage = () => {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const resultImg = reader.result;
-        shrotenUrl(resultImg as string);
+        shortenUrl(resultImg as string);
       };
     }
   };
 
   // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경
-  const shrotenUrl = async (img: string) => {
+  const shortenUrl = async (img: string) => {
     const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
-
     const imgDataUrl = img;
     let downloadUrl;
     if (imgDataUrl) {
@@ -117,11 +128,12 @@ const EditPage = () => {
     setTitle(value);
   };
 
-  const onChangePricec = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
 
     setPrice(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   };
+
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만들어줬다. 더 간편한 방법이 있을까??
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
@@ -156,6 +168,11 @@ const EditPage = () => {
       return true;
     }
   };
+
+  /**비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
+   * await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
+   * 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
+   */
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validation()) {
@@ -168,9 +185,7 @@ const EditPage = () => {
       category,
       content,
     };
-    await mutate(post); // 비동기 처리를 하는 함수라서 await을 꼭 붙혀줘야 한다.
-    // await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
-    // 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
+    await mutate(post);
   };
 
   useEffect(() => {
@@ -181,7 +196,7 @@ const EditPage = () => {
     setPrice(postdata?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   }, [postdata]);
 
-  if (isLoading) return <div> </div>;
+  if (isLoading) return <div>Now Loading...</div>;
 
   return (
     <Container>
@@ -221,7 +236,7 @@ const EditPage = () => {
                 type="text"
                 name="price"
                 value={price || ''}
-                onChange={onChangePricec}
+                onChange={onChangePrice}
                 placeholder="가격"
                 maxLength={11}
                 min={0}
@@ -229,10 +244,10 @@ const EditPage = () => {
               원
             </div>
           </InputWrap>
-          <QuilWrapper>
+          <QuillWrapper>
             <ReactQuill
-              ref={contentsRef}
               theme="snow"
+              ref={contentsRef}
               modules={modules}
               formats={formats}
               value={content || ''}
@@ -240,7 +255,7 @@ const EditPage = () => {
                 setContent(value);
               }}
             />
-          </QuilWrapper>
+          </QuillWrapper>
           <Button>
             <button>작성완료</button>
           </Button>
@@ -250,11 +265,11 @@ const EditPage = () => {
           <ImageWrapper>
             <ImgBox img={imgURL} />
             <ImageSelectButton>
-              <ImageLabel htmlFor="changeimg">파일선택</ImageLabel>
+              <ImageLabel htmlFor="changeImg">파일선택</ImageLabel>
             </ImageSelectButton>
             <input
               hidden
-              id="changeimg"
+              id="changeImg"
               type="file"
               placeholder="파일선택"
               onChange={saveImgFile}
@@ -268,6 +283,7 @@ const EditPage = () => {
 };
 
 export default EditPage;
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -278,12 +294,12 @@ const BorderBox = styled.div`
   margin: 5px auto;
 `;
 const FormWrapper = styled.form`
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-color: black;
+  width: 100%;
+  border-color: ${(props) => props.theme.colors.black};
 `;
 const InputWrap = styled.div`
   display: flex;
@@ -317,13 +333,15 @@ const PriceInput = styled.input`
     margin: 0;
   }
 `;
-const QuilWrapper = styled.div`
+
+const QuillWrapper = styled.div`
   width: 70%;
   .ql-container {
     width: 100%;
     height: 25rem;
   }
 `;
+
 const Button = styled.div`
   display: flex;
   justify-content: end;

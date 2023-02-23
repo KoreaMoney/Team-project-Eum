@@ -4,24 +4,31 @@ import { useState } from 'react';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
 import styled from 'styled-components';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
 import basicIMG from '../styles/basicIMG.png';
-
-import { AiFillLike, AiFillHeart, AiOutlineLike } from 'react-icons/ai';
-import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
+import { AiFillHeart } from 'react-icons/ai';
+import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,
-  customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import { auth } from '../firebase/Firebase';
-import { onSalePostType, userType } from '../types';
+import { onSalePostType } from '../types';
 import parse from 'html-react-parser';
 import SignIn from './SignIn';
-import { DocumentData } from 'firebase/firestore';
+
+/**순서
+ * 1. query구성을 진행하여 데이터를 get함
+ * 2. 판매자 uid 가져오기
+ * 3. 포인트 수정
+ * 4. 포인트 수정후 저장
+ * 5. 글 찜 기능 추가
+ * 6. 글 찜 기능 수정, 삭제
+ * 7. 댓글 수정 삭제
+ * 8. 구매자 포인트 신청
+ * 9. 포인트 환불
+ */
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -35,10 +42,10 @@ const Detail = () => {
   const [sellerData, setSellerData] = useState<{ like: any[] }>({ like: [] });
   const [postData, setPostData] = useState<{ like: any[] }>({ like: [] });
   const queryClient = useQueryClient();
-  // 클릭한 글의 데이터를 가지고 옵니다.
 
+  // 클릭한 글의 데이터를 가지고 옵니다.
+  // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   const { data: post, isLoading } = useQuery(['post', id], async () => {
-    // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
       `${process.env.REACT_APP_JSON}/posts?id=${id}`
     );
@@ -63,7 +70,6 @@ const Detail = () => {
       enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
-  console.log('post?.[0].sellerUid: ', post?.[0].sellerUid);
 
   // 포인트 수정을 위한 유저정보 get
   const { data: user } = useQuery(
@@ -103,15 +109,14 @@ const Detail = () => {
             : [...(prev.like || []), saveUser?.uid],
         }));
       },
-      onError: (error, newUser, rollback) => {
-        console.log(error);
+      onError: (error) => {
+        console.dir(error);
       },
     }
   );
 
   // 글 찜 기능을 위해
   const postCountCheck = post?.[0].like.includes(saveUser?.uid);
-  console.log('postCountCheck: ', postCountCheck);
 
   const { mutate: updatePost } = useMutation(
     (newPosts: { like: string[] }) =>
@@ -127,8 +132,8 @@ const Detail = () => {
             : [...(prev.like || []), saveUser?.uid],
         }));
       },
-      onError: (error, newUser, rollback) => {
-        console.log(error);
+      onError: (error) => {
+        console.dir(error);
       },
     }
   );
@@ -168,22 +173,6 @@ const Detail = () => {
 
   const countCheck = seller?.like.includes(saveUser?.uid);
 
-  const counter = async () => {
-    if (saveUser) {
-      if (countCheck) {
-        await updateSeller({
-          like: seller?.like.filter((prev: any) => prev !== saveUser?.uid),
-        });
-      } else {
-        await updateSeller({
-          like: [...(seller?.like || []), saveUser?.uid],
-        });
-      }
-    } else {
-      return <SignIn />;
-    }
-  };
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -191,10 +180,10 @@ const Detail = () => {
     return <div>No data found</div>;
   }
 
-  // 바로 신청하기 버튼 클릭 하면
-  // user 데이터의 point가 price만큼 빠지고
-  // mutate로 데이터를 저장합니다.
-  console.log('구매자포인트: ', typeof post?.[0]?.price);
+  /**바로 신청하기 버튼 클릭
+   * user 데이터의 point가 price만큼 빠지고
+   * mutate로 데이터를 저장합니다
+   */
 
   const onClickApplyBuy = async () => {
     if (!saveUser) {
@@ -202,11 +191,12 @@ const Detail = () => {
       return;
     }
 
-    const point = Number(user?.point) || 0; // null인 경우 0으로 초기화
-    const price = Number(post?.[0]?.price) || 0; // null인 경우 0으로 초기화
+    /**null인 경우 0으로 초기화 */
+    const point = Number(user?.point) || 0;
+    const price = Number(post?.[0]?.price) || 0;
 
+    // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트ㄴ
     if (point >= price) {
-      // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
       await updateUser({ point: point - price });
       const uuid = uuidv4();
       await onSalePosts({
@@ -314,14 +304,12 @@ const Detail = () => {
 
 export default Detail;
 
-const NoLikeIcon = styled(AiOutlineLike)``;
-
-const NoHeartIcon = styled(FcLikePlaceholder)``;
-
 const DetailContainer = styled.div`
   width: 60%;
   margin: 0 auto;
 `;
+
+const NoHeartIcon = styled(FcLikePlaceholder)``;
 
 const EditDeleteButtonContainer = styled.div`
   display: flex;
@@ -379,7 +367,7 @@ const SellerText = styled.p`
 const SellerProfileContainer = styled.div`
   width: 100%;
   height: 240px;
-  box-shadow: 1px 1px 5px #d1d1d1;
+  box-shadow: 1px 1px 5px ${(props) => props.theme.colors.gray20};
 `;
 
 const SellerProfileTopDiv = styled.div`
@@ -467,23 +455,8 @@ const ProfileButtons = styled.button`
   background-color: ${(props) => props.theme.colors.brandColor};
   border: none;
   &:hover {
-    box-shadow: 2px 2px 4px #d5d5d5;
+    box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
   }
-`;
-
-const RightButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const LikeIcon = styled(AiFillLike)`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const LikeCounter = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
 `;
 
 const LikeAndSubmitContainer = styled.div`
@@ -523,7 +496,7 @@ const OrderButton = styled.button`
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    box-shadow: 1px 1px 3px #d1d1d1;
+    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
   }
 `;
 
@@ -543,8 +516,6 @@ const PostContent = styled.div`
   border: 2px solid ${(props) => props.theme.colors.brandColor};
 `;
 
-const CommentsWrapper = styled.div``;
-
 const EditDeleteButton = styled.button`
   width: 5rem;
   height: 2.5rem;
@@ -553,6 +524,6 @@ const EditDeleteButton = styled.button`
   background-color: ${(props) => props.theme.colors.brandColor};
   cursor: pointer;
   &:hover {
-    box-shadow: 1px 1px 3px #d1d1d1;
+    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
   }
 `;

@@ -1,40 +1,33 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import Profile from '../components/mypage/Profile';
-import { auth } from '../firebase/Firebase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getProfileNickName,
   getTradePoint,
   updateProfileNickName,
 } from '../api';
-import { useNavigate, useParams } from 'react-router-dom';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
+
 const MyPage = () => {
   const queryClient = useQueryClient();
-  const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log('saveUser: ', saveUser);
   const [category, setCategory] = useState('likelist');
-  console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
+  const [editNickNameValue, setEditNickNameValue] = useState('');
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   // 로그인한 유저 정보를 받아옵니다.
-  const {
-    isLoading: getLoading,
-    isError,
-    data,
-    error,
-  } = useQuery(['users'], getProfileNickName);
+  const { isLoading: getLoading, data } = useQuery(
+    ['users'],
+    getProfileNickName
+  );
 
   // 거래 목록을 받아옵니다.
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
     data: tradeData,
-    error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
   // 거래 완료 목록을 받아옵니다.
@@ -46,8 +39,6 @@ const MyPage = () => {
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
-
-  const [editNickNameValue, setEditNickNameValue] = useState('');
 
   // 로그인한 유저의 판매 목록을 출력합니다.
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
@@ -104,24 +95,24 @@ const MyPage = () => {
                 placeholder="닉네임을 입력해주세요."
                 maxLength={12}
               />
-              <CheckButton
+              <ButtonWrapper
                 onClick={() => {
                   EditNickName(data?.[0]?.uid);
                 }}
               >
                 확인
-              </CheckButton>
+              </ButtonWrapper>
             </>
           ) : (
             <>
               <UserName>{data?.[0]?.nickName}</UserName>
-              <UserNameEditButton
+              <ButtonWrapper
                 onClick={() => {
                   setIsEdit(true);
                 }}
               >
                 수정
-              </UserNameEditButton>
+              </ButtonWrapper>
             </>
           )}
         </UserNameWrapper>
@@ -133,41 +124,41 @@ const MyPage = () => {
           </UserTime>
         </UserTimeWrapper>
         <UserRatingWrapper>내가 가진 배지</UserRatingWrapper>
-        <UserbadgeWrapper>배지</UserbadgeWrapper>
+        <UserDivWrapper>배지</UserDivWrapper>
       </UserProfileWrapper>
       <UserPostWrapper>
         <ProfileNavWrapper>
-          <LikeListBar
+          <BarWrapper
             onClick={() => setCategory('likelist')}
             style={category === 'likelist' ? categoryStyle : undefined}
           >
             관심목록
-          </LikeListBar>
-          <SellListBar
+          </BarWrapper>
+          <BarWrapper
             onClick={() => setCategory('selllist')}
             style={category === 'selllist' ? categoryStyle : undefined}
           >
             판매내역
-          </SellListBar>
-          <BuyListBar
+          </BarWrapper>
+          <BarWrapper
             onClick={() => setCategory('buylist')}
             style={category === 'buylist' ? categoryStyle : undefined}
           >
             구매내역
-          </BuyListBar>
-          <CommentsListBar
+          </BarWrapper>
+          <BarWrapper
             onClick={() => setCategory('commentlist')}
             style={category === 'commentlist' ? categoryStyle : undefined}
           >
             후기관리
-          </CommentsListBar>
+          </BarWrapper>
         </ProfileNavWrapper>
         <CategoryListWrapper>
           {category === 'likelist'
             ? sellTradeList?.map((list: any) => {
                 return (
                   <UserSellBuyWrapper key={list.id}>
-                    <UserSellWrapper>팝니다</UserSellWrapper>
+                    <UserWrapper>팝니다</UserWrapper>
                   </UserSellBuyWrapper>
                 );
               })
@@ -176,7 +167,7 @@ const MyPage = () => {
             ? sellTradeList?.map((list: any) => {
                 return (
                   <UserSellBuyWrapper key={list.id}>
-                    <UserSellWrapper>팝니다</UserSellWrapper>
+                    <UserWrapper>팝니다</UserWrapper>
                   </UserSellBuyWrapper>
                 );
               })
@@ -185,84 +176,74 @@ const MyPage = () => {
             ? buyTradeList?.map((list: any) => {
                 return (
                   <UserSellBuyWrapper key={list.id}>
-                    <UserBuyWrapper>삽니다</UserBuyWrapper>
+                    <UserWrapper>삽니다</UserWrapper>
                   </UserSellBuyWrapper>
                 );
               })
             : null}
           {category === 'commentlist'
             ? sellTradeList?.map((list: any) => {
-                return <CommentsList key={list.id}>후기 List</CommentsList>;
+                return <UserDivWrapper key={list.id}>후기 List</UserDivWrapper>;
               })
             : null}
-
-          <UserLikeWrapper>찜 List</UserLikeWrapper>
+          <UserDivWrapper>찜 List</UserDivWrapper>
         </CategoryListWrapper>
       </UserPostWrapper>
     </MyPageContainer>
   );
 };
 export default MyPage;
+
 const MyPageContainer = styled.div`
-  padding: 40px;
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  padding: 40px;
+  width: 100%;
 `;
+
 const UserProfileWrapper = styled.div`
-  width: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 24rem;
 `;
+
 const UserPostWrapper = styled.div`
   width: 72rem;
 `;
+
 const UserNameWrapper = styled.div`
-  padding-left: 62px;
-  margin: 10px auto 30px auto;
-  border-bottom: 2px solid #e6e6e6;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 62px;
+  margin: 10px auto 30px auto;
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
 `;
 const UserName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 14rem;
   height: 28px;
   font-size: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
-const UserNameEditButton = styled.button`
+const ButtonWrapper = styled.button`
   width: 62px;
   height: 28px;
   font-size: 100%;
-  background-color: #656565;
-  color: #fff;
+  background-color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.white};
   border: none;
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
+    background-color: ${(props) => props.theme.colors.gray20};
+    color: ${(props) => props.theme.colors.gray30};
   }
 `;
-const CheckButton = styled.button`
-  width: 62px;
-  height: 28px;
-  font-size: 100%;
-  background-color: #656565;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
-`;
+
 const EditInputValue = styled.input`
   width: 14rem;
   height: 28px;
@@ -275,38 +256,30 @@ const EditInputValue = styled.input`
     outline: none;
   }
 `;
+
 const UserTimeWrapper = styled.div`
-  margin-bottom: 2rem;
-  width: 18rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 2rem;
+  width: 18rem;
 `;
+
 const UserTime = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
+
 const UserRatingWrapper = styled.div`
-  margin-bottom: 2rem;
-  width: 18rem;
   display: flex;
   justify-content: left;
   align-items: center;
-`;
-const UserbadgeWrapper = styled.div`
-  padding: 12px;
+  margin-bottom: 2rem;
   width: 18rem;
-  height: 6rem;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
 `;
+
 const UserSellBuyWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -314,52 +287,32 @@ const UserSellBuyWrapper = styled.div`
   gap: 2.5rem;
   margin-bottom: 24px;
 `;
-const UserSellWrapper = styled.div`
+
+const UserDivWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px;
+  width: 18rem;
+  height: 6rem;
+  background-color: ${(props) => props.theme.colors.gray10};
+  color: ${(props) => props.theme.colors.gray30};
+  border-radius: 10px;
+  margin-bottom: 24px;
+`;
+
+const UserWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   padding: 12px;
   width: 50%;
   height: 320px;
-  background-color: lightgray;
-  color: #656565;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  background-color: ${(props) => props.theme.colors.gray10};
+  color: ${(props) => props.theme.colors.gray30};
 `;
-const UserBuyWrapper = styled.div`
-  padding: 12px;
-  width: 50%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-const UserLikeWrapper = styled.div`
-  padding: 12px;
-  width: 100%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
-`;
-const CommentsList = styled.div`
-  padding: 12px;
-  width: 100%;
-  height: 320px;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 24px;
-`;
+
 const ProfileNavWrapper = styled.div`
   width: 100%;
   margin-bottom: 2rem;
@@ -368,74 +321,29 @@ const ProfileNavWrapper = styled.div`
   align-items: center;
 `;
 const CategoryListWrapper = styled.div`
-  padding: 12px;
-  width: 100%;
-  height: 50rem;
-  background-color: lightgray;
-  color: #656565;
-  border-radius: 10px;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 12px;
+  width: 100%;
+  height: 50rem;
+  background-color: ${(props) => props.theme.colors.gray10};
+  color: ${(props) => props.theme.colors.gray30};
+  border-radius: 10px;
   margin-bottom: 24px;
 `;
-const LikeListBar = styled.button`
+
+const BarWrapper = styled.button`
   width: 8rem;
   height: 32px;
   font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray20};
   border: none;
-  border-bottom: 2px solid #e6e6e6;
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
   &:hover {
     cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-const SellListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-const BuyListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
-  }
-`;
-const CommentsListBar = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: 100%;
-  background-color: #ffffff;
-  color: #cccccc;
-  border: none;
-  border-bottom: 2px solid #e6e6e6;
-  &:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-    color: #656565;
-    border-bottom: 2px solid #666666;
+    color: ${(props) => props.theme.colors.gray30};
+    border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
   }
 `;

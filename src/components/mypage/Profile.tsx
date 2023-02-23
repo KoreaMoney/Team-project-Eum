@@ -19,8 +19,7 @@ export default function Profile(params: any) {
       .get(`${process.env.REACT_APP_JSON}/users?id=${id}`)
       .then((res) => res.data)
   );
-  console.log('id: ', id);
-  console.log('data: ', data);
+
   const [photo, setPhoto] = useState(data?.[0]?.profileImg);
 
   const { mutate: editUser } = useMutation(
@@ -59,12 +58,9 @@ export default function Profile(params: any) {
         const response = await uploadString(imgRef, imgDataUrl, 'data_url');
         downloadUrl = await getDownloadURL(response.ref);
         setPhoto(downloadUrl);
-        console.log('photo: ', photo);
-        console.log('downloadUrl: ', downloadUrl);
       }
     };
   };
-  console.log('photo: ', photo);
   const handleClick = async () => {
     await editUser({
       ...data,
@@ -72,7 +68,7 @@ export default function Profile(params: any) {
     });
   };
 
-  console.log('photo1: ', data?.[0]?.profileImg);
+
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>

@@ -1,14 +1,18 @@
+import loadable from '@loadable/component';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from '../components/layout/Layout';
-import CategoryPage from '../pages/CategoryPage';
-import Detail from '../pages/Detail';
-import EditPage from '../pages/EditPage';
-import Home from '../pages/Home';
-import MyPage from '../pages/MyPage';
-import SignIn from '../pages/SignIn';
-import SignUp from '../pages/SignUp';
-import Transaction from '../pages/Transaction';
-import WritePage from '../pages/WritePage';
+
+/**Code Spliting 진행*/
+const Layout = loadable(() => import('../components/layout/Layout'));
+const CategoryPage = loadable(() => import('../pages/CategoryPage'));
+const Detail = loadable(() => import('../pages/Detail'));
+const EditPage = loadable(() => import('../pages/EditPage'));
+const Home = loadable(() => import('../pages/Home'));
+const MyPage = loadable(() => import('../pages/MyPage'));
+const SignIn = loadable(() => import('../pages/SignIn'));
+const SignUp = loadable(() => import('../pages/SignUp'));
+const Transaction = loadable(() => import('../pages/Transaction'));
+const WritePage = loadable(() => import('../pages/WritePage'));
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -36,7 +40,6 @@ const Router = () => {
         <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
-    // 하나의 page
   );
 };
 export default Router;

@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
+    "@loadable/component": "^5.15.3",
     "@tanstack/react-query": "^4.24.6",
     "@tanstack/react-query-devtools": "^4.24.4",
     "@types/firebase": "^3.2.1",
     "@types/jest": "^27.5.2",
     "@types/json-server": "^0.14.4",
+    "@types/loadable__component": "^5.13.4",
     "@types/node": "^16.18.12",
     "@types/node-sass": "^4.11.3",
     "@types/react": "^18.0.28",

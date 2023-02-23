@@ -1,27 +1,41 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import * as yup from 'yup';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ISignUpForm } from '../../types';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase/Firebase';
+
+/**순서
+ * 1. email작성
+ * 2. email작성 관련 유효성 검사
+ * 3. 등록된 email로 변경 메세지 보내기
+ */
 const FindPW = () => {
-  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState(false);
   const [err, setErr] = useState('');
+
+  //email작성하기
   const onChangeEmailHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setEmail(e.target.value);
   };
+
+  //input에서 email 확인하기
   const handleInputValueClickBT = () => {
     setEmail('');
   };
+
+  //유효성 검사하기 위한 시작하기
   const schema = yup.object().shape({
     email: yup.string().email().required(),
   });
+
+  //유효성 검사하기
   const {
     register,
     handleSubmit,
@@ -29,6 +43,8 @@ const FindPW = () => {
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
   });
+
+  //변경될 비밀번호 이메일로 전송하기
   const onSubmitHandler = async () => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -42,6 +58,7 @@ const FindPW = () => {
         }
       });
   };
+
   return (
     <>
       <ModalTitle>비밀번호 찾기</ModalTitle>
@@ -83,11 +100,11 @@ const InputBox = styled.input`
   height: 2.4rem;
   padding: 0 3rem 0 1rem;
   font-size: 1rem;
-  background-color: #fafafa;
+  background-color: ${(props) => props.theme.colors.white};
   border: 2px solid ${(props) => props.theme.colors.brandColor};
   border-radius: 8px;
   &::placeholder {
-    color: #d1d1d1;
+    color: ${(props) => props.theme.colors.gray10};
   }
   &:focus {
     outline: none;
@@ -115,12 +132,12 @@ const ErrorMSG = styled.p`
 const SendEmailButton = styled.button`
   width: 100%;
   height: 3rem;
+  margin: 1rem 0 0 0;
   border: none;
   border-radius: 6px;
-  color: ${(props) => props.theme.colors.gray40};
   font-size: 1.1rem;
+  color: ${(props) => props.theme.colors.gray40};
   background-color: ${(props) => props.theme.colors.brandColor};
-  margin: 1rem 0 0 0;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.colors.gray10};
