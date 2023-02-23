@@ -26,6 +26,7 @@ const PointModal = () => {
       return auth.currentUser?.uid === user.id;
     });
 
+
   // 커스텀모달을 불러옵니다.
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
@@ -47,7 +48,10 @@ const PointModal = () => {
         <p>포인트</p>
         <div>
           {' '}
-          {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+          {profileData?.[0] &&
+            profileData[0].point &&
+            profileData[0].point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+          P
         </div>
       </PointButton>
       {isModalActive ? (
@@ -65,7 +69,12 @@ const PointModal = () => {
                 <h3>　내 포인트</h3>
               </PointImgWrapper>
               <CurrentPoint>
-                {currentUser?.[0]?.point.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {profileData?.[0] &&
+                  profileData[0].point &&
+                  profileData[0].point.replace(
+                    /\B(?=(\d{3})+(?!\d))/g,
+                    ','
+                  )}{' '}
                 P
               </CurrentPoint>
               <PointDepositWithdrawWrapper>

@@ -4,26 +4,24 @@
       "id": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
       "nickName": "판매자",
       "profileImg": null,
-      "point": "11600",
+      "point": "8600",
       "contactTime": "",
-      "like": [],
+      "like": [
+        "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13"
+      ],
       "isDoneCount": 6
     },
     {
       "id": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
-      "nickName": "구매자1",
-      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677081357172?alt=media&token=c0d9b768-d2c1-4b74-9d63-a252c34cc2a5",
-      "point": "11600",
+      "nickName": "구매자",
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677092199829?alt=media&token=9e5c8a95-60e1-4de2-b2c4-401b67e49d69",
+      "point": "14600",
       "contactTime": "",
       "like": [
-        3,
-        3,
-        3,
-        3,
-        3,
-        3
+        "roWP1xxLNlZZPsgwgOKoMslSXFw1",
+        "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13"
       ],
-      "isDoneCount": 0
+      "isDoneCount": 1
     },
     {
       "id": "roWP1xxLNlZZPsgwgOKoMslSXFw1",
@@ -114,7 +112,8 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 14,
+      "views": 19,
+
       "createAt": 1676612528057
     },
     {
@@ -127,7 +126,9 @@
       "imgURL": [],
       "category": "study",
       "like": [],
+
       "views": 3,
+
       "createAt": 1676619414560
     },
     {
@@ -140,7 +141,7 @@
       "imgURL": [],
       "category": "study",
       "like": [],
-      "views": 4,
+      "views": 6,
       "createAt": 1676734627857
     },
     {
@@ -190,7 +191,7 @@
       "imgURL": "https://firebasestorage.googleapis.com/v0/b/daylog-96043.appspot.com/o/Qh8zrzAwjMWSYXSSDJYIWIzpLZ131677053474723?alt=media&token=60a3bafd-3f68-40cb-9bd8-018eb60b7132",
       "category": "advice",
       "like": [],
-      "views": 4,
+      "views": 8,
       "createAt": 1677053471098
     },
     {
@@ -229,8 +230,10 @@
       "imgURL": "",
       "category": "play",
       "like": [],
+
       "views": 3,
       "createAt": 1676619414560
+
     },
     {
       "id": "d49d40e8-bb1d-4fb7-b690-cf58eea764ae",
@@ -307,7 +310,7 @@
       "imgURL": "",
       "category": "study",
       "like": [],
-      "views": 2,
+      "views": 3,
       "createAt": 1677055071989
     },
     {
@@ -584,58 +587,7 @@
       "views": 2,
       "createAt": 1677055071989
     },
-    {
-      "id": "8da166e8-7dd4-4d36-a7cc-60caad6db4f5",
-      "title": "테스트1",
-      "nickName": "qwerq",
-      "sellerUid": "u8dPFFnL62OLZcF027PfuUUnFEh1",
-      "content": "<p>테스트1</p>",
-      "price": "100",
-      "imgURL": "",
-      "category": "play",
-      "like": [],
-      "views": 2,
-      "createAt": 1677080113905
-    },
-    {
-      "id": "a5f90ed5-f432-4fd0-8c57-40356560a401",
-      "title": "테스트2",
-      "nickName": "qwerq",
-      "sellerUid": "u8dPFFnL62OLZcF027PfuUUnFEh1",
-      "content": "<p>테스트2</p>",
-      "price": "200",
-      "imgURL": "",
-      "category": "advice",
-      "like": [],
-      "views": 0,
-      "createAt": 1677080134418
-    },
-    {
-      "id": "e70d8c28-5405-4307-b77a-635b524f28fb",
-      "title": "테스,트3",
-      "nickName": "qwerq",
-      "sellerUid": "u8dPFFnL62OLZcF027PfuUUnFEh1",
-      "content": "<p>ㅁㅁ</p>",
-      "price": "300",
-      "imgURL": "",
-      "category": "etc",
-      "like": [],
-      "views": 0,
-      "createAt": 1677083548192
-    },
-    {
-      "id": "30ed2249-6de6-489d-a2d2-fc703304118f",
-      "title": "테스트3",
-      "nickName": "qwerq",
-      "sellerUid": "u8dPFFnL62OLZcF027PfuUUnFEh1",
-      "content": "<p>테스트3</p>",
-      "price": "300",
-      "imgURL": "",
-      "category": "study",
-      "like": [],
-      "views": 1,
-      "createAt": 1677084943510
-    }
+
   ],
   "onSalePosts": [
     {
@@ -823,6 +775,23 @@
       "isSellerCancel": false,
       "isBuyerCancel": false,
       "views": 5,
+      "like": []
+    },
+    {
+      "id": "52bf37a2-7aca-4c0b-bbd2-efe244d0e40e",
+      "postsId": "29516437-1551-4f0d-aedb-0b4513a9c751",
+      "buyerUid": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
+      "sellerUid": "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13",
+      "title": "이거사면됨",
+      "content": "<p>dzdz</p>",
+      "imgURL": "",
+      "price": "3000",
+      "category": "play",
+      "ceatedAt": 1677093237104,
+      "isDone": true,
+      "isSellerCancel": false,
+      "isBuyerCancel": false,
+      "views": 1,
       "like": []
     }
   ],

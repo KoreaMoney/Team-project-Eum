@@ -66,11 +66,11 @@ export default function Profile(params: any) {
       profileImg: photo,
     });
   };
-  console.log('photo1: ', photo);
+  console.log('photo1: ', data?.[0].profileImg);
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage src={photo} alt="User Image" />
+        <MyImage src={data?.[0].profileImg} alt="User Image" />
       </MyImageWrapper>
       <EditImgWrapper>
         <InputImgFile
