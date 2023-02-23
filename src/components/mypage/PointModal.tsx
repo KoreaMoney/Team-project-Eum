@@ -31,6 +31,7 @@ const PointModal = () => {
    const pointWithdrawhandle = () => {
      alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
    };
+  
   return (
     <>
       <PointButton onClick={onClickToggleModal}>
@@ -38,8 +39,8 @@ const PointModal = () => {
         <div>
           {' '}
           {profileData?.[0] &&
-            profileData[0].point &&
-            profileData[0].point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            profileData?.[0].point &&
+            profileData?.[0].point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           P
         </div>
       </PointButton>
