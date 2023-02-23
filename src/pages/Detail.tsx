@@ -13,6 +13,7 @@ import basicIMG from '../styles/basicIMG.png';
 import { AiFillLike, AiFillHeart, AiOutlineLike } from 'react-icons/ai';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import {
+  customConfirm,
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
@@ -79,8 +80,12 @@ const Detail = () => {
   );
 
   // 포인트를 수정해주는 mutation 함수
-  const { mutate: updateUser } = useMutation((newUser: { point: string }) =>
-    axios.patch(`${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`, newUser)
+  const { mutate: updateUser } = useMutation(
+    (newUser: { point: string | number | undefined }) =>
+      axios.patch(
+        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`,
+        newUser
+      )
   );
 
   // 좋아요 기능을 위해
@@ -128,6 +133,23 @@ const Detail = () => {
     }
   );
 
+  // 글 삭제
+  const { mutate: deletePost } = useMutation(
+    (postId: string) =>
+      axios.delete(`${process.env.REACT_APP_JSON}/posts/${id}`),
+    {
+      // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
+      onSuccess: () => {
+        queryClient.invalidateQueries(['posts']);
+        navigate('/categorypage/all');
+      },
+    }
+  );
+  const onClickDeleteComment = async (postId: string) => {
+    customConfirm('정말 삭제하시겠습니까?', '내 글 삭제', '삭제', async () => {
+      await deletePost(postId);
+    });
+  };
   const postCounter = async () => {
     if (saveUser) {
       if (postCountCheck) {
@@ -172,12 +194,13 @@ const Detail = () => {
   // 바로 신청하기 버튼 클릭 하면
   // user 데이터의 point가 price만큼 빠지고
   // mutate로 데이터를 저장합니다.
+  console.log('구매자포인트: ', typeof post?.[0]?.price);
 
   const onClickApplyBuy = async () => {
     // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
     if (saveUser) {
       await updateUser({
-        point: String(parseInt(user?.point) - parseInt(post?.[0]?.price)),
+        point: Number(user?.point) - Number(post?.[0]?.price),
       });
       const uuid = uuidv4();
       await onSalePosts({
@@ -209,8 +232,12 @@ const Detail = () => {
       <EditDeleteButtonContainer>
         {saveUser?.uid === seller?.id && (
           <>
-            <EditDeleteButton>수정</EditDeleteButton>
-            <EditDeleteButton>삭제</EditDeleteButton>
+            <EditDeleteButton onClick={() => navigate(`/editpage/${id}`)}>
+              수정
+            </EditDeleteButton>
+            <EditDeleteButton onClick={() => onClickDeleteComment(post[0].id)}>
+              삭제
+            </EditDeleteButton>
           </>
         )}
       </EditDeleteButtonContainer>
@@ -218,7 +245,9 @@ const Detail = () => {
         <PostImage img={post[0].imgURL} />
         <PostInfoWrapper>
           <TitleText>{post[0].title}</TitleText>
-          <PostPrice>{post[0].price} 원</PostPrice>
+          <PostPrice>
+            {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
+          </PostPrice>
           <SellerText>판매자</SellerText>
           <SellerProfileContainer>
             <SellerProfileTopDiv>
@@ -248,7 +277,6 @@ const Detail = () => {
                 <ProfileButtonContainer>
                   <ProfileButtons>판매상품 10개</ProfileButtons>
                   <ProfileButtons>받은 후기</ProfileButtons>
-                
                 </ProfileButtonContainer>
               </BottomBottomContainer>
             </SellerProfileBottomDiv>

@@ -22,7 +22,8 @@ const MyPage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   console.log('saveUser: ', saveUser);
-console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
+  const [category, setCategory] = useState('likelist');
+  console.log('auth.currentUser?.uid: ', auth.currentUser?.uid);
 
   const {
     isLoading: getLoading,
@@ -30,15 +31,36 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
     data,
     error,
   } = useQuery(['users'], getProfileNickName);
-  console.log('data: ', data);
+  console.log('data보여주세요: ', data);
+
+  const {
+    isLoading: getTradeListLoading,
+    isError: getTradeListIsError,
+    data: tradeData,
+    error: getTradeListError,
+  } = useQuery(['onSalePosts'], getTradePoint);
+
+  const isDoneTradeList =
+    tradeData?.data &&
+    tradeData.data.filter((post: any) => {
+      return post.isDone === true;
+    });
 
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
-  const [editNickNameValue, setEditNickNameValue] = useState(
-    data?.[0]?.nickName
-  );
+  const [editNickNameValue, setEditNickNameValue] = useState('');
   // console.log('data?.users?.[0]: ', data?.[0]);
+  console.log('data?.[0]?.nickName: ', data?.[0].nickName);
+  console.log('editNickNameValue: ', editNickNameValue);
+
+  const sellTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser.uid === user?.sellerUid;
+  });
+
+  const buyTradeList = isDoneTradeList?.filter((user: any) => {
+    return saveUser.uid === user?.buyerUid;
+  });
 
   const EditNickName = async (id: string) => {
     const editNickName = editNickNameValue?.trim();
@@ -63,6 +85,11 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
   if (!saveUser) {
     return <SignIn />;
   }
+  const categoryStyle = {
+    color: `#656565`,
+    borderBottom: `2px solid #666666`,
+  };
+
   return (
     <MyPageContainer>
       <UserProfileWrapper>
@@ -103,27 +130,79 @@ console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
         </UserNameWrapper>
         <PointModal />
         <UserTimeWrapper>
-          <UserTime>연락가능한 시간 : 09:00 - 21:00</UserTime>
+          <UserTime>
+            <p>연락가능한 시간 : </p>
+            <input type="time" />
+          </UserTime>
         </UserTimeWrapper>
-        <UserRatingWrapper>등급표시</UserRatingWrapper>
+        <UserRatingWrapper>내가 가진 배지</UserRatingWrapper>
+        <UserbadgeWrapper>배지</UserbadgeWrapper>
       </UserProfileWrapper>
       <UserPostWrapper>
         <ProfileNavWrapper>
-          <LikeListBar>관심목록</LikeListBar>
-          <SellListBar>판매내역</SellListBar>
-          <BuyListBar>구매내역</BuyListBar>
-          <CommentsListBar>후기관리</CommentsListBar>
+          <LikeListBar
+            onClick={() => setCategory('likelist')}
+            style={category === 'likelist' ? categoryStyle : undefined}
+          >
+            관심목록
+          </LikeListBar>
+          <SellListBar
+            onClick={() => setCategory('selllist')}
+            style={category === 'selllist' ? categoryStyle : undefined}
+          >
+            판매내역
+          </SellListBar>
+          <BuyListBar
+            onClick={() => setCategory('buylist')}
+            style={category === 'buylist' ? categoryStyle : undefined}
+          >
+            구매내역
+          </BuyListBar>
+          <CommentsListBar
+            onClick={() => setCategory('commentlist')}
+            style={category === 'commentlist' ? categoryStyle : undefined}
+          >
+            후기관리
+          </CommentsListBar>
         </ProfileNavWrapper>
-        <UserSellBuyWrapper>
-          <UserSellWrapper>팝니다</UserSellWrapper>
-          <UserBuyWrapper>삽니다</UserBuyWrapper>
-        </UserSellBuyWrapper>
-        <div>내가 가진 배지</div>
-        <UserbadgeWrapper>배지</UserbadgeWrapper>
-        <div>찜한 목록</div>
-        <UserLikeWrapper>찜 List</UserLikeWrapper>
-        <div>후기 관리</div>
-        <CommentsList>후기 List</CommentsList>
+        <CategoryListWrapper>
+          {category === 'likelist'
+            ? sellTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserSellWrapper>팝니다</UserSellWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'selllist'
+            ? sellTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserSellWrapper>팝니다</UserSellWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'buylist'
+            ? buyTradeList?.map((list: any) => {
+                return (
+                  <UserSellBuyWrapper key={list.id}>
+                    <UserBuyWrapper>삽니다</UserBuyWrapper>
+                  </UserSellBuyWrapper>
+                );
+              })
+            : null}
+          {category === 'commentlist'
+            ? sellTradeList?.map((list: any) => {
+                return <CommentsList key={list.id}>후기 List</CommentsList>;
+              })
+            : null}
+
+          <div>찜한 목록</div>
+          <UserLikeWrapper>찜 List</UserLikeWrapper>
+          <div>후기 관리</div>
+        </CategoryListWrapper>
       </UserPostWrapper>
     </MyPageContainer>
   );

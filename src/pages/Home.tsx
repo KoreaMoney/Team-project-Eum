@@ -115,35 +115,44 @@ const Home = () => {
         </TotalWrapper>
 
         <PostsContainer>
-          {data?.slice(0, 8).sort((a:any,b:any)=>b.like.length - a.like.length).map((post: postType) => (
-            <PostContainer key={post.id} onClick={() => handlePostClick(post)}>
-              <PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-              <ContentContainer>
-                <TitleText>{post.title}</TitleText>
-                <CreateAtText>{getTimegap(post.createAt)}</CreateAtText>
-                <ContentText>{parse(post.content)}</ContentText>
-                <BottomContainer>
-                  <LeftContainer>
-                    <ProfileIMG
-                      profileIMG={
-                        post?.profileImg ? post?.profileImg : basicIMG
-                      }
-                    />
-                    <NickNameText>{post.nickName}</NickNameText>
-                  </LeftContainer>
-                  <RightContainer>
-                    <LikeIconContainer>
-                      <LikeIcon />
-                      <LikeCountText>{post.like.length}</LikeCountText>
-                    </LikeIconContainer>
-                    <PriceText>
-                      {post.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
-                    </PriceText>
-                  </RightContainer>
-                </BottomContainer>
-              </ContentContainer>
-            </PostContainer>
-          ))}
+          {data
+            ?.slice(0, 8)
+            .sort((a: any, b: any) => b.like.length - a.like.length)
+            .map((post: postType) => (
+              <PostContainer
+                key={post.id}
+                onClick={() => handlePostClick(post)}
+              >
+                <PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                <ContentContainer>
+                  <TitleText>{post.title}</TitleText>
+                  <CreateAtText>{getTimegap(post.createAt)}</CreateAtText>
+                  <ContentText>{parse(post.content)}</ContentText>
+                  <BottomContainer>
+                    <LeftContainer>
+                      <ProfileIMG
+                        profileIMG={
+                          post?.profileImg ? post?.profileImg : basicIMG
+                        }
+                      />
+                      <NickNameText>{post.nickName}</NickNameText>
+                    </LeftContainer>
+                    <RightContainer>
+                      <LikeIconContainer>
+                        <LikeIcon />
+                        <LikeCountText>{post.like.length}</LikeCountText>
+                      </LikeIconContainer>
+                      <PriceText>
+                        {post.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                        원
+                      </PriceText>
+                    </RightContainer>
+                  </BottomContainer>
+                </ContentContainer>
+              </PostContainer>
+            ))}
         </PostsContainer>
       </div>
     </HomeContainer>
