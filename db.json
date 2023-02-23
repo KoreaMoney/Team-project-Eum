@@ -4,9 +4,11 @@
       "id": "DSF5axJJNDUvd5bGXoUwrmbvtyj2",
       "nickName": "판매자",
       "profileImg": null,
-      "point": "11600",
+      "point": "8600",
       "contactTime": "",
-      "like": [],
+      "like": [
+        "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13"
+      ],
       "isDoneCount": 6
     },
     {
@@ -44,9 +46,10 @@
       "imgURL": [],
       "category": "etc",
       "like": [],
-      "views": 14,
+      "views": 19,
+
       "createAt": 1676612528057
-    }
+
   ],
   "onSalePosts": [
     {

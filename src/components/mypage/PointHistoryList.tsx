@@ -5,10 +5,15 @@ import { getTradePoint } from '../../api';
 import { auth } from '../../firebase/Firebase';
 
 const PointHistoryList = () => {
+  const [category, setCategory] = useState(0);
   const queryClient = useQueryClient();
+
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const [category, setCategoey] = useState('all');
 
   // 거래 목록을 받아옵니다.
+
   const {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
@@ -16,12 +21,15 @@ const PointHistoryList = () => {
     error: getTradeListError,
   } = useQuery(['onSalePosts'], getTradePoint);
 
+
   // 거래 완료 목록을 받아옵니다.
   const isDoneTradeList =
     tradeData?.data &&
     tradeData.data.filter((post: any) => {
       return post.isDone === true;
     });
+  console.log('buyTradeList: ', buyTradeList);
+
 
   // 완료 목록 중 로그인 한 유저가 판매자 or 구매자인 목록을 나타냅니다.
   const allTradeList = isDoneTradeList?.filter((user: any) => {
@@ -45,9 +53,11 @@ const PointHistoryList = () => {
     color: '#000000',
   };
 
+
   return (
     <PointHistoryContainer>
       <PointHistoryCategoryWrapper>
+
         <PointHistoryAllList
           onClick={() => setCategoey('all')}
           style={category === 'all' ? categoryStyle : undefined}
@@ -68,6 +78,7 @@ const PointHistoryList = () => {
         </PointHistoryBuyList>
       </PointHistoryCategoryWrapper>
       <PointHistoryWrapper>
+
         {category === 'all'
           ? allTradeList?.map((list: any) => {
               return (
@@ -105,7 +116,14 @@ const PointHistoryList = () => {
     </PointHistoryContainer>
   );
 };
+export default PointHistoryList;
 
+const BuyOrSellerText = styled.span`
+  
+`
+const PlusOrMinus = styled.span`
+  
+`
 const PointHistoryContainer = styled.div``;
 
 const PointHistoryCategoryWrapper = styled.div``;
@@ -167,6 +185,7 @@ const PointHistoryWrapper = styled.div`
   color: #737373;
   border-radius: 10px;
   margin-bottom: 24px;
+  overflow-y: auto;
 `;
 
 const PointHistory = styled.div`
@@ -190,4 +209,4 @@ const PointHistoryAmount = styled.p`
   width: 15%;
 `;
 
-export default PointHistoryList;
+

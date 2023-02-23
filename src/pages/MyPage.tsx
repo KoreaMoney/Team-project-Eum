@@ -21,14 +21,17 @@ const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
   const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  console.log('saveUser: ', saveUser);
 
-  // 유저의 정보를 받아옵니다.
+
   const {
     isLoading: getLoading,
     isError,
     data,
     error,
-  } = useQuery(['users'], getProfileNickName);
+  } = useQuery(['users'], getProfileNickName );
+  console.log('data: ', data);
 
   // 거래 정보를 받아옵니다.
   const {
@@ -74,6 +77,7 @@ const MyPage = () => {
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
+
   // 파이어베이스 auth와 db.json을 비교해 동일 id를 찾습니다.
   const currentUser =
     data?.data &&
@@ -81,10 +85,12 @@ const MyPage = () => {
       return auth.currentUser?.uid === user.id;
     });
 
+
   // 수정할 닉네임을 저장하며, 초기값으로 db.json에 저장된 닉네임을 받아옵니다.
   const [editNickNameValue, setEditNickNameValue] = useState(
-    currentUser?.[0]?.nickName
+    data?.[0]?.nickName
   );
+  // console.log('data?.users?.[0]: ', data?.[0]);
 
   // 닉네임을 수정합니다.
   const EditNickName = async (id: any) => {
@@ -94,9 +100,11 @@ const MyPage = () => {
       return alert('닉네임을 작성해 주세요.');
     }
     const newNickName = {
-      id: currentUser?.[0]?.id,
+      id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
+    console.log( 'newNickName: ' ,newNickName);
+    
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -104,8 +112,6 @@ const MyPage = () => {
     });
     setIsEdit(false);
   };
-
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   if (!saveUser) {
     return <SignIn />;
@@ -135,7 +141,7 @@ const MyPage = () => {
               />
               <CheckButton
                 onClick={() => {
-                  EditNickName(currentUser?.[0]?.id);
+                  EditNickName(data?.[0]?.uid);
                 }}
               >
                 확인
@@ -143,7 +149,7 @@ const MyPage = () => {
             </>
           ) : (
             <>
-              <UserName>{currentUser?.[0]?.nickName}</UserName>
+              <UserName>{data?.[0]?.nickName}</UserName>
               <UserNameEditButton
                 onClick={() => {
                   setIsEdit(true);
