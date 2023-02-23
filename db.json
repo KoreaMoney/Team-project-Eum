@@ -49,6 +49,7 @@
       "views": 19,
 
       "createAt": 1676612528057
+    }
 
   ],
   "onSalePosts": [
@@ -62,7 +63,7 @@
       "imgURL": [],
       "price": "200",
       "category": "etc",
-      "ceatedAt": 1676613523259,
+      "createdAt": 1676613523259,
       "isDone": false,
       "isSellerCancel": false,
       "isBuyerCancel": false,

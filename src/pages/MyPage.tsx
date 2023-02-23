@@ -19,81 +19,27 @@ const MyPage = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
-  const [category, setCategory] = useState('likelist');
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   console.log('saveUser: ', saveUser);
-
 
   const {
     isLoading: getLoading,
     isError,
     data,
     error,
-  } = useQuery(['users'], getProfileNickName );
+  } = useQuery(['users'], getProfileNickName);
   console.log('data: ', data);
 
-  // 거래 정보를 받아옵니다.
-  const {
-    isLoading: getTradeListLoading,
-    isError: getTradeListIsError,
-    data: tradeData,
-    error: getTradeListError,
-  } = useQuery(['onSalePosts'], getTradePoint);
-
-  // 게시글 정보를 받아옵니다.
-  const {
-    isLoading: getPostListLoading,
-    isError: getPostListIsError,
-    data: postData,
-    error: getPostListError,
-  } = useQuery(['posts'], getPostList);
-
-  // 관심 목록을 나타냅니다.
-  const isLikePostList =
-    postData?.data &&
-    postData.data.filter((post: any) => {
-      return auth.currentUser?.uid === post.id;
-    });
-
-  // 완료된 거래목록을 나타냅니다.
-  const isDoneTradeList =
-    tradeData?.data &&
-    tradeData.data.filter((post: any) => {
-      return post.isDone === true;
-    });
-
-  // 로그인한 유저가 판매한 목록을 나타냅니다.
-  const sellTradeList = isDoneTradeList?.filter((user: any) => {
-    return auth?.currentUser?.uid === user?.sellerUid;
-  });
-
-  // 로그인한 유저가 구매한 목록을 나타냅니다.
-  const buyTradeList = isDoneTradeList?.filter((user: any) => {
-    return auth?.currentUser?.uid === user?.buyerUid;
-  });
-
-  // 닉네임을 수정하도록 접근합니다.
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation(updateProfileNickName);
 
-
-  // 파이어베이스 auth와 db.json을 비교해 동일 id를 찾습니다.
-  const currentUser =
-    data?.data &&
-    data.data.filter((user: any) => {
-      return auth.currentUser?.uid === user.id;
-    });
-
-
-  // 수정할 닉네임을 저장하며, 초기값으로 db.json에 저장된 닉네임을 받아옵니다.
   const [editNickNameValue, setEditNickNameValue] = useState(
     data?.[0]?.nickName
   );
   // console.log('data?.users?.[0]: ', data?.[0]);
 
-  // 닉네임을 수정합니다.
-  const EditNickName = async (id: any) => {
+  const EditNickName = async (id: string) => {
     const editNickName = editNickNameValue?.trim();
     if (!editNickName) {
       setEditNickNameValue('');
@@ -103,8 +49,8 @@ const MyPage = () => {
       id: data?.[0]?.id,
       nickName: editNickNameValue,
     };
-    console.log( 'newNickName: ' ,newNickName);
-    
+    console.log('newNickName: ', newNickName);
+
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -116,12 +62,6 @@ const MyPage = () => {
   if (!saveUser) {
     return <SignIn />;
   }
-
-  const categoryStyle = {
-    color: `#656565`,
-    borderBottom: `2px solid #666666`,
-  };
-
   return (
     <MyPageContainer>
       <UserProfileWrapper>
@@ -162,75 +102,27 @@ const MyPage = () => {
         </UserNameWrapper>
         <PointModal />
         <UserTimeWrapper>
-          <UserTime>
-            <p>연락가능한 시간 : </p>
-            <input type="time" />
-          </UserTime>
+          <UserTime>연락가능한 시간 : 09:00 - 21:00</UserTime>
         </UserTimeWrapper>
-        <UserRatingWrapper>내가 가진 배지</UserRatingWrapper>
-        <UserbadgeWrapper>배지</UserbadgeWrapper>
+        <UserRatingWrapper>등급표시</UserRatingWrapper>
       </UserProfileWrapper>
       <UserPostWrapper>
         <ProfileNavWrapper>
-          <LikeListBar
-            onClick={() => setCategory('likelist')}
-            style={category === 'likelist' ? categoryStyle : undefined}
-          >
-            관심목록
-          </LikeListBar>
-          <SellListBar
-            onClick={() => setCategory('selllist')}
-            style={category === 'selllist' ? categoryStyle : undefined}
-          >
-            판매내역
-          </SellListBar>
-          <BuyListBar
-            onClick={() => setCategory('buylist')}
-            style={category === 'buylist' ? categoryStyle : undefined}
-          >
-            구매내역
-          </BuyListBar>
-          <CommentsListBar
-            onClick={() => setCategory('commentlist')}
-            style={category === 'commentlist' ? categoryStyle : undefined}
-          >
-            후기관리
-          </CommentsListBar>
+          <LikeListBar>관심목록</LikeListBar>
+          <SellListBar>판매내역</SellListBar>
+          <BuyListBar>구매내역</BuyListBar>
+          <CommentsListBar>후기관리</CommentsListBar>
         </ProfileNavWrapper>
-        <CategoryListWrapper>
-          {category === 'likelist'
-            ? sellTradeList?.map((list: any) => {
-                return (
-                  <UserSellBuyWrapper key={list.id}>
-                    <UserLikeWrapper>찜 List</UserLikeWrapper>
-                  </UserSellBuyWrapper>
-                );
-              })
-            : null}
-          {category === 'selllist'
-            ? sellTradeList?.map((list: any) => {
-                return (
-                  <UserSellBuyWrapper key={list.id}>
-                    <UserSellWrapper>팝니다</UserSellWrapper>
-                  </UserSellBuyWrapper>
-                );
-              })
-            : null}
-          {category === 'buylist'
-            ? buyTradeList?.map((list: any) => {
-                return (
-                  <UserSellBuyWrapper key={list.id}>
-                    <UserBuyWrapper>삽니다</UserBuyWrapper>
-                  </UserSellBuyWrapper>
-                );
-              })
-            : null}
-          {category === 'commentlist'
-            ? sellTradeList?.map((list: any) => {
-                return <CommentsList key={list.id}>후기 List</CommentsList>;
-              })
-            : null}
-        </CategoryListWrapper>
+        <UserSellBuyWrapper>
+          <UserSellWrapper>팝니다</UserSellWrapper>
+          <UserBuyWrapper>삽니다</UserBuyWrapper>
+        </UserSellBuyWrapper>
+        <div>내가 가진 배지</div>
+        <UserbadgeWrapper>배지</UserbadgeWrapper>
+        <div>찜한 목록</div>
+        <UserLikeWrapper>찜 List</UserLikeWrapper>
+        <div>후기 관리</div>
+        <CommentsList>후기 List</CommentsList>
       </UserPostWrapper>
     </MyPageContainer>
   );

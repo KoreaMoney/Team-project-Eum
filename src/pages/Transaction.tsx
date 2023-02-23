@@ -18,6 +18,7 @@ const Transaction = () => {
   const queryClient = useQueryClient();
   auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const { data, isLoading } = useQuery(['salePost', id], async () => {
     // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
     const response = await axios.get(
@@ -26,12 +27,15 @@ const Transaction = () => {
     return response.data;
   });
 
+
   // 판매자의 user 데이터를 가지고 옵니다.
   const { data: sellerData } = useQuery(
-    ['sellerData', data?.[0].sellerUid],
+    ['sellerData', data?.[0]?.sellerUid],
     async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0].sellerUid}`
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`
+
       );
       return response.data;
     }
@@ -40,10 +44,12 @@ const Transaction = () => {
 
   // 구매자의 user 데이터를 가지고 옵니다.
   const { data: buyerData } = useQuery(
-    ['buyerData', data?.[0].buyerUid],
+    ['buyerData', data?.[0]?.buyerUid],
     async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0].buyerUid}`
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`
+
       );
       return response.data;
     }
@@ -53,7 +59,9 @@ const Transaction = () => {
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string; isDoneCount: number }) =>
       axios.patch(
+
         `${process.env.REACT_APP_JSON}/users/${data?.[0].sellerUid}`,
+
         newUser
       ),
     {
@@ -78,7 +86,6 @@ const Transaction = () => {
     (newSalePost: {
       isSellerCancel: boolean;
       isBuyerCancel: boolean;
-      isClearCancel: boolean;
     }) =>
       axios.patch(
         `${process.env.REACT_APP_JSON}/onSalePosts/${id}`,
@@ -92,7 +99,9 @@ const Transaction = () => {
   const { mutate: giveBackPoint } = useMutation(
     (newUser: { point: string }) =>
       axios.patch(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0].buyerUid}`,
+
+        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`,
+
         newUser
       ),
     {
@@ -106,7 +115,7 @@ const Transaction = () => {
   // isDone도 true로 변경되어 판매,구매가 완료됩니다.
   const onClickClearRequest = async () => {
     await updateUser({
-      point: String(Number(sellerData.point) + Number(data[0].price)),
+      point: String(Number(sellerData.point) + Number(data?.[0]?.price)),
       isDoneCount: sellerData.isDoneCount + 1,
     });
     await clearRequest({
@@ -121,34 +130,32 @@ const Transaction = () => {
       '구매자, 판매자 전부 취소버튼을 눌러야 취소됩니다.',
       '확인',
       async () => {
-        if (saveUser.uid === data[0].sellerUid) {
+        if (saveUser.uid === data?.[0]?.sellerUid) {
           await cancel({
             isSellerCancel: true,
-            isBuyerCancel: data[0].isBuyerCancel,
-            isClearCancel: data[0].isClearCancel,
+            isBuyerCancel: data?.[0]?.isBuyerCancel,
           });
         } else {
           await cancel({
-            isSellerCancel: data[0].isSellerCancel,
+            isSellerCancel: data?.[0]?.isSellerCancel,
             isBuyerCancel: true,
-            isClearCancel: data[0].isClearCancel,
           });
         }
 
-        console.log('😀data[0].isSellerCancel: ', data[0].isSellerCancel);
-        console.log('😀data[0].isBuyerCancel: ', data[0].isBuyerCancel);
+        console.log('😀data[0].isSellerCancel: ', data?.[0]?.isSellerCancel);
+        console.log('😀data[0].isBuyerCancel: ', data?.[0]?.isBuyerCancel);
 
-        console.log('😀data[0].price: ', data[0].price);
+        console.log('😀data[0].price: ', data?.[0]?.price);
       }
     );
   };
 
   // 둘다 취소하면 포인트를 구매자에게 돌려줍니다.
   useEffect(() => {
-    if (data?.[0].isSellerCancel && data?.[0].isBuyerCancel) {
+    if (data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel) {
       console.log(1);
       giveBackPoint({
-        point: String(Number(buyerData?.point) + Number(data?.[0].price)),
+        point: String(Number(buyerData?.point) + Number(data?.[0]?.price)),
       });
     }
   }, [data]);
@@ -167,12 +174,12 @@ const Transaction = () => {
   return (
     <>
       <DetailContainer>
-        {data[0].isDone && (
+        {data?.[0]?.isDone && (
           <ClearDivContainer>
             <ClearText>거래가 완료되었습니다.</ClearText>
           </ClearDivContainer>
         )}
-        {data[0].isSellerCancel && data[0].isBuyerCancel && (
+        {data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel && (
           <ClearDivContainer>
             <ClearText>거래가 취소되었습니다.</ClearText>
           </ClearDivContainer>
@@ -185,24 +192,24 @@ const Transaction = () => {
               <BuyButton>삽니다</BuyButton>
             </SellBuyWrapper>
             <PostTitle>
-              <p>제목:{data[0].title}</p>
+              <p>제목:{data?.[0]?.title}</p>
             </PostTitle>
             <PostPrice>
-              <p>가격:{data[0].price}</p>
+              <p>가격:{data?.[0]?.price}</p>
             </PostPrice>
             <CancelCompleteButtonContainer>
-              {saveUser?.uid === data[0].buyerUid ||
-              saveUser?.uid === data[0].sellerUid ? (
+              {saveUser?.uid === data?.[0]?.buyerUid ||
+              saveUser?.uid === data?.[0]?.sellerUid ? (
                 <PostLikeButton>찜</PostLikeButton>
               ) : (
                 <PostLikeButton></PostLikeButton>
               )}
-              {saveUser?.uid === data[0].buyerUid ? (
+              {saveUser?.uid === data?.[0]?.buyerUid ? (
                 <ClearButton onClick={onClickClearRequest}>완료</ClearButton>
               ) : null}
             </CancelCompleteButtonContainer>
-            {saveUser?.uid === data[0].buyerUid ||
-            saveUser?.uid === data[0].sellerUid ? (
+            {saveUser?.uid === data?.[0]?.buyerUid ||
+            saveUser?.uid === data?.[0]?.sellerUid ? (
               <CancelButton onClick={onClickCancel}>취소요청</CancelButton>
             ) : (
               <CancelButton></CancelButton>
@@ -211,12 +218,12 @@ const Transaction = () => {
         </PostContainer>
         <PostContentWrapper>
           <PostContent>
-            <p>내용:{data[0].content}</p>
+            <p>내용:{data?.[0]?.content}</p>
           </PostContent>
           <PostUserInfo>
-            <p>카테고리:{data[0].category}</p>
-            <p>닉네임:{data[0].nickName}</p>
-            <p>조회수:{data[0].views}</p>
+            <p>카테고리:{data?.[0]?.category}</p>
+            <p>닉네임:{data?.[0]?.nickName}</p>
+            <p>조회수:{data?.[0]?.views}</p>
           </PostUserInfo>
         </PostContentWrapper>
       </DetailContainer>
