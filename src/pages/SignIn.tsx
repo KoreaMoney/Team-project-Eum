@@ -137,11 +137,13 @@ const SignIn = () => {
   const onGoogleClick = async () => {
     await signInWithPopup(auth, googleProvider)
       .then((result) => {
-        navigate('/');
-        const user = result.user;
-        const uid = auth.currentUser?.uid;
+        const uid = auth?.currentUser?.uid;
         const idList = data?.map((user: userType) => user.id); //리팩토링 필요
-        const isId = idList.includes(saveUser.uid);
+        console.log('idList: ', saveUser?.uid);
+        const isId = idList.includes(saveUser?.uid);
+        console.log( 'result: ' ,result);
+        
+        
         if (!isId) {
           mutation.mutate({
             id: uid,
@@ -153,6 +155,7 @@ const SignIn = () => {
             isDoneCount: 0,
           });
         }
+        navigate('/')
       })
       .catch((error) => {
         const errorMessage = error.message;

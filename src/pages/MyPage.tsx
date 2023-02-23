@@ -22,6 +22,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   console.log('saveUser: ', saveUser);
+console.log( 'auth.currentUser?.uid: ' ,auth.currentUser?.uid);
 
   const {
     isLoading: getLoading,

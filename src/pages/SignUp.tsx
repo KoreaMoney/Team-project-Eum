@@ -59,9 +59,13 @@ const SignUp = () => {
   // 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
   // 닉네임 중복 확인을 위해 데이터를 가져옴
   const { data } = useQuery(['users'], async () => {
-    const response = await axios.get(`${process.env.REACT_APP_JSON}/users`);
+    const url = `${process.env.REACT_APP_JSON}/users`;
+    const response = await axios.get(url);
+    console.log( 'url: ' ,url);
+    
     return response.data;
   });
+console.log( 'data: ' ,data);
 
   const nickNameList = data?.map((user: userType) => user.nickName);
 
@@ -153,7 +157,7 @@ const SignUp = () => {
           await mutate({
             id: auth.currentUser?.uid,
             nickName,
-            point: '1000000',
+            point: '10000000',
             contactTime: '',
             like: [],
             profileImg: null,
