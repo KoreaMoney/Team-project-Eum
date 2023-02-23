@@ -54,7 +54,7 @@ const EditPage = () => {
   );
 
   //React-query (Mutation)
-  const { mutate, isLoading: patchLoading } = useMutation(
+  const { mutate } = useMutation(
     (editPost: editPostType) =>
       axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, editPost),
     {

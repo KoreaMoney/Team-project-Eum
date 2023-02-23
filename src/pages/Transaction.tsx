@@ -14,7 +14,6 @@ import basicIMG from '../styles/basicIMG.png';
  * 2. 판매자, 구매자 데이터 가져오기
  * 3. 포인트 취소, 완료, 환불 기능추가하기
  */
-
 const Transaction = () => {
   const { id } = useParams();
 
@@ -145,7 +144,6 @@ const Transaction = () => {
   // 둘다 취소하면 포인트를 구매자에게 돌려줍니다.
   useEffect(() => {
     if (data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel) {
-      console.log(1);
       giveBackPoint({
         point: String(Number(buyerData?.point) + Number(data?.[0]?.price)),
       });
@@ -175,9 +173,7 @@ const Transaction = () => {
           <ClearText>거래가 취소되었습니다.</ClearText>
         </ClearDivContainer>
       )}
-      <EditDeleteButtonContainer>
-      
-      </EditDeleteButtonContainer>
+      <EditDeleteButtonContainer></EditDeleteButtonContainer>
       <PostContainer>
         <PostImage img={data?.[0]?.imgURL} />
         <PostInfoWrapper>
@@ -405,7 +401,7 @@ const ProfileButtons = styled.button`
   background-color: ${(props) => props.theme.colors.brandColor};
   border: none;
   &:hover {
-    box-shadow: 2px 2px 4px #d5d5d5;
+    box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
   }
 `;
 
@@ -445,16 +441,4 @@ const PostContent = styled.div`
   width: 100%;
   min-height: 20rem;
   border: 2px solid ${(props) => props.theme.colors.brandColor};
-`;
-
-const EditDeleteButton = styled.button`
-  width: 5rem;
-  height: 2.5rem;
-  border: none;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  cursor: pointer;
-  &:hover {
-    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-  }
 `;

@@ -15,9 +15,6 @@ import { auth, storageService } from '../firebase/Firebase';
 import { postType } from '../types';
 import SignIn from './SignIn';
 
-/**순서
- * 1.
- */
 const WritePage = () => {
   const navigate = useNavigate();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -72,7 +69,6 @@ const WritePage = () => {
         setTimeout(() => {
           navigate(`/detail/${post.category}/${post.id}`);
         }, 500);
-        
       },
     }
   );
@@ -142,7 +138,6 @@ const WritePage = () => {
       ...post,
       price: value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
     });
-    console.log('dd: ', typeof post.price);
   };
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {

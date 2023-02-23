@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AiFillCloseCircle, AiFillEye, AiFillGithub } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
+import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
 import { IoIosGitMerge } from 'react-icons/io';
 import { ISignUpForm, userType } from '../types';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -61,11 +60,9 @@ const SignUp = () => {
   const { data } = useQuery(['users'], async () => {
     const url = `${process.env.REACT_APP_JSON}/users`;
     const response = await axios.get(url);
-    console.log( 'url: ' ,url);
-    
+
     return response.data;
   });
-console.log( 'data: ' ,data);
 
   const nickNameList = data?.map((user: userType) => user.nickName);
 
@@ -104,8 +101,10 @@ console.log( 'data: ' ,data);
   };
 
   /**닉네임 중복확인 버튼 누르면 실행되는 함수
-   * 안에서 가공 하게끔 만드는 / select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션
-   * 리코일 selector과 비슷함. 가공을 떠올리면 됨, 서버에서 받아온 데이터값을 우리가 원하는 값으로 가공 -> 우리 컴포넌트 안에서 쓸 수 있게 만들어주는 것. / usequery select 검색 하고 사용할 것.
+   * 안에서 가공 하게끔 만든다
+   * select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션
+   * 리코일 selector과 비슷함. 가공을 떠올리면 됨, 서버에서 받아온 데이터값을 우리가 원하는 값으로 가공 -> 우리 컴포넌트 안에서 쓸 수 있게 만들어주는 것.
+   * useQuery select 검색 하고 사용할 것.
    */
 
   /**닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)

@@ -115,7 +115,7 @@ const InputTag = styled.input`
   }
 `;
 const AddCommentButton = styled.button`
-  width: 70px;
+  width: 10%;
   border: none;
   background-color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.body16};

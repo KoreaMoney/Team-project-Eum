@@ -4,10 +4,11 @@ import { getProfilePoint } from '../../api';
 import { CustomModal } from '../modal/CustomModal';
 import PointHistoryList from './PointHistoryList';
 import styled from 'styled-components';
+import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
 
 /**순서
- * 1.
- *
+ * 1.커스텀 모달을 부른다
+ * 2. 포인트 활동 alert를 진행한다
  */
 const PointModal = () => {
   const [isModalActive, setIsModalActive] = useState(false);
@@ -18,12 +19,14 @@ const PointModal = () => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
 
-  const pointChargehandle = () => {
-    alert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
+  const pointChargeHandle = () => {
+    customInfoAlert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
   };
 
-  const pointWithdrawhandle = () => {
-    alert('이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.');
+  const pointWithDrawHandle = () => {
+    customWarningAlert(
+      '이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.'
+    );
   };
   return (
     <>
@@ -62,18 +65,18 @@ const PointModal = () => {
               <PointDepositWithdrawWrapper>
                 <PointDepositButton
                   onClick={() => {
-                    pointChargehandle();
+                    pointChargeHandle();
                   }}
                 >
-                  <img src="/assets/moneysend.png" />
+                  <img src="/assets/moneysend.png" alt="충전" />
                   <h3>　충전하기</h3>
                 </PointDepositButton>
                 <PointWithdrawButton
                   onClick={() => {
-                    pointWithdrawhandle();
+                    pointWithDrawHandle();
                   }}
                 >
-                  <img src="/assets/emptywalletadd.png" />
+                  <img src="/assets/emptywalletadd.png" alt="출금" />
                   <h3>　출금하기</h3>
                 </PointWithdrawButton>
               </PointDepositWithdrawWrapper>
