@@ -23,7 +23,7 @@ const CommentsList = () => {
   const { id } = useParams<{ id?: string }>();
   const queryClient = useQueryClient();
   const PAGE_SIZE = 6;
-
+const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const fetchComments = async (page = 0) => {
     const url = `${process.env.REACT_APP_JSON}/comments?postId=${id}`;
 
@@ -36,7 +36,18 @@ const CommentsList = () => {
     console.log('response.data: ', response.data);
     return response.data;
   };
-
+  const { data: user } = useQuery(
+    ['user', saveUser?.uid],
+    async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
+      );
+      return response.data;
+    },
+ 
+  );
+  console.log( 'user: ' ,user);
+  
   const {
     data,
     isSuccess,

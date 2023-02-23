@@ -54,9 +54,7 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     async () => {
       const response = await axios.get(
-
         `${process.env.REACT_APP_JSON}/users/${post?.[0].sellerUid}`
-
       );
       return response.data;
     },
@@ -64,9 +62,8 @@ const Detail = () => {
       enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
-console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
+  console.log('post?.[0].sellerUid: ', post?.[0].sellerUid);
 
-  
   // 포인트 수정을 위한 유저정보 get
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
@@ -89,7 +86,6 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
   // 좋아요 기능을 위해
   const { mutate: updateSeller } = useMutation(
     (newUser: { like: string[] }) =>
-
       axios.patch(`${process.env.REACT_APP_JSON}/users/${seller?.id}`, newUser),
 
     {
@@ -114,7 +110,6 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
 
   const { mutate: updatePost } = useMutation(
     (newPosts: { like: string[] }) =>
-
       axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, newPosts),
 
     {
@@ -182,27 +177,29 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
     // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트
     if (saveUser) {
       await updateUser({
-        point: String(Number(user?.point) - Number(post?.[0]?.price)),
+        point: String(parseInt(user?.point) - parseInt(post?.[0]?.price)),
       });
       const uuid = uuidv4();
       await onSalePosts({
         id: uuid,
         postsId: id,
-        buyerUid: saveUser.uid,
-        sellerUid: post?.[0].sellerUid,
-        title: post?.[0].title,
-        content: post?.[0].content,
-        imgURL: post?.[0].imgURL,
-        price: post?.[0].price,
-        category: post?.[0].category,
+        buyerUid: saveUser?.uid,
+        sellerUid: post?.[0]?.sellerUid,
+        title: post?.[0]?.title,
+        content: post?.[0]?.content,
+        imgURL: post?.[0]?.imgURL,
+        price: post?.[0]?.price,
+        category: post?.[0]?.category,
         createdAt: Date.now(),
         isDone: false,
         isSellerCancel: false,
         isBuyerCancel: false,
-        views: post?.[0].views,
-        like: post?.[0].like,
+        views: post?.[0]?.views,
+        like: post?.[0]?.like,
       });
-      navigate(`/detail/${categoryName}/${id}/${saveUser?.uid}/${uuid}`);
+      setTimeout(() => {
+        navigate(`/detail/${categoryName}/${id}/${saveUser?.uid}/${uuid}`);
+      }, 500);
     } else {
       navigate('/signin', { state: { from: location.pathname } });
     }
@@ -210,7 +207,7 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
   return (
     <DetailContainer>
       <EditDeleteButtonContainer>
-        {saveUser && (
+        {saveUser?.uid === seller?.id && (
           <>
             <EditDeleteButton>수정</EditDeleteButton>
             <EditDeleteButton>삭제</EditDeleteButton>
@@ -251,12 +248,7 @@ console.log( 'post?.[0].sellerUid: ' ,post?.[0].sellerUid);
                 <ProfileButtonContainer>
                   <ProfileButtons>판매상품 10개</ProfileButtons>
                   <ProfileButtons>받은 후기</ProfileButtons>
-                  <ProfileButtons>
-                    <RightButtonContainer onClick={counter}>
-                      {countCheck ? <LikeIcon /> : <NoLikeIcon />}
-                      <LikeCounter>{seller?.like?.length}</LikeCounter>
-                    </RightButtonContainer>
-                  </ProfileButtons>
+                
                 </ProfileButtonContainer>
               </BottomBottomContainer>
             </SellerProfileBottomDiv>
