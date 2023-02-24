@@ -6,9 +6,7 @@
       "profileImg": null,
       "point": "8600",
       "contactTime": "",
-      "like": [
-        "Qh8zrzAwjMWSYXSSDJYIWIzpLZ13"
-      ],
+      "like": ["Qh8zrzAwjMWSYXSSDJYIWIzpLZ13"],
       "isDoneCount": 6
     },
     {
@@ -50,7 +48,6 @@
 
       "createAt": 1676612528057
     }
-
   ],
   "onSalePosts": [
     {
