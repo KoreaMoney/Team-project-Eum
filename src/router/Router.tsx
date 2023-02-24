@@ -1,7 +1,9 @@
 import loadable from '@loadable/component';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-/**Code Spliting 진행*/
+/**Code Spliting 진행
+ * spliting을 하는 이유는 하나의 페이지가 아닌 하나의 import로 인식하게 하여 랜더링 속도를 증가 시키기 위함
+*/
 const Layout = loadable(() => import('../components/layout/Layout'));
 const CategoryPage = loadable(() => import('../pages/CategoryPage'));
 const Detail = loadable(() => import('../pages/Detail'));

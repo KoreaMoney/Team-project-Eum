@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +10,7 @@ import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+import * as a from '../styles/styledComponent/writeEdit';
 
 const EditPage = () => {
   const navigate = useNavigate();
@@ -199,25 +199,35 @@ const EditPage = () => {
   if (isLoading) return <div>Now Loading...</div>;
 
   return (
-    <Container>
-      <BorderBox>
-        <FormWrapper onSubmit={onSubmitHandler}>
-          <InputWrap>
-            <TitleCategoryWrap>
-              <SelectCategory
+    <a.WriteContainer>
+      <a.WriteWrapper>
+        <a.WriteForm onSubmit={onSubmitHandler} aria-label="수정페이지">
+          <a.WriteInputWrapper>
+            <a.WriteCategory>
+              <select
                 value={category || ''}
                 name="pets"
                 id="pet-select"
                 onChange={onChangeCategory}
                 ref={categoryRef}
               >
-                <option value="">--선택--</option>
-                <option value="play">놀이</option>
-                <option value="study">공부</option>
-                <option value="advice">상담</option>
-                <option value="etc">기타</option>
-              </SelectCategory>
-              <TitleInput
+                <option value="" aria-label="선택">
+                  --선택--
+                </option>
+                <option value="play" aria-label="놀이">
+                  놀이
+                </option>
+                <option value="study" aria-label="공부">
+                  공부
+                </option>
+                <option value="advice" aria-label="상담">
+                  상담
+                </option>
+                <option value="etc" aria-label="기타">
+                  기타
+                </option>
+              </select>
+              <input
                 ref={titleRef}
                 type="text"
                 name="title"
@@ -226,9 +236,9 @@ const EditPage = () => {
                 placeholder="제목"
                 maxLength={16}
               />
-            </TitleCategoryWrap>
+            </a.WriteCategory>
             <div>
-              <PriceInput
+              <input
                 ref={priceRef}
                 onKeyDown={(e) =>
                   ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
@@ -243,8 +253,8 @@ const EditPage = () => {
               />
               원
             </div>
-          </InputWrap>
-          <QuillWrapper>
+          </a.WriteInputWrapper>
+          <a.WriteQuill>
             <ReactQuill
               theme="snow"
               ref={contentsRef}
@@ -255,18 +265,20 @@ const EditPage = () => {
                 setContent(value);
               }}
             />
-          </QuillWrapper>
-          <Button>
-            <button>작성완료</button>
-          </Button>
-        </FormWrapper>
+          </a.WriteQuill>
+          <a.Button>
+            <button aria-label="작성완료">작성완료</button>
+          </a.Button>
+        </a.WriteForm>
 
-        <ImageContainer>
-          <ImageWrapper>
-            <ImgBox img={imgURL} />
-            <ImageSelectButton>
-              <ImageLabel htmlFor="changeImg">파일선택</ImageLabel>
-            </ImageSelectButton>
+        <a.WriteImgContainer>
+          <a.WriteImgWrapper>
+            <a.ImgBox img={imgURL} />
+            <a.WriteImgBtn>
+              <label htmlFor="changeImg" aria-label="사진 올리기">
+                사진 올리기
+              </label>
+            </a.WriteImgBtn>
             <input
               hidden
               id="changeImg"
@@ -275,118 +287,11 @@ const EditPage = () => {
               onChange={saveImgFile}
               ref={imgRef}
             />
-          </ImageWrapper>
-        </ImageContainer>
-      </BorderBox>
-    </Container>
+          </a.WriteImgWrapper>
+        </a.WriteImgContainer>
+      </a.WriteWrapper>
+    </a.WriteContainer>
   );
 };
 
 export default EditPage;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-  margin: 0 auto;
-`;
-const BorderBox = styled.div`
-  width: 70%;
-  margin: 5px auto;
-`;
-const FormWrapper = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  border-color: ${(props) => props.theme.colors.black};
-`;
-const InputWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 3em;
-  width: 70%;
-`;
-const TitleCategoryWrap = styled.div`
-  display: flex;
-  align-items: center;
-  height: 1.5rem;
-`;
-const SelectCategory = styled.select`
-  height: 100%;
-`;
-const TitleInput = styled.input`
-  height: 100%;
-`;
-const PriceInput = styled.input`
-  height: 1.5rem;
-  outline: none;
-  text-align: end;
-
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`;
-
-const QuillWrapper = styled.div`
-  width: 70%;
-  .ql-container {
-    width: 100%;
-    height: 25rem;
-  }
-`;
-
-const Button = styled.div`
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  height: 2em;
-  width: 70%;
-  button {
-    background-color: ${(props) => props.theme.colors.brandColor};
-    border: none;
-    width: 15%;
-    height: 1.5rem;
-    &:hover {
-      border: 2px solid ${(props) => props.theme.colors.button};
-    }
-  }
-`;
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const ImageWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin: 0 auto;
-  width: 70%;
-`;
-const ImgBox = styled.div<{ img: string }>`
-  width: 25%;
-  height: 13rem;
-  background-size: cover;
-  background-image: url(${(props) => props.img});
-  background-position: center center;
-`;
-const ImageLabel = styled.label`
-  cursor: pointer;
-`;
-
-const ImageSelectButton = styled.button`
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  width: 15%;
-  height: 1.5rem;
-  &:hover {
-    border: 2px solid ${(props) => props.theme.colors.button};
-  }
-`;

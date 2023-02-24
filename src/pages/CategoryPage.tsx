@@ -3,10 +3,9 @@ import axios from 'axios';
 import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
-import styled from 'styled-components';
 import { postType } from '../types';
-import { AiFillHeart } from 'react-icons/ai';
 import basicIMG from '../styles/basicIMG.png';
+import * as a from '../styles/styledComponent/category';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -129,10 +128,10 @@ const CategoryPage = () => {
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
   return (
-    <PageContainer>
+    <a.PageContainer>
       {saveUser && (
-        <NavContainer>
-          <CategoryName>
+        <a.NavContainer>
+          <p>
             {categoryName === 'all'
               ? '전체'
               : categoryName === 'study'
@@ -144,228 +143,69 @@ const CategoryPage = () => {
               : categoryName === 'etc'
               ? '기타'
               : '전체'}
-          </CategoryName>
-          <WriteButton
+          </p>
+          <button
             onClick={() => {
               navigate('/writepage');
             }}
           >
             글쓰기
-          </WriteButton>
-        </NavContainer>
+          </button>
+        </a.NavContainer>
       )}
-      <PostsContainer>
+      <a.PostsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((post: postType) => (
-              <PostContainer
+              <a.PostContainer
                 key={post.id}
                 onClick={() => handlePostClick(post)}
               >
-                <PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                <ContentContainer>
-                  <TitleText>{post.title}</TitleText>
-                  <CreateAtText>{getTimeGap(post.createAt)}</CreateAtText>
-                  <ContentText>{parse(post.content)}</ContentText>
-                  <BottomContainer>
-                    <LeftContainer>
-                      <ProfileIMG
+                <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                <a.ContentContainer>
+                  <h2>{post.title}</h2>
+                  <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
+                  <a.ContentText>{parse(post.content)}</a.ContentText>
+                  <a.BottomContainer>
+                    <a.LeftContainer>
+                      <a.ProfileIMG
                         profileIMG={
                           post?.profileImg ? post?.profileImg : basicIMG
                         }
                       />
-                      <NickNameText>{post.nickName}</NickNameText>
-                    </LeftContainer>
-                    <RightContainer>
-                      <LikeIconContainer>
-                        <LikeIcon />
-                        <LikeCountText>{post.like.length}</LikeCountText>
-                      </LikeIconContainer>
-                      <PriceText>
+                      <p>{post.nickName}</p>
+                    </a.LeftContainer>
+                    <a.RightContainer>
+                      <a.LikeIconContainer>
+                        <a.LikeIcon />
+                        <span>{post.like.length}</span>
+                      </a.LikeIconContainer>
+                      <p>
                         {post.price
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                         원
-                      </PriceText>
-                    </RightContainer>
-                  </BottomContainer>
-                </ContentContainer>
-              </PostContainer>
+                      </p>
+                    </a.RightContainer>
+                  </a.BottomContainer>
+                </a.ContentContainer>
+              </a.PostContainer>
             ))}
           </Fragment>
         ))}
 
-        <PostContainer ref={observerElem}>
-          <EndPostDiv>
+        <a.PostContainer ref={observerElem}>
+          <a.EndPostDiv>
             {isFetching || isFetchingNextPage
               ? 'Loading more...'
               : hasNextPage
               ? 'Scroll to load more posts'
               : 'No more posts'}
-          </EndPostDiv>
-        </PostContainer>
-      </PostsContainer>
-    </PageContainer>
+          </a.EndPostDiv>
+        </a.PostContainer>
+      </a.PostsContainer>
+    </a.PageContainer>
   );
 };
 
 export default CategoryPage;
-
-const PageContainer = styled.div`
-  width: 70%;
-  margin: 0 auto;
-`;
-
-const NavContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1rem 0;
-`;
-
-const CategoryName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title24};
-  color: ${(props) => props.theme.colors.gray60};
-`;
-
-const WriteButton = styled.button`
-  font-size: ${(props) => props.theme.fontSize.body16};
-  color: ${(props) => props.theme.colors.gray60};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  width: 7rem;
-  height: 2rem;
-  cursor: pointer;
-  &:hover {
-  }
-`;
-
-const PostsContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-`;
-
-const PostContainer = styled.div`
-  width: 100%;
-  margin-bottom: 1rem;
-  border: 3px solid ${(props) => props.theme.colors.brandColor};
-`;
-
-const PostIMG = styled.div<{ bgPhoto: string }>`
-  width: 100%;
-  height: 10rem;
-  background-image: url(${(props) => props.bgPhoto});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 247px;
-  padding: 1.5rem 2rem 1rem;
-`;
-
-const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
-  text-shadow: 1px 1px 2px gray;
-`;
-
-const CreateAtText = styled.div`
-  font-size: ${(props) => props.theme.fontSize.label12};
-  color: ${(props) => props.theme.colors.gray20};
-  text-align: right;
-  margin: 0.5rem 0;
-`;
-
-const ContentText = styled.div`
-  font-size: ${(props) => props.theme.fontSize.body16};
-  color: ${(props) => props.theme.colors.gray60};
-  width: 100%;
-  height: 8rem;
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 8;
-  -webkit-box-orient: vertical;
-`;
-
-const BottomContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
-  width: 1.7rem;
-  height: 1.7rem;
-  border-radius: 100%;
-  background-image: url(${(props) => props.profileIMG});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const NickNameText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.label12};
-  color: ${(props) => props.theme.colors.gray20};
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const LikeIconContainer = styled.div`
-  position: relative;
-  display: inline-block;
-  margin-right: 0.5rem;
-`;
-
-const LikeIcon = styled(AiFillHeart)`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: ${(props) => props.theme.colors.red};
-  font-size: 30px; // props로 변경해야함.
-`;
-
-const LikeCountText = styled.span`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: ${(props) => props.theme.fontSize.label12};
-  line-height: ${(props) => props.theme.fontSize.title24};
-  color: ${(props) => props.theme.colors.gray10};
-  height: ${(props) => props.theme.fontSize.title24};
-`;
-
-const PriceText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  color: ${(props) => props.theme.colors.gray60};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-`;
-
-const EndPostDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: ${(props) => props.theme.fontSize.title24};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
-  height: 100%;
-`;

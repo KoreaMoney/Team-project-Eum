@@ -19,6 +19,7 @@ const Footer = () => {
               onClick={() => {
                 window.open(url);
               }}
+              aria-label="깃헙"
             >
               <FaGithubSquare size={30} />
             </button>

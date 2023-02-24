@@ -141,6 +141,7 @@ const CommentsList = () => {
                   <CreateAt>{getTimeGap(comment.createAt)}</CreateAt>
                   <DeleteButton
                     onClick={() => onClickDeleteComment(comment.id)}
+                    aria-label="삭제"
                   >
                     삭제
                   </DeleteButton>

@@ -88,7 +88,9 @@ const CommentInput = () => {
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
       <CommentContainer onSubmit={onSubmitCommentHandler}>
         <InputTag name="content" value={content} onChange={onChangeContent} />
-        <AddCommentButton type="submit">댓글등록</AddCommentButton>
+        <AddCommentButton type="submit" aria-label="댓글등록">
+          댓글등록
+        </AddCommentButton>
       </CommentContainer>
     </div>
   );

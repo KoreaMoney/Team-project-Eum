@@ -62,7 +62,10 @@ const FindPW = () => {
   return (
     <>
       <ModalTitle>비밀번호 찾기</ModalTitle>
-      <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
+      <FormTag
+        onSubmit={handleSubmit(onSubmitHandler)}
+        aria-label="비밀번호 찾기"
+      >
         <ItemContainer>
           <InputBox
             type="email"
@@ -72,11 +75,15 @@ const FindPW = () => {
             onChange={onChangeEmailHandler}
             value={email}
           />
-          {email ? <CloseIcon onClick={handleInputValueClickBT} /> : undefined}
+          {email ? (
+            <CloseIcon onClick={handleInputValueClickBT} aria-label="확인" />
+          ) : undefined}
         </ItemContainer>
         {err && <ErrorMSG>{err}</ErrorMSG>}
         {success && <SuccessMSG>이메일이 발송되었습니다.</SuccessMSG>}
-        <SendEmailButton>인증메일 발송</SendEmailButton>
+        <SendEmailButton aria-label="인증메일 전송">
+          인증메일 발송
+        </SendEmailButton>
       </FormTag>
     </>
   );

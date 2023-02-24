@@ -53,18 +53,21 @@ const PointHistoryList = () => {
         <PointWrapper
           onClick={() => setCategory(0)}
           style={category === 0 ? categoryStyle : undefined}
+          aria-label="전체"
         >
           전체
         </PointWrapper>
         <PointWrapper
           onClick={() => setCategory(1)}
           style={category === 1 ? categoryStyle : undefined}
+          aria-label="판매"
         >
           판매
         </PointWrapper>
         <PointWrapper
           onClick={() => setCategory(2)}
           style={category === 2 ? categoryStyle : undefined}
+          aria-label="구매"
         >
           구매
         </PointWrapper>
