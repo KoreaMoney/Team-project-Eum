@@ -39,7 +39,7 @@ const Header = () => {
       <HeaderWrapper>
         <Div>
           <LoGoSpan>
-            <Link to="/">
+            <Link to="/" aria-label="홈으로 이동">
               <LogoWrapper>
                 <Svg>
                   <svg
@@ -68,43 +68,51 @@ const Header = () => {
             {saveUser && (
               <>
                 <Span>
-                  <Link to={`/mypage/${saveUser.uid}`}>MY PAGE</Link>
+                  <Link
+                    to={`/mypage/${saveUser.uid}`}
+                    aria-label="마이페이지 이동"
+                  >
+                    MY PAGE
+                  </Link>
                 </Span>
                 <Span>
                   <div>MY LIKE</div>
                 </Span>
               </>
             )}
-            <LogOutBtn onClick={() => handelClickLogOut()}>
+            <LogOutBtn
+              onClick={() => handelClickLogOut()}
+              aria-label="로그아웃"
+            >
               {!saveUser ? 'LOGIN' : 'LOGOUT'}
             </LogOutBtn>
           </PageSpan>
         </Div>
         <CategoriesWrapper>
           <Ul style={{ display: 'flex', gap: '10px' }}>
-            <Link to="/categorypage/all">
+            <Link to="/categorypage/all" aria-label="전체">
               <Icon>
                 <HiQueueList />
                 <li>전체</li>
               </Icon>
             </Link>
-            <Link to="/categorypage/study">
+            <Link to="/categorypage/study" aria-label="공부">
               <Icon>
                 <HiPencil />
                 <li>공부</li>
               </Icon>
             </Link>
-            <Link to="/categorypage/play">
+            <Link to="/categorypage/play" aria-label="놀이">
               <Icon>
                 <IoGameController /> <li>놀이</li>
               </Icon>
             </Link>
-            <Link to="/categorypage/advice">
+            <Link to="/categorypage/advice" aria-label="상담">
               <Icon>
                 <HiChatBubbleLeftRight /> <li>상담</li>
               </Icon>
             </Link>
-            <Link to="/categorypage/etc">
+            <Link to="/categorypage/etc" aria-label="기타">
               <Icon>
                 <HiEllipsisHorizontalCircle /> <li>기타</li>
               </Icon>

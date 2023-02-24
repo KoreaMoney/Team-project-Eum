@@ -36,15 +36,15 @@ const SearchInput = () => {
 
   return (
     <div>
-      <form onSubmit={onSubmitSearchPost}>
+      <form onSubmit={onSubmitSearchPost} aria-label="검색창">
         <SearchWrapper>
           <select value={selectValue} onChange={onChangeSelect}>
-            <option value="">선택</option>
-            <option value="title">제목</option>
-            <option value="content">내용</option>
-            <option value="nickName">작성자</option>
+            <option value="" aria-label="선택">선택</option>
+            <option value="title" aria-label="제목">제목</option>
+            <option value="content" aria-label="내용">내용</option>
+            <option value="nickName" aria-label="작성자">작성자</option>
           </select>
-          <button>
+          <button aria-label="찾기">
             <IoIosSearch size={20} />
           </button>
           <input

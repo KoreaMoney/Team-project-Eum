@@ -30,7 +30,7 @@ const PointModal = () => {
   };
   return (
     <>
-      <PointButton onClick={onClickToggleModal}>
+      <PointButton onClick={onClickToggleModal} aria-label="포인트">
         <p>포인트</p>
         <div>
           {profileData?.[0] &&
@@ -49,7 +49,9 @@ const PointModal = () => {
           height="800"
           element={
             <PointModalContainer>
-              <CloseButton onClick={onClickToggleModal}>X</CloseButton>
+              <CloseButton onClick={onClickToggleModal} aria-label="닫기">
+                X
+              </CloseButton>
               <PointImgWrapper>
                 <img src="/assets/walletmoney.png" alt="지갑" />
                 <h3>　내 포인트</h3>
@@ -67,6 +69,7 @@ const PointModal = () => {
                   onClick={() => {
                     pointChargeHandle();
                   }}
+                  aria-label="충전하기"
                 >
                   <img src="/assets/moneysend.png" alt="충전" />
                   <h3>　충전하기</h3>
@@ -75,6 +78,7 @@ const PointModal = () => {
                   onClick={() => {
                     pointWithDrawHandle();
                   }}
+                  aria-label="출금하기"
                 >
                   <img src="/assets/emptywalletadd.png" alt="출금" />
                   <h3>　출금하기</h3>

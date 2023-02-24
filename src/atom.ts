@@ -21,3 +21,5 @@ export const searchState = atom({
     word: '',
   },
 });
+
+/**여기 아래에는 속도개선을 위해 custom을 components에서 recoil로 전환 */

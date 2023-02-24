@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { customConfirm } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
-import styled from 'styled-components';
 import SignIn from './SignIn';
 import parse from 'html-react-parser';
 import basicIMG from '../styles/basicIMG.png';
+import * as a from '../styles/styledComponent/transaction';
 
 /**순서
  * 1. query-key만들기
@@ -162,283 +162,76 @@ const Transaction = () => {
   }
 
   return (
-    <DetailContainer>
+    <a.TransactionContainer>
       {data?.[0]?.isDone && (
-        <ClearDivContainer>
-          <ClearText>거래가 완료되었습니다.</ClearText>
-        </ClearDivContainer>
+        <a.TransactionText>
+          <h1>거래가 완료되었습니다.</h1>
+        </a.TransactionText>
       )}
       {data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel && (
-        <ClearDivContainer>
-          <ClearText>거래가 취소되었습니다.</ClearText>
-        </ClearDivContainer>
+        <a.TransactionText>
+          <h1>거래가 취소되었습니다.</h1>
+        </a.TransactionText>
       )}
-      <EditDeleteButtonContainer></EditDeleteButtonContainer>
-      <PostContainer>
-        <PostImage img={data?.[0]?.imgURL} />
-        <PostInfoWrapper>
-          <TitleText>{data?.[0]?.title}</TitleText>
-          <PostPrice>{data?.[0]?.price} 원</PostPrice>
-          <SellerText>판매자</SellerText>
-          <SellerProfileContainer>
-            <SellerProfileTopDiv>
-              <TopLeftContainer>
-                <ProfileIMG
+      <a.TransactionWrapper>
+        <a.SellerImage img={data?.[0]?.imgURL} aria-label="포스트 이미지" />
+        <a.SellerContainer>
+          <h2>{data?.[0]?.title}</h2>
+          <p>{data?.[0]?.price} 원</p>
+          <span>판매자</span>
+          <a.ProfileContainer>
+            <a.ProfileWrapper>
+              <a.ProfileLeft>
+                <a.ProfileIMG
                   profileIMG={
                     sellerData?.profileImg ? sellerData?.profileImg : basicIMG
                   }
+                  aria-label="프로필 이미지"
                 />
-              </TopLeftContainer>
-              <TopRightContainer>
-                <SellerNickName>{sellerData?.nickName}</SellerNickName>
-              </TopRightContainer>
-            </SellerProfileTopDiv>
-            <SellerProfileBottomDiv>
-              <BottomTopContainer>
-                <ContactTimeContainer>
-                  <ContactTimeTitleText>연락가능시간</ContactTimeTitleText>
-                  <ContactTimeContentText>
+              </a.ProfileLeft>
+              <a.ProfileRight>
+                <p>{sellerData?.nickName}</p>
+              </a.ProfileRight>
+            </a.ProfileWrapper>
+            <a.ProfileBottom>
+              <a.ProfileBottomContainer>
+                <a.ProfileBottomWrapper>
+                  <p>연락가능시간</p>
+                  <span>
                     {sellerData?.contactTime
                       ? sellerData?.contactTime
                       : '00:00 ~ 24:00'}
-                  </ContactTimeContentText>
-                </ContactTimeContainer>
-              </BottomTopContainer>
-              <BottomBottomContainer>
-                <ProfileButtonContainer>
-                  <ProfileButtons>판매상품 10개</ProfileButtons>
-                  <ProfileButtons>받은 후기</ProfileButtons>
-                </ProfileButtonContainer>
-              </BottomBottomContainer>
-            </SellerProfileBottomDiv>
-          </SellerProfileContainer>
+                  </span>
+                </a.ProfileBottomWrapper>
+              </a.ProfileBottomContainer>
+              <a.ProfileBottomInfo>
+                <div>
+                  <button aria-label="판매상품">판매상품 10개</button>
+                  <button aria-label="받은 후기">받은 후기</button>
+                </div>
+              </a.ProfileBottomInfo>
+            </a.ProfileBottom>
+          </a.ProfileContainer>
           {saveUser.uid === data?.[0]?.buyerUid ||
           saveUser.uid === data?.[0]?.sellerUid ? (
-            <LikeAndSubmitContainer>
+            <a.SellerLikeWrapper>
               {saveUser.uid === data?.[0]?.buyerUid ? (
-                <OrderButton onClick={onClickClearRequest}>완료</OrderButton>
+                <button onClick={onClickClearRequest} aria-label="완료">
+                  완료
+                </button>
               ) : null}
-              <OrderButton onClick={onClickCancel}>거래 취소</OrderButton>
-            </LikeAndSubmitContainer>
+              <button onClick={onClickCancel} aria-label="거래취소">
+                거래 취소
+              </button>
+            </a.SellerLikeWrapper>
           ) : null}
-        </PostInfoWrapper>
-      </PostContainer>
-      <PostContentWrapper>
-        <PostContent>{parse(data?.[0]?.content)}</PostContent>
-      </PostContentWrapper>
-    </DetailContainer>
+        </a.SellerContainer>
+      </a.TransactionWrapper>
+      <a.TransactionPost>
+        <div>{parse(data?.[0]?.content)}</div>
+      </a.TransactionPost>
+    </a.TransactionContainer>
   );
 };
 
 export default Transaction;
-
-const DetailContainer = styled.div`
-  width: 60%;
-  margin: 0 auto;
-`;
-
-const ClearDivContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
-const ClearText = styled.h1`
-  text-align: center;
-  font-weight: 800;
-  font-size: 50px;
-`;
-
-const EditDeleteButtonContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  gap: 0.5rem;
-  margin: 1rem 0;
-`;
-
-const PostContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  gap: 4rem;
-  margin-bottom: 24px;
-`;
-
-const PostImage = styled.div<{ img: string }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-  height: 490px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  background-size: cover;
-  background-position: center center;
-  background-image: url(${(props) => props.img});
-`;
-
-const PostInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 490px;
-`;
-
-const TopRightContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  width: 70%;
-  margin-bottom: 0.5rem;
-`;
-
-const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
-`;
-
-const PostPrice = styled.p`
-  width: 100%;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  text-align: right;
-`;
-
-const SellerText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const SellerProfileContainer = styled.div`
-  width: 100%;
-  height: 240px;
-  box-shadow: 1px 1px 5px ${(props) => props.theme.colors.gray20};
-`;
-
-const SellerProfileTopDiv = styled.div`
-  display: flex;
-  width: 100%;
-  height: 5rem;
-  background-color: rgba(255, 218, 24, 0.8);
-`;
-
-const TopLeftContainer = styled.div`
-  position: relative;
-  width: 30%;
-`;
-
-const SellerNickName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const ProfileIMG = styled.div<{ profileIMG: string }>`
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -50%);
-  border-radius: 100%;
-  background-image: url(${(props) => props.profileIMG});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const SellerProfileBottomDiv = styled.div`
-  width: 100%;
-  height: 11rem;
-`;
-
-const BottomTopContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: flex-start;
-  height: 50%;
-`;
-
-const ContactTimeContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 0.7rem 1.5rem;
-  gap: 0.5rem;
-`;
-
-const ContactTimeTitleText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const ContactTimeContentText = styled.span`
-  font-size: ${(props) => props.theme.fontSize.label12};
-  color: ${(props) => props.theme.colors.gray20};
-`;
-
-const BottomBottomContainer = styled.div`
-  height: 50%;
-`;
-
-const ProfileButtonContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-`;
-
-const ProfileButtons = styled.button`
-  width: 100%;
-  height: 64px;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  &:hover {
-    box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
-  }
-`;
-
-const LikeAndSubmitContainer = styled.div`
-  display: flex;
-  gap: 3rem;
-`;
-
-const OrderButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 4rem;
-  color: ${(props) => props.theme.colors.gray40};
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-  }
-`;
-
-const PostContentWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  gap: 2.5rem;
-  margin-bottom: 24px;
-`;
-
-const PostContent = styled.div`
-  padding: 2rem;
-  width: 100%;
-  min-height: 20rem;
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
-`;

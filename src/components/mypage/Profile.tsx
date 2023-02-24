@@ -68,7 +68,6 @@ export default function Profile(params: any) {
     });
   };
 
-
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
@@ -81,7 +80,11 @@ export default function Profile(params: any) {
           onChange={saveImgFile}
           ref={imgRef}
         />
-        <ImgSubmitButton onClick={handleClick} disabled={loading || !photo}>
+        <ImgSubmitButton
+          onClick={handleClick}
+          disabled={loading || !photo}
+          aria-label="확인"
+        >
           확인
         </ImgSubmitButton>
       </EditImgWrapper>

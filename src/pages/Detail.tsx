@@ -1,14 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
-
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import styled from 'styled-components';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
 import basicIMG from '../styles/basicIMG.png';
-import { AiFillHeart } from 'react-icons/ai';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,
@@ -17,6 +14,7 @@ import {
 import { onSalePostType } from '../types';
 import parse from 'html-react-parser';
 import SignIn from './SignIn';
+import * as a from '../styles/styledComponent/detail';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -224,306 +222,94 @@ const Detail = () => {
     }
   };
   return (
-    <DetailContainer>
-      <EditDeleteButtonContainer>
+    <a.DetailContainer>
+      <a.EditBtnWrapper>
         {saveUser?.uid === seller?.id && (
           <>
-            <EditDeleteButton onClick={() => navigate(`/editpage/${id}`)}>
+            <button
+              onClick={() => navigate(`/editpage/${id}`)}
+              aria-label="수정"
+            >
               수정
-            </EditDeleteButton>
-            <EditDeleteButton onClick={() => onClickDeleteComment(post[0].id)}>
+            </button>
+            <button
+              onClick={() => onClickDeleteComment(post[0].id)}
+              aria-label="삭제"
+            >
               삭제
-            </EditDeleteButton>
+            </button>
           </>
         )}
-      </EditDeleteButtonContainer>
-      <PostContainer>
-        <PostImage img={post[0].imgURL} />
-        <PostInfoWrapper>
-          <TitleText>{post[0].title}</TitleText>
-          <PostPrice>
+      </a.EditBtnWrapper>
+      <a.PostContainer>
+        <a.PostImage img={post[0].imgURL} aria-label="post이미지" />
+        <a.PostInfoWrapper>
+          <a.TitleText>{post[0].title}</a.TitleText>
+          <a.PostPrice>
             {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
-          </PostPrice>
-          <SellerText>판매자</SellerText>
-          <SellerProfileContainer>
-            <SellerProfileTopDiv>
-              <TopLeftContainer>
-                <ProfileIMG
+          </a.PostPrice>
+          <a.SellerText>판매자</a.SellerText>
+          <a.SellerProfileContainer>
+            <a.SellerWrapper>
+              <a.SellerLeft>
+                <a.ProfileIMG
                   profileIMG={
                     seller?.profileImg ? seller?.profileImg : basicIMG
                   }
+                  aria-label="프로필 이미지"
                 />
-              </TopLeftContainer>
-              <TopRightContainer>
-                <SellerNickName>{post[0].nickName}</SellerNickName>
-              </TopRightContainer>
-            </SellerProfileTopDiv>
-            <SellerProfileBottomDiv>
-              <BottomTopContainer>
-                <ContactTimeContainer>
-                  <ContactTimeTitleText>연락가능시간</ContactTimeTitleText>
-                  <ContactTimeContentText>
+              </a.SellerLeft>
+              <a.SellerRight>
+                <p>{post[0].nickName}</p>
+              </a.SellerRight>
+            </a.SellerWrapper>
+            <a.SellerProfileWrapper>
+              <a.BottomTopContainer>
+                <a.ContactTimeContainer>
+                  <p>연락가능시간</p>
+                  <span>
                     {post[0].contactTime
                       ? post[0].contactTime
                       : '00:00 ~ 24:00'}
-                  </ContactTimeContentText>
-                </ContactTimeContainer>
-              </BottomTopContainer>
-              <BottomBottomContainer>
-                <ProfileButtonContainer>
-                  <ProfileButtons>판매상품 10개</ProfileButtons>
-                  <ProfileButtons>받은 후기</ProfileButtons>
-                </ProfileButtonContainer>
-              </BottomBottomContainer>
-            </SellerProfileBottomDiv>
-          </SellerProfileContainer>
-          <LikeAndSubmitContainer>
-            <PostLikeButtonContainer>
+                  </span>
+                </a.ContactTimeContainer>
+              </a.BottomTopContainer>
+              <a.DetailBottomWrapper>
+                <a.ProfileButtonContainer>
+                  <button aria-label="판매상품 10개">판매상품 10개</button>
+                  <button aria-label="받은 후기">받은 후기</button>
+                </a.ProfileButtonContainer>
+              </a.DetailBottomWrapper>
+            </a.SellerProfileWrapper>
+          </a.SellerProfileContainer>
+          <a.LikeAndSubmitContainer>
+            <a.PostLikeButtonContainer>
               {postCountCheck ? (
-                <HeartIcon onClick={postCounter} />
+                <a.HeartIcon onClick={postCounter} aria-label="좋아요 더하기" />
               ) : (
-                <NoHeartIcon onClick={postCounter} />
+                <FcLikePlaceholder
+                  onClick={postCounter}
+                  aria-label="좋아요 빼기"
+                />
               )}
-            </PostLikeButtonContainer>
-            <OrderButton onClick={onClickApplyBuy}>바로 신청하기</OrderButton>
-          </LikeAndSubmitContainer>
-        </PostInfoWrapper>
-      </PostContainer>
-      <PostContentWrapper>
-        <PostContent>{parse(post[0].content)}</PostContent>
-      </PostContentWrapper>
+            </a.PostLikeButtonContainer>
+            <button onClick={onClickApplyBuy} aria-label="바로 신청하기">
+              바로 신청하기
+            </button>
+          </a.LikeAndSubmitContainer>
+        </a.PostInfoWrapper>
+      </a.PostContainer>
+      <a.PostContentWrapper>
+        <div>{parse(post[0].content)}</div>
+      </a.PostContentWrapper>
       <div>
         <div>
           {saveUser && <CommentInput />}
           <CommentsList />
         </div>
       </div>
-    </DetailContainer>
+    </a.DetailContainer>
   );
 };
 
 export default Detail;
-
-const DetailContainer = styled.div`
-  width: 60%;
-  margin: 0 auto;
-`;
-
-const NoHeartIcon = styled(FcLikePlaceholder)``;
-
-const EditDeleteButtonContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  gap: 0.5rem;
-  margin: 1rem 0;
-`;
-
-const PostContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  gap: 4rem;
-  margin-bottom: 24px;
-`;
-
-const PostImage = styled.div<{ img: string }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-  height: 490px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  background-size: cover;
-  background-position: center center;
-  background-image: url(${(props) => props.img});
-`;
-
-const PostInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 490px;
-`;
-
-const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
-`;
-
-const PostPrice = styled.p`
-  width: 100%;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  text-align: right;
-`;
-
-const SellerText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const SellerProfileContainer = styled.div`
-  width: 100%;
-  height: 240px;
-  box-shadow: 1px 1px 5px ${(props) => props.theme.colors.gray20};
-`;
-
-const SellerProfileTopDiv = styled.div`
-  display: flex;
-  width: 100%;
-  height: 5rem;
-  background-color: rgba(255, 218, 24, 0.8);
-`;
-
-const TopLeftContainer = styled.div`
-  position: relative;
-  width: 30%;
-`;
-
-const TopRightContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  width: 70%;
-  margin-bottom: 0.5rem;
-`;
-
-const SellerNickName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const ProfileIMG = styled.div<{ profileIMG: string }>`
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -50%);
-  border-radius: 100%;
-  background-image: url(${(props) => props.profileIMG});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const SellerProfileBottomDiv = styled.div`
-  width: 100%;
-  height: 11rem;
-`;
-
-const BottomTopContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: flex-start;
-  height: 50%;
-`;
-
-const ContactTimeContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 0.7rem 1.5rem;
-  gap: 0.5rem;
-`;
-
-const ContactTimeTitleText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-const ContactTimeContentText = styled.span`
-  font-size: ${(props) => props.theme.fontSize.label12};
-  color: ${(props) => props.theme.colors.gray20};
-`;
-
-const BottomBottomContainer = styled.div`
-  height: 50%;
-`;
-
-const ProfileButtonContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-`;
-
-const ProfileButtons = styled.button`
-  width: 100%;
-  height: 64px;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  &:hover {
-    box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
-  }
-`;
-
-const LikeAndSubmitContainer = styled.div`
-  display: flex;
-  gap: 3rem;
-`;
-
-const PostLikeButtonContainer = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 14%;
-  height: 65px;
-  font-size: ${(props) => props.theme.fontSize.title36};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
-  background-color: ${(props) => props.theme.colors.white};
-  &:hover {
-    cursor: pointer;
-    color: ${(props) => props.theme.colors.gray30};
-  }
-`;
-
-const HeartIcon = styled(AiFillHeart)`
-  color: ${(props) => props.theme.colors.red};
-`;
-
-const OrderButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 4rem;
-  color: ${(props) => props.theme.colors.gray40};
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-  }
-`;
-
-const PostContentWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  gap: 2.5rem;
-  margin-bottom: 24px;
-`;
-
-const PostContent = styled.div`
-  padding: 2rem;
-  width: 100%;
-  min-height: 20rem;
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
-`;
-
-const EditDeleteButton = styled.button`
-  width: 5rem;
-  height: 2.5rem;
-  border: none;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  cursor: pointer;
-  &:hover {
-    box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-  }
-`;

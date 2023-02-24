@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
 import { IoIosGitMerge } from 'react-icons/io';
 import { ISignUpForm, userType } from '../types';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,11 +9,11 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import * as yup from 'yup';
 import axios from 'axios';
-import styled from 'styled-components';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+import * as a from '../styles/styledComponent/auth';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -181,257 +180,128 @@ const SignUp = () => {
   };
 
   return (
-    <>
-      <Container>
-        <div>
-          <MainText>
-            세상 모든 재능을 이어주다
-            <span>
-              사소하고 별거없는 재능도 가치를 만드세요. <br />
-              <br />
-              이제 이음과 함께 시작해보세요.!
-            </span>
-            <div>
-              <IoIosGitMerge />
-              eum
-            </div>
-          </MainText>
-        </div>
-        <FormTag onSubmit={handleSubmit(onSubmitHandler)}>
-          <InputContainer>
-            <ItemContainer>
-              <InputBox
-                type="email"
-                placeholder="이메일"
-                {...register('email')}
-                style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
-                onChange={onChangeEmailHandler}
-                value={email}
-              />
-              {email ? (
-                <CloseIcon onClick={handleInputValueClickBT} />
-              ) : undefined}
-              {errors.email && errors.email.type === 'required' && (
-                <ErrorMSG>이메일을 입력해주세요.</ErrorMSG>
-              )}
-              {errors.email && errors.email.type === 'email' && (
-                <ErrorMSG>이메일 형식을 입력해주세요.</ErrorMSG>
-              )}
-            </ItemContainer>
-            <ItemContainer>
-              <InputBox
-                type={isViewPW ? 'text' : 'password'}
-                placeholder="비밀번호"
-                {...register('pw')}
-                style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
-                onChange={onChangePwHandler}
-                value={pw}
-              />
-              {pw ? (
-                <ViewIcon
-                  onClick={handleClickViewPW}
-                  style={{ color: isViewPW ? '#000' : '#ddd' }}
-                />
-              ) : undefined}
-              {errors.pw && errors.pw.type === 'required' && (
-                <ErrorMSG>비밀번호를 입력해주세요.</ErrorMSG>
-              )}
-              {errors.pw && errors.pw.type === 'matches' && (
-                <ErrorMSG>
-                  비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
-                </ErrorMSG>
-              )}
-            </ItemContainer>
-            <ItemContainer>
-              <InputBox
-                type={isViewCheckPW ? 'text' : 'password'}
-                placeholder="비밀번호 확인"
-                {...register('checkPw')}
-                style={{
-                  borderColor: errors?.checkPw?.message ? '#FF0000' : '',
-                }}
-                onChange={onChangeCheckPwHandler}
-                value={checkPw}
-              />
-              {checkPw ? (
-                <ViewIcon
-                  onClick={handleClickCheckPW}
-                  style={{ color: isViewCheckPW ? '#000' : '#ddd' }}
-                />
-              ) : undefined}
-              {errors.checkPw && errors.checkPw.type === 'required' && (
-                <ErrorMSG>비밀번호를 확인해주세요.</ErrorMSG>
-              )}
-              {errors.checkPw && errors.checkPw.type === 'oneOf' && (
-                <ErrorMSG>비밀번호가 일치하지 않습니다.</ErrorMSG>
-              )}
-              {err && <ErrorMSG>{err}</ErrorMSG>}
-            </ItemContainer>
-          </InputContainer>
-          <ItemContainer>
-            <InputBox
-              type="text"
-              placeholder="닉네임"
-              style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
-              onChange={onChangeNickNameHandler}
-              value={nickName}
+    <a.AuthContainer>
+      <div>
+        <a.AuthName>
+          세상 모든 재능을 이어주다
+          <span>
+            사소하고 별거없는 재능도 가치를 만드세요. <br />
+            <br />
+            이제 이음과 함께 시작해보세요.!
+          </span>
+          <div>
+            <IoIosGitMerge />
+            eum
+          </div>
+        </a.AuthName>
+      </div>
+      <a.FormTag
+        onSubmit={handleSubmit(onSubmitHandler)}
+        aria-label="이메일 비밀번호 입력하기"
+      >
+        <a.SignUpInputContainer>
+          <a.ItemContainer>
+            <a.InputBox
+              type="email"
+              placeholder="이메일"
+              {...register('email')}
+              style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
+              onChange={onChangeEmailHandler}
+              value={email}
             />
-            <CheckBT type="button" onClick={handleCheckOverlapNickName}>
-              중복확인
-            </CheckBT>
-            {checkNick === 1 && <ErrorMSG>중복된 닉네임입니다.</ErrorMSG>}
-            {checkNick === 0 && <ErrorMSG>{errMsg}</ErrorMSG>}
-            {checkNick === 2 && <PassMSG>{errMsg}</PassMSG>}
-          </ItemContainer>
-          <JoinButton>등록하기</JoinButton>
-        </FormTag>
-        <MoveSignInButton onClick={() => navigate('/signin')}>
-          이미 회원이신가요?
-        </MoveSignInButton>
-      </Container>
-    </>
+            {email ? (
+              <a.CloseIcon
+                onClick={handleInputValueClickBT}
+                aria-label="닫기"
+              />
+            ) : undefined}
+            {errors.email && errors.email.type === 'required' && (
+              <a.ErrorMSG>이메일을 입력해주세요.</a.ErrorMSG>
+            )}
+            {errors.email && errors.email.type === 'email' && (
+              <a.ErrorMSG>이메일 형식을 입력해주세요.</a.ErrorMSG>
+            )}
+          </a.ItemContainer>
+          <a.ItemContainer>
+            <a.InputBox
+              type={isViewPW ? 'text' : 'password'}
+              placeholder="비밀번호"
+              {...register('pw')}
+              style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
+              onChange={onChangePwHandler}
+              value={pw}
+            />
+            {pw ? (
+              <a.ViewIcon
+                onClick={handleClickViewPW}
+                style={{ color: isViewPW ? '#000' : '#ddd' }}
+                aria-label="비밀번호 입력하기"
+              />
+            ) : undefined}
+            {errors.pw && errors.pw.type === 'required' && (
+              <a.ErrorMSG>비밀번호를 입력해주세요.</a.ErrorMSG>
+            )}
+            {errors.pw && errors.pw.type === 'matches' && (
+              <a.ErrorMSG>
+                비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
+              </a.ErrorMSG>
+            )}
+          </a.ItemContainer>
+          <a.ItemContainer>
+            <a.InputBox
+              type={isViewCheckPW ? 'text' : 'password'}
+              placeholder="비밀번호 확인"
+              {...register('checkPw')}
+              style={{
+                borderColor: errors?.checkPw?.message ? '#FF0000' : '',
+              }}
+              onChange={onChangeCheckPwHandler}
+              value={checkPw}
+            />
+            {checkPw ? (
+              <a.ViewIcon
+                onClick={handleClickCheckPW}
+                style={{ color: isViewCheckPW ? '#000' : '#ddd' }}
+                aria-label="비밀번호 확인하기"
+              />
+            ) : undefined}
+            {errors.checkPw && errors.checkPw.type === 'required' && (
+              <a.ErrorMSG>비밀번호를 확인해주세요.</a.ErrorMSG>
+            )}
+            {errors.checkPw && errors.checkPw.type === 'oneOf' && (
+              <a.ErrorMSG>비밀번호가 일치하지 않습니다.</a.ErrorMSG>
+            )}
+            {err && <a.ErrorMSG>{err}</a.ErrorMSG>}
+          </a.ItemContainer>
+        </a.SignUpInputContainer>
+        <a.ItemContainer>
+          <a.InputBox
+            type="text"
+            placeholder="닉네임"
+            style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
+            onChange={onChangeNickNameHandler}
+            value={nickName}
+          />
+          <a.CheckBT
+            type="button"
+            onClick={handleCheckOverlapNickName}
+            aria-label="중복확인"
+          >
+            중복확인
+          </a.CheckBT>
+          {checkNick === 1 && <a.ErrorMSG>중복된 닉네임입니다.</a.ErrorMSG>}
+          {checkNick === 0 && <a.ErrorMSG>{errMsg}</a.ErrorMSG>}
+          {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
+        </a.ItemContainer>
+        <a.JoinButton aria-label="가입하기">가입하기</a.JoinButton>
+      </a.FormTag>
+      <a.MoveSignInButton
+        onClick={() => navigate('/signin')}
+        aria-label="로그인 이동"
+      >
+        이미 회원이신가요?
+      </a.MoveSignInButton>
+    </a.AuthContainer>
   );
 };
 export default SignUp;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 27rem;
-  margin: 0 auto;
-`;
-
-const MainText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 12rem;
-  gap: 1.5rem;
-  font-size: ${(props) => props.theme.fontSize.like30};
-  cursor: default;
-  span {
-    font-size: ${(props) => props.theme.fontSize.body16};
-  }
-`;
-
-const FormTag = styled.form`
-  width: 100%;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 12rem;
-  width: 100%;
-  gap: 1rem;
-`;
-
-const ItemContainer = styled.div`
-  position: relative;
-  height: 3rem;
-`;
-
-const InputBox = styled.input`
-  width: 100%;
-  height: 2.6rem;
-  font-size: 1rem;
-  padding: 0.7rem;
-  box-shadow: 0.5px 1px 2px 0.5px ${(props) => props.theme.colors.gray20};
-  background-color: ${(props) => props.theme.colors.white};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
-  border-radius: 10px;
-  &::placeholder {
-    color: ${(props) => props.theme.colors.gray20};
-  }
-  &:focus {
-    outline: none;
-  }
-`;
-
-const CloseIcon = styled(AiFillCloseCircle)`
-  position: absolute;
-  right: 1rem;
-  top: 0.55rem;
-  font-size: ${(props) => props.theme.fontSize.title24};
-  color: ${(props) => props.theme.colors.gray20};
-  cursor: pointer;
-  &:hover {
-    color: ${(props) => props.theme.colors.gray40};
-  }
-`;
-
-const ViewIcon = styled(AiFillEye)`
-  position: absolute;
-  bottom: 10px;
-  right: 18px;
-  font-size: ${(props) => props.theme.fontSize.like30};
-  cursor: pointer;
-`;
-
-const ErrorMSG = styled.p`
-  padding: 0.2rem;
-  color: ${(props) => props.theme.colors.red};
-  font-size: ${(props) => props.theme.fontSize.label12};
-`;
-
-const MoveSignInButton = styled.button`
-  border: none;
-  background-color: white;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.body16};
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: ${(props) => props.theme.colors.button};
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-  }
-`;
-
-const CheckBT = styled.button`
-  position: absolute;
-  border: none;
-  width: 20%;
-  height: 2rem;
-  right: 0.3rem;
-  top: 0.32rem;
-  border-radius: 6px;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  color: ${(props) => props.theme.colors.gray30};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  cursor: pointer;
-  &:hover {
-    border: 3px solid ${(props) => props.theme.colors.button};
-    color: ${(props) => props.theme.colors.black};
-  }
-`;
-
-const PassMSG = styled.p`
-  color: green;
-  margin-top: 0.3rem;
-  font-size: ${(props) => props.theme.fontSize.label12};
-`;
-
-const JoinButton = styled.button`
-  width: 100%;
-  height: 3rem;
-  border-radius: 10px;
-  margin-top: 2rem;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
-  border: none;
-  cursor: pointer;
-  &:hover {
-    border: 4px solid ${(props) => props.theme.colors.button};
-    color: ${(props) => props.theme.colors.black};
-  }
-  &:active {
-    background-color: ${(props) => props.theme.colors.white};
-  }
-`;
