@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import React, { useState, useRef, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -58,8 +58,19 @@ const WritePage = () => {
       container: toolbarOptions,
     },
   };
-  const sellerUid = auth.currentUser?.uid;
-  const nickName = auth.currentUser?.displayName;
+
+  // 글쓴이의 유저정보를 가지고옵니다.
+  const { data: user } = useQuery(['user', saveUser?.uid], async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
+    );
+    return response.data;
+  });
+
+  const sellerUid = saveUser?.uid;
+  const nickName = user?.nickName;
+
+  console.log('nickName: ', nickName);
 
   const { mutate } = useMutation(
     (newPost: postType) =>
@@ -82,7 +93,7 @@ const WritePage = () => {
   const [post, setPost] = useState<postType>({
     id: uuidv4(),
     title: '',
-    nickName,
+    nickName:'',
     sellerUid,
     content: '',
     price: 0,
@@ -96,6 +107,15 @@ const WritePage = () => {
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price, imgURL, category } = post;
+
+  // user정보가 있을 때에는 이렇게 저장됩니다.
+  useEffect(() => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      nickName: user?.nickName || '',
+      profileImg: user?.profileImg || '',
+    }));
+  }, [user]);
 
   //이미지 저장
   const saveImgFile = () => {

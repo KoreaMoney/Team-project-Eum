@@ -19,31 +19,22 @@ import { customConfirm } from '../modal/CustomAlert';
 const CommentsList = () => {
   const observerElem = useRef<HTMLDivElement | null>(null);
   const { id } = useParams<{ id?: string }>();
-
   const queryClient = useQueryClient();
-
   const PAGE_SIZE = 6;
-
-  //저장된 유저 정보가져오기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  
   const fetchComments = async (page = 0) => {
     const url = `${process.env.REACT_APP_JSON}/comments?postId=${id}`;
     const response = await axios.get(url, {
       params: {
         _page: page,
         _limit: PAGE_SIZE,
+        _sort: 'createAt', // createAt 필드를 기준으로 정렬
+        _order: 'desc', // 내림차순으로 정렬
       },
     });
     return response.data;
   };
-
-  //유저 uid get하기
-  const { data: user } = useQuery(['user', saveUser?.uid], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
-    );
-    return response.data;
-  });
 
   //무한 스크롤 진행하기
   const { data, isFetching, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -139,12 +130,14 @@ const CommentsList = () => {
                 </LeftContainer>
                 <RightContainer>
                   <CreateAt>{getTimeGap(comment.createAt)}</CreateAt>
-                  <DeleteButton
-                    onClick={() => onClickDeleteComment(comment.id)}
-                    aria-label="삭제"
-                  >
-                    삭제
-                  </DeleteButton>
+                  {saveUser?.uid === comment?.writer && (
+                    <DeleteButton
+                      onClick={() => onClickDeleteComment(comment.id)}
+                      aria-label="삭제"
+                    >
+                      삭제
+                    </DeleteButton>
+                  )}
                 </RightContainer>
               </CommentContainer>
             ))}

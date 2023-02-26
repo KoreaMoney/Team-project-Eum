@@ -8,6 +8,7 @@ import SignIn from './SignIn';
 import parse from 'html-react-parser';
 import basicIMG from '../styles/basicIMG.png';
 import * as a from '../styles/styledComponent/transaction';
+import { userType } from '../types';
 
 /**순서
  * 1. query-key만들기
@@ -31,40 +32,41 @@ const Transaction = () => {
     return response.data;
   });
 
-  // 판매자의 user 데이터를 가지고 옵니다.
-  const { data: sellerData } = useQuery(
-    ['sellerData', data?.[0]?.sellerUid],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`
-      );
-      return response.data;
-    }
-  );
+  const [buyerData, setBuyerData] = useState<userType | null>(null);
+  const [sellerData, setSellerData] = useState<userType | null>(null);
 
-  // 구매자의 user 데이터를 가지고 옵니다.
-  const { data: buyerData } = useQuery(
-    ['buyerData', data?.[0]?.buyerUid],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`
-      );
-      return response.data;
+  useEffect(() => {
+    if (data && data[0]) {
+      const fetchBuyer = async () => {
+        const response = await axios.get(
+          `${process.env.REACT_APP_JSON}/users/${data[0].buyerUid}`
+        );
+        setBuyerData(response.data);
+      };
+      const fetchSeller = async () => {
+        const response = await axios.get(
+          `${process.env.REACT_APP_JSON}/users/${data[0].sellerUid}`
+        );
+        setSellerData(response.data);
+      };
+      fetchBuyer();
+      fetchSeller();
     }
-  );
+  }, [data]);
+  console.log('buyerData: ', buyerData);
+  console.log('sellerData: ', sellerData);
 
   // user의 포인트를 수정해주는 mutation 함수
-  const { mutate: updateUser } = useMutation(
-    (newUser: { point: number; isDoneCount: number }) =>
-      axios.patch(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.sellerUid}`,
-
-        newUser
-      ),
-    {
-      onSuccess: () => queryClient.invalidateQueries(['sellerData']),
-    }
-  );
+const { mutate: updateUser } = useMutation(
+  (newUser: { point: number; isDoneCount: number }) =>
+    axios.patch(
+      `${process.env.REACT_APP_JSON}/users/${sellerData?.id}`,
+      newUser
+    ),
+  {
+    onSuccess: () => queryClient.invalidateQueries(['sellerData']),
+  }
+);
 
   // 완료 시 isDone을 true로 만들기 위한 함수
   const { mutate: clearRequest } = useMutation(
@@ -112,7 +114,7 @@ const Transaction = () => {
   const onClickClearRequest = async () => {
     await updateUser({
       point: Number(sellerData?.point) + Number(data?.[0]?.price),
-      isDoneCount: sellerData.isDoneCount + 1,
+      isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
     });
     await clearRequest({
       isDone: true,

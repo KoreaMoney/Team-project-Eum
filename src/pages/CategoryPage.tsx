@@ -43,6 +43,8 @@ const CategoryPage = () => {
       params: {
         _page: page,
         _limit: PAGE_SIZE,
+        _sort: 'createAt', // createAt 필드를 기준으로 정렬
+        _order: 'desc', // 내림차순으로 정렬
       },
     });
     return response.data;
@@ -107,6 +109,7 @@ const CategoryPage = () => {
       }
     );
 
+  
   //무한스크롤 observer
   const handleObserver = useCallback(
     (entries: any) => {
@@ -127,6 +130,7 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
+  
   return (
     <a.PageContainer>
       {saveUser && (
@@ -156,41 +160,42 @@ const CategoryPage = () => {
       <a.PostsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
-            {page.map((post: postType) => (
-              <a.PostContainer
-                key={post.id}
-                onClick={() => handlePostClick(post)}
-              >
-                <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                <a.ContentContainer>
-                  <h2>{post.title}</h2>
-                  <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
-                  <a.ContentText>{parse(post.content)}</a.ContentText>
-                  <a.BottomContainer>
-                    <a.LeftContainer>
-                      <a.ProfileIMG
-                        profileIMG={
-                          post?.profileImg ? post?.profileImg : basicIMG
-                        }
-                      />
-                      <p>{post.nickName}</p>
-                    </a.LeftContainer>
-                    <a.RightContainer>
-                      <a.LikeIconContainer>
-                        <a.LikeIcon />
-                        <span>{post.like.length}</span>
-                      </a.LikeIconContainer>
-                      <p>
-                        {post.price
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                        원
-                      </p>
-                    </a.RightContainer>
-                  </a.BottomContainer>
-                </a.ContentContainer>
-              </a.PostContainer>
-            ))}
+            {page
+              .map((post: postType) => (
+                <a.PostContainer
+                  key={post.id}
+                  onClick={() => handlePostClick(post)}
+                >
+                  <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                  <a.ContentContainer>
+                    <h2>{post.title}</h2>
+                    <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
+                    <a.ContentText>{parse(post.content)}</a.ContentText>
+                    <a.BottomContainer>
+                      <a.LeftContainer>
+                        <a.ProfileIMG
+                          profileIMG={
+                            post?.profileImg ? post?.profileImg : basicIMG
+                          }
+                        />
+                        <p>{post.nickName}</p>
+                      </a.LeftContainer>
+                      <a.RightContainer>
+                        <a.LikeIconContainer>
+                          <a.LikeIcon />
+                          <span>{post.like.length}</span>
+                        </a.LikeIconContainer>
+                        <p>
+                          {post.price
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                          원
+                        </p>
+                      </a.RightContainer>
+                    </a.BottomContainer>
+                  </a.ContentContainer>
+                </a.PostContainer>
+              ))}
           </Fragment>
         ))}
 
