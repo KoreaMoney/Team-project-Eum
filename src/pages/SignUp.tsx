@@ -14,6 +14,7 @@ import {
   customWarningAlert,
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/auth';
+import { getAuthUsers, postUsers } from '../api';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -51,18 +52,11 @@ const SignUp = () => {
   });
 
   // 회원가입 성공 시 users에 data 추가
-  const { mutate } = useMutation((newUser: userType) =>
-    axios.post(`${process.env.REACT_APP_JSON}/users`, newUser)
-  );
+  const { mutate } = useMutation((newUser: userType) => postUsers(newUser));
+
   // 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
   // 닉네임 중복 확인을 위해 데이터를 가져옴
-  const { data } = useQuery(['users'], async () => {
-    const url = `${process.env.REACT_APP_JSON}/users`;
-    const response = await axios.get(url);
-
-    return response.data;
-  });
-
+  const { data } = useQuery(['users'], getAuthUsers);
   const nickNameList = data?.map((user: userType) => user.nickName);
 
   // 비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수

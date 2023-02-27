@@ -11,6 +11,7 @@ import {
   customWarningAlert,
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/writeEdit';
+import { getPostsId, patchPosts } from '../api';
 
 const EditPage = () => {
   const navigate = useNavigate();
@@ -40,12 +41,7 @@ const EditPage = () => {
   //React-query (Query)
   const { data: postdata, isLoading } = useQuery(
     ['editPost', id],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/posts?id=${id}`
-      );
-      return response.data;
-    },
+    () => getPostsId(id),
     {
       select: (data) => {
         return data[0];
@@ -55,8 +51,7 @@ const EditPage = () => {
 
   //React-query (Mutation)
   const { mutate } = useMutation(
-    (editPost: editPostType) =>
-      axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, editPost),
+    (editPost: editPostType) => patchPosts(id, editPost),
     {
       onSuccess: () => {
         navigate(`/detail/${category}/${id}`);
