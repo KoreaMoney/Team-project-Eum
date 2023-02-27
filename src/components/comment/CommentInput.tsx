@@ -23,30 +23,32 @@ const CommentInput = () => {
     );
     return response.data;
   });
-
+  const [comment, setComment] = useState<commentType>({
+    id: '',
+    postId: '',
+    content: '',
+    createAt: 0,
+    writer: '',
+    writerNickName: '',
+    isEdit: false,
+    profileImg: '',
+  });
   /**데이터 저장
    * 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해준다 */
-  const { mutate } = useMutation(
-    (newComment: commentType) =>
-      axios.post(`${process.env.REACT_APP_JSON}/comments`, newComment),
-    {
-      onSuccess: () => queryClient.invalidateQueries(['comments']),
-    }
-  );
+const { mutate } = useMutation(
+  (newComment: commentType) =>
+    axios.post(`${process.env.REACT_APP_JSON}/comments`, newComment),
+  {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments']);
+    },
+  }
+);
 
   /**uuidv4()를 변수로 지정해서 넣으면 uuid가 바뀌지 않는 이슈 존재
    * id에 uuidv4를 바로 할당해 지속적으로 바뀔 수 있게 해준다
    */
-  const [comment, setComment] = useState({
-    id: uuidv4(),
-    postId: id,
-    content: '',
-    createAt: Date.now(),
-    writer: saveUser.uid,
-    writerNickName: user?.nickName,
-    isEdit: false,
-    profileImg: user?.profileImg,
-  });
+
 
   // comment state가 객체형태이기 때문에 구조분해 할당을 통해 content만 변경될 수 있게 해줍니다.
   const { content } = comment;
@@ -67,26 +69,42 @@ const CommentInput = () => {
   ) => {
     e.preventDefault();
 
-    await mutate(comment);
-    setComment({
-      ...comment,
-      content: '',
+    await mutate({
       id: uuidv4(),
-    });
-  };
-  useEffect(() => {
-    setComment({
-      ...comment,
-      writer: user?.id,
+      postId: id,
+      content,
+      createAt: Date.now(),
+      writer: saveUser?.uid,
       writerNickName: user?.nickName,
+      isEdit: false,
       profileImg: user?.profileImg,
     });
-  }, [user]);
+    setComment({
+      id: '',
+      postId: '',
+      content: '',
+      createAt: 0,
+      writer: '',
+      writerNickName: '',
+      isEdit: false,
+      profileImg: '',
+    });
+  };
+
+  // useEffect(() => {
+  //   setComment({
+  //     ...comment,
+  //     writer: user?.id,
+  //     writerNickName: user?.nickName,
+  //     profileImg: user?.profileImg,
+  //   });
+  // }, [user]);
 
   return (
     <div>
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
       <CommentContainer onSubmit={onSubmitCommentHandler}>
+        <ProfileIMG profileIMG={user?.profileImg} />
         <InputTag name="content" value={content} onChange={onChangeContent} />
         <AddCommentButton type="submit" aria-label="댓글등록">
           댓글등록
@@ -97,6 +115,17 @@ const CommentInput = () => {
 };
 
 export default CommentInput;
+
+const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-image: url(${(props) => props.profileIMG});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 0.5rem;
+`;
 
 const CommentTitleText = styled.p`
   font-size: ${(props) => props.theme.fontSize.title24};

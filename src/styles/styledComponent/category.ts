@@ -40,6 +40,10 @@ export const PostContainer = styled.div`
   width: 100%;
   margin-bottom: 1rem;
   border: 3px solid ${(props) => props.theme.colors.brandColor};
+  cursor: pointer;
+  &:hover {
+    width: 105%;
+  }
 `;
 
 export const PostIMG = styled.div<{ bgPhoto: string }>`

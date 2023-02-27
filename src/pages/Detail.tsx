@@ -69,17 +69,19 @@ const Detail = () => {
     }
   );
 
+  console.log('seller: ', seller);
+
   // 포인트 수정을 위한 유저정보 get
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
     async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${post?.[0].sellerUid}`
+        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
       );
       return response.data;
     },
     {
-      enabled: Boolean(saveUser?.uid), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      enabled: Boolean(saveUser), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
 
@@ -154,7 +156,8 @@ const Detail = () => {
     });
   };
   const postCounter = async () => {
-    if (saveUser) {
+    if (!saveUser) navigate('/signin')
+    else {
       if (postCountCheck) {
         await updatePost({
           like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
@@ -164,8 +167,6 @@ const Detail = () => {
           like: [...(post?.[0].like || []), saveUser?.uid],
         });
       }
-    } else {
-      return <SignIn />;
     }
   };
 
@@ -260,7 +261,7 @@ const Detail = () => {
                 />
               </a.SellerLeft>
               <a.SellerRight>
-                <p>{post[0].nickName}</p>
+                <p>{seller?.nickName}</p>
               </a.SellerRight>
             </a.SellerWrapper>
             <a.SellerProfileWrapper>
@@ -268,8 +269,8 @@ const Detail = () => {
                 <a.ContactTimeContainer>
                   <p>연락가능시간</p>
                   <span>
-                    {post[0].contactTime
-                      ? post[0].contactTime
+                    {seller?.contactTime
+                      ? seller?.contactTime
                       : '00:00 ~ 24:00'}
                   </span>
                 </a.ContactTimeContainer>
@@ -283,16 +284,21 @@ const Detail = () => {
             </a.SellerProfileWrapper>
           </a.SellerProfileContainer>
           <a.LikeAndSubmitContainer>
-            <a.PostLikeButtonContainer>
-              {postCountCheck ? (
-                <a.HeartIcon onClick={postCounter} aria-label="좋아요 더하기" />
-              ) : (
-                <FcLikePlaceholder
-                  onClick={postCounter}
-                  aria-label="좋아요 빼기"
-                />
-              )}
-            </a.PostLikeButtonContainer>
+            {postCountCheck ? (
+              <a.PostLikeButtonContainer
+                onClick={postCounter}
+                aria-label="좋아요 더하기"
+              >
+                <a.HeartIcon />
+              </a.PostLikeButtonContainer>
+            ) : (
+              <a.PostLikeButtonContainer
+                onClick={postCounter}
+                aria-label="좋아요 빼기"
+              >
+                <FcLikePlaceholder />
+              </a.PostLikeButtonContainer>
+            )}
             <button onClick={onClickApplyBuy} aria-label="바로 신청하기">
               바로 신청하기
             </button>
