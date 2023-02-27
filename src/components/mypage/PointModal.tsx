@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getProfilePoint } from '../../api';
 import { CustomModal } from '../modal/CustomModal';
 import PointHistoryList from './PointHistoryList';
 import styled from 'styled-components';
 import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
+import { getUsers } from '../../api';
 
 /**순서
  * 1.커스텀 모달을 부른다
@@ -12,9 +12,12 @@ import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
  */
 const PointModal = () => {
   const [isModalActive, setIsModalActive] = useState(false);
-  const { data: profileData } = useQuery(['users'], getProfilePoint);
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  // 커스텀모달을 불러옵니다.
+  // 로그인한 유저 정보를 불러옵니다
+  const { data: profileData } = useQuery(['users'], () => getUsers(saveUser));
+
+  // 커스텀모달을 불러옵니다
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
