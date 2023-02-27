@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { getTradePoint } from '../../api';
+import { getOnSalePosts } from '../../api';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -15,15 +15,15 @@ const PointHistoryList = () => {
 
   const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
     ['onSalePosts'],
-    getTradePoint
+    getOnSalePosts
   );
 
+  // 거래완료 목록 출력
   const isDoneTradeList =
     tradeData &&
     tradeData.filter((post: any) => {
       return post.isDone === true;
     });
-
   // 거래완료 목록 중 내 판매목록
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.buyerUid;
@@ -36,7 +36,7 @@ const PointHistoryList = () => {
 
   // 내 전체 거래 목록
   let NewTradeList;
-  if (buyTradeList && sellTradeList) {
+  if (buyTradeList || sellTradeList) {
     NewTradeList = [...buyTradeList, ...sellTradeList];
   } else {
     NewTradeList = undefined;
@@ -101,7 +101,7 @@ const PointHistoryList = () => {
         ) : category === 1 ? (
           sellTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryDate>{prev.createdAt}</PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
             </PointHistory>
@@ -109,7 +109,7 @@ const PointHistoryList = () => {
         ) : category === 2 && buyTradeList ? (
           buyTradeList.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createAt}</PointHistoryDate>
+              <PointHistoryDate>{prev.createdAt}</PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>-{prev.price}</PointHistoryAmount>
             </PointHistory>
@@ -123,11 +123,10 @@ const PointHistoryList = () => {
 };
 export default PointHistoryList;
 
-const PlusOrMinus = styled.span`
+const PlusOrMinus = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1rem;
 `;
 
 const PointWrapper = styled.button`
