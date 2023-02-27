@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import Profile from '../components/mypage/Profile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  getUsers,
-  getOnSalePosts,
-  patchUsers,
-  getOnSalePostBuyer,
-} from '../api';
+import { getUsers, patchUsers, getOnSalePostBuyer } from '../api';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
+import { customWarningAlert } from '../components/modal/CustomAlert';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
   const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
   const [editNickNameValue, setEditNickNameValue] = useState('');
+  const [timeValue, setTimeValue] = useState('');
+  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  // const { isLoading: editLoading, mutate: updateTimeMutate } = useMutation(
+  //   (newUser: { point: string | number | undefined }) =>
+  //     patchUsers(saveUser.uid, newUser)
+  // );
+  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   // 로그인한 유저 정보를 받아옵니다.
@@ -23,6 +26,7 @@ const MyPage = () => {
     ['users', saveUser.uid],
     () => getUsers(saveUser.uid)
   );
+  console.log('saveUser.uid', data);
 
   // 거래 목록을 받아옵니다.
   const {
@@ -40,8 +44,7 @@ const MyPage = () => {
       return post.isDone === true;
     });
 
-  //닉네임 수정
-
+  // 로그인한 유저 정보에 접근해서 patch합니다.
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation((user: { id: string; nickName: string }) =>
       patchUsers(saveUser.uid, user)
@@ -80,6 +83,42 @@ const MyPage = () => {
   if (!saveUser) {
     return <SignIn />;
   }
+
+  // 유저 연락 가능한 시간을 출력합니다.
+  const timeChangeHandle = (e: any) => {
+    setTimeValue(e.target.value);
+  };
+  const submitTime = (e: any) => {
+    e.preventDefault();
+    const time = timeValue.trim();
+    if (!time) {
+      setTimeValue('');
+      alert('연락 가능한 시간을 지정해주세요.');
+      return;
+    }
+  };
+
+  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  // 유저 연락 가능 시간을 수정합니다.
+  // const submitTime = (e: any) => {
+  //   e.preventDefault();
+  //   const time = timeValue.trim();
+  //   if (!time) {
+  //     setTimeValue('');
+  //     customWarningAlert('연락 가능한 시간을 지정해주세요.');
+  //     return;
+  //   }
+  //   const newTime = {
+  //     id: saveUser.uid,
+  //     contactTime: timeValue,
+  //   };
+  //   updateTimeMutate(newTime, {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries('users');
+  //     },
+  //   });
+  // };
+  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
   // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
@@ -131,7 +170,15 @@ const MyPage = () => {
         <a.MyPageTimeWrapper>
           <div>
             <p>연락가능한 시간 : </p>
-            <input type="time" />
+            <form onSubmit={submitTime}>
+              <input
+                type="time"
+                onChange={timeChangeHandle}
+                value={timeValue}
+              />
+              <button>완료</button>
+            </form>
+            <div>{timeValue}</div>
           </div>
         </a.MyPageTimeWrapper>
         <span>내가 가진 배지</span>
