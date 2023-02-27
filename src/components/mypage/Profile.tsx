@@ -15,7 +15,6 @@ export default function Profile(params: any) {
 
   const { data } = useQuery(['users'], () =>
     axios
-
       .get(`${process.env.REACT_APP_JSON}/users?id=${id}`)
       .then((res) => res.data)
   );

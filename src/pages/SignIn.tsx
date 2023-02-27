@@ -16,6 +16,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import * as a from '../styles/styledComponent/auth';
+import { getAuthUsers, postUsers } from '../api';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -52,18 +53,13 @@ const SignIn = () => {
 
   //새로운 유저 정보 post하기
   const mutation = useMutation((newUser: userType) => {
-    return axios
-      .post(`${process.env.REACT_APP_JSON}/users`, newUser)
-      .then((response: AxiosResponse) => {
-        return response;
-      });
+    return postUsers(newUser).then((response: AxiosResponse) => {
+      return response;
+    });
   });
 
   // uid 중복검사
-  const { data } = useQuery(['users'], async () => {
-    const response = await axios.get(`${process.env.REACT_APP_JSON}/users`);
-    return response.data;
-  });
+  const { data } = useQuery(['users'], getAuthUsers);
 
   //새로 고침 진행 시 uid session저장하기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');

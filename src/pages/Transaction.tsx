@@ -9,6 +9,8 @@ import parse from 'html-react-parser';
 import basicIMG from '../styles/basicIMG.png';
 import * as a from '../styles/styledComponent/transaction';
 import { userType } from '../types';
+import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
+import { object } from 'yup';
 
 /**순서
  * 1. query-key만들기
@@ -25,12 +27,9 @@ const Transaction = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   //쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  const { data, isLoading } = useQuery(['salePost', id], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/onSalePosts?id=${id}`
-    );
-    return response.data;
-  });
+  const { data, isLoading } = useQuery(['salePost', id], () =>
+    getOnSalePost(id)
+  );
 
   const [buyerData, setBuyerData] = useState<userType | null>(null);
   const [sellerData, setSellerData] = useState<userType | null>(null);
@@ -38,43 +37,32 @@ const Transaction = () => {
   useEffect(() => {
     if (data && data[0]) {
       const fetchBuyer = async () => {
-        const response = await axios.get(
-          `${process.env.REACT_APP_JSON}/users/${data[0].buyerUid}`
-        );
-        setBuyerData(response.data);
+        const buyer = await getUsers(data[0].buyerUid);
+        setBuyerData(buyer);
       };
       const fetchSeller = async () => {
-        const response = await axios.get(
-          `${process.env.REACT_APP_JSON}/users/${data[0].sellerUid}`
-        );
-        setSellerData(response.data);
+        const seller = await getUsers(data[0].sellerUid);
+        setSellerData(seller);
       };
+
       fetchBuyer();
       fetchSeller();
     }
   }, [data]);
-  console.log('buyerData: ', buyerData);
-  console.log('sellerData: ', sellerData);
 
-  // user의 포인트를 수정해주는 mutation 함수
-const { mutate: updateUser } = useMutation(
-  (newUser: { point: number; isDoneCount: number }) =>
-    axios.patch(
-      `${process.env.REACT_APP_JSON}/users/${sellerData?.id}`,
-      newUser
-    ),
-  {
-    onSuccess: () => queryClient.invalidateQueries(['sellerData']),
-  }
-);
+
+  // 거래완료 시 판매자의 포인트를 더해주는 mutation 함수
+  const { mutate: updateUser } = useMutation(
+    (newUser: { point: number; isDoneCount: number }) =>
+      patchUsers(data?.[0]?.sellerUid, newUser),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['sellerData']),
+    }
+  );
 
   // 완료 시 isDone을 true로 만들기 위한 함수
   const { mutate: clearRequest } = useMutation(
-    (newSalePost: { isDone: boolean }) =>
-      axios.patch(
-        `${process.env.REACT_APP_JSON}/onSalePosts/${id}`,
-        newSalePost
-      ),
+    (newSalePosts: { isDone: boolean }) => patchOnSalePost(id, newSalePosts),
     {
       onSuccess: () => queryClient.invalidateQueries(['salePost']),
     }
@@ -82,11 +70,8 @@ const { mutate: updateUser } = useMutation(
 
   // 취소 시 cancel data를 업데이트 해주기 위한 함수
   const { mutate: cancel } = useMutation(
-    (newSalePost: { isSellerCancel: boolean; isBuyerCancel: boolean }) =>
-      axios.patch(
-        `${process.env.REACT_APP_JSON}/onSalePosts/${id}`,
-        newSalePost
-      ),
+    (newSalePosts: { isSellerCancel: boolean; isBuyerCancel: boolean }) =>
+      patchOnSalePost(id, newSalePosts),
     {
       onSuccess: () => queryClient.invalidateQueries(['salePost']),
     }
@@ -94,12 +79,7 @@ const { mutate: updateUser } = useMutation(
 
   // 취소 시 구매자의 point를 복구시켜주는 함수
   const { mutate: giveBackPoint } = useMutation(
-    (newUser: { point: string }) =>
-      axios.patch(
-        `${process.env.REACT_APP_JSON}/users/${data?.[0]?.buyerUid}`,
-
-        newUser
-      ),
+    (newUser: { point: string }) => patchUsers(data?.[0]?.buyerUid, newUser),
     {
       onSuccess: () => queryClient.invalidateQueries(['buyerData']),
     }

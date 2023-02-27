@@ -14,6 +14,7 @@ import { auth, storageService } from '../firebase/Firebase';
 import { postType } from '../types';
 import SignIn from './SignIn';
 import * as a from '../styles/styledComponent/writeEdit';
+import { getUsers, postPosts } from '../api';
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -60,29 +61,24 @@ const WritePage = () => {
   };
 
   // 글쓴이의 유저정보를 가지고옵니다.
-  const { data: user } = useQuery(['user', saveUser?.uid], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
-    );
-    return response.data;
-  });
+  const { data: user } = useQuery(['user', saveUser.uid], () =>
+    getUsers(saveUser.uid)
+  );
 
-  const sellerUid = saveUser?.uid;
+  const sellerUid = saveUser.uid;
   const nickName = user?.nickName;
 
+  console.log('sellerUid', sellerUid);
+  console.log('userId', user?.id);
   console.log('nickName: ', nickName);
 
-  const { mutate } = useMutation(
-    (newPost: postType) =>
-      axios.post(`${process.env.REACT_APP_JSON}/posts`, newPost),
-    {
-      onSuccess: () => {
-        setTimeout(() => {
-          navigate(`/detail/${post.category}/${post.id}`);
-        }, 500);
-      },
-    }
-  );
+  const { mutate } = useMutation((newPost: postType) => postPosts(newPost), {
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate(`/detail/${post.category}/${post.id}`);
+      }, 500);
+    },
+  });
 
   /**순서
    * 1. jsx문법에서 받아온 post를 useMutation의 인자 보낸다
@@ -93,7 +89,7 @@ const WritePage = () => {
   const [post, setPost] = useState<postType>({
     id: uuidv4(),
     title: '',
-    nickName:'',
+    nickName: '',
     sellerUid,
     content: '',
     price: 0,
@@ -103,6 +99,8 @@ const WritePage = () => {
     views: 0,
     createAt: Date.now(),
     profileImg: '',
+    tsCount: 0, 
+		commentsCount: 0, 
   });
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.

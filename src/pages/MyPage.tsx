@@ -2,9 +2,10 @@ import { useState } from 'react';
 import Profile from '../components/mypage/Profile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  getProfileNickName,
-  getTradePoint,
-  updateProfileNickName,
+  getUsers,
+  getOnSalePosts,
+  patchUsers,
+  getOnSalePostBuyer,
 } from '../api';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
@@ -19,8 +20,8 @@ const MyPage = () => {
 
   // 로그인한 유저 정보를 받아옵니다.
   const { isLoading: getLoading, data } = useQuery(
-    ['users'],
-    getProfileNickName
+    ['users', saveUser.uid],
+    () => getUsers(saveUser.uid)
   );
 
   // 거래 목록을 받아옵니다.
@@ -28,7 +29,9 @@ const MyPage = () => {
     isLoading: getTradeListLoading,
     isError: getTradeListIsError,
     data: tradeData,
-  } = useQuery(['onSalePosts'], getTradePoint);
+  } = useQuery(['onSalePosts', saveUser.uid], () =>
+    getOnSalePostBuyer(saveUser.uid)
+  );
 
   // 거래 완료 목록을 받아옵니다.
   const isDoneTradeList =
@@ -37,8 +40,12 @@ const MyPage = () => {
       return post.isDone === true;
     });
 
+  //닉네임 수정
+
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
-    useMutation(updateProfileNickName);
+    useMutation((user: { id: string; nickName: string }) =>
+      patchUsers(saveUser.uid, user)
+    );
 
   // 로그인한 유저의 판매 목록을 출력합니다.
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
@@ -58,9 +65,10 @@ const MyPage = () => {
       return alert('닉네임을 작성해 주세요.');
     }
     const newNickName = {
-      id: data?.[0]?.id,
+      id: saveUser.uid,
       nickName: editNickNameValue,
     };
+
     await editNickNameMutate(newNickName, {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
@@ -68,6 +76,7 @@ const MyPage = () => {
     });
     setIsEdit(false);
   };
+
   if (!saveUser) {
     return <SignIn />;
   }
@@ -97,7 +106,7 @@ const MyPage = () => {
               />
               <button
                 onClick={() => {
-                  EditNickName(data?.[0]?.uid);
+                  EditNickName(data?.id);
                 }}
                 aria-label="확인"
               >
@@ -106,7 +115,7 @@ const MyPage = () => {
             </>
           ) : (
             <>
-              <div>{data?.[0]?.nickName}</div>
+              <div>{data?.nickName}</div>
               <button
                 onClick={() => {
                   setIsEdit(true);

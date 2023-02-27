@@ -15,6 +15,7 @@ import {
 import basicIMG from '../styles/basicIMG.png';
 import parse from 'html-react-parser';
 import * as a from '../styles/styledComponent/home';
+import { getPosts } from '../api';
 
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
@@ -46,10 +47,7 @@ const Home = () => {
   }, [slider]);
 
   // query통신하기
-  const { data } = useQuery(['posts'], async () => {
-    const response = await axios.get(`${process.env.REACT_APP_JSON}/posts`);
-    return response.data;
-  });
+  const { data } = useQuery(['posts'], getPosts);
 
   // 글 클릭하면 조회수 1씩 늘리기!!
   const handlePostClick = async (post: postType) => {

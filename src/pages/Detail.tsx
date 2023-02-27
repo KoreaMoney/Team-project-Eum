@@ -13,8 +13,15 @@ import {
 } from '../components/modal/CustomAlert';
 import { onSalePostType } from '../types';
 import parse from 'html-react-parser';
-import SignIn from './SignIn';
 import * as a from '../styles/styledComponent/detail';
+import {
+  deletePosts,
+  getPostsId,
+  getUsers,
+  patchPosts,
+  patchUsers,
+  postOnSalePost,
+} from '../api';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -43,57 +50,38 @@ const Detail = () => {
 
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  const { data: post, isLoading } = useQuery(['post', id], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/posts?id=${id}`
-    );
-    return response.data;
-  });
+  const { data: post, isLoading } = useQuery(['post', id], () =>
+    getPostsId(id)
+  );
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
-    axios.post(`${process.env.REACT_APP_JSON}/onSalePosts`, newSalePosts)
+    postOnSalePost(newSalePosts)
   );
 
   // 판매자의 프로필이미지를 위해 데이터 가져오기
   const { data: seller } = useQuery(
     ['user', post?.[0].sellerUid],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${post?.[0].sellerUid}`
-      );
-      return response.data;
-    },
+    () => getUsers(post?.[0].sellerUid),
     {
       enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
 
-  console.log('seller: ', seller);
-
-  // 포인트 수정을 위한 유저정보 get
+  // 구매자가 바로신청하기를 누르면 구매자의 정보를 가져오기 위한 함수
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
-      );
-      return response.data;
-    },
+    () => getUsers(saveUser?.uid),
     {
       enabled: Boolean(saveUser), // saveUser?.uid가 존재할 때만 쿼리를 시작
     }
   );
 
-  // 포인트를 수정해주는 mutation 함수
+  // 구매자가 바로신청하기를 누르면 구매자의 포인트에서 price만큼 -해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string | number | undefined }) =>
-      axios.patch(
-        `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`,
-        newUser
-      )
+      patchUsers(saveUser.uid, newUser)
   );
-
   // 좋아요 기능을 위해
   const { mutate: updateSeller } = useMutation(
     (newUser: { like: string[] }) =>
@@ -119,8 +107,7 @@ const Detail = () => {
   const postCountCheck = post?.[0].like.includes(saveUser?.uid);
 
   const { mutate: updatePost } = useMutation(
-    (newPosts: { like: string[] }) =>
-      axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, newPosts),
+    (newPosts: { like: string[] }) => patchPosts(id, newPosts),
 
     {
       onSuccess: () => {
@@ -139,24 +126,20 @@ const Detail = () => {
   );
 
   // 글 삭제
-  const { mutate: deletePost } = useMutation(
-    (postId: string) =>
-      axios.delete(`${process.env.REACT_APP_JSON}/posts/${id}`),
-    {
-      // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
-      onSuccess: () => {
-        queryClient.invalidateQueries(['posts']);
-        navigate('/categorypage/all');
-      },
-    }
-  );
+  const { mutate: deletePost } = useMutation((id: string) => deletePosts(id), {
+    // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts']);
+      navigate('/categorypage/all');
+    },
+  });
   const onClickDeleteComment = async (postId: string) => {
     customConfirm('정말 삭제하시겠습니까?', '내 글 삭제', '삭제', async () => {
       await deletePost(postId);
     });
   };
   const postCounter = async () => {
-    if (!saveUser) navigate('/signin')
+    if (!saveUser) navigate('/signin');
     else {
       if (postCountCheck) {
         await updatePost({
@@ -216,12 +199,13 @@ const Detail = () => {
         like: post?.[0]?.like,
       });
       setTimeout(() => {
-        navigate(`/detail/${categoryName}/${id}/${user.uid}/${uuid}`);
+        navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
       }, 500);
     } else {
       customWarningAlert('포인트가 부족합니다.');
     }
   };
+
   return (
     <a.DetailContainer>
       <a.EditBtnWrapper>
