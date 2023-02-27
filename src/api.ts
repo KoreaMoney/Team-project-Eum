@@ -1,11 +1,5 @@
 import axios from 'axios';
-import {
-  editPostType,
-  postType,
-  userType,
-  onSalePostType,
-  commentType,
-} from './types';
+import { postType, userType, onSalePostType, commentType } from './types';
 
 /**posts CRUD API
  * 1. 전체 post를 출력한다
