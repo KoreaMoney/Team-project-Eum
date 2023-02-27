@@ -23,12 +23,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # yarn.lock
-yarn.lock
+/yarn.lock
 
 # db.json
-
-db.json 
+/db.json
 
 # env
-.env
+
 
