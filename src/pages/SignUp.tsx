@@ -19,9 +19,6 @@ import { getAuthUsers, postUsers } from '../api';
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [pw, setPw] = useState('');
-  const [checkPw, setCheckPw] = useState('');
   const [isViewPW, setIsViewPW] = useState(false);
   const [isViewCheckPW, setIsViewCheckPW] = useState(false);
   const [nickName, setNickName] = useState('');
@@ -34,21 +31,32 @@ const SignUp = () => {
   const passwordRule =
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    pw: yup.string().matches(passwordRule).required(),
+    email: yup
+      .string()
+      .required('이메일을 입력해주세요.')
+      .email('올바른 이메일 형식이 아닙니다.'),
+    pw: yup
+      .string()
+      .required('비밀번호를 입력해주세요.')
+      .matches(passwordRule, '비밀번호는 영문+숫자+특수문자 형식입니다.'),
     checkPw: yup
       .string()
-      .oneOf([yup.ref('pw')])
-      .required(),
+      .required('비밀번호를 입력해주세요.')
+      .oneOf([yup.ref('pw')], '비밀번호를 확인해주세요.'),
+    nickName: yup.string().required('닉네임을 입력해주세요.'),
   });
 
   // react hook form 라이브러리 사용
   const {
     register,
+    watch,
+    getValues,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<ISignUpForm>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
   // 회원가입 성공 시 users에 data 추가
@@ -70,27 +78,9 @@ const SignUp = () => {
 
   // x 버튼 누르면 email input 초기화
   const handleInputValueClickBT = () => {
-    setEmail('');
-  };
-
-  // input state 관리해주는 함수들
-  const onChangeEmailHandler = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setEmail(e.target.value);
-  };
-  const onChangePwHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPw(e.target.value);
-  };
-  const onChangeCheckPwHandler = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setCheckPw(e.target.value);
-  };
-  const onChangeNickNameHandler = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setNickName(e.target.value);
+    reset({
+      email: '',
+    });
   };
 
   /**닉네임 중복확인 버튼 누르면 실행되는 함수
@@ -104,6 +94,7 @@ const SignUp = () => {
    *
    */
   const handleCheckOverlapNickName = () => {
+    const nickName = getValues('nickName');
     if (!nickName) {
       setErrMsg('닉네임을 입력해주세요.');
     }
@@ -119,7 +110,7 @@ const SignUp = () => {
   };
 
   // 등록하기 버튼 누르면 실행되는 함수
-  const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
+  const onSubmitHandler: SubmitHandler<ISignUpForm> = async ({ email, pw }) => {
     if (errors.checkPw || errors.email || errors.pw) {
       return;
     } else {
@@ -131,11 +122,7 @@ const SignUp = () => {
       } else {
         await createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
-            setEmail('');
-            setPw('');
-            setCheckPw('');
-            setErr('');
-            setNickName('');
+            console.log('회원가입성공: ');
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -148,7 +135,7 @@ const SignUp = () => {
         if (auth.currentUser) {
           await mutate({
             id: auth.currentUser?.uid,
-            nickName,
+            nickName: getValues('nickName'),
             point: 10000000,
             contactTime: '',
             like: [],
@@ -157,11 +144,13 @@ const SignUp = () => {
           });
 
           await updateProfile(auth.currentUser, {
-            displayName: nickName,
+            displayName: getValues('nickName'),
           })
             .then(() => {
               navigate('/signin');
-              customInfoAlert(`${nickName}님 회원가입을 축하합니다`);
+              customInfoAlert(
+                `${getValues('nickName')}님 회원가입을 축하합니다`
+              );
             })
             .catch(() => {
               customWarningAlert('다시 가입을 시도해주세요');
@@ -200,21 +189,9 @@ const SignUp = () => {
               placeholder="이메일"
               {...register('email')}
               style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
-              onChange={onChangeEmailHandler}
-              value={email}
             />
-            {email ? (
-              <a.CloseIcon
-                onClick={handleInputValueClickBT}
-                aria-label="닫기"
-              />
-            ) : undefined}
-            {errors.email && errors.email.type === 'required' && (
-              <a.ErrorMSG>이메일을 입력해주세요.</a.ErrorMSG>
-            )}
-            {errors.email && errors.email.type === 'email' && (
-              <a.ErrorMSG>이메일 형식을 입력해주세요.</a.ErrorMSG>
-            )}
+            <a.CloseIcon onClick={handleInputValueClickBT} aria-label="닫기" />
+            <a.ErrorMSG>{errors.email?.message}</a.ErrorMSG>
           </a.ItemContainer>
           <a.ItemContainer>
             <a.InputBox
@@ -222,24 +199,14 @@ const SignUp = () => {
               placeholder="비밀번호"
               {...register('pw')}
               style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
-              onChange={onChangePwHandler}
-              value={pw}
             />
-            {pw ? (
-              <a.ViewIcon
-                onClick={handleClickViewPW}
-                style={{ color: isViewPW ? '#000' : '#ddd' }}
-                aria-label="비밀번호 입력하기"
-              />
-            ) : undefined}
-            {errors.pw && errors.pw.type === 'required' && (
-              <a.ErrorMSG>비밀번호를 입력해주세요.</a.ErrorMSG>
-            )}
-            {errors.pw && errors.pw.type === 'matches' && (
-              <a.ErrorMSG>
-                비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
-              </a.ErrorMSG>
-            )}
+
+            <a.ViewIcon
+              onClick={handleClickViewPW}
+              style={{ color: isViewPW ? '#000' : '#ddd' }}
+              aria-label="비밀번호 입력하기"
+            />
+            <a.ErrorMSG>{errors.pw?.message}</a.ErrorMSG>
           </a.ItemContainer>
           <a.ItemContainer>
             <a.InputBox
@@ -249,32 +216,22 @@ const SignUp = () => {
               style={{
                 borderColor: errors?.checkPw?.message ? '#FF0000' : '',
               }}
-              onChange={onChangeCheckPwHandler}
-              value={checkPw}
             />
-            {checkPw ? (
-              <a.ViewIcon
-                onClick={handleClickCheckPW}
-                style={{ color: isViewCheckPW ? '#000' : '#ddd' }}
-                aria-label="비밀번호 확인하기"
-              />
-            ) : undefined}
-            {errors.checkPw && errors.checkPw.type === 'required' && (
-              <a.ErrorMSG>비밀번호를 확인해주세요.</a.ErrorMSG>
-            )}
-            {errors.checkPw && errors.checkPw.type === 'oneOf' && (
-              <a.ErrorMSG>비밀번호가 일치하지 않습니다.</a.ErrorMSG>
-            )}
-            {err && <a.ErrorMSG>{err}</a.ErrorMSG>}
+
+            <a.ViewIcon
+              onClick={handleClickCheckPW}
+              style={{ color: isViewCheckPW ? '#000' : '#ddd' }}
+              aria-label="비밀번호 확인하기"
+            />
+            <a.ErrorMSG>{errors.checkPw?.message}</a.ErrorMSG>
           </a.ItemContainer>
         </a.SignUpInputContainer>
         <a.ItemContainer>
           <a.InputBox
             type="text"
             placeholder="닉네임"
+            {...register('nickName')}
             style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
-            onChange={onChangeNickNameHandler}
-            value={nickName}
           />
           <a.CheckBT
             type="button"
@@ -283,9 +240,12 @@ const SignUp = () => {
           >
             중복확인
           </a.CheckBT>
-          {checkNick === 1 && <a.ErrorMSG>중복된 닉네임입니다.</a.ErrorMSG>}
-          {checkNick === 0 && <a.ErrorMSG>{errMsg}</a.ErrorMSG>}
-          {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
+          <a.ErrorMSG>
+            {errors.nickName?.message}
+            {checkNick === 1 && '중복된 닉네임입니다.'}
+            {checkNick === 0 && errMsg}
+            {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
+          </a.ErrorMSG>
         </a.ItemContainer>
         <a.JoinButton aria-label="가입하기">가입하기</a.JoinButton>
       </a.FormTag>
