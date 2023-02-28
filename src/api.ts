@@ -32,7 +32,7 @@ export const patchPosts = (id: string | undefined, newPosts: any) =>
 
 export const deletePosts = async (id: string) => {
   const response = await axios.delete(
-    `${process.env.REACT_APP_JSON}/posts?id=${id}`
+    `${process.env.REACT_APP_JSON}/posts/${id}`
   );
   return response.data;
 };
@@ -146,3 +146,5 @@ export const getOnSalePosts = async () => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
   return response.data;
 };
+
+

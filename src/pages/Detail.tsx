@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
@@ -50,9 +50,16 @@ const Detail = () => {
 
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  const { data: post, isLoading } = useQuery(['post', id], () =>
-    getPostsId(id)
+  
+  const { data: post, isLoading } = useQuery(
+    ['post', id],
+    () => getPostsId(id),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
   );
+  console.log( 'post: ' ,post);
+  
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
@@ -64,7 +71,8 @@ const Detail = () => {
     ['user', post?.[0].sellerUid],
     () => getUsers(post?.[0].sellerUid),
     {
-      enabled: Boolean(post?.[0].sellerUid), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
+      staleTime: Infinity,
     }
   );
 
@@ -74,62 +82,67 @@ const Detail = () => {
     () => getUsers(saveUser?.uid),
     {
       enabled: Boolean(saveUser), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      staleTime: Infinity,
     }
   );
 
+    useEffect(() => {
+      if (post) {
+        queryClient.invalidateQueries(['post', id]);
+      }
+    }, [post, queryClient, id]);
+
+    useEffect(() => {
+      if (user) {
+        queryClient.invalidateQueries(['user', post?.[0].sellerUid]);
+      }
+    }, [user, queryClient, post?.[0]?.sellerUid]);
+  
   // 구매자가 바로신청하기를 누르면 구매자의 포인트에서 price만큼 -해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string | number | undefined }) =>
       patchUsers(saveUser.uid, newUser)
   );
-  // 좋아요 기능을 위해
-  const { mutate: updateSeller } = useMutation(
-    (newUser: { like: string[] }) =>
-      axios.patch(`${process.env.REACT_APP_JSON}/users/${seller?.id}`, newUser),
-
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['user', seller?.id]);
-        setSellerData((prev: any) => ({
-          ...prev,
-          like: countCheck
-            ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
-            : [...(prev.like || []), saveUser?.uid],
-        }));
-      },
-      onError: (error) => {
-        console.dir(error);
-      },
-    }
-  );
 
   // 글 찜 기능을 위해
-  const postCountCheck = post?.[0].like.includes(saveUser?.uid);
+const postCountCheck = post?.[0].like.includes(saveUser?.uid);
+ const { mutate: updatePost } = useMutation(
+   (newPosts: { like: string[] }) => patchPosts(id, newPosts),
 
-  const { mutate: updatePost } = useMutation(
-    (newPosts: { like: string[] }) => patchPosts(id, newPosts),
+   {
+     onSuccess: () => {
+       queryClient.invalidateQueries(['post', id]);
+       setPostData((prev: any) => ({
+         ...prev,
+         like: postCountCheck
+           ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
+           : [...(prev.like || []), saveUser?.uid],
+       }));
+     },
+     onError: (error) => {
+       console.dir(error);
+     },
+   }
+ );
+    const postCounter = async () => {
+      if (!saveUser) navigate('/signin');
+      else {
+        if (postCountCheck) {
+          await updatePost({
+            like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
+          });
+        } else {
+          await updatePost({
+            like: [...(post?.[0].like || []), saveUser?.uid],
+          });
+        }
+      }
+    };
 
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['post', id]);
-        setPostData((prev: any) => ({
-          ...prev,
-          like: postCountCheck
-            ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
-            : [...(prev.like || []), saveUser?.uid],
-        }));
-      },
-      onError: (error) => {
-        console.dir(error);
-      },
-    }
-  );
 
   // 글 삭제
   const { mutate: deletePost } = useMutation((id: string) => deletePosts(id), {
-    // 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
     onSuccess: () => {
-      queryClient.invalidateQueries(['posts']);
       navigate('/categorypage/all');
     },
   });
@@ -138,22 +151,6 @@ const Detail = () => {
       await deletePost(postId);
     });
   };
-  const postCounter = async () => {
-    if (!saveUser) navigate('/signin');
-    else {
-      if (postCountCheck) {
-        await updatePost({
-          like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
-        });
-      } else {
-        await updatePost({
-          like: [...(post?.[0].like || []), saveUser?.uid],
-        });
-      }
-    }
-  };
-
-  const countCheck = seller?.like.includes(saveUser?.uid);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -205,6 +202,8 @@ const Detail = () => {
       customWarningAlert('포인트가 부족합니다.');
     }
   };
+
+  // 대신 데이터가 업데이트 될 때만 데이터를 다시 업데이트 해준다.
 
   return (
     <a.DetailContainer>

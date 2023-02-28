@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { editPostType } from '../types';
 import { auth, storageService } from '../firebase/Firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
@@ -11,18 +11,18 @@ import {
   customWarningAlert,
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/writeEdit';
-import { getPostsId, patchPosts } from '../api';
+import { getPostsId, getUsers, patchPosts } from '../api';
 
 const EditPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const imgRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
-
+  const queryClient = useQueryClient();
   const [imgURL, setImgURL] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
@@ -47,6 +47,11 @@ const EditPage = () => {
         return data[0];
       },
     }
+  );
+
+  // 글 수정할 때 만약 유저의 정보도 변경되었따면 함께 변경될 수 있도록 user의 정보를 불러옵니다.
+  const { data: userData } = useQuery(['user', saveUser.uid], () =>
+    getUsers(saveUser.uid)
   );
 
   //React-query (Mutation)
@@ -179,6 +184,8 @@ const EditPage = () => {
       imgURL,
       category,
       content,
+      profileImg: userData?.profileImg,
+      nickName: userData?.nickName,
     };
     await mutate(post);
   };

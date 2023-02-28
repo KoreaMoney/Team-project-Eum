@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { commentType } from '../../types';
 import { customConfirm } from '../modal/CustomAlert';
+import { deleteComments } from '../../api';
 
 /**순서
  * 1. 저장된 유저 정보 가져오기
@@ -22,7 +23,7 @@ const CommentsList = () => {
   const queryClient = useQueryClient();
   const PAGE_SIZE = 6;
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  
+
   const fetchComments = async (page = 0) => {
     const url = `${process.env.REACT_APP_JSON}/comments?postId=${id}`;
     const response = await axios.get(url, {
@@ -75,8 +76,7 @@ const CommentsList = () => {
    * 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
    */
   const { mutate: deleteComment } = useMutation(
-    (commentId: string) =>
-      axios.delete(`${process.env.REACT_APP_JSON}/comments/${commentId}`),
+    (commentId: string) => deleteComments(commentId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['comments']);

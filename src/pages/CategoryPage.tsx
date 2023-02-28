@@ -67,7 +67,16 @@ const CategoryPage = () => {
     await axios.patch(`${process.env.REACT_APP_JSON}/posts/${post.id}`, {
       views: post.views + 1,
     });
-    queryClient.fetchQuery(['posts', categoryName ?? 'all']);
+    const queryFn = async () => {
+      const data = await fetchPosts(
+        'posts',
+        categoryName ?? 'all',
+        select,
+        word
+      );
+      return data;
+    };
+    queryClient.fetchQuery(['posts', post.id], queryFn); // queryFn 함수 호출
     navigate(`/detail/${post.category}/${post.id}`);
   };
 
@@ -82,15 +91,15 @@ const CategoryPage = () => {
     if (hourGap > 24) {
       const time = new Date(posting);
       const timeGap = time.toJSON().substring(0, 10);
-      return <p>{timeGap}</p>;
+      return timeGap;
     }
     if (minuteGap > 59) {
-      return <p>{hourGap}시간 전</p>;
+      return `${hourGap}시간 전`;
     } else {
       if (minuteGap === 0) {
         return '방금 전';
       } else {
-        return <p>{minuteGap}분 전</p>;
+        return `${minuteGap}분 전`;
       }
     }
   };
@@ -108,8 +117,8 @@ const CategoryPage = () => {
         },
       }
     );
+  console.log('data: ', data?.pages);
 
-  
   //무한스크롤 observer
   const handleObserver = useCallback(
     (entries: any) => {
@@ -130,7 +139,6 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  
   return (
     <a.PageContainer>
       {saveUser && (
@@ -160,42 +168,45 @@ const CategoryPage = () => {
       <a.PostsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
-            {page
-              .map((post: postType) => (
-                <a.PostContainer
-                  key={post.id}
-                  onClick={() => handlePostClick(post)}
-                >
-                  <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                  <a.ContentContainer>
-                    <h2>{post.title}</h2>
-                    <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
-                    <a.ContentText>{parse(post.content)}</a.ContentText>
-                    <a.BottomContainer>
-                      <a.LeftContainer>
-                        <a.ProfileIMG
-                          profileIMG={
-                            post?.profileImg ? post?.profileImg : basicIMG
-                          }
-                        />
-                        <p>{post.nickName}</p>
-                      </a.LeftContainer>
-                      <a.RightContainer>
-                        <a.LikeIconContainer>
-                          <a.LikeIcon />
-                          <span>{post.like.length}</span>
-                        </a.LikeIconContainer>
-                        <p>
-                          {post.price
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                          원
-                        </p>
-                      </a.RightContainer>
-                    </a.BottomContainer>
-                  </a.ContentContainer>
-                </a.PostContainer>
-              ))}
+            {page.map((post: postType) => (
+              <a.PostContainer
+                key={post.id}
+                onClick={() => handlePostClick(post)}
+              >
+                <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                <a.ContentContainer>
+                  <h2>{post.title}</h2>
+                  <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
+                  <a.ContentText>
+                    {post.content ? parse(post.content) : null}
+                  </a.ContentText>
+                  <a.BottomContainer>
+                    <a.LeftContainer>
+                      <a.ProfileIMG
+                        profileIMG={
+                          post?.profileImg ? post?.profileImg : basicIMG
+                        }
+                      />
+                      <p>{post.nickName}</p>
+                    </a.LeftContainer>
+                    <a.RightContainer>
+                      <a.LikeIconContainer>
+                        <a.LikeIcon />
+                        <span>{post.like?.length}</span>
+                      </a.LikeIconContainer>
+                      <p>
+                        {post.price
+                          ? post.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                          : 0}{' '}
+                        원
+                      </p>
+                    </a.RightContainer>
+                  </a.BottomContainer>
+                </a.ContentContainer>
+              </a.PostContainer>
+            ))}
           </Fragment>
         ))}
 
