@@ -42,6 +42,17 @@ const PointHistoryList = () => {
     NewTradeList = undefined;
   }
 
+  // 거래 일자 출력
+  const getTradeDate = (prev: number) => {
+    const date = new Date(prev);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const tradeDate = year + '.' + month + '.' + day;
+    return tradeDate;
+  };
+
+  // nav 스타일
   const categoryStyle = {
     color: `#656565`,
     borderBottom: `2px solid #666666`,
@@ -101,7 +112,9 @@ const PointHistoryList = () => {
         ) : category === 1 ? (
           sellTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createdAt}</PointHistoryDate>
+              <PointHistoryDate>
+                {getTradeDate(prev.createdAt)}
+              </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
             </PointHistory>
@@ -109,7 +122,9 @@ const PointHistoryList = () => {
         ) : category === 2 && buyTradeList ? (
           buyTradeList.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>{prev.createdAt}</PointHistoryDate>
+              <PointHistoryDate>
+                {getTradeDate(prev.createdAt)}
+              </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
               <PointHistoryAmount>-{prev.price}</PointHistoryAmount>
             </PointHistory>
