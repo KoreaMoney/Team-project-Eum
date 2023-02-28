@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
-import basicIMG from '../styles/basicIMG.png';
+import basicIMG from '../styles/basicIMG.webp';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,

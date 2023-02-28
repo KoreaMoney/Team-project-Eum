@@ -41,11 +41,11 @@ export default function Profile(params: any) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const resultImg = reader.result;
-        shrotenUrl(resultImg as string);
+        shortenUrl(resultImg as string);
       };
     }
 
-    const shrotenUrl = async (img: string) => {
+    const shortenUrl = async (img: string) => {
       const imgRef = ref(
         storageService,
         `${auth.currentUser?.uid}${Date.now()}`
@@ -70,21 +70,26 @@ export default function Profile(params: any) {
   return (
     <UserProfileImgContainer>
       <MyImageWrapper>
-        <MyImage src={data?.[0]?.profileImg} alt="User Image" />
+        <MyImage htmlFor="changeImg">
+          <img src={data?.[0]?.profileImg} alt="" decoding="async" />
+        </MyImage>
       </MyImageWrapper>
       <EditImgWrapper>
-        <InputImgFile
+        <input
+          hidden
           type="file"
-          id="changeimg"
+          id="changeImg"
           onChange={saveImgFile}
           ref={imgRef}
+          name="profile_img"
+          accept="image/*"
         />
         <ImgSubmitButton
           onClick={handleClick}
           disabled={loading || !photo}
-          aria-label="확인"
+          aria-label="프로필 이미지 변경"
         >
-          확인
+          {!photo ? ' ' : '프로필 이미지 변경'}
         </ImgSubmitButton>
       </EditImgWrapper>
     </UserProfileImgContainer>
@@ -99,27 +104,35 @@ const UserProfileImgContainer = styled.div`
 `;
 
 const MyImageWrapper = styled.div`
-  background-color: lightgray;
+  background-image: url('https://ifh.cc/g/OoQLa8.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   margin: 20px auto;
-  width: 202px;
-  height: 202px;
-  border: 2px solid lightgray;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const MyImage = styled.img`
+const MyImage = styled.label`
   width: 200px;
   height: 200px;
   border-radius: 50%;
   text-align: center;
-  object-fit: cover;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
+    border: 3px solid ${(props) => props.theme.colors.button};
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
   }
 `;
 
@@ -127,36 +140,28 @@ const EditImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-`;
-
-const InputImgFile = styled.input`
-  width: 8rem;
-  background-color: #656565;
-  color: #fff;
-  &:hover {
-    cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
-  }
+  width: 50%;
 `;
 
 const ImgSubmitButton = styled.button`
-  width: 62px;
-  height: 28px;
-  font-size: 100%;
-  background-color: #656565;
-  color: #fff;
+  width: 100%;
+  height: 2rem;
+  font-size: ${(props) => props.theme.fontSize.body16};
+  background-color: ${(props) => props.theme.colors.brandColor};
+  color: ${(props) => props.theme.colors.gray50};
   border: none;
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    background-color: #e6e6e6;
-    color: #656565;
+    border: 3px solid ${(props) => props.theme.colors.button};
+  }
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.button};
   }
   &:disabled {
     cursor: auto;
-    background-color: #e6e6e6;
+    background-color: transparent;
     color: #656565;
   }
 `;

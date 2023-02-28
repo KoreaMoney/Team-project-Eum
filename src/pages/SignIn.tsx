@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { useNavigate, useLocation } from 'react-router';
 import { IoIosGitMerge } from 'react-icons/io';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { auth } from '../firebase/Firebase';
-import { ISignUpForm, userType, ILoginForm } from '../types';
+import { userType, ILoginForm } from '../types';
 import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -17,6 +17,7 @@ import {
 } from 'firebase/auth';
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
+import { customWarningAlert } from '../components/modal/CustomAlert';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -76,7 +77,10 @@ const SignIn = () => {
     password: yup
       .string()
       .required('비밀번호를 입력해주세요.')
-      .matches(passwordRule, '비밀번호는 영문+숫자+특수문자 형식입니다.'),
+      .matches(
+        passwordRule,
+        '비밀번호는 영문+숫자+특수문자형식 8글자 이상 입니다.'
+      ),
   });
 
   //비밀번호 유효성 검사
@@ -95,11 +99,14 @@ const SignIn = () => {
   const handleInputValueClickBT = () => {
     reset({
       email: '',
-    })
+    });
   };
 
   //이메일 비밀번호 최종 유효성 검사
-  const onSubmitHandler: SubmitHandler<ILoginForm> = async ({ email, password }) => {
+  const onSubmitHandler: SubmitHandler<ILoginForm> = async ({
+    email,
+    password,
+  }) => {
     if (errors.password || errors.email) {
       return;
     } else {
@@ -113,10 +120,11 @@ const SignIn = () => {
           const errorMessage = error.message;
           if (errorMessage.includes('user-not-found')) {
             setErr('가입된 회원이 아닙니다.');
-
+            customWarningAlert('가입된 회원이 아닙니다.');
             return;
           } else if (errorMessage.includes('wrong-password')) {
             setErr('비밀번호가 일치하지 않습니다.');
+            customWarningAlert('비밀번호가 일치하지 않습니다.');
           }
         });
     }

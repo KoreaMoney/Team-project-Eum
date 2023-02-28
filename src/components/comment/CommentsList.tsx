@@ -149,7 +149,7 @@ const CommentsList = () => {
             ? 'Loading more...'
             : hasNextPage
             ? 'Scroll to load more posts'
-            : 'No more posts'}
+            : 'No more Reviews...'}
         </CommentContainer>
       </CommentsContainer>
     </div>
@@ -168,8 +168,10 @@ const CommentContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 2px solid ${(props) => props.theme.colors.brandColor};
+  border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
   padding: 0.5rem 0;
+  margin-bottom: 0.3rem;
+  margin-top: 1rem;
 `;
 
 const LeftContainer = styled.div`
