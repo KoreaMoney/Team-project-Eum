@@ -50,7 +50,7 @@ const Detail = () => {
 
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  
+
   const { data: post, isLoading } = useQuery(
     ['post', id],
     () => getPostsId(id),
@@ -58,8 +58,7 @@ const Detail = () => {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
     }
   );
-  console.log( 'post: ' ,post);
-  
+  console.log('post: ', post);
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
@@ -86,18 +85,18 @@ const Detail = () => {
     }
   );
 
-    useEffect(() => {
-      if (post) {
-        queryClient.invalidateQueries(['post', id]);
-      }
-    }, [post, queryClient, id]);
+  useEffect(() => {
+    if (post) {
+      queryClient.invalidateQueries(['post', id]);
+    }
+  }, [post, queryClient, id]);
 
-    useEffect(() => {
-      if (user) {
-        queryClient.invalidateQueries(['user', post?.[0].sellerUid]);
-      }
-    }, [user, queryClient, post?.[0]?.sellerUid]);
-  
+  useEffect(() => {
+    if (user) {
+      queryClient.invalidateQueries(['user', post?.[0].sellerUid]);
+    }
+  }, [user, queryClient, post?.[0]?.sellerUid]);
+
   // 구매자가 바로신청하기를 누르면 구매자의 포인트에서 price만큼 -해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
     (newUser: { point: string | number | undefined }) =>
@@ -105,40 +104,39 @@ const Detail = () => {
   );
 
   // 글 찜 기능을 위해
-const postCountCheck = post?.[0].like.includes(saveUser?.uid);
- const { mutate: updatePost } = useMutation(
-   (newPosts: { like: string[] }) => patchPosts(id, newPosts),
+  const postCountCheck = post?.[0].like.includes(saveUser?.uid);
+  const { mutate: updatePost } = useMutation(
+    (newPosts: { like: string[] }) => patchPosts(id, newPosts),
 
-   {
-     onSuccess: () => {
-       queryClient.invalidateQueries(['post', id]);
-       setPostData((prev: any) => ({
-         ...prev,
-         like: postCountCheck
-           ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
-           : [...(prev.like || []), saveUser?.uid],
-       }));
-     },
-     onError: (error) => {
-       console.dir(error);
-     },
-   }
- );
-    const postCounter = async () => {
-      if (!saveUser) navigate('/signin');
-      else {
-        if (postCountCheck) {
-          await updatePost({
-            like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
-          });
-        } else {
-          await updatePost({
-            like: [...(post?.[0].like || []), saveUser?.uid],
-          });
-        }
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['post', id]);
+        setPostData((prev: any) => ({
+          ...prev,
+          like: postCountCheck
+            ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
+            : [...(prev.like || []), saveUser?.uid],
+        }));
+      },
+      onError: (error) => {
+        console.dir(error);
+      },
+    }
+  );
+  const postCounter = async () => {
+    if (!saveUser) navigate('/signin');
+    else {
+      if (postCountCheck) {
+        await updatePost({
+          like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
+        });
+      } else {
+        await updatePost({
+          like: [...(post?.[0].like || []), saveUser?.uid],
+        });
       }
-    };
-
+    }
+  };
 
   // 글 삭제
   const { mutate: deletePost } = useMutation((id: string) => deletePosts(id), {
@@ -289,7 +287,7 @@ const postCountCheck = post?.[0].like.includes(saveUser?.uid);
         </a.PostInfoWrapper>
       </a.PostContainer>
       <a.PostContentWrapper>
-        <div>{parse(post[0].content)}</div>
+        <a.ContentBox>{parse(post[0].content)}</a.ContentBox>
       </a.PostContentWrapper>
       <div>
         <div>

@@ -216,3 +216,7 @@ export const PostContentWrapper = styled.div`
     border: 2px solid ${(props) => props.theme.colors.brandColor};
   }
 `;
+
+export const ContentBox = styled.div`
+  font-size: ${(props) => props.theme.fontSize.body16};
+`;

@@ -37,6 +37,7 @@ export const PostsContainer = styled.div`
 `;
 
 export const PostContainer = styled.div`
+  max-width: 250px;
   width: 100%;
   margin-bottom: 1rem;
   border: 3px solid ${(props) => props.theme.colors.brandColor};

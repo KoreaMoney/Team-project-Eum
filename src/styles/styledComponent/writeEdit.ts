@@ -58,6 +58,7 @@ export const WriteQuill = styled.div`
   .ql-container {
     width: 100%;
     height: 25rem;
+    font-size: ${(props) => props.theme.fontSize.body16};
   }
 `;
 

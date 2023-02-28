@@ -81,6 +81,11 @@ const Home = () => {
     }
   };
 
+  const parsingHtml = (html: string): string => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
+
   return (
     <a.HomeContainer>
       <a.SwiperWrapper>
@@ -137,7 +142,7 @@ const Home = () => {
                 <a.ContentContainer>
                   <a.TitleText>{post.title}</a.TitleText>
                   <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
-                  <a.ContentText>{parse(post.content)}</a.ContentText>
+                  <a.ContentText>{parsingHtml(post.content)}</a.ContentText>
                   <a.BottomContainer>
                     <a.LeftContainer>
                       <a.ProfileIMG
