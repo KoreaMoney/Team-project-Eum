@@ -34,6 +34,8 @@ export interface editPostType {
   price: number | string;
   imgURL: string;
   category: string;
+  profileImg: string;
+  nickName: string;
 }
 export interface commentType {
   id: string;

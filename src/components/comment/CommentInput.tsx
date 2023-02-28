@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { commentType } from '../../types';
+import { getUsers, postComments } from '../../api';
 
 /**순서
  * 1. 글쓴기 데이터 가져오기
@@ -17,12 +18,9 @@ const CommentInput = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   //글쓴이 정보 get하기
-  const { data: user } = useQuery(['user', saveUser?.uid], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/users/${saveUser?.uid}`
-    );
-    return response.data;
-  });
+  const { data: user } = useQuery(['user', saveUser.uid], () =>
+    getUsers(saveUser.uid)
+  );
   const [comment, setComment] = useState<commentType>({
     id: '',
     postId: '',
@@ -35,20 +33,20 @@ const CommentInput = () => {
   });
   /**데이터 저장
    * 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해준다 */
-const { mutate } = useMutation(
-  (newComment: commentType) =>
-    axios.post(`${process.env.REACT_APP_JSON}/comments`, newComment),
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
-    },
-  }
-);
+  console.log('user: ', user);
+
+  const { mutate } = useMutation(
+    (newComment: commentType) => postComments(newComment),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['comments']);
+      },
+    }
+  );
 
   /**uuidv4()를 변수로 지정해서 넣으면 uuid가 바뀌지 않는 이슈 존재
    * id에 uuidv4를 바로 할당해 지속적으로 바뀔 수 있게 해준다
    */
-
 
   // comment state가 객체형태이기 때문에 구조분해 할당을 통해 content만 변경될 수 있게 해줍니다.
   const { content } = comment;
@@ -90,16 +88,6 @@ const { mutate } = useMutation(
       profileImg: '',
     });
   };
-
-  // useEffect(() => {
-  //   setComment({
-  //     ...comment,
-  //     writer: user?.id,
-  //     writerNickName: user?.nickName,
-  //     profileImg: user?.profileImg,
-  //   });
-  // }, [user]);
-
   return (
     <div>
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
