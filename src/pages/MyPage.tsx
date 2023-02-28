@@ -12,13 +12,10 @@ const MyPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
   const [editNickNameValue, setEditNickNameValue] = useState('');
-  const [timeValue, setTimeValue] = useState('');
-  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-  // const { isLoading: editLoading, mutate: updateTimeMutate } = useMutation(
-  //   (newUser: { point: string | number | undefined }) =>
-  //     patchUsers(saveUser.uid, newUser)
-  // );
-  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  const [startTimeValue, setStartTimeValue] = useState('');
+  const [endTimeValue, setEndTimeValue] = useState('');
+  const [editTime, setEditTime] = useState(false);
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   // 로그인한 유저 정보를 받아옵니다.
@@ -26,7 +23,6 @@ const MyPage = () => {
     ['users', saveUser.uid],
     () => getUsers(saveUser.uid)
   );
-  console.log('saveUser.uid', data);
 
   // 거래 목록을 받아옵니다.
   const {
@@ -44,9 +40,16 @@ const MyPage = () => {
       return post.isDone === true;
     });
 
-  // 로그인한 유저 정보에 접근해서 patch합니다.
+  /* 로그인한 유저 정보에 접근해서 patch합니다.
+   * 1. 닉네임을 수정합니다.
+   * 2. 유저의 이용 시간을 수정합니다.
+   */
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation((user: { id: string; nickName: string }) =>
+      patchUsers(saveUser.uid, user)
+    );
+  const { isLoading: editUserTimeLoading, mutate: editUserTimeMutate } =
+    useMutation((user: { id: string; contactTime: string }) =>
       patchUsers(saveUser.uid, user)
     );
 
@@ -84,41 +87,38 @@ const MyPage = () => {
     return <SignIn />;
   }
 
-  // 유저 연락 가능한 시간을 출력합니다.
-  const timeChangeHandle = (e: any) => {
-    setTimeValue(e.target.value);
+  /* 유저 연락 가능한 시간을 출력합니다.
+   * 1. 시작시간을 지정합니다.
+   * 2. 종료시간을 지정합니다.
+   **/
+  const startTimeChangeHandle = (e: any) => {
+    setStartTimeValue(e.target.value);
   };
-  const submitTime = (e: any) => {
+  const endTimeChangeHandle = (e: any) => {
+    setEndTimeValue(e.target.value);
+  };
+  const startSubmitTime = async (e: any) => {
     e.preventDefault();
-    const time = timeValue.trim();
-    if (!time) {
-      setTimeValue('');
-      alert('연락 가능한 시간을 지정해주세요.');
+    const startTime = startTimeValue.trim();
+    const endTime = endTimeValue.trim();
+    if (!startTime || !endTime) {
+      setStartTimeValue('');
+      setEndTimeValue('');
+      customWarningAlert('연락 가능한 시간을 지정해주세요.');
       return;
     }
-  };
+    const newTime = {
+      id: saveUser.uid,
+      contactTime: `${startTimeValue} - ${endTimeValue}`,
+    };
+    await editUserTimeMutate(newTime, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['users']);
+      },
+    });
 
-  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-  // 유저 연락 가능 시간을 수정합니다.
-  // const submitTime = (e: any) => {
-  //   e.preventDefault();
-  //   const time = timeValue.trim();
-  //   if (!time) {
-  //     setTimeValue('');
-  //     customWarningAlert('연락 가능한 시간을 지정해주세요.');
-  //     return;
-  //   }
-  //   const newTime = {
-  //     id: saveUser.uid,
-  //     contactTime: timeValue,
-  //   };
-  //   updateTimeMutate(newTime, {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries('users');
-  //     },
-  //   });
-  // };
-  //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    setEditTime(false);
+  };
 
   // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
@@ -168,18 +168,41 @@ const MyPage = () => {
         </a.UserNameWrapper>
         <PointModal />
         <a.MyPageTimeWrapper>
-          <div>
-            <p>연락가능한 시간 : </p>
-            <form onSubmit={submitTime}>
-              <input
-                type="time"
-                onChange={timeChangeHandle}
-                value={timeValue}
-              />
-              <button>완료</button>
-            </form>
-            <div>{timeValue}</div>
-          </div>
+          <p>이음가능 시간 : </p>
+          {editTime ? (
+            <div>
+              <form onSubmit={startSubmitTime}>
+                <label htmlFor="start-time">이음 시작</label>
+                <input
+                  id="start-time"
+                  name="start-time"
+                  type="time"
+                  onChange={startTimeChangeHandle}
+                  value={startTimeValue}
+                />
+                <label htmlFor="end-time">이음 종료</label>
+                <input
+                  id="end-time"
+                  name="end-time"
+                  type="time"
+                  onChange={endTimeChangeHandle}
+                  value={endTimeValue}
+                />
+                <button>완료</button>
+              </form>
+            </div>
+          ) : (
+            <div>
+              {data?.contactTime}
+              <button
+                onClick={() => {
+                  setEditTime(true);
+                }}
+              >
+                수정
+              </button>
+            </div>
+          )}
         </a.MyPageTimeWrapper>
         <span>내가 가진 배지</span>
         <a.UserBadge>배지</a.UserBadge>
