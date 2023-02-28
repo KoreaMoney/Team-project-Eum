@@ -146,5 +146,3 @@ export const getOnSalePosts = async () => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
   return response.data;
 };
-
-

@@ -119,6 +119,11 @@ const CategoryPage = () => {
     );
   console.log('data: ', data?.pages);
 
+  const parsingHtml = (html: string): string => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
+
   //무한스크롤 observer
   const handleObserver = useCallback(
     (entries: any) => {
@@ -178,7 +183,7 @@ const CategoryPage = () => {
                   <h2>{post.title}</h2>
                   <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
                   <a.ContentText>
-                    {post.content ? parse(post.content) : null}
+                    {post.content ? parsingHtml(post.content) : null}
                   </a.ContentText>
                   <a.BottomContainer>
                     <a.LeftContainer>

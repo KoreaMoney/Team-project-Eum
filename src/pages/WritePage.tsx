@@ -26,7 +26,7 @@ const WritePage = () => {
   const priceRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
   const toolbarOptions = [
-    [{ header: [1, 2, 3, false] }],
+    // [{ header: [1, 2, 3, false] }],
     [{ align: [] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ list: 'ordered' }, { list: 'bullet' }],
@@ -99,8 +99,8 @@ const WritePage = () => {
     views: 0,
     createAt: Date.now(),
     profileImg: '',
-    tsCount: 0, 
-		commentsCount: 0, 
+    tsCount: 0,
+    commentsCount: 0,
   });
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
@@ -207,6 +207,7 @@ const WritePage = () => {
     };
     await mutate(newPost); //
   };
+  console.log(content);
 
   // 서버통신은 다 비동기함수
   if (!saveUser) {
