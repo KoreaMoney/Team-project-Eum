@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { auth } from '../firebase/Firebase';
-import { ISignUpForm, userType } from '../types';
+import { ISignUpForm, userType, ILoginForm } from '../types';
 import { CustomModal } from '../components/modal/CustomModal';
 import FindPW from '../components/auth/FindPW';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -22,8 +22,6 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('');
-  const [pw, setPw] = useState('');
   const [isViewPW, setIsViewPW] = useState(false);
   const [err, setErr] = useState('');
   const [authenticating, setAuthenticating] = useState<boolean>(false);
@@ -64,18 +62,6 @@ const SignIn = () => {
   //새로 고침 진행 시 uid session저장하기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  //이메일 작성
-  const onChangeEmailHandler = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setEmail(e.target.value);
-  };
-
-  // x 버튼 누르면 email input 초기화
-  const handleInputValueClickBT = () => {
-    setEmail('');
-  };
-
   //비밀번호 확인
   const handleClickViewPW = () => {
     setIsViewPW(!isViewPW);
@@ -83,31 +69,42 @@ const SignIn = () => {
   const passwordRule =
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    pw: yup.string().matches(passwordRule).required(),
+    email: yup
+      .string()
+      .required('이메일을 입력해주세요.')
+      .email('올바른 이메일 형식이 아닙니다.'),
+    password: yup
+      .string()
+      .required('비밀번호를 입력해주세요.')
+      .matches(passwordRule, '비밀번호는 영문+숫자+특수문자 형식입니다.'),
   });
 
   //비밀번호 유효성 검사
   const {
     register,
+    watch,
+    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISignUpForm>({
+  } = useForm<ILoginForm>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
-  //비밀번호 작성
-  const onChangePwHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPw(e.target.value);
+  // x 버튼 누르면 email input 초기화
+  const handleInputValueClickBT = () => {
+    reset({
+      email: '',
+    })
   };
 
   //이메일 비밀번호 최종 유효성 검사
-  const onSubmitHandler: SubmitHandler<ISignUpForm> = async () => {
-    if (errors.checkPw || errors.email) {
+  const onSubmitHandler: SubmitHandler<ILoginForm> = async ({ email, password }) => {
+    if (errors.password || errors.email) {
       return;
     } else {
       setAuthenticating(true);
-      await signInWithEmailAndPassword(auth, email, pw)
+      await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           navigate(location.state?.from ? location.state.from : '/');
         })
@@ -160,13 +157,6 @@ const SignIn = () => {
       });
   };
 
-  //enter로 form제출 가능하게 하기
-  const handleOnKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      handleSubmit(onSubmitHandler)(e);
-    }
-  };
-
   // 비밀번호 찾기 모달
   const [isModalActive, setIsModalActive] = useState(false);
   const onClickToggleModal = useCallback(() => {
@@ -196,49 +186,27 @@ const SignIn = () => {
               placeholder="이메일"
               {...register('email')}
               style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
-              onChange={onChangeEmailHandler}
-              value={email}
-              onKeyDown={handleOnKeyPress}
             />
-            {email ? (
-              <a.CloseIcon
-                onClick={handleInputValueClickBT}
-                aria-label="닫기"
-              />
-            ) : undefined}
-            {errors.email && errors.email.type === 'required' && (
-              <a.ErrorMSG>이메일을 입력해주세요.</a.ErrorMSG>
-            )}
-            {errors.email && errors.email.type === 'email' && (
-              <a.ErrorMSG>이메일 형식을 입력해주세요.</a.ErrorMSG>
-            )}
+            <a.CloseIcon onClick={handleInputValueClickBT} aria-label="닫기" />
+            <a.ErrorMSG>{errors.email?.message}</a.ErrorMSG>
           </a.ItemContainer>
+
           <a.ItemContainer>
             <a.InputBox
               type={isViewPW ? 'text' : 'password'}
               placeholder="비밀번호"
-              {...register('pw')}
-              style={{ borderColor: errors?.pw?.message ? '#FF0000' : '' }}
-              onChange={onChangePwHandler}
-              value={pw}
-              onKeyDown={handleOnKeyPress}
+              {...register('password')}
+              style={{
+                borderColor: errors?.password?.message ? '#FF0000' : '',
+              }}
             />
-            {pw ? (
-              <a.ViewIcon
-                onClick={handleClickViewPW}
-                style={{ color: isViewPW ? '#000' : '#ddd' }}
-                aria-label="비밀번호 입력하기"
-              />
-            ) : undefined}
-            {errors.pw && errors.pw.type === 'required' && (
-              <a.ErrorMSG>비밀번호를 입력해주세요.</a.ErrorMSG>
-            )}
-            {errors.pw && errors.pw.type === 'matches' && (
-              <a.ErrorMSG>
-                비밀번호는 영문+숫자+특수문자 포함하여 8자 이상이여야 합니다.
-              </a.ErrorMSG>
-            )}
-            <a.ErrorMSG>{err}</a.ErrorMSG>
+
+            <a.ViewIcon
+              onClick={handleClickViewPW}
+              style={{ color: isViewPW ? '#000' : '#ddd' }}
+              aria-label="비밀번호 입력하기"
+            />
+            <a.ErrorMSG>{errors.password?.message}</a.ErrorMSG>
           </a.ItemContainer>
         </a.SignInContainer>
         <a.LoginButton type="submit" aria-label="로그인">

@@ -2,6 +2,12 @@ export interface ISignUpForm {
   email: string;
   pw: string;
   checkPw: string;
+  nickName: string;
+}
+
+export interface ILoginForm {
+  email: string;
+  password: string;
 }
 export interface userType {
   id: string | undefined;
