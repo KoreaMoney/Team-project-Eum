@@ -56,7 +56,7 @@ const PointModal = () => {
                 X
               </CloseButton>
               <PointImgWrapper>
-                <img src="/assets/walletmoney.png" alt="지갑" />
+                <img src="/assets/walletmoney.png" alt="지갑" loading="lazy" />
                 <h3>　내 포인트</h3>
               </PointImgWrapper>
               <CurrentPoint>
@@ -74,7 +74,7 @@ const PointModal = () => {
                   }}
                   aria-label="충전하기"
                 >
-                  <img src="/assets/moneysend.png" alt="충전" />
+                  <img src="/assets/moneysend.png" alt="충전" loading="lazy" />
                   <h3>　충전하기</h3>
                 </PointDepositButton>
                 <PointWithdrawButton
@@ -83,7 +83,11 @@ const PointModal = () => {
                   }}
                   aria-label="출금하기"
                 >
-                  <img src="/assets/emptywalletadd.png" alt="출금" />
+                  <img
+                    src="/assets/emptywalletadd.png"
+                    alt="출금"
+                    loading="lazy"
+                  />
                   <h3>　출금하기</h3>
                 </PointWithdrawButton>
               </PointDepositWithdrawWrapper>

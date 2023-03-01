@@ -1,16 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { customConfirm } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
 import SignIn from './SignIn';
 import parse from 'html-react-parser';
-import basicIMG from '../styles/basicIMG.png';
+import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/transaction';
 import { userType } from '../types';
 import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
-import { object } from 'yup';
+import { IoExitOutline } from 'react-icons/io5';
 
 /**순서
  * 1. query-key만들기
@@ -18,10 +17,15 @@ import { object } from 'yup';
  * 3. 포인트 취소, 완료, 환불 기능추가하기
  */
 const Transaction = () => {
-  const { id } = useParams();
+  const navigate = useNavigate();
 
+  const { id } = useParams();
   const [current, setCurrent] = useState(false);
   const queryClient = useQueryClient();
+
+  const onClickBtn = () => {
+    navigate(-1);
+  };
 
   auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -49,7 +53,6 @@ const Transaction = () => {
       fetchSeller();
     }
   }, [data]);
-
 
   // 거래완료 시 판매자의 포인트를 더해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
@@ -147,6 +150,9 @@ const Transaction = () => {
     <a.TransactionContainer>
       {data?.[0]?.isDone && (
         <a.TransactionText>
+          <button onClick={onClickBtn}>
+            <IoExitOutline size={50} />
+          </button>
           <h1>거래가 완료되었습니다.</h1>
         </a.TransactionText>
       )}

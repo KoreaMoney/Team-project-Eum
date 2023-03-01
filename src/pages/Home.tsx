@@ -12,7 +12,7 @@ import {
   swipePower,
   variants,
 } from '../components/home/variants';
-import basicIMG from '../styles/basicIMG.png';
+import basicIMG from '../styles/basicIMG.webp';
 import parse from 'html-react-parser';
 import * as a from '../styles/styledComponent/home';
 import { getPosts } from '../api';
@@ -91,6 +91,7 @@ const Home = () => {
       <a.SwiperWrapper>
         <AnimatePresence initial={false} custom={direction}>
           <a.Img
+            loading="lazy"
             key={slider}
             src={images[imageIndex]}
             custom={direction}

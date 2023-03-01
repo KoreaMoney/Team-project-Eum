@@ -24,6 +24,15 @@ export const TransactionText = styled.div`
     font-weight: 800;
     font-size: 50px;
   }
+
+  button {
+    position: absolute;
+    top: 10rem;
+    bottom: 0;
+    background-color: transparent;
+    border: none;
+    color: ${(props) => props.theme.colors.brandColor};
+  }
 `;
 
 export const TransactionWrapper = styled.div`

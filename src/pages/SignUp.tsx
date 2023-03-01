@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import * as yup from 'yup';
-import axios from 'axios';
 import {
   customInfoAlert,
   customWarningAlert,
@@ -21,10 +20,10 @@ const SignUp = () => {
 
   const [isViewPW, setIsViewPW] = useState(false);
   const [isViewCheckPW, setIsViewCheckPW] = useState(false);
-  const [nickName, setNickName] = useState('');
   const [checkNick, setCheckNick] = useState(0);
   const [err, setErr] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [registering, setRegistering] = useState(false);
 
   // 유효성 검사를 위한 코드들
   // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -42,7 +41,7 @@ const SignUp = () => {
     checkPw: yup
       .string()
       .required('비밀번호를 입력해주세요.')
-      .oneOf([yup.ref('pw')], '비밀번호를 확인해주세요.'),
+      .oneOf([yup.ref('pw')], '비밀번호가 일치하지 않습니다.'),
     nickName: yup.string().required('닉네임을 입력해주세요.'),
   });
 
@@ -85,7 +84,7 @@ const SignUp = () => {
 
   /**닉네임 중복확인 버튼 누르면 실행되는 함수
    * 안에서 가공 하게끔 만든다
-   * select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션
+   * select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션중복된 닉네임입니다
    * 리코일 selector과 비슷함. 가공을 떠올리면 됨, 서버에서 받아온 데이터값을 우리가 원하는 값으로 가공 -> 우리 컴포넌트 안에서 쓸 수 있게 만들어주는 것.
    * useQuery select 검색 하고 사용할 것.
    */
@@ -101,6 +100,7 @@ const SignUp = () => {
     const result = nickNameList.includes(nickName);
     if (result) {
       setCheckNick(1);
+      customWarningAlert('중복된 닉네임입니다.');
     } else {
       if (nickName) {
         setCheckNick(2);
@@ -120,14 +120,17 @@ const SignUp = () => {
       } else if (checkNick === 1) {
         return;
       } else {
+        setRegistering(true);
         await createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
-            console.log('회원가입성공: ');
+            customInfoAlert(`${getValues('nickName')}님 회원가입을 축하합니다`);
           })
           .catch((error) => {
             const errorMessage = error.message;
             if (errorMessage.includes('auth/email-already-in-use')) {
               setErr('이미 가입된 회원입니다.');
+              customWarningAlert('이미 가입된 회원입니다.');
+              setRegistering(false);
               return;
             }
           });
@@ -148,9 +151,6 @@ const SignUp = () => {
           })
             .then(() => {
               navigate('/signin');
-              customInfoAlert(
-                `${getValues('nickName')}님 회원가입을 축하합니다`
-              );
             })
             .catch(() => {
               customWarningAlert('다시 가입을 시도해주세요');
@@ -242,12 +242,13 @@ const SignUp = () => {
           </a.CheckBT>
           <a.ErrorMSG>
             {errors.nickName?.message}
-            {checkNick === 1 && '중복된 닉네임입니다.'}
             {checkNick === 0 && errMsg}
             {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
           </a.ErrorMSG>
         </a.ItemContainer>
-        <a.JoinButton aria-label="가입하기">가입하기</a.JoinButton>
+        <a.JoinButton disabled={registering} aria-label="가입하기">
+          가입하기
+        </a.JoinButton>
       </a.FormTag>
       <a.MoveSignInButton
         onClick={() => navigate('/signin')}

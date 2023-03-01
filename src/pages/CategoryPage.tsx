@@ -4,7 +4,7 @@ import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { postType } from '../types';
-import basicIMG from '../styles/basicIMG.png';
+import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/category';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
