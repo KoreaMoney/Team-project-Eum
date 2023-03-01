@@ -123,6 +123,7 @@ const MyImage = styled.label`
   border-radius: 50%;
   text-align: center;
   overflow: hidden;
+
   &:hover {
     cursor: pointer;
     border: 3px solid ${(props) => props.theme.colors.button};
@@ -162,6 +163,6 @@ const ImgSubmitButton = styled.button`
   &:disabled {
     cursor: auto;
     background-color: transparent;
-    color: #656565;
+    border: none;
   }
 `;

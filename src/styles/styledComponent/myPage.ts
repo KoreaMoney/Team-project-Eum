@@ -13,6 +13,7 @@ export const UserProfileWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 24rem;
+
   span {
     display: flex;
     justify-content: left;
@@ -21,6 +22,7 @@ export const UserProfileWrapper = styled.div`
     width: 18rem;
   }
 `;
+
 
 export const UserPostWrapper = styled.div`
   width: 72rem;
