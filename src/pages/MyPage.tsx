@@ -6,6 +6,7 @@ import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
 import { customWarningAlert } from '../components/modal/CustomAlert';
+import Chart from '../components/mypage/Chart';
 
 const MyPage = () => {
   const queryClient = useQueryClient();
@@ -206,6 +207,10 @@ const MyPage = () => {
         </a.MyPageTimeWrapper>
         <span>내가 가진 배지</span>
         <a.UserBadge>배지</a.UserBadge>
+        <div>
+          검색량,리뷰 Chart
+          <Chart />
+        </div>
       </a.UserProfileWrapper>
       <a.UserPostWrapper>
         <a.ProfileNavWrapper>
