@@ -126,7 +126,7 @@ const MyImage = styled.label`
 
   &:hover {
     cursor: pointer;
-    border: 3px solid ${(props) => props.theme.colors.button};
+    border: 3px solid tomato;
   }
 
   img {
@@ -147,18 +147,18 @@ const EditImgWrapper = styled.div`
 const ImgSubmitButton = styled.button`
   width: 100%;
   height: 2rem;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  font-size: 16px;
+  background-color: yellow;
   color: ${(props) => props.theme.colors.gray50};
   border: none;
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    border: 3px solid ${(props) => props.theme.colors.button};
+    border: 3px solid tomato;
   }
 
   &:active {
-    background-color: ${(props) => props.theme.colors.button};
+    background-color: tomato;
   }
   &:disabled {
     cursor: auto;

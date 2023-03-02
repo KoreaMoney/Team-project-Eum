@@ -218,7 +218,7 @@ const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
 `;
 
 const NickName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   margin: 0 2rem 0 0.5rem;
 `;
@@ -230,11 +230,11 @@ const RightContainer = styled.div`
 `;
 
 const CommentContent = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
 `;
 
 const CreateAt = styled.p`
-  font-size: ${(props) => props.theme.fontSize.label12};
+  font-size: 12px;
   color: ${(props) => props.theme.colors.gray20};
 `;
 
@@ -242,8 +242,8 @@ const DeleteButton = styled.button`
   width: 3rem;
   height: 35px;
   border: none;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  font-size: 16px;
+  background-color: yellow;
   &:hover {
     cursor: pointer;
   }
