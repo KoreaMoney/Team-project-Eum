@@ -1,11 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
-import basicIMG from '../styles/basicIMG.webp';
+
 import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,
@@ -22,6 +21,7 @@ import {
   patchUsers,
   postOnSalePost,
 } from '../api';
+import SellerInfo from '../components/detail/SellerInfo';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -58,7 +58,6 @@ const Detail = () => {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
     }
   );
-  console.log('post: ', post);
 
   // onSalePosts 데이터가 생성 코드
   const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
@@ -230,40 +229,6 @@ const Detail = () => {
           <a.PostPrice>
             {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
           </a.PostPrice>
-          <a.SellerText>판매자</a.SellerText>
-          <a.SellerProfileContainer>
-            <a.SellerWrapper>
-              <a.SellerLeft>
-                <a.ProfileIMG
-                  profileIMG={
-                    seller?.profileImg ? seller?.profileImg : basicIMG
-                  }
-                  aria-label="프로필 이미지"
-                />
-              </a.SellerLeft>
-              <a.SellerRight>
-                <p>{seller?.nickName}</p>
-              </a.SellerRight>
-            </a.SellerWrapper>
-            <a.SellerProfileWrapper>
-              <a.BottomTopContainer>
-                <a.ContactTimeContainer>
-                  <p>연락가능시간</p>
-                  <span>
-                    {seller?.contactTime
-                      ? seller?.contactTime
-                      : '00:00 ~ 24:00'}
-                  </span>
-                </a.ContactTimeContainer>
-              </a.BottomTopContainer>
-              <a.DetailBottomWrapper>
-                <a.ProfileButtonContainer>
-                  <button aria-label="판매상품 10개">판매상품 10개</button>
-                  <button aria-label="받은 후기">받은 후기</button>
-                </a.ProfileButtonContainer>
-              </a.DetailBottomWrapper>
-            </a.SellerProfileWrapper>
-          </a.SellerProfileContainer>
           <a.LikeAndSubmitContainer>
             {postCountCheck ? (
               <a.PostLikeButtonContainer
@@ -286,9 +251,20 @@ const Detail = () => {
           </a.LikeAndSubmitContainer>
         </a.PostInfoWrapper>
       </a.PostContainer>
-      <a.PostContentWrapper>
-        <a.ContentBox>{parse(post[0].content)}</a.ContentBox>
-      </a.PostContentWrapper>
+      <a.PostRow>
+        <a.PostContentWrapper>
+          <a.SellerInfo>
+            <p>설명</p>
+            {parse(post[0].content)}
+          </a.SellerInfo>
+        </a.PostContentWrapper>
+        <a.PostContentWrapper>
+          <a.SellerInfo>
+            <p>판매자 정보</p>
+            <SellerInfo />
+          </a.SellerInfo>
+        </a.PostContentWrapper>
+      </a.PostRow>
       <div>
         <div>
           {saveUser && <CommentInput />}

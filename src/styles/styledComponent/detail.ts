@@ -67,99 +67,14 @@ export const PostPrice = styled.p`
   text-align: right;
 `;
 
-export const SellerText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-`;
-
-export const SellerProfileContainer = styled.div`
-  width: 100%;
-  height: 240px;
-  box-shadow: 1px 1px 5px ${(props) => props.theme.colors.gray20};
-`;
-
-export const SellerWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: 5rem;
-  background-color: rgba(255, 218, 24, 0.8);
-`;
-
-export const SellerLeft = styled.div`
-  position: relative;
-  width: 30%;
-`;
-
 export const ProfileIMG = styled.div<{ profileIMG: string }>`
-  position: absolute;
   width: 100px;
   height: 100px;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -50%);
   border-radius: 100%;
   background-image: url(${(props) => props.profileIMG});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-`;
-
-export const SellerRight = styled.div`
-  display: flex;
-  align-items: flex-end;
-  width: 70%;
-  margin-bottom: 0.5rem;
-  p {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
-  }
-`;
-
-export const SellerProfileWrapper = styled.div`
-  width: 100%;
-  height: 11rem;
-`;
-
-export const BottomTopContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: flex-start;
-  height: 50%;
-`;
-
-export const ContactTimeContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 0.7rem 1.5rem;
-  gap: 0.5rem;
-  p {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
-  }
-  span {
-    font-size: ${(props) => props.theme.fontSize.label12};
-    color: ${(props) => props.theme.colors.gray20};
-  }
-`;
-
-export const DetailBottomWrapper = styled.div`
-  height: 50%;
-`;
-
-export const ProfileButtonContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  button {
-    width: 100%;
-    height: 64px;
-    font-size: ${(props) => props.theme.fontSize.body16};
-    background-color: ${(props) => props.theme.colors.brandColor};
-    border: none;
-    &:hover {
-      box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
-    }
-  }
 `;
 
 export const LikeAndSubmitContainer = styled.div`
@@ -206,17 +121,25 @@ export const PostContentWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: 48%;
   height: 100%;
   gap: 2.5rem;
   margin-bottom: 24px;
-  div {
-    padding: 2rem;
-    width: 100%;
-    min-height: 20rem;
-    border: 2px solid ${(props) => props.theme.colors.brandColor};
+`;
+
+export const SellerInfo = styled.div`
+  padding: 2rem;
+  width: 100%;
+  min-height: 20rem;
+  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  p {
+    margin-bottom: 20px;
   }
 `;
 
-export const ContentBox = styled.div`
-  font-size: ${(props) => props.theme.fontSize.body16};
+export const PostRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
