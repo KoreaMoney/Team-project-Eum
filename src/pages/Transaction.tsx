@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { customConfirm } from '../components/modal/CustomAlert';
+import {
+  customConfirm,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
 import SignIn from './SignIn';
 import parse from 'html-react-parser';
@@ -31,27 +34,41 @@ const Transaction = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   //쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  const { data, isLoading } = useQuery(['salePost', id], () =>
-    getOnSalePost(id)
+  const { data, isLoading } = useQuery(
+    ['salePost', id],
+    () => getOnSalePost(id)
   );
 
-  const [buyerData, setBuyerData] = useState<userType | null>(null);
+
+// 구매자의 user정보 가져오기
+  const { data: buyerData } = useQuery(
+    ['user', saveUser?.uid],
+    () => getUsers(saveUser?.uid),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+
+  // 판매자의 user정보 가져오기. data를 사용하기에 onsuccess 안에 넣어줬습니다.
+  // const { data: sellerData } = useQuery(
+  //   ['user', data?.[0]?.sellerUid],
+  //   () => getUsers(data?.[0]?.sellerUid),
+  //   {
+  //     staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+  //   }
+  // );
+
   const [sellerData, setSellerData] = useState<userType | null>(null);
 
   useEffect(() => {
     if (data && data[0]) {
-      const fetchBuyer = async () => {
-        const buyer = await getUsers(data[0].buyerUid);
-        setBuyerData(buyer);
-      };
       const fetchSeller = async () => {
         const seller = await getUsers(data[0].sellerUid);
         setSellerData(seller);
       };
-
-      fetchBuyer();
       fetchSeller();
     }
+
   }, [data]);
 
   // 거래완료 시 판매자의 포인트를 더해주는 mutation 함수
@@ -59,15 +76,17 @@ const Transaction = () => {
     (newUser: { point: number; isDoneCount: number }) =>
       patchUsers(data?.[0]?.sellerUid, newUser),
     {
-      onSuccess: () => queryClient.invalidateQueries(['sellerData']),
+      onSuccess: () =>
+        queryClient.invalidateQueries(['sellerData', sellerData?.id]),
     }
   );
 
   // 완료 시 isDone을 true로 만들기 위한 함수
   const { mutate: clearRequest } = useMutation(
-    (newSalePosts: { isDone: boolean }) => patchOnSalePost(id, newSalePosts),
+    (newSalePosts: { isDone: boolean; doneTime: number }) =>
+      patchOnSalePost(id, newSalePosts),
     {
-      onSuccess: () => queryClient.invalidateQueries(['salePost']),
+      onSuccess: () => queryClient.invalidateQueries(['salePost', id]),
     }
   );
 
@@ -76,7 +95,14 @@ const Transaction = () => {
     (newSalePosts: { isSellerCancel: boolean; isBuyerCancel: boolean }) =>
       patchOnSalePost(id, newSalePosts),
     {
-      onSuccess: () => queryClient.invalidateQueries(['salePost']),
+      onSuccess: () => queryClient.invalidateQueries(['salePost', id]),
+    }
+  );
+
+  const { mutate: cancelTrue } = useMutation(
+    (newSalePosts: { cancelTime: number }) => patchOnSalePost(id, newSalePosts),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['salePost', id]),
     }
   );
 
@@ -84,7 +110,8 @@ const Transaction = () => {
   const { mutate: giveBackPoint } = useMutation(
     (newUser: { point: string }) => patchUsers(data?.[0]?.buyerUid, newUser),
     {
-      onSuccess: () => queryClient.invalidateQueries(['buyerData']),
+      onSuccess: () =>
+        queryClient.invalidateQueries(['buyerData', data?.[0]?.buyerUid]),
     }
   );
 
@@ -101,6 +128,7 @@ const Transaction = () => {
     });
     await clearRequest({
       isDone: true,
+      doneTime: Date.now(),
     });
   };
 
@@ -113,11 +141,13 @@ const Transaction = () => {
       async () => {
         if (saveUser.uid === data?.[0]?.sellerUid) {
           await cancel({
+            ...data[0],
             isSellerCancel: true,
             isBuyerCancel: data?.[0]?.isBuyerCancel,
           });
         } else {
           await cancel({
+            ...data[0],
             isSellerCancel: data?.[0]?.isSellerCancel,
             isBuyerCancel: true,
           });
@@ -126,14 +156,28 @@ const Transaction = () => {
     );
   };
 
+  // 둘다 취소하면 isCancel이 true로 변경되고 cancelTime이 추가됩니다.
+
   // 둘다 취소하면 포인트를 구매자에게 돌려줍니다.
   useEffect(() => {
-    if (data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel) {
-      giveBackPoint({
-        point: String(Number(buyerData?.point) + Number(data?.[0]?.price)),
-      });
-    }
-  }, [data]);
+    const dataEffect = async () => {
+      if (
+        data?.[0]?.isSellerCancel === true &&
+        data?.[0]?.isBuyerCancel === true
+      ) {
+        await cancelTrue({
+          ...data[0],
+          cancelTime: Date.now(),
+        });
+      }
+      if (data?.[0]?.isCancel) {
+        await giveBackPoint({
+          point: String(Number(buyerData?.point) + Number(data?.[0]?.price)),
+        });
+      }
+    };
+    dataEffect();
+  }, [data?.[0]?.isSellerCancel, data?.[0]?.isBuyerCancel]);
 
   //로딩 구간
   if (isLoading) {
@@ -156,7 +200,7 @@ const Transaction = () => {
           <h1>거래가 완료되었습니다.</h1>
         </a.TransactionText>
       )}
-      {data?.[0]?.isSellerCancel && data?.[0]?.isBuyerCancel && (
+      {data?.[0].isSellerCancel && data?.[0].isBuyerCancel && (
         <a.TransactionText>
           <h1>거래가 취소되었습니다.</h1>
         </a.TransactionText>

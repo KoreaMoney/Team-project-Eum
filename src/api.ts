@@ -66,7 +66,7 @@ export const patchUsers = async (id: string | undefined, user: any) => {
 };
 
 export const deleteUsers = async (id: string | undefined) => {
-  return await axios.patch(`${process.env.REACT_APP_JSON}/users/${id}`);
+  return await axios.delete(`${process.env.REACT_APP_JSON}/users/${id}`);
 };
 
 /**onSalePosts CRUD API
