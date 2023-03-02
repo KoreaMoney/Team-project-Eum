@@ -13,7 +13,6 @@ import {
   variants,
 } from '../components/home/variants';
 import basicIMG from '../styles/basicIMG.webp';
-import parse from 'html-react-parser';
 import * as a from '../styles/styledComponent/home';
 import { getPosts } from '../api';
 
@@ -47,7 +46,10 @@ const Home = () => {
   }, [slider]);
 
   // query통신하기
-  const { data } = useQuery(['posts'], getPosts);
+  const { data } = useQuery(['posts'], getPosts, {
+    staleTime: 5000,
+  });
+  console.log('나야', data);
 
   // 글 클릭하면 조회수 1씩 늘리기!!
   const handlePostClick = async (post: postType) => {
@@ -171,6 +173,7 @@ const Home = () => {
             ))}
         </a.PostsContainer>
       </div>
+      <div>{data.slice(0,8).sort((a:any,b:any)=>b.createAt)}</div>
     </a.HomeContainer>
   );
 };
