@@ -89,6 +89,13 @@ export const getOnSalePostBuyer = async (id: string | undefined) => {
   return response.data;
 };
 
+export const getOnSalePostSeller = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${id}`
+  );
+  return response.data;
+};
+
 export const postOnSalePost = async (newSalePosts: onSalePostType) => {
   const response = await axios.post(
     `${process.env.REACT_APP_JSON}/onSalePosts`,
@@ -144,5 +151,12 @@ export const deleteComments = async (id: string | undefined) => {
 
 export const getOnSalePosts = async () => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
+  return response.data;
+};
+
+export const getWriteMyComments = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/comments?writer=${id}`
+  );
   return response.data;
 };
