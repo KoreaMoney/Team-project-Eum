@@ -54,7 +54,7 @@ export default Footer;
 
 const FooterContainer = styled.div`
   width: 100%;
-  background-color: ${(props) => props.theme.colors.brandColor};
+  background-color: white;
   color: ${(props) => props.theme.colors.gray40};
 `;
 
@@ -106,15 +106,15 @@ const NameDiv = styled.div`
   margin-top: 2rem;
 
   div {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
   }
 
   span {
-    font-size: ${(props) => props.theme.fontSize.body16};
+    font-size: 16px;
   }
 `;
 const TeamMember = styled.p`
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   margin-top: 5px;
   margin-bottom: 10px;
 `;

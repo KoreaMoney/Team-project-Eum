@@ -40,8 +40,8 @@ const CommentInput = () => {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
     }
   );
-  console.log( 'sellerUser: ' ,sellerUser);
-  
+  console.log('sellerUser: ', sellerUser);
+
   const [comment, setComment] = useState<commentType>({
     id: '',
     postId: '',
@@ -150,7 +150,7 @@ const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
 `;
 
 const CommentTitleText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 24px;
   margin: 3rem 0 1rem;
 `;
 const CommentContainer = styled.form`
@@ -160,8 +160,8 @@ const CommentContainer = styled.form`
 const InputTag = styled.input`
   width: 90%;
   padding: 0.5rem;
-  font-size: ${(props) => props.theme.fontSize.body16};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  font-size: 16px;
+  border: 2px solid yellow;
   background-color: ${(props) => props.theme.colors.white};
   &:focus {
     outline: none;
@@ -171,7 +171,7 @@ const AddCommentButton = styled.button`
   width: 10%;
   border: none;
   background-color: ${(props) => props.theme.colors.black};
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   color: ${(props) => props.theme.colors.white};
   &:hover {
     cursor: pointer;

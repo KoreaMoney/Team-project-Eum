@@ -128,7 +128,7 @@ const Header = () => {
 };
 export default Header;
 const HeaderContainer = styled.div`
-  background-color: ${(props) => props.theme.colors.brandColor};
+  background-color: yellow;
   width: 100%;
   height: 10rem;
   /* position: sticky; //상단 고정
@@ -167,7 +167,7 @@ const Svg = styled.svg`
 `;
 
 const Eum = styled.div`
-  font-size: ${(props) => props.theme.fontSize.title36};
+  font-size: 36px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
 
@@ -178,7 +178,7 @@ const PageSpan = styled.span`
   align-items: center;
   width: 100%;
   gap: 2rem;
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
 `;
 
 const Span = styled.div`
@@ -186,7 +186,7 @@ const Span = styled.div`
   margin-top: 2rem;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;
@@ -199,10 +199,10 @@ const LogOutBtn = styled.button`
   justify-content: center;
   border: none;
   margin-top: 2rem;
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;
@@ -219,7 +219,7 @@ const Ul = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   width: 40%;
 `;
 
@@ -229,7 +229,7 @@ const Icon = styled.span`
   color: ${(props) => props.theme.colors.black};
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
   }
 `;
 

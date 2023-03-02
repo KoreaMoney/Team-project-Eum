@@ -108,7 +108,7 @@ const InputBox = styled.input`
   padding: 0 3rem 0 1rem;
   font-size: 1rem;
   background-color: ${(props) => props.theme.colors.white};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  border: 2px solid yellow;
   border-radius: 8px;
   &::placeholder {
     color: ${(props) => props.theme.colors.gray10};
@@ -133,7 +133,7 @@ const SuccessMSG = styled.p`
   font-size: 0.8rem;
 `;
 const ErrorMSG = styled.p`
-  color: ${(props) => props.theme.colors.red};
+  color: tomato;
   font-size: 0.8rem;
 `;
 const SendEmailButton = styled.button`
@@ -144,7 +144,7 @@ const SendEmailButton = styled.button`
   border-radius: 6px;
   font-size: 1.1rem;
   color: ${(props) => props.theme.colors.gray40};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  background-color: yellow;
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.colors.gray10};
