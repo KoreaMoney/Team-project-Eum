@@ -68,10 +68,6 @@ const WritePage = () => {
   const sellerUid = saveUser.uid;
   const nickName = user?.nickName;
 
-  console.log('sellerUid', sellerUid);
-  console.log('userId', user?.id);
-  console.log('nickName: ', nickName);
-
   const { mutate } = useMutation((newPost: postType) => postPosts(newPost), {
     onSuccess: () => {
       setTimeout(() => {
