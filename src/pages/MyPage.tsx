@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Profile from '../components/mypage/Profile';
+import ProfileImg from '../components/mypage/ProfileImg';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getUsers,
@@ -14,20 +14,11 @@ import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
 import Chart from '../components/mypage/Chart';
 import UserTime from '../components/mypage/UserTime';
+import UserName from '../components/mypage/UserName';
 
 const MyPage = () => {
-  const queryClient = useQueryClient();
-  const [isEdit, setIsEdit] = useState(false);
   const [category, setCategory] = useState('likelist');
-  const [editNickNameValue, setEditNickNameValue] = useState('');
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-
-  // 로그인한 유저 정보를 받아옵니다.
-  const { isLoading: getLoading, data } = useQuery(
-    ['users', saveUser.uid],
-    () => getUsers(saveUser.uid)
-  );
-  console.log('saveUser.uid', saveUser.uid);
 
   /* 거래 목록을 받아옵니다.
    * 1. 전체 거래 목록을 받아옵니다.
@@ -44,8 +35,6 @@ const MyPage = () => {
     return post.like == saveUser.uid;
   });
   console.log('myLikePostList', myLikePostList);
-
-  // 로그인한 유저
 
   /* 내 거래 목록을 받아옵니다.
    * 1. 구매 목록을 받아옵니다.
@@ -93,32 +82,6 @@ const MyPage = () => {
   );
   console.log('writeMyCommentsData', writeMyCommentsData);
 
-  // 로그인한 유저의 닉네임에 접근해서 patch합니다.
-  const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
-    useMutation((user: { id: string; nickName: string }) =>
-      patchUsers(saveUser.uid, user)
-    );
-
-  // 닉네임을 수정합니다.
-  const EditNickName = async (id: string) => {
-    const editNickName = editNickNameValue?.trim();
-    if (!editNickName) {
-      setEditNickNameValue('');
-      return alert('닉네임을 작성해 주세요.');
-    }
-    const newNickName = {
-      id: saveUser.uid,
-      nickName: editNickNameValue,
-    };
-
-    await editNickNameMutate(newNickName, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['users']);
-      },
-    });
-    setIsEdit(false);
-  };
-
   if (!saveUser) {
     return <SignIn />;
   }
@@ -132,43 +95,8 @@ const MyPage = () => {
   return (
     <a.MyPageContainer>
       <a.UserProfileWrapper>
-        <Profile />
-        <a.UserNameWrapper>
-          {isEdit ? (
-            <>
-              <a.EditInputValue
-                onChange={(e) => {
-                  setEditNickNameValue(e.target.value);
-                }}
-                type="text"
-                value={editNickNameValue}
-                autoFocus={true}
-                placeholder="닉네임을 입력해주세요."
-                maxLength={12}
-              />
-              <button
-                onClick={() => {
-                  EditNickName(data?.id);
-                }}
-                aria-label="확인"
-              >
-                확인
-              </button>
-            </>
-          ) : (
-            <>
-              <div>{data?.nickName}</div>
-              <button
-                onClick={() => {
-                  setIsEdit(true);
-                }}
-                aria-label="수정"
-              >
-                수정
-              </button>
-            </>
-          )}
-        </a.UserNameWrapper>
+        <ProfileImg />
+        <UserName />
         <PointModal />
         <UserTime />
         <span>내가 가진 배지</span>
