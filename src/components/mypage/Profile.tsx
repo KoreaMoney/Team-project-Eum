@@ -69,7 +69,13 @@ export default function Profile(params: any) {
 
   return (
     <UserProfileImgContainer>
-      <MyImageWrapper>
+      <MyImageWrapper
+        style={
+          data?.[0]?.profileImg
+            ? { backgroundColor: 'transform' }
+            : { backgroundImage: 'url(https://ifh.cc/g/OoQLa8.jpg)' }
+        }
+      >
         <MyImage htmlFor="changeImg">
           <img src={data?.[0]?.profileImg} alt="" decoding="async" />
         </MyImage>
@@ -104,7 +110,6 @@ const UserProfileImgContainer = styled.div`
 `;
 
 const MyImageWrapper = styled.div`
-  background-image: url('https://ifh.cc/g/OoQLa8.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
