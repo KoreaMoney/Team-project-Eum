@@ -156,7 +156,7 @@ export const getOnSalePosts = async () => {
 
 export const getWriteMyComments = async (id: string | undefined) => {
   const response = await axios.get(
-    `${process.env.REACT_APP_JSON}/comments?writer=${id}`
+    `${process.env.REACT_APP_JSON}/comments?buyerUid=${id}`
   );
   return response.data;
 };
