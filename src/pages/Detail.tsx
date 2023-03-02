@@ -189,8 +189,9 @@ const Detail = () => {
         isDone: false,
         isSellerCancel: false,
         isBuyerCancel: false,
-        views: post?.[0]?.views,
-        like: post?.[0]?.like,
+        isCancel: false,
+        cancelTime: 0,
+        doneTime: 0,
       });
       setTimeout(() => {
         navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);

@@ -66,7 +66,7 @@ export const patchUsers = async (id: string | undefined, user: any) => {
 };
 
 export const deleteUsers = async (id: string | undefined) => {
-  return await axios.patch(`${process.env.REACT_APP_JSON}/users/${id}`);
+  return await axios.delete(`${process.env.REACT_APP_JSON}/users/${id}`);
 };
 
 /**onSalePosts CRUD API
@@ -85,6 +85,13 @@ export const getOnSalePost = async (id: string | undefined) => {
 export const getOnSalePostBuyer = async (id: string | undefined) => {
   const response = await axios.get(
     `${process.env.REACT_APP_JSON}/onSalePosts?buyerUid=${id}`
+  );
+  return response.data;
+};
+
+export const getOnSalePostSeller = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${id}`
   );
   return response.data;
 };
@@ -144,5 +151,12 @@ export const deleteComments = async (id: string | undefined) => {
 
 export const getOnSalePosts = async () => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/onSalePosts`);
+  return response.data;
+};
+
+export const getWriteMyComments = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/comments?buyerUid=${id}`
+  );
   return response.data;
 };

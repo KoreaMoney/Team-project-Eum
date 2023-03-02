@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { commentType } from '../../types';
-import { getUsers, postComments } from '../../api';
+import { getPostsId, getUsers, patchUsers, postComments } from '../../api';
 
 /**순서
  * 1. 글쓴기 데이터 가져오기
@@ -17,23 +17,45 @@ const CommentInput = () => {
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  //글쓴이 정보 get하기
-  const { data: user } = useQuery(['user', saveUser.uid], () =>
-    getUsers(saveUser.uid)
+  //판매자 uid를 post를 이용해 get하기
+  const { data: post } = useQuery(['post', id], () => getPostsId(id), {
+    staleTime: Infinity,
+  });
+  console.log('post: ', post);
+
+  //댓글쓴이 정보 get하기
+  const { data: biyerUser } = useQuery(
+    ['user', saveUser.uid],
+    () => getUsers(saveUser.uid),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
   );
+
+  //커맨트 카운트 +1을 위한 판매자 정보 get하기
+  const { data: sellerUser } = useQuery(
+    ['user', post?.[0].sellerUid],
+    () => getUsers(post?.[0].sellerUid),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+  console.log( 'sellerUser: ' ,sellerUser);
+  
   const [comment, setComment] = useState<commentType>({
     id: '',
     postId: '',
+    sellerUid: '',
+    buyerUid: '',
     content: '',
-    createAt: 0,
-    writer: '',
-    writerNickName: '',
-    isEdit: false,
     profileImg: '',
+    createAt: 0,
+    writerNickName: '',
   });
+
   /**데이터 저장
    * 데이터 저장에 성공했다면 캐시무효화로 ui에 바로 업데이트 될 수 있게 해준다 */
-  console.log('user: ', user);
+  console.log('user: ', biyerUser);
 
   const { mutate } = useMutation(
     (newComment: commentType) => postComments(newComment),
@@ -57,7 +79,16 @@ const CommentInput = () => {
       content: e.target.value,
     });
   };
-
+  //  comment가 달리면 판매자 user data의 commentsCount가 +1이 된다.
+  const { mutate: updateUser } = useMutation(
+    (newUser: { commentsCount: number }) =>
+      patchUsers(post?.[0].sellerUid, newUser),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['user', sellerUser?.id]);
+      },
+    }
+  );
   /**글 등록 버튼을 누르면 실행되는 함수
    * 저장 후 textarea를 초기화 진행
    * uuidv4()를 다시 할당해줘서 uuid 변경
@@ -70,29 +101,32 @@ const CommentInput = () => {
     await mutate({
       id: uuidv4(),
       postId: id,
+      sellerUid: post?.[0].sellerUid,
+      buyerUid: saveUser?.uid,
       content,
       createAt: Date.now(),
-      writer: saveUser?.uid,
-      writerNickName: user?.nickName,
-      isEdit: false,
-      profileImg: user?.profileImg,
+      writerNickName: biyerUser?.nickName,
+      profileImg: biyerUser?.profileImg,
+    });
+    await updateUser({
+      commentsCount: sellerUser?.commentsCount + 1,
     });
     setComment({
       id: '',
       postId: '',
+      sellerUid: '',
+      buyerUid: '',
       content: '',
-      createAt: 0,
-      writer: '',
-      writerNickName: '',
-      isEdit: false,
       profileImg: '',
+      createAt: 0,
+      writerNickName: '',
     });
   };
   return (
     <div>
       <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
       <CommentContainer onSubmit={onSubmitCommentHandler}>
-        <ProfileIMG profileIMG={user?.profileImg} />
+        <ProfileIMG profileIMG={biyerUser?.profileImg} />
         <InputTag name="content" value={content} onChange={onChangeContent} />
         <AddCommentButton type="submit" aria-label="댓글등록">
           댓글등록
