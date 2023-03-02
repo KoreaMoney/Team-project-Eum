@@ -144,6 +144,7 @@ const SignUp = () => {
             like: [],
             profileImg: null,
             isDoneCount: 0,
+            commentsCount: 0,
           });
 
           await updateProfile(auth.currentUser, {

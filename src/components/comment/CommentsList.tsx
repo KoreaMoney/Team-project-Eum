@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { commentType } from '../../types';
 import { customConfirm } from '../modal/CustomAlert';
-import { deleteComments } from '../../api';
+import { deleteComments, getPostsId, getUsers, patchUsers } from '../../api';
 
 /**순서
  * 1. 저장된 유저 정보 가져오기
@@ -83,9 +83,37 @@ const CommentsList = () => {
       },
     }
   );
+
+  //판매자 uid를 post를 이용해 get하기
+  const { data: post } = useQuery(['post', id], () => getPostsId(id), {
+    staleTime: Infinity,
+  });
+  console.log('post: ', post);
+
+  //커맨트 삭제 시 판매자 커맨트 카운트 -1을 위한 판매자 정보 get하기
+  const { data: sellerUser } = useQuery(
+    ['user', post?.[0].sellerUid],
+    () => getUsers(post?.[0].sellerUid),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+
+  //  comment가 달리면 판매자 user data의 commentsCount가 +1이 된다.
+  const { mutate: updateUser } = useMutation(
+    (newUser: { commentsCount: number }) =>
+      patchUsers(post?.[0].sellerUid, newUser),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['user', sellerUser?.id]);
+      },
+    }
+  );
+
   const onClickDeleteComment = async (commentId: string) => {
     customConfirm('정말 삭제하시겠습니까?', '댓글 삭제', '삭제', async () => {
       await deleteComment(commentId);
+      await updateUser({ commentsCount: sellerUser?.commentsCount - 1 });
     });
   };
 
@@ -130,7 +158,7 @@ const CommentsList = () => {
                 </LeftContainer>
                 <RightContainer>
                   <CreateAt>{getTimeGap(comment.createAt)}</CreateAt>
-                  {saveUser?.uid === comment?.writer && (
+                  {saveUser?.uid === comment?.buyerUid && (
                     <DeleteButton
                       onClick={() => onClickDeleteComment(comment.id)}
                       aria-label="삭제"
