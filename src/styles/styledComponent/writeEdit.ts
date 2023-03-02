@@ -58,7 +58,7 @@ export const WriteQuill = styled.div`
   .ql-container {
     width: 100%;
     height: 25rem;
-    font-size: ${(props) => props.theme.fontSize.body16};
+    font-size: 16px;
   }
 `;
 
@@ -69,12 +69,12 @@ export const Button = styled.div`
   height: 2em;
   width: 70%;
   button {
-    background-color: ${(props) => props.theme.colors.brandColor};
+    background-color: yellow;
     border: none;
     width: 15%;
     height: 1.5rem;
     &:hover {
-      border: 2px solid ${(props) => props.theme.colors.button};
+      border: 2px solid tomato;
     }
   }
 `;
@@ -99,12 +99,12 @@ export const ImgBox = styled.div<{ img: string }>`
 `;
 
 export const WriteImgBtn = styled.button`
-  background-color: ${(props) => props.theme.colors.brandColor};
+  background-color: yellow;
   border: none;
   width: 15%;
   height: 1.5rem;
   &:hover {
-    border: 2px solid ${(props) => props.theme.colors.button};
+    border: 2px solid tomato;
   }
 
   label {

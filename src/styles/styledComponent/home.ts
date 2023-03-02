@@ -103,7 +103,7 @@ export const PostIMG = styled.div<{ bgPhoto: string }>`
 export const PostContainer = styled.div`
   width: 100%;
   margin-bottom: 1rem;
-  border: 3px solid ${(props) => props.theme.colors.brandColor};
+  border: 3px solid yellow;
 `;
 
 export const ContentContainer = styled.div`
@@ -115,7 +115,7 @@ export const ContentContainer = styled.div`
 `;
 
 export const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 24px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   color: ${(props) => props.theme.colors.gray60};
   text-shadow: 1px 1px 2px gray;
@@ -124,7 +124,7 @@ export const TitleText = styled.h2`
 export const CreateAtText = styled.div`
   text-align: right;
   margin: 0.5rem 0;
-  font-size: ${(props) => props.theme.fontSize.label12};
+  font-size: 12px;
   color: ${(props) => props.theme.colors.gray20};
 `;
 
@@ -132,7 +132,7 @@ export const ContentText = styled.div`
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   color: ${(props) => props.theme.colors.gray60};
   width: 100%;
   height: 8rem;
@@ -150,7 +150,7 @@ export const LeftContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   p {
-    font-size: ${(props) => props.theme.fontSize.label12};
+    font-size: 12px;
     color: ${(props) => props.theme.colors.gray20};
   }
 `;
@@ -180,10 +180,10 @@ export const LikeIconContainer = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: ${(props) => props.theme.fontSize.label12};
+    font-size: 12px;
     color: ${(props) => props.theme.colors.gray10};
-    height: ${(props) => props.theme.fontSize.title24};
-    line-height: ${(props) => props.theme.fontSize.title24};
+    height: 24px;
+    line-height: 24px;
   }
 `;
 export const LikeIcon = styled(AiFillHeart)`
@@ -191,11 +191,11 @@ export const LikeIcon = styled(AiFillHeart)`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: ${(props) => [props.theme.colors.red]};
+  color: tomato;
   font-size: 30px; // props로 변경해야함.
 `;
 export const PriceText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.bottom20};
+  font-size: 20px;
   color: ${(props) => props.theme.colors.gray60};
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;

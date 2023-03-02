@@ -16,8 +16,8 @@ export const EditBtnWrapper = styled.div`
     width: 5rem;
     height: 2.5rem;
     border: none;
-    font-size: ${(props) => props.theme.fontSize.bottom20};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    font-size: 20px;
+    background-color: yellow;
     cursor: pointer;
     &:hover {
       box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
@@ -55,14 +55,14 @@ export const PostInfoWrapper = styled.div`
 `;
 
 export const TitleText = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 24px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   color: ${(props) => props.theme.colors.gray60};
 `;
 
 export const PostPrice = styled.p`
   width: 100%;
-  font-size: ${(props) => props.theme.fontSize.bottom20};
+  font-size: 20px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   text-align: right;
 `;
@@ -87,8 +87,8 @@ export const LikeAndSubmitContainer = styled.div`
     width: 100%;
     height: 4rem;
     color: ${(props) => props.theme.colors.gray40};
-    font-size: ${(props) => props.theme.fontSize.bottom20};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    font-size: 20px;
+    background-color: yellow;
     border: none;
     border-radius: 10px;
     &:hover {
@@ -104,8 +104,8 @@ export const PostLikeButtonContainer = styled.button`
   align-items: center;
   width: 14%;
   height: 65px;
-  font-size: ${(props) => props.theme.fontSize.title36};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  font-size: 36px;
+  border: 2px solid yellow;
   background-color: ${(props) => props.theme.colors.white};
   &:hover {
     cursor: pointer;
@@ -114,7 +114,7 @@ export const PostLikeButtonContainer = styled.button`
 `;
 
 export const HeartIcon = styled(AiFillHeart)`
-  color: ${(props) => props.theme.colors.red};
+  color: tomato;
 `;
 
 export const PostContentWrapper = styled.div`
@@ -131,7 +131,7 @@ export const SellerInfo = styled.div`
   padding: 2rem;
   width: 100%;
   min-height: 20rem;
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  border: 2px solid yellow;
   p {
     margin-bottom: 20px;
   }

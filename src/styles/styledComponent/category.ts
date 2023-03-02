@@ -12,13 +12,13 @@ export const NavContainer = styled.div`
   align-items: center;
   margin: 1rem 0;
   p {
-    font-size: ${(props) => props.theme.fontSize.title24};
+    font-size: 24px;
     color: ${(props) => props.theme.colors.gray60};
   }
   button {
-    font-size: ${(props) => props.theme.fontSize.body16};
+    font-size: 16px;
     color: ${(props) => props.theme.colors.gray60};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    background-color: yellow;
     border: none;
     width: 7rem;
     height: 2rem;
@@ -40,7 +40,7 @@ export const PostContainer = styled.div`
   max-width: 250px;
   width: 100%;
   margin-bottom: 1rem;
-  border: 3px solid ${(props) => props.theme.colors.brandColor};
+  border: 3px solid yellow;
   cursor: pointer;
   &:hover {
     width: 105%;
@@ -63,7 +63,7 @@ export const ContentContainer = styled.div`
   height: 247px;
   padding: 1.5rem 2rem 1rem;
   h2 {
-    font-size: ${(props) => props.theme.fontSize.title24};
+    font-size: 24px;
     font-weight: ${(props) => props.theme.fontWeight.bold};
     color: ${(props) => props.theme.colors.gray60};
     text-shadow: 1px 1px 2px gray;
@@ -71,14 +71,14 @@ export const ContentContainer = styled.div`
 `;
 
 export const CreateAtText = styled.div`
-  font-size: ${(props) => props.theme.fontSize.label12};
+  font-size: 12px;
   color: ${(props) => props.theme.colors.gray20};
   text-align: right;
   margin: 0.5rem 0;
 `;
 
 export const ContentText = styled.div`
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   color: ${(props) => props.theme.colors.gray60};
   width: 100%;
   height: 8rem;
@@ -99,7 +99,7 @@ export const LeftContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   p {
-    font-size: ${(props) => props.theme.fontSize.label12};
+    font-size: 12px;
     color: ${(props) => props.theme.colors.gray20};
   }
 `;
@@ -119,7 +119,7 @@ export const RightContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   p {
-    font-size: ${(props) => props.theme.fontSize.body16};
+    font-size: 16px;
     color: ${(props) => props.theme.colors.gray60};
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
@@ -134,10 +134,10 @@ export const LikeIconContainer = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: ${(props) => props.theme.fontSize.label12};
-    line-height: ${(props) => props.theme.fontSize.title24};
+    font-size: 12px;
+    line-height: 24px;
     color: ${(props) => props.theme.colors.gray10};
-    height: ${(props) => props.theme.fontSize.title24};
+    height: 24px;
   }
 `;
 
@@ -146,7 +146,7 @@ export const LikeIcon = styled(AiFillHeart)`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: ${(props) => props.theme.colors.red};
+  color: tomato;
   font-size: 25px; // props로 변경해야함.
 `;
 
@@ -155,7 +155,7 @@ export const EndPostDiv = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 24px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
   color: ${(props) => props.theme.colors.gray60};
   height: 100%;

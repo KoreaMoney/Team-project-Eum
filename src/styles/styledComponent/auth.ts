@@ -21,10 +21,10 @@ export const AuthName = styled.div`
   width: 100%;
   height: 12rem;
   gap: 1.5rem;
-  font-size: ${(props) => props.theme.fontSize.like30};
+  font-size: 30px;
   cursor: default;
   span {
-    font-size: ${(props) => props.theme.fontSize.body16};
+    font-size: 16px;
   }
 `;
 
@@ -44,7 +44,7 @@ export const InputBox = styled.input`
   padding: 0.7rem;
   box-shadow: 0.5px 1px 2px 0.5px ${(props) => props.theme.colors.gray20};
   background-color: ${(props) => props.theme.colors.white};
-  border: 2px solid ${(props) => props.theme.colors.brandColor};
+  border: 2px solid ${(props) => props.theme.colors.black};
   border-radius: 10px;
   &::placeholder {
     color: ${(props) => props.theme.colors.gray20};
@@ -58,7 +58,7 @@ export const CloseIcon = styled(AiFillCloseCircle)`
   position: absolute;
   right: 1rem;
   top: 0.55rem;
-  font-size: ${(props) => props.theme.fontSize.title24};
+  font-size: 24px;
   color: ${(props) => props.theme.colors.gray20};
   cursor: pointer;
   &:hover {
@@ -70,14 +70,14 @@ export const ViewIcon = styled(AiFillEye)`
   position: absolute;
   bottom: 10px;
   right: 18px;
-  font-size: ${(props) => props.theme.fontSize.like30};
+  font-size: 30px;
   cursor: pointer;
 `;
 
 export const ErrorMSG = styled.p`
   padding: 0.2rem;
-  color: ${(props) => props.theme.colors.red};
-  font-size: ${(props) => props.theme.fontSize.label12};
+  color: ${(props) => props.theme.colors.black};
+  font-size: 12px;
 `;
 
 //회원가입 스타일
@@ -97,13 +97,13 @@ export const CheckBT = styled.button`
   right: 0.3rem;
   top: 0.32rem;
   border-radius: 6px;
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   color: ${(props) => props.theme.colors.gray30};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  background-color: black;
   cursor: pointer;
   &:hover {
-    border: 3px solid ${(props) => props.theme.colors.button};
-    color: ${(props) => props.theme.colors.black};
+    border: 3px solid tomato;
+    color: black;
   }
 `;
 
@@ -111,12 +111,12 @@ export const MoveSignInButton = styled.button`
   border: none;
   background-color: white;
   color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   margin-top: 1rem;
   cursor: pointer;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;
@@ -124,7 +124,7 @@ export const MoveSignInButton = styled.button`
 export const PassMSG = styled.p`
   color: green;
   margin-top: 0.3rem;
-  font-size: ${(props) => props.theme.fontSize.label12};
+  font-size: 12px;
 `;
 
 export const JoinButton = styled.button`
@@ -133,12 +133,12 @@ export const JoinButton = styled.button`
   border-radius: 10px;
   margin-top: 2rem;
   color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  font-size: 20px;
+  background-color: tomato;
   border: none;
   cursor: pointer;
   &:hover {
-    border: 4px solid ${(props) => props.theme.colors.button};
+    border: 4px solid tomato;
     color: ${(props) => props.theme.colors.black};
   }
   &:active {
@@ -161,12 +161,12 @@ export const LoginButton = styled.button`
   border-radius: 10px;
   margin-top: 1rem;
   color: ${(props) => props.theme.colors.gray40};
-  font-size: ${(props) => props.theme.fontSize.bottom20};
-  background-color: ${(props) => props.theme.colors.brandColor};
+  font-size: 20px;
+  background-color: tomato;
   border: none;
   cursor: pointer;
   &:hover {
-    border: 4px solid ${(props) => props.theme.colors.button};
+    border: 4px solid tomato;
     color: ${(props) => props.theme.colors.black};
   }
   &:active {
@@ -175,7 +175,7 @@ export const LoginButton = styled.button`
 `;
 
 export const PTag = styled.span`
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   color: ${(props) => props.theme.colors.gray30};
   margin-top: 2rem;
 `;
@@ -195,12 +195,12 @@ export const SocialContainer = styled.div`
     outline: none;
     border-radius: 10px;
     gap: 1rem;
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
     color: ${(props) => props.theme.colors.gray40};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    background-color: tomato;
     cursor: pointer;
     &:hover {
-      border: 4px solid ${(props) => props.theme.colors.button};
+      border: 4px solid tomato;
       color: ${(props) => props.theme.colors.black};
     }
     &:active {
@@ -217,12 +217,12 @@ export const MoveSignUpButton = styled.button`
   border: none;
   background-color: white;
   color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   margin-top: 1rem;
   cursor: pointer;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;
@@ -234,7 +234,7 @@ export const PwLossButtonContainer = styled.div`
   cursor: pointer;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;
@@ -244,11 +244,11 @@ export const PwLossButton = styled.button`
   border: none;
   background-color: transparent;
   color: ${(props) => props.theme.colors.gray30};
-  font-size: ${(props) => props.theme.fontSize.body16};
+  font-size: 16px;
   cursor: pointer;
   transition: color 0.1s ease-in;
   &:hover {
-    color: ${(props) => props.theme.colors.button};
+    color: tomato;
     font-weight: ${(props) => props.theme.fontWeight.medium};
   }
 `;

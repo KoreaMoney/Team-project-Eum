@@ -31,7 +31,7 @@ export const TransactionText = styled.div`
     bottom: 0;
     background-color: transparent;
     border: none;
-    color: ${(props) => props.theme.colors.brandColor};
+    color: yellow;
   }
 `;
 
@@ -63,19 +63,19 @@ export const SellerContainer = styled.div`
   width: 50%;
   height: 490px;
   h2 {
-    font-size: ${(props) => props.theme.fontSize.title24};
+    font-size: 24px;
     font-weight: ${(props) => props.theme.fontWeight.bold};
     color: ${(props) => props.theme.colors.gray60};
   }
 
   p {
     width: 100%;
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
     font-weight: ${(props) => props.theme.fontWeight.bold};
     text-align: right;
   }
   span {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
   }
 `;
 
@@ -117,7 +117,7 @@ export const ProfileRight = styled.div`
   width: 70%;
   margin-bottom: 0.5rem;
   p {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
   }
 `;
 
@@ -140,10 +140,10 @@ export const ProfileBottomWrapper = styled.div`
   padding: 0.7rem 1.5rem;
   gap: 0.5rem;
   p {
-    font-size: ${(props) => props.theme.fontSize.bottom20};
+    font-size: 20px;
   }
   span {
-    font-size: ${(props) => props.theme.fontSize.label12};
+    font-size: 12px;
     color: ${(props) => props.theme.colors.gray20};
   }
 `;
@@ -160,8 +160,8 @@ export const ProfileBottomInfo = styled.div`
   button {
     width: 100%;
     height: 64px;
-    font-size: ${(props) => props.theme.fontSize.body16};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    font-size: 16px;
+    background-color: yellow;
     border: none;
     &:hover {
       box-shadow: 2px 2px 4px ${(props) => props.theme.colors.gray20};
@@ -180,8 +180,8 @@ export const SellerLikeWrapper = styled.div`
     width: 100%;
     height: 4rem;
     color: ${(props) => props.theme.colors.gray40};
-    font-size: ${(props) => props.theme.fontSize.bottom20};
-    background-color: ${(props) => props.theme.colors.brandColor};
+    font-size: 20px;
+    background-color: yellow;
     border: none;
     border-radius: 10px;
     &:hover {
@@ -202,6 +202,6 @@ export const TransactionPost = styled.div`
     padding: 2rem;
     width: 100%;
     min-height: 20rem;
-    border: 2px solid ${(props) => props.theme.colors.brandColor};
+    border: 2px solid yellow;
   }
 `;
