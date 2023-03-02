@@ -149,6 +149,7 @@ const SignIn = () => {
             profileImg: null,
             like: [],
             isDoneCount: 0,
+            commentsCount: 0,
           });
         }
         navigate('/');

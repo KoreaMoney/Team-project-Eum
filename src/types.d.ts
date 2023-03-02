@@ -17,6 +17,7 @@ export interface userType {
   contactTime: string;
   like: [];
   isDoneCount: number;
+  commentsCount: number;
 }
 export interface postType {
   id: string | undefined;
@@ -46,13 +47,14 @@ export interface editPostType {
 export interface commentType {
   id: string;
   postId: string | undefined;
-  writer: string | null | undefined;
+  sellerUid: string | null | undefined;
+  buyerUid: string | null | undefined;
   content: string;
   profileImg: string | null | undefined;
   createAt: number;
   writerNickName: string | null | undefined;
-  isEdit: boolean;
 }
+
 export interface onSalePostType {
   id: string | undefined;
   postsId: string | undefined;
@@ -61,14 +63,15 @@ export interface onSalePostType {
   title: string;
   content: string;
   imgURL: [];
-  like: [];
-  views: number;
   price: number | string;
   category: string;
   createdAt: number;
   isDone: boolean;
   isSellerCancel: boolean;
   isBuyerCancel: boolean;
+  isCancel: boolean;
+  cancelTime: number;
+  doneTime: number;
 }
 export interface LocationState {
   from: Location;
