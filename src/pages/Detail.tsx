@@ -22,6 +22,8 @@ import {
   postOnSalePost,
 } from '../api';
 import SellerInfo from '../components/detail/SellerInfo';
+import { useRecoilState } from 'recoil';
+import { isCancelAtom, isDoneAtom } from '../atom';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -46,11 +48,14 @@ const Detail = () => {
   const location = useLocation();
   const [sellerData, setSellerData] = useState<{ like: any[] }>({ like: [] });
   const [postData, setPostData] = useState<{ like: any[] }>({ like: [] });
+  const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
+  const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const queryClient = useQueryClient();
 
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-
+  setIsCancel(false);
+  setIsDone(false);
   const { data: post, isLoading } = useQuery(
     ['post', id],
     () => getPostsId(id),
@@ -98,8 +103,11 @@ const Detail = () => {
 
   // 구매자가 바로신청하기를 누르면 구매자의 포인트에서 price만큼 -해주는 mutation 함수
   const { mutate: updateUser } = useMutation(
-    (newUser: { point: string | number | undefined }) =>
-      patchUsers(saveUser.uid, newUser)
+    (newUser: { point: number | undefined }) =>
+      patchUsers(saveUser?.uid, newUser),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['user', saveUser?.uid]),
+    }
   );
 
   // 글 찜 기능을 위해
