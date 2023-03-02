@@ -24,6 +24,7 @@ const PointHistoryList = () => {
     tradeData.filter((post: any) => {
       return post.isDone === true;
     });
+
   // 거래완료 목록 중 내 판매목록
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.buyerUid;

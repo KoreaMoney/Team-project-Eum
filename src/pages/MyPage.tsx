@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import Profile from '../components/mypage/Profile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUsers, patchUsers, getOnSalePostBuyer } from '../api';
+import {
+  getUsers,
+  patchUsers,
+  getOnSalePostBuyer,
+  getOnSalePostSeller,
+  getWriteMyComments,
+  getPosts,
+} from '../api';
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
@@ -24,26 +31,75 @@ const MyPage = () => {
     ['users', saveUser.uid],
     () => getUsers(saveUser.uid)
   );
+  console.log('saveUser.uid', saveUser.uid);
 
-  // 거래 목록을 받아옵니다.
+  /* 거래 목록을 받아옵니다.
+   * 1. 전체 거래 목록을 받아옵니다.
+   * 2. 유저가 찜 한 목록을 받아옵니다.
+   */
   const {
-    isLoading: getTradeListLoading,
-    isError: getTradeListIsError,
-    data: tradeData,
-  } = useQuery(['onSalePosts', saveUser.uid], () =>
+    isLoading: getPostListLoading,
+    isError: getPostListIsError,
+    data: postData,
+  } = useQuery(['Posts'], () => getPosts());
+  console.log('postData', postData);
+
+  const myLikePostList = postData?.filter((post: any) => {
+    return post.like == saveUser.uid;
+  });
+  console.log('myLikePostList', myLikePostList);
+
+  // 로그인한 유저
+
+  /* 내 거래 목록을 받아옵니다.
+   * 1. 구매 목록을 받아옵니다.
+   * 2. 판매 목록을 받아옵니다.
+   */
+  const {
+    isLoading: getTradeBuyListLoading,
+    isError: getTradeBuyListIsError,
+    data: tradeBuyData,
+  } = useQuery(['onSaleBuyPosts', saveUser.uid], () =>
     getOnSalePostBuyer(saveUser.uid)
   );
+  console.log('tradeBuyData', tradeBuyData);
 
-  // 거래 완료 목록을 받아옵니다.
-  const isDoneTradeList =
-    tradeData?.data &&
-    tradeData.data.filter((post: any) => {
-      return post.isDone === true;
-    });
+  const {
+    isLoading: getTradeSellListLoading,
+    isError: getTradeSellListIsError,
+    data: tradeSellData,
+  } = useQuery(['onSaleSellPosts', saveUser.uid], () =>
+    getOnSalePostSeller(saveUser.uid)
+  );
+  console.log('tradeSellData', tradeSellData);
+
+  /* 내 거래 완료 목록을 받아옵니다.
+   * 1. 구매 완료 목록을 받아옵니다.
+   * 2. 판매 완료 목록을 받아옵니다.
+   */
+  const isDoneTradeBuyList = tradeBuyData?.filter((post: any) => {
+    return post.isDone == true;
+  });
+  console.log('isDoneTradeList', isDoneTradeBuyList);
+
+  const isDoneTradeSellList = tradeSellData?.filter((post: any) => {
+    return post.isDone == true;
+  });
+  console.log('isDoneTradeList', isDoneTradeSellList);
+
+  // 내 작성 후기 목록을 받아옵니다.
+  const {
+    isLoading: getMyCommentListLoading,
+    isError: getMyCommentListIsError,
+    data: writeMyCommentsData,
+  } = useQuery(['writeMyComments', saveUser.uid], () =>
+    getWriteMyComments(saveUser.uid)
+  );
+  console.log('writeMyCommentsData', writeMyCommentsData);
 
   /* 로그인한 유저 정보에 접근해서 patch합니다.
-   * 1. 닉네임을 수정합니다.
-   * 2. 유저의 이용 시간을 수정합니다.
+   * 1. 유저의 닉네임에 접근합니다.
+   * 2. 유저의 이용 시간에 접근합니다.
    */
   const { isLoading: editNickNameLoading, mutate: editNickNameMutate } =
     useMutation((user: { id: string; nickName: string }) =>
@@ -53,16 +109,6 @@ const MyPage = () => {
     useMutation((user: { id: string; contactTime: string }) =>
       patchUsers(saveUser.uid, user)
     );
-
-  // 로그인한 유저의 판매 목록을 출력합니다.
-  const sellTradeList = isDoneTradeList?.filter((user: any) => {
-    return saveUser.uid === user?.sellerUid;
-  });
-
-  // 로그인한 유저의 구매 목록을 출력합니다.
-  const buyTradeList = isDoneTradeList?.filter((user: any) => {
-    return saveUser.uid === user?.buyerUid;
-  });
 
   // 닉네임을 수정합니다.
   const EditNickName = async (id: string) => {
@@ -88,9 +134,10 @@ const MyPage = () => {
     return <SignIn />;
   }
 
-  /* 유저 연락 가능한 시간을 출력합니다.
+  /* 유저 연락 가능한 시간을 수정합니다.
    * 1. 시작시간을 지정합니다.
    * 2. 종료시간을 지정합니다.
+   * 3. 시작시간 - 종료시간 형태로 수정합니다.
    **/
   const startTimeChangeHandle = (e: any) => {
     setStartTimeValue(e.target.value);
@@ -169,7 +216,7 @@ const MyPage = () => {
         </a.UserNameWrapper>
         <PointModal />
         <a.MyPageTimeWrapper>
-          <p>이음가능 시간 : </p>
+          <p>이음 가능 시간 : </p>
           {editTime ? (
             <div>
               <form onSubmit={startSubmitTime}>
@@ -245,38 +292,41 @@ const MyPage = () => {
         </a.ProfileNavWrapper>
         <a.CategoryListWrapper>
           {category === 'likelist'
-            ? sellTradeList?.map((list: any) => {
+            ? myLikePostList?.map((list: any) => {
                 return (
                   <a.UserSellBuyWrapper key={list.id}>
-                    <div>팝니다</div>
+                    <div>{list.title}</div>
                   </a.UserSellBuyWrapper>
                 );
               })
             : null}
           {category === 'selllist'
-            ? sellTradeList?.map((list: any) => {
+            ? tradeSellData?.map((list: any) => {
                 return (
                   <a.UserSellBuyWrapper key={list.id}>
-                    <div>팝니다</div>
+                    <div>{list.title}</div>
                   </a.UserSellBuyWrapper>
                 );
               })
             : null}
           {category === 'buylist'
-            ? buyTradeList?.map((list: any) => {
+            ? tradeBuyData?.map((list: any) => {
                 return (
                   <a.UserSellBuyWrapper key={list.id}>
-                    <div>삽니다</div>
+                    <div>{list.title}</div>
                   </a.UserSellBuyWrapper>
                 );
               })
             : null}
           {category === 'commentlist'
-            ? sellTradeList?.map((list: any) => {
-                return <a.UserBadge key={list.id}>후기 List</a.UserBadge>;
+            ? writeMyCommentsData?.map((list: any) => {
+                return (
+                  <a.UserBadge key={list.id}>
+                    <div>{list.content}</div>
+                  </a.UserBadge>
+                );
               })
             : null}
-          <a.UserBadge>찜 List</a.UserBadge>
         </a.CategoryListWrapper>
       </a.UserPostWrapper>
     </a.MyPageContainer>
