@@ -121,6 +121,9 @@ const WritePage = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
       };
+
+
+      
     }
   };
 
@@ -203,7 +206,6 @@ const WritePage = () => {
     };
     await mutate(newPost); //
   };
-  console.log(content);
 
   // 서버통신은 다 비동기함수
   if (!saveUser) {

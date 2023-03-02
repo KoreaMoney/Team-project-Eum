@@ -4,30 +4,43 @@ declare module 'styled-components' {
     colors: {
       white: string;
       black: string;
+      green: string;
+      Blue: string;
+      orange01: string;
+      orange02: string;
+      orange03: string;
+      gray05: string;
       gray10: string;
       gray20: string;
       gray30: string;
       gray40: string;
       gray50: string;
       gray60: string;
-      red: string;
-      brandColor: string;
-      button: string;
     };
     fontSize: {
-      headline48: string;
-      title24: string;
-      title36: string;
-      body16: string;
-      label12: string;
-      bottom20: string;
-      like30: string;
+      ad56: string;
+      ad24: string;
+      title64: string;
+      title32: string;
+      title20: string;
+      title18: string;
+      title16: string;
+      title14: string;
+    };
+    lineHeight: {
+      ad56: string;
+      ad24: string;
+      title64: string;
+      title32: string;
+      title20: string;
+      title18: string;
+      title16: string;
+      title14: string;
     };
     fontWeight: {
       bold: number;
       medium: number;
-      regular: number;
-      light: number;
+      reqular: number;
     };
   }
 }

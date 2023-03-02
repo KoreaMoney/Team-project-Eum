@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   customConfirm,
@@ -13,6 +13,7 @@ import * as a from '../styles/styledComponent/transaction';
 import { userType } from '../types';
 import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
+import { CustomModal } from '../components/modal/CustomModal';
 
 /**순서
  * 1. query-key만들기

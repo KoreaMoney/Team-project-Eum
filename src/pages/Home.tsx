@@ -13,7 +13,6 @@ import {
   variants,
 } from '../components/home/variants';
 import basicIMG from '../styles/basicIMG.webp';
-import parse from 'html-react-parser';
 import * as a from '../styles/styledComponent/home';
 import { getPosts } from '../api';
 
@@ -47,7 +46,10 @@ const Home = () => {
   }, [slider]);
 
   // query통신하기
-  const { data } = useQuery(['posts'], getPosts);
+  const { data } = useQuery(['posts'], getPosts, {
+    staleTime: 5000,
+  });
+  console.log('나야', data);
 
   // 글 클릭하면 조회수 1씩 늘리기!!
   const handlePostClick = async (post: postType) => {
@@ -87,7 +89,7 @@ const Home = () => {
   };
 
   return (
-    <a.HomeContainer>
+    <div>
       <a.SwiperWrapper>
         <AnimatePresence initial={false} custom={direction}>
           <a.Img
@@ -126,52 +128,60 @@ const Home = () => {
         </a.NextPrevWrapper>
       </a.SwiperWrapper>
       <div>
-        <a.TotalWrapper>
+        <div>
           <h1>이음의 핫 셀럽</h1>
-        </a.TotalWrapper>
-
-        <a.PostsContainer>
+        </div>
+        <div>
           {data
             ?.slice(0, 8)
             .sort((a: any, b: any) => b.like.length - a.like.length)
             .map((post: postType) => (
-              <a.PostContainer
-                key={post.id}
-                onClick={() => handlePostClick(post)}
-              >
+              <div key={post.id} onClick={() => handlePostClick(post)}>
                 <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                <a.ContentContainer>
-                  <a.TitleText>{post.title}</a.TitleText>
-                  <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
-                  <a.ContentText>{parsingHtml(post.content)}</a.ContentText>
-                  <a.BottomContainer>
-                    <a.LeftContainer>
+                <div>
+                  <div>{post.title}</div>
+                  <div>{getTimeGap(post.createAt)}</div>
+                  <p>{parsingHtml(post.content)}</p>
+                  <div>
+                    <div>
                       <a.ProfileIMG
                         profileIMG={
                           post?.profileImg ? post?.profileImg : basicIMG
                         }
                       />
                       <p>{post.nickName}</p>
-                    </a.LeftContainer>
-                    <a.RightContainer>
-                      <a.LikeIconContainer>
+                    </div>
+                    <div>
+                      <div>
                         <a.LikeIcon />
                         <span>{post.like.length}</span>
-                      </a.LikeIconContainer>
-                      <a.PriceText>
+                      </div>
+                      <p>
                         {post.price
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                         원
-                      </a.PriceText>
-                    </a.RightContainer>
-                  </a.BottomContainer>
-                </a.ContentContainer>
-              </a.PostContainer>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
-        </a.PostsContainer>
+        </div>
       </div>
-    </a.HomeContainer>
+      <div>
+        {data
+          ?.slice(0, 8)
+          .sort((a: any, b: any) => b.createAt - a.createAt)
+          .map((post: postType) => (
+            <>
+              <div>{post.title}</div>
+              <div>{post.price}</div>
+              <div>{post.nickName}</div>
+            </>
+          ))}
+      </div>
+    </div>
   );
 };
 export default Home;
