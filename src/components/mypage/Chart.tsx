@@ -1,43 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import { getPosts } from '../../api';
 import ReactApexChart from 'react-apexcharts';
+import { postType } from '../../types';
 
-interface ChartProps {
-  title: string;
-  nickName: string;
-  sellerUid: string;
-  content: string;
-  price: number;
-  imgURL: string;
-  category: string;
-  like: [];
-  views: number;
-  createAt: number;
-  profileImg: string;
-  tsCount: number;
-  commentsCount: number;
-}
 const Chart = () => {
-  const { id } = useParams();
-  const { isLoading, data: userPostData } = useQuery<ChartProps[]>(
+  const { isLoading, data: userPostData } = useQuery<postType[]>(
     ['postData'],
-    () => getPosts()
+    () => getPosts(),
+    {
+      refetchInterval: 10000,
+    }
   );
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const chartList = userPostData?.filter((user: any) => {
     return saveUser.uid === user.sellerUid;
   });
 
-  // const buyTradeList = isDoneTradeList?.filter((user: any) => {
-  //   return saveUser?.uid === user?.buyerUid;
-  // });
-
-  console.log('object,sellerUid', id);
-  console.log('object,data', chartList);
-  console.log(userPostData?.map((point) => Number(point.views)) as number[]);
   return (
     <div>
       {isLoading ? (
@@ -95,7 +75,7 @@ const Chart = () => {
             tooltip: {
               theme: 'dark',
               enabledOnSeries: undefined,
-              x: { show: false },
+              x: { show: true },
               style: {
                 fontSize: '15px',
               },
@@ -105,25 +85,26 @@ const Chart = () => {
               width: 4,
             },
             yaxis: {
-              show: false,
-            },
-
-            dataLabels: {
-              enabled: true,
-              enabledOnSeries: undefined,
-              dropShadow: {
-                enabled: false,
-                top: 1,
-                left: 1,
-                blur: 1,
-                color: '#000',
-                opacity: 0.45,
-              },
-            },
-            xaxis: {
-              axisTicks: { show: false },
               labels: {
                 show: false,
+              },
+            },
+
+            xaxis: {
+              axisTicks: { show: false },
+              axisBorder: {
+                show: false,
+              },
+              labels: {
+                show: true,
+                datetimeFormatter: {
+                  month: "mmm 'yy",
+                },
+              },
+              type: 'datetime',
+              categories: chartList?.map((date) => date.createAt),
+              tooltip: {
+                enabled: true,
               },
             },
             legend: {
