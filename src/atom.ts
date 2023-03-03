@@ -22,4 +22,13 @@ export const searchState = atom({
   },
 });
 
+export const isCancelAtom = atom({
+  key: 'isCancelAtom',
+  default: false,
+});
+
+export const isDoneAtom = atom({
+  key: 'isDoneAtom',
+  default: false,
+});
 /**여기 아래에는 속도개선을 위해 custom을 components에서 recoil로 전환 */
