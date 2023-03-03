@@ -99,7 +99,7 @@ const UserTime = () => {
               setEditTime(true);
             }}
           >
-            {data?.contactTime}
+            {data?.contactTime == '' ? '시간 설정 하기' : data?.contactTime}
           </div>
         </UserTimeWrapper>
       )}
