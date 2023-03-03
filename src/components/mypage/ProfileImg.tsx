@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth, storageService } from '../../firebase/Firebase';
+import { theme } from '../../styles/theme';
 import { customSuccessAlert } from '../modal/CustomAlert';
 
 export default function Profile(params: any) {
@@ -12,6 +13,7 @@ export default function Profile(params: any) {
   const imgRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);
 
   const { data } = useQuery(['users'], () =>
     axios
@@ -30,6 +32,7 @@ export default function Profile(params: any) {
       onSuccess: () => {
         queryClient.invalidateQueries(['users']);
         customSuccessAlert('프로필 이미지를 수정하였습니다.');
+        setImgEditBtnToggle(false);
       },
     }
   );
@@ -57,6 +60,7 @@ export default function Profile(params: any) {
         const response = await uploadString(imgRef, imgDataUrl, 'data_url');
         downloadUrl = await getDownloadURL(response.ref);
         setPhoto(downloadUrl);
+        setImgEditBtnToggle(true);
       }
     };
   };
@@ -90,13 +94,15 @@ export default function Profile(params: any) {
           name="profile_img"
           accept="image/*"
         />
-        <ImgSubmitButton
-          onClick={handleClick}
-          disabled={loading || !photo}
-          aria-label="프로필 이미지 변경"
-        >
-          {!photo ? ' ' : '프로필 이미지 변경'}
-        </ImgSubmitButton>
+        {imgEditBtnToggle ? (
+          <ImgSubmitButton
+            onClick={handleClick}
+            disabled={loading || !photo}
+            aria-label="프로필 이미지 변경"
+          >
+            {!photo ? ' ' : '프로필 이미지 변경'}
+          </ImgSubmitButton>
+        ) : null}
       </EditImgWrapper>
     </UserProfileImgContainer>
   );
@@ -128,12 +134,10 @@ const MyImage = styled.label`
   border-radius: 50%;
   text-align: center;
   overflow: hidden;
-
   &:hover {
     cursor: pointer;
-    border: 3px solid tomato;
+    border: 1px solid ${theme.colors.orange01};
   }
-
   img {
     width: 100%;
     height: 100%;
@@ -153,17 +157,18 @@ const ImgSubmitButton = styled.button`
   width: 100%;
   height: 2rem;
   font-size: 16px;
-  background-color: yellow;
-  color: ${(props) => props.theme.colors.gray50};
-  border: none;
+  background-color: ${theme.colors.white};
+  color: ${(props) => props.theme.colors.orange01};
+  border: 1px solid ${theme.colors.orange01};
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    border: 3px solid tomato;
+    color: ${(props) => props.theme.colors.white};
+    background-color: ${theme.colors.orange03};
   }
 
   &:active {
-    background-color: tomato;
+    background-color: ${theme.colors.orange01};
   }
   &:disabled {
     cursor: auto;

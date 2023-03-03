@@ -110,11 +110,18 @@ const PointButton = styled.button`
   margin-bottom: 2rem;
   width: 18rem;
   height: 2rem;
+  padding: 0 1rem;
   font-size: ${theme.fontSize.title16};
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
-  border: none;
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.orange01};
+  border: 1px solid ${theme.colors.orange01};
   border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.orange03};
+    color: ${(props) => props.theme.colors.white};
+  }
 `;
 
 const PointModalContainer = styled.div`
@@ -140,9 +147,11 @@ const CurrentPoint = styled.div`
   padding: 12px 40px;
   width: 100%;
   height: 80px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray50};
   font-size: ${theme.fontSize.title20};
+  border: 1px solid ${theme.colors.gray30};
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray50};
   border-radius: 10px;
 `;
 
