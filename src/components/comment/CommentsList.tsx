@@ -71,18 +71,6 @@ const CommentsList = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  /**댓글을 삭제하는 코드
-   * onClickDeleteComment 함수에서 commentId를 받아와 클릭한 댓글만 삭제될 수 있도록 합니다.
-   * 댓글을 성공적으로 삭제했다면 쿼리무효화를 통해 ui에 바로 업뎃될 수 있도록 해줍니다.
-   */
-  const { mutate: deleteComment } = useMutation(
-    (commentId: string) => deleteComments(commentId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['comments']);
-      },
-    }
-  );
 
   //판매자 uid를 post를 이용해 get하기
   const { data: post } = useQuery(['post', id], () => getPostsId(id), {
@@ -110,101 +98,78 @@ const CommentsList = () => {
     }
   );
 
-  const onClickDeleteComment = async (commentId: string) => {
-    customConfirm('정말 삭제하시겠습니까?', '댓글 삭제', '삭제', async () => {
-      await deleteComment(commentId);
-      await updateUser({ commentsCount: sellerUser?.commentsCount - 1 });
-    });
-  };
-
   /**댓글 작성 시간을 n분전 으로 출력해주는 함수
    * 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력
    */
-  const getTimeGap = (posting: number) => {
-    const msGap = Date.now() - posting;
-    const minuteGap = Math.floor(msGap / 60000);
-    const hourGap = Math.floor(msGap / 3600000);
-    if (msGap < 0) {
-      return '방금 전';
-    }
-    if (hourGap > 24) {
-      const time = new Date(posting);
-      const timeGap =
-        time.toJSON().substring(0, 10) + ' ' + time.toJSON().substring(11, 16);
-      return <p>{timeGap}</p>;
-    }
-    if (minuteGap > 59) {
-      return <p>{hourGap}시간 전</p>;
-    } else {
-      if (minuteGap === 0) {
-        return '방금 전';
-      } else {
-        return <p>{minuteGap}분 전</p>;
-      }
-    }
+  const getTimeGap = (creat: number) => {
+    const now = new Date(creat);
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const formattedDate = `${year}.${month}.${date}`;
+
+    return formattedDate;
   };
 
   return (
     <div>
       <CommentsContainer>
+        <CommentTitleText>후기</CommentTitleText>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((comment: commentType) => (
               <CommentContainer key={comment.id}>
-                <LeftContainer>
-                  <ProfileIMG profileIMG={comment.profileImg} />
+                <TopContainer>
                   <NickName>{comment.writerNickName}</NickName>
-                  <CommentContent>{comment.content}</CommentContent>
-                </LeftContainer>
-                <RightContainer>
                   <CreateAt>{getTimeGap(comment.createAt)}</CreateAt>
-                  {saveUser?.uid === comment?.buyerUid && (
-                    <DeleteButton
-                      onClick={() => onClickDeleteComment(comment.id)}
-                      aria-label="삭제"
-                    >
-                      삭제
-                    </DeleteButton>
-                  )}
+                </TopContainer>
+                <RightContainer>
+                  <CommentContent>{comment.content}</CommentContent>
                 </RightContainer>
               </CommentContainer>
             ))}
           </Fragment>
         ))}
 
-        <CommentContainer ref={observerElem}>
+        {/* <CommentContainer ref={observerElem}>
           {isFetching || isFetchingNextPage
             ? 'Loading more...'
             : hasNextPage
             ? 'Scroll to load more posts'
             : 'No more Reviews...'}
-        </CommentContainer>
+        </CommentContainer> */}
       </CommentsContainer>
     </div>
   );
 };
 
 export default CommentsList;
-
+const CommentTitleText = styled.p`
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  padding-bottom: 28px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+`;
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 1199px;
+  margin-bottom: 240px;
 `;
 
 const CommentContainer = styled.div`
+  height: 135px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: left;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
-  border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
-  padding: 0.5rem 0;
-  margin-bottom: 0.3rem;
-  margin-top: 1rem;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 `;
 
-const LeftContainer = styled.div`
+const TopContainer = styled.div`
   display: flex;
-  align-items: center;
 `;
 
 const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
@@ -218,9 +183,13 @@ const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
 `;
 
 const NickName = styled.p`
-  font-size: 16px;
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  margin: 0 2rem 0 0.5rem;
+  font-size: ${(props) => props.theme.fontSize.title20};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.title20};
+  color: ${(props) => props.theme.colors.gray50};
+  padding-right: 16px;
+  border-right: 1px solid ${(props) => props.theme.colors.gray20};
+  margin-bottom: 16px;
 `;
 
 const RightContainer = styled.div`
@@ -230,12 +199,18 @@ const RightContainer = styled.div`
 `;
 
 const CommentContent = styled.p`
-  font-size: 16px;
+  font-size: ${(props) => props.theme.fontSize.title20};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.title20};
+  color: ${(props) => props.theme.colors.gray30};
 `;
 
 const CreateAt = styled.p`
-  font-size: 12px;
-  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title20};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.title20};
+  color: ${(props) => props.theme.colors.gray30};
+  margin-left: 16px;
 `;
 
 const DeleteButton = styled.button`

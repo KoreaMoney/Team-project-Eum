@@ -1,145 +1,361 @@
 import styled from 'styled-components';
 import { AiFillHeart } from 'react-icons/ai';
-
+import { BsHeart, BsShare, BsHeartFill } from 'react-icons/bs';
+import { RxClock } from 'react-icons/rx';
+import { GoKebabVertical } from 'react-icons/go';
+import { NavButtonProps } from '../../types';
 export const DetailContainer = styled.div`
-  width: 60%;
+  width: 1200px;
   margin: 0 auto;
-`;
-
-export const EditBtnWrapper = styled.div`
-  display: flex;
-  justify-content: right;
-  gap: 0.5rem;
-  margin: 1rem 0;
-
-  button {
-    width: 5rem;
-    height: 2.5rem;
-    border: none;
-    font-size: 20px;
-    background-color: yellow;
-    cursor: pointer;
-    &:hover {
-      box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-    }
-  }
+  margin-top: 90px;
 `;
 
 export const PostContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 100%;
-  gap: 4rem;
-  margin-bottom: 24px;
+  margin-bottom: 64px;
 `;
 
 export const PostImage = styled.div<{ img: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60%;
-  height: 490px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.gray10};
+  width: 588px;
+  height: 539px;
   background-size: cover;
   background-position: center center;
   background-image: url(${(props) => props.img});
 `;
 
 export const PostInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 490px;
+  width: 486px;
+  height: 539px;
 `;
 
-export const TitleText = styled.h2`
-  font-size: 24px;
+export const InfoTopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+export const InfoTopLeftContainer = styled.div`
+  display: flex;
+  width: 78px;
+  height: 58px;
+  margin-bottom: 30px;
+  align-items: flex-end;
+  p {
+    font-size: ${(props) => props.theme.fontSize.title14};
+    font-weight: ${(props) => props.theme.fontWeight.reqular};
+    line-height: ${(props) => props.theme.lineHeight.title14};
+    color: ${(props) => props.theme.colors.orange01};
+    text-decoration: underline;
+  }
+`;
+
+export const InfoTopRightContainer = styled.div`
+  display: flex;
+  width: 141px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+export const IconLeftContainer = styled.div`
+  width: 56px;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 100%;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+`;
+
+export const HeartIcon = styled(BsHeart)`
+  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title14};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.title14};
+`;
+
+export const LikeLength = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title14};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.title14};
+  color: ${(props) => props.theme.colors.gray20};
+`;
+
+export const ShareIcon = styled(BsShare)`
+  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title32};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.title32};
+  position: absolute;
+  left: 8px;
+  cursor: pointer;
+`;
+export const IconRigntContainer = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: 100%;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+export const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const KebobIcon = styled(GoKebabVertical)`
+  font-size: 32px;
+  cursor: pointer;
+`;
+
+export const TitleText = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
+  line-height: ${(props) => props.theme.lineHeight.title32};
+  margin-bottom: 24px;
+`;
+
+export const PostNickName = styled.p`
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  color: ${(props) => props.theme.colors.gray30};
+  margin-bottom: 195px;
 `;
 
 export const PostPrice = styled.p`
-  width: 100%;
-  font-size: 20px;
+  font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
-  text-align: right;
+  ${(props) => props.theme.lineHeight.title32};
+  line-height: ${(props) => props.theme.lineHeight.title32};
+  padding: 40px 0 0 0;
+  border-top: 1px solid ${(props) => props.theme.colors.gray20};
+`;
+
+export const LikeContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const NoLikeButtonContainer = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  background-color: ${(props) => props.theme.colors.white};
+  margin-top: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+export const LikeButtonContainer = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid ${(props) => props.theme.colors.orange01};
+  margin-top: 40px;
+  background-color: ${(props) => props.theme.colors.white};
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+export const NoLikeIcon = styled(BsHeart)`
+  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+`;
+
+export const LikeSubmitButton = styled.button`
+  width: 383px;
+  height: 64px;
+  margin-top: 40px;
+  border: none;
+  background-color: ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.white};
+  border-radius: 10px;
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange01};
+    border: 1px solid ${(props) => props.theme.colors.orange01};
+  }
+`;
+
+export const LikeIcon = styled(BsHeartFill)`
+  color: ${(props) => props.theme.colors.orange01};
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+`;
+
+
+export const NavContainer = styled.div`
+  position: sticky;
+  top: 0;
+  width: 1200px;
+  height: 80px;
+  padding: 30px 0;
+  border-top: 1px solid ${(props) => props.theme.colors.gray20};
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 60px;
+  background-color: ${(props) => props.theme.colors.white};
+`;
+
+export const NavButtons = styled.button<NavButtonProps>`
+  padding: none;
+  background-color: ${(props) => props.theme.colors.white};
+  border: none;
+  border-right: 1px solid ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  color: ${(props) =>
+    props.active ? props.theme.colors.gray60 : props.theme.colors.gray20};
+  cursor: pointer;
+`;
+
+export const PostContentWrapper = styled.div`
+  width: 100%;
+`;
+
+export const SellerInfoTitle = styled.div`
+  width: 100%;
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  padding-bottom: 24px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+`;
+
+export const SellerInfoContent = styled.div`
+  margin-top: 32px;
+  min-height: 323px;
+  p {
+    font-size: ${(props) => props.theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    line-height: 40px;
+  }
+`;
+
+export const PostRow = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+
+export const ProfileContainer = styled.div`
+  width: 100%;
+  height: 155px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+`;
+export const Profiles = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+`;
+export const NickName = styled.p`
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+`;
+
+export const ClockIconContainer = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+`;
+
+export const ClockIcon = styled(RxClock)`
+  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title32};
+  font-weight: ${(props) => props.theme.fontWeight.reqular};
+`;
+
+export const BadgeTitle = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${(props) => props.theme.colors.gray20};
 `;
 
 export const ProfileIMG = styled.div<{ profileIMG: string }>`
-  width: 100px;
-  height: 100px;
+  width: 96px;
+  height: 96px;
   border-radius: 100%;
   background-image: url(${(props) => props.profileIMG});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 `;
-
-export const LikeAndSubmitContainer = styled.div`
-  display: flex;
-  gap: 3rem;
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 4rem;
-    color: ${(props) => props.theme.colors.gray40};
-    font-size: 20px;
-    background-color: yellow;
-    border: none;
-    border-radius: 10px;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 1px 1px 3px ${(props) => props.theme.colors.gray20};
-    }
-  }
+export const SellerInfoContainer = styled.div`
+  height: 235px;
 `;
-
-export const PostLikeButtonContainer = styled.button`
+export const ProfileInfoContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  width: 14%;
-  height: 65px;
-  font-size: 36px;
-  border: 2px solid yellow;
-  background-color: ${(props) => props.theme.colors.white};
-  &:hover {
-    cursor: pointer;
-    color: ${(props) => props.theme.colors.gray30};
-  }
+  padding: 30px 0;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 `;
-
-export const HeartIcon = styled(AiFillHeart)`
-  color: tomato;
-`;
-
-export const PostContentWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 48%;
-  height: 100%;
-  gap: 2.5rem;
-  margin-bottom: 24px;
-`;
-
-export const SellerInfo = styled.div`
-  padding: 2rem;
+export const ProfileInfos = styled.div`
   width: 100%;
-  min-height: 20rem;
-  border: 2px solid yellow;
-  p {
-    margin-bottom: 20px;
-  }
+  text-align: center;
+  border-right: 1px solid ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+`;
+export const DropDonwContainer = styled.div`
+  position: relative;
+`;
+export const DropDownBox = styled.div`
+  width: 132px;
+  border-radius: 20%;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  position: absolute;
+  background-color: ${(props) => props.theme.colors.white};
+  top: 45px;
+  right: -110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
-export const PostRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+export const DropDownButton = styled.button`
+  text-align: center;
+  font-size: ${(props) => props.theme.fontSize.title20};
+  line-height: 20px;
+  border: none;
+  background-color: transparent;
+  padding: 20px 0;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.colors.orange01};
+  }
 `;
