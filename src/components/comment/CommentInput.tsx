@@ -124,7 +124,7 @@ const CommentInput = () => {
   };
   return (
     <div>
-      <CommentTitleText>한줄 후기를 남겨주세요.</CommentTitleText>
+      
       <CommentContainer onSubmit={onSubmitCommentHandler}>
         <ProfileIMG profileIMG={biyerUser?.profileImg} />
         <InputTag name="content" value={content} onChange={onChangeContent} />
@@ -149,10 +149,7 @@ const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
   margin-right: 0.5rem;
 `;
 
-const CommentTitleText = styled.p`
-  font-size: 24px;
-  margin: 3rem 0 1rem;
-`;
+
 const CommentContainer = styled.form`
   display: flex;
   justify-content: space-between;
