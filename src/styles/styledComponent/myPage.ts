@@ -21,6 +21,8 @@ export const UserProfileWrapper = styled.div`
     align-items: center;
     margin-bottom: 2rem;
     width: 18rem;
+    font-size: ${theme.fontSize.title16};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
 
@@ -38,27 +40,28 @@ export const UserNameWrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: auto;
-    height: 28px;
-    padding-right: 1rem;
-    font-size: ${theme.fontSize.title32};
+    height: 2rem;
+    font-size: ${theme.fontSize.title20};
     font-weight: ${theme.fontWeight.bold};
+    border-bottom: 1px solid ${theme.colors.orange01};
     &:hover {
       cursor: pointer;
       color: ${(props) => props.theme.colors.gray40};
+      border-bottom: 1px solid ${theme.colors.orange03};
     }
   }
   button {
-    width: 62px;
-    height: 28px;
-    font-size: 100%;
-    background-color: ${(props) => props.theme.colors.gray30};
-    color: ${(props) => props.theme.colors.white};
-    border: none;
+    width: 4rem;
+    height: 2rem;
+    font-size: ${theme.fontSize.title16};
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange01};
+    border: 1px solid ${theme.colors.orange01};
     border-radius: 10px;
     &:hover {
       cursor: pointer;
-      background-color: ${(props) => props.theme.colors.gray20};
-      color: ${(props) => props.theme.colors.gray30};
+      background-color: ${(props) => props.theme.colors.orange03};
+      color: ${(props) => props.theme.colors.white};
     }
   }
 `;
@@ -69,14 +72,15 @@ export const EditInputValue = styled.input`
   font-size: ${theme.fontSize.title18};
   font-weight: ${theme.fontWeight.medium};
   border: none;
-  border-radius: 8px;
-  padding-right: 1rem;
+  border-bottom: 1px solid ${theme.colors.orange01};
+  padding: 0 1rem;
   text-align: left;
   :focus {
     outline: none;
   }
   ::placeholder {
     text-align: left;
+    color: ${theme.colors.gray30};
   }
 `;
 
@@ -108,17 +112,18 @@ export const MyPageTimeWrapper = styled.div`
   }
 `;
 
-export const UserBadge = styled.p`
+export const UserBadge = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 12px;
+  padding: 1rem;
   width: 18rem;
-  height: 6rem;
-  background-color: ${(props) => props.theme.colors.gray10};
+  height: auto;
+  background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.gray30};
+  border: 1px solid ${theme.colors.gray50};
   border-radius: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
 `;
 
 export const ProfileNavWrapper = styled.div`

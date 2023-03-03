@@ -100,7 +100,7 @@ const MyPage = () => {
         <span>내가 가진 배지</span>
         <a.UserBadge>배지</a.UserBadge>
         <div>
-          조회수/리뷰 Chart
+          <span>조회수/리뷰 Chart</span>
           <Chart />
         </div>
       </a.UserProfileWrapper>

@@ -153,9 +153,9 @@ const PointWrapper = styled.button`
   font-size: ${theme.fontSize.title18};
   font-weight: ${theme.fontWeight.medium};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.orange01};
   border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray30};
+  border-bottom: 1px solid ${(props) => props.theme.colors.orange03};
   &:hover {
     cursor: pointer;
     color: ${(props) => props.theme.colors.white};
@@ -169,8 +169,9 @@ const PointHistoryWrapper = styled.div`
   padding: 12px 24px;
   width: 100%;
   height: 360px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray50};
+  border: 1px solid ${theme.colors.gray30};
   border-radius: 10px;
   margin-bottom: 24px;
   overflow-y: auto;
