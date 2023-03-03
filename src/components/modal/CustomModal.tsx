@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 interface ModalProps {
   modal: any;
@@ -38,15 +39,15 @@ const Container = styled.div<{ width: string; height: string }>`
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   padding: 8px;
-  background-color: #f2f3f4;
+  background-color: ${theme.colors.white};
   border-radius: 8px;
   z-index: 10;
-  color: white;
+  color: ${theme.colors.white};
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  font-size: 24px;
+  font-size: ${theme.fontSize.title20};
   border: none;
 `;
 
@@ -56,7 +57,7 @@ const Canvas = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 3;
 `;
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { theme } from '../theme';
 
 export const MyPageContainer = styled.div`
   display: flex;
@@ -20,9 +21,10 @@ export const UserProfileWrapper = styled.div`
     align-items: center;
     margin-bottom: 2rem;
     width: 18rem;
+    font-size: ${theme.fontSize.title16};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
-
 
 export const UserPostWrapper = styled.div`
   width: 72rem;
@@ -32,16 +34,67 @@ export const UserNameWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 62px;
   margin: 10px auto 30px auto;
-  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
   div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 14rem;
-    height: 28px;
-    font-size: 100%;
+    width: auto;
+    height: 2rem;
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${theme.fontWeight.bold};
+    border-bottom: 1px solid ${theme.colors.orange01};
+    &:hover {
+      cursor: pointer;
+      color: ${(props) => props.theme.colors.gray40};
+      border-bottom: 1px solid ${theme.colors.orange03};
+    }
+  }
+  button {
+    width: 4rem;
+    height: 2rem;
+    font-size: ${theme.fontSize.title16};
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange01};
+    border: 1px solid ${theme.colors.orange01};
+    border-radius: 10px;
+    &:hover {
+      cursor: pointer;
+      background-color: ${(props) => props.theme.colors.orange03};
+      color: ${(props) => props.theme.colors.white};
+    }
+  }
+`;
+
+export const EditInputValue = styled.input`
+  width: 14rem;
+  height: 28px;
+  font-size: ${theme.fontSize.title18};
+  font-weight: ${theme.fontWeight.medium};
+  border: none;
+  border-bottom: 1px solid ${theme.colors.orange01};
+  padding: 0 1rem;
+  text-align: left;
+  :focus {
+    outline: none;
+  }
+  ::placeholder {
+    text-align: left;
+    color: ${theme.colors.gray30};
+  }
+`;
+
+export const MyPageTimeWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 18rem;
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
   button {
     width: 62px;
@@ -59,44 +112,18 @@ export const UserNameWrapper = styled.div`
   }
 `;
 
-export const EditInputValue = styled.input`
-  width: 14rem;
-  height: 28px;
-  font-size: 100%;
-  border: none;
-  border-radius: 8px;
-  padding: 0px 12px;
-  text-align: center;
-  :focus {
-    outline: none;
-  }
-`;
-
-export const MyPageTimeWrapper = styled.div`
+export const UserBadge = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
+  padding: 1rem;
   width: 18rem;
-  div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-`;
-
-export const UserBadge = styled.p`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 12px;
-  width: 18rem;
-  height: 6rem;
-  background-color: ${(props) => props.theme.colors.gray10};
+  height: auto;
+  background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.gray30};
+  border: 1px solid ${theme.colors.gray50};
   border-radius: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
 `;
 
 export const ProfileNavWrapper = styled.div`
@@ -108,26 +135,29 @@ export const ProfileNavWrapper = styled.div`
   button {
     width: 8rem;
     height: 32px;
-    font-size: 100%;
+    font-size: ${theme.fontSize.title16};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.gray20};
+    color: ${(props) => props.theme.colors.orange01};
     border: none;
-    border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
+    border-bottom: 2px solid ${(props) => props.theme.colors.orange01};
     &:hover {
       cursor: pointer;
-      color: ${(props) => props.theme.colors.gray30};
-      border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
+      color: ${(props) => props.theme.colors.white};
+      background-color: ${theme.colors.orange03};
+      border-bottom: 2px solid ${(props) => props.theme.colors.orange03};
+      border-start-start-radius: 10px;
+      border-start-end-radius: 10px;
     }
   }
 `;
 
 export const CategoryListWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   padding: 12px;
   width: 100%;
-  height: 50rem;
+  height: auto;
   background-color: ${(props) => props.theme.colors.gray10};
   color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;

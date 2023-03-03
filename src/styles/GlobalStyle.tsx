@@ -1,5 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
+
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
   html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,

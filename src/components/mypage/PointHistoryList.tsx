@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getOnSalePosts } from '../../api';
+import { theme } from '../../styles/theme';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -55,8 +56,11 @@ const PointHistoryList = () => {
 
   // nav 스타일
   const categoryStyle = {
-    color: `#656565`,
-    borderBottom: `2px solid #666666`,
+    color: `${theme.colors.white}`,
+    backgroundColor: `${theme.colors.orange01}`,
+    borderBottom: `2px solid ${theme.colors.orange01}`,
+    borderStartStartRadius: `10px`,
+    borderStartEndRadius: `10px`,
   };
 
   return (
@@ -148,15 +152,19 @@ const PlusOrMinus = styled.div`
 const PointWrapper = styled.button`
   width: 8rem;
   height: 32px;
-  font-size: 100%;
+  font-size: ${theme.fontSize.title18};
+  font-weight: ${theme.fontWeight.medium};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.orange01};
   border: none;
-  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
+  border-bottom: 1px solid ${(props) => props.theme.colors.orange01};
   &:hover {
     cursor: pointer;
-    color: ${(props) => props.theme.colors.gray30};
-    border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
+    color: ${(props) => props.theme.colors.white};
+    background-color: ${theme.colors.orange03};
+    border-bottom: 2px solid ${(props) => props.theme.colors.orange03};
+    border-start-start-radius: 10px;
+    border-start-end-radius: 10px;
   }
 `;
 
@@ -165,8 +173,9 @@ const PointHistoryWrapper = styled.div`
   padding: 12px 24px;
   width: 100%;
   height: 360px;
-  background-color: ${(props) => props.theme.colors.gray20};
-  color: ${(props) => props.theme.colors.gray30};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray50};
+  border: 1px solid ${theme.colors.gray30};
   border-radius: 10px;
   margin-bottom: 24px;
   overflow-y: auto;

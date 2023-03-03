@@ -151,6 +151,7 @@ const SignUp = () => {
             displayName: getValues('nickName'),
           })
             .then(() => {
+
               const authObserver = auth.onAuthStateChanged((user) => {
                 if (user) {
                   sessionStorage.setItem('user', JSON.stringify(user));
@@ -160,6 +161,7 @@ const SignUp = () => {
               });
               navigate('/');
               return () => authObserver();
+
             })
             .catch(() => {
               customWarningAlert('다시 가입을 시도해주세요');
