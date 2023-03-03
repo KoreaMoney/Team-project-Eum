@@ -48,16 +48,16 @@ const Home = () => {
   };
 
   return (
-    <HomeContainer>
+    <a.HomeContainer>
       <div>
         <Banner />
       </div>
 
-      <HomePostContainer>
-        <HotEum>
+      <a.HomePostContainer>
+        <a.HotEum>
           <span>핫한 이음이 친구들</span>
           <p>재능이 가장 많은 이음이 친구들 4분을 모셔봤어요!</p>
-        </HotEum>
+        </a.HotEum>
         <HotKingWrapper>
           <KingBox>
             <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
@@ -84,27 +84,27 @@ const Home = () => {
             <KingContext>여기에는 내용이 들어갑니다</KingContext>
           </KingBox>
         </HotKingWrapper>
-        <Line />
-        <HotEum>
+        <a.Line />
+        <a.HotEum>
           <span>요즘 잘 나가요</span>
           <p>많은 사랑을 받은 이음인이에요!</p>
-        </HotEum>
+        </a.HotEum>
         <PostContainer>
           <Slider {...settings}>
             {data
               ?.slice(0, 9)
               .sort((a: any, b: any) => b.like.length - a.like.length)
               .map((post: postType) => (
-                <PostWrapper
+                <a.PostWrapper
                   key={post.id}
                   onClick={() => handlePostClick(post)}
                 >
-                  <PostImg bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                  <PostInfoWrapper>
-                    <InfoBest>Best</InfoBest>
-                    <InfoTitle>{post.title}</InfoTitle>
-                    <InfoProfile>
-                      <ProfileIMG
+                  <a.PostImg bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                  <a.PostInfoWrapper>
+                    <a.InfoBest>Best</a.InfoBest>
+                    <a.InfoTitle>{post.title}</a.InfoTitle>
+                    <a.InfoProfile>
+                      <a.ProfileIMG
                         profileIMG={
                           post?.profileImg ? post?.profileImg : basicIMG
                         }
@@ -115,18 +115,18 @@ const Home = () => {
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         원
                       </p>
-                    </InfoProfile>
-                    <InfoNickName>{post.nickName}</InfoNickName>
-                  </PostInfoWrapper>
-                </PostWrapper>
+                    </a.InfoProfile>
+                    <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                  </a.PostInfoWrapper>
+                </a.PostWrapper>
               ))}
           </Slider>
         </PostContainer>
-        <Line />
-        <HotEum>
+        <a.Line />
+        <a.HotEum>
           <span>새로운 재능이 나왔어요</span>
           <p>따근따근 방금 올라온 게시물이에요!</p>
-        </HotEum>
+        </a.HotEum>
         <NewContentsWrapper>
           <Slider {...settings}>
             {data
@@ -134,12 +134,12 @@ const Home = () => {
               ?.slice(0, 9)
               .map((post: postType) => (
                 <div key={post.id} onClick={() => handlePostClick(post)}>
-                  <PostImg bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                  <PostInfoWrapper>
+                  <a.PostImg bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+                  <a.PostInfoWrapper>
                     <InfoNew>New</InfoNew>
-                    <InfoTitle>{post.title}</InfoTitle>
-                    <InfoProfile>
-                      <ProfileIMG
+                    <a.InfoTitle>{post.title}</a.InfoTitle>
+                    <a.InfoProfile>
+                      <a.ProfileIMG
                         profileIMG={
                           post?.profileImg ? post?.profileImg : basicIMG
                         }
@@ -150,56 +150,18 @@ const Home = () => {
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         원
                       </p>
-                    </InfoProfile>
-                    <InfoNickName>{post.nickName}</InfoNickName>
-                  </PostInfoWrapper>
+                    </a.InfoProfile>
+                    <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                  </a.PostInfoWrapper>
                 </div>
               ))}
           </Slider>
         </NewContentsWrapper>
-      </HomePostContainer>
-    </HomeContainer>
+      </a.HomePostContainer>
+    </a.HomeContainer>
   );
 };
 export default Home;
-const Line = styled.div`
-  width: 1200px;
-  height: 56px;
-  border-top: 2px solid ${theme.colors.gray10};
-`;
-
-const HomeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HomePostContainer = styled.div`
-  width: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const HotEum = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
-
-  span {
-    font-size: ${(props) => props.theme.fontSize.title32};
-    font-weight: ${(props) => props.theme.fontWeight.bold};
-    margin-bottom: 20px;
-  }
-  p {
-    font-size: ${(props) => props.theme.fontSize.title16};
-    margin-bottom: 15px;
-  }
-`;
 
 const HotKingWrapper = styled.div`
   display: flex;
@@ -261,68 +223,6 @@ const PostContainer = styled.div`
   .slick-prev:before {
     margin-right: 30px;
   }
-`;
-
-const PostWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 370px;
-  height: 352px;
-`;
-
-const PostImg = styled.div<{ bgPhoto: string }>`
-  width: 70%;
-  height: 200px;
-  margin: auto;
-  background-image: url(${(props) => props.bgPhoto});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 10px;
-`;
-
-const PostInfoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  line-height: 32px;
-`;
-
-const InfoBest = styled.div`
-  text-decoration: underline;
-  color: ${theme.colors.green};
-  font-size: ${(props) => props.theme.fontSize.title16};
-  font-weight: ${(props) => props.theme.fontWeight.medium};
-`;
-
-const InfoTitle = styled.span`
-  font-size: ${(props) => props.theme.fontSize.title20};
-`;
-
-const InfoProfile = styled.div`
-  font-size: ${(props) => props.theme.fontSize.title18};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-`;
-
-const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
-  width: 1.7rem;
-  height: 1.7rem;
-  border-radius: 100%;
-  background-image: url(${(props) => props.profileIMG});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const InfoNickName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title16};
-  color: ${theme.colors.gray30};
 `;
 
 const NewContentsWrapper = styled.div`

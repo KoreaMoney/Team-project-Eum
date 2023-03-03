@@ -151,7 +151,7 @@ const SignUp = () => {
             displayName: getValues('nickName'),
           })
             .then(() => {
-              navigate('/signin');
+              navigate('/');
             })
             .catch(() => {
               customWarningAlert('다시 가입을 시도해주세요');

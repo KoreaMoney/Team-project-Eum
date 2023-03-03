@@ -9,8 +9,8 @@ import {
   useScroll,
 } from 'framer-motion';
 import styled from 'styled-components';
-import { BsPersonCircle, BsSearch } from 'react-icons/bs';
-import { GiHamburgerMenu } from 'react-icons/gi';
+import { BsPersonCircle } from 'react-icons/bs';
+import SearchInput from '../etc/SearchInput';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -81,9 +81,7 @@ const Header = () => {
           </CategoryWrapper>
         </HeaderWrapper>
         <HeaderRightWrapper>
-          <SearchBtn>
-            <BsSearch size={20} />
-          </SearchBtn>
+          <SearchInput />
           {saveUser && (
             <>
               <span>
@@ -91,16 +89,22 @@ const Header = () => {
                   to={`/mypage/${saveUser.uid}`}
                   aria-label="마이페이지 이동"
                 >
-                  <BsPersonCircle size={24} />
+                  <BsPersonCircle size={26} />
                 </Link>
               </span>
+              <WriteBtn
+                onClick={() => {
+                  navigate('/writepage');
+                }}
+              >
+                글쓰기
+              </WriteBtn>
             </>
           )}
 
           <LogOutBtn onClick={() => handelClickLogOut()} aria-label="로그아웃">
             {!saveUser ? '로그인' : '로그아웃'}
           </LogOutBtn>
-          <GiHamburgerMenu size={20} />
         </HeaderRightWrapper>
       </HeaderContainer>
     </Nav>
@@ -112,7 +116,7 @@ const Nav = styled(motion.nav)`
   display: flex;
   align-items: center;
   position: sticky;
-  height: 100px;
+  height: 112px;
   width: 100%;
   top: 0;
   padding: 20px 60px;
@@ -123,9 +127,9 @@ const Nav = styled(motion.nav)`
 const navVariants = {
   top: { backgroundColor: 'rgba(255,255,255,1)' },
   scroll: {
-    backgroundColor: 'rgba(194,193,193,0.4)',
+    backgroundColor: 'rgba(255,255,255,1)',
   },
-};  
+};
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -137,14 +141,14 @@ const HeaderContainer = styled.div`
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 50%;
   height: 40px;
 `;
 
 const Logo = styled.div`
   display: flex;
   width: 130px;
-  height: 40px;
+  height: 42px;
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
@@ -155,7 +159,7 @@ const CategoryWrapper = styled.div`
   align-items: center;
   font-weight: ${(props) => props.theme.fontWeight.medium};
   font-size: ${(props) => props.theme.fontSize.title20};
-  width: 300px;
+  width: 80%;
   height: 40px;
 `;
 
@@ -171,6 +175,7 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  cursor: pointer;
   &:hover {
     color: ${(props) => props.theme.colors.orange03};
   }
@@ -191,13 +196,24 @@ const HeaderRightWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 15%;
+  width: 40%;
   height: 40px;
 `;
 
-const SearchBtn = styled.button`
-  border: none;
+const WriteBtn = styled.button`
   background-color: transparent;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  border: 2px solid ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange01};
+  border-radius: 23px;
+  width: 81px;
+
+  cursor: pointer;
+  &:hover {
+    border: 2px solid ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.black};
+  }
 `;
 
 const LogOutBtn = styled.button`
@@ -205,6 +221,12 @@ const LogOutBtn = styled.button`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   border: 2px solid ${(props) => props.theme.colors.black};
-  border-radius: 15px;
-  width: 100px;
+  border-radius: 23px;
+  width: 94px;
+
+  cursor: pointer;
+  &:hover {
+    border: 2px solid ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange01};
+  }
 `;
