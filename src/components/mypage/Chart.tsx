@@ -32,7 +32,8 @@ const Chart = () => {
             },
             {
               name: 'Review',
-              data: chartList?.map((point) => Number(point.tsCount)) ?? [],
+              data:
+                chartList?.map((point) => Number(point.commentsCount)) ?? [],
             },
           ]}
           options={{
