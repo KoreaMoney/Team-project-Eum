@@ -13,6 +13,7 @@ import * as a from '../styles/styledComponent/myPage';
 import Chart from '../components/mypage/Chart';
 import UserTime from '../components/mypage/UserTime';
 import UserName from '../components/mypage/UserName';
+import { theme } from '../styles/theme';
 
 const MyPage = () => {
   const [category, setCategory] = useState('likelist');
@@ -86,8 +87,12 @@ const MyPage = () => {
 
   // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
-    color: `#656565`,
-    borderBottom: `2px solid #666666`,
+    fontWeight: `${theme.fontWeight.bold}`,
+    color: `${theme.colors.white}`,
+    backgroundColor: `${theme.colors.orange01}`,
+    borderBottom: `2px solid ${theme.colors.orange01}`,
+    borderStartStartRadius: `10px`,
+    borderStartEndRadius: `10px`,
   };
 
   return (
