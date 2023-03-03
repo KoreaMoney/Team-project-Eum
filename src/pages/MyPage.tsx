@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import ProfileImg from '../components/mypage/ProfileImg';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
-  getUsers,
-  patchUsers,
   getOnSalePostBuyer,
   getOnSalePostSeller,
   getWriteMyComments,

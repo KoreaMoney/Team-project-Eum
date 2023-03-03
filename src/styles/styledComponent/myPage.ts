@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { theme } from '../theme';
 
 export const MyPageContainer = styled.div`
   display: flex;
@@ -23,7 +24,6 @@ export const UserProfileWrapper = styled.div`
   }
 `;
 
-
 export const UserPostWrapper = styled.div`
   width: 72rem;
 `;
@@ -32,16 +32,20 @@ export const UserNameWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 62px;
   margin: 10px auto 30px auto;
-  border-bottom: 2px solid ${(props) => props.theme.colors.gray20};
   div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 14rem;
+    width: auto;
     height: 28px;
-    font-size: 100%;
+    padding-right: 1rem;
+    font-size: ${theme.fontSize.title32};
+    font-weight: ${theme.fontWeight.bold};
+    &:hover {
+      cursor: pointer;
+      color: ${(props) => props.theme.colors.gray40};
+    }
   }
   button {
     width: 62px;
@@ -62,13 +66,17 @@ export const UserNameWrapper = styled.div`
 export const EditInputValue = styled.input`
   width: 14rem;
   height: 28px;
-  font-size: 100%;
+  font-size: ${theme.fontSize.title18};
+  font-weight: ${theme.fontWeight.medium};
   border: none;
   border-radius: 8px;
-  padding: 0px 12px;
-  text-align: center;
+  padding-right: 1rem;
+  text-align: left;
   :focus {
     outline: none;
+  }
+  ::placeholder {
+    text-align: left;
   }
 `;
 
@@ -83,6 +91,20 @@ export const MyPageTimeWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+  }
+  button {
+    width: 62px;
+    height: 28px;
+    font-size: 100%;
+    background-color: ${(props) => props.theme.colors.gray30};
+    color: ${(props) => props.theme.colors.white};
+    border: none;
+    border-radius: 10px;
+    &:hover {
+      cursor: pointer;
+      background-color: ${(props) => props.theme.colors.gray20};
+      color: ${(props) => props.theme.colors.gray30};
+    }
   }
 `;
 
@@ -122,12 +144,12 @@ export const ProfileNavWrapper = styled.div`
 `;
 
 export const CategoryListWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   padding: 12px;
   width: 100%;
-  height: 50rem;
+  height: auto;
   background-color: ${(props) => props.theme.colors.gray10};
   color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;

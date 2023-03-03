@@ -11,12 +11,14 @@ const UserTime = () => {
   const [editTime, setEditTime] = useState(false);
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  // 로그인한 유저 정보를 받아옵니다.
+  /* 1. 로그인한 유저 정보를 받아옵니다.
+   * 2. 유저의 연락 가능한 시간에 접근해서 patch합니다.
+   */
   const { isLoading: getLoading, data } = useQuery(
     ['users', saveUser.uid],
     () => getUsers(saveUser.uid)
   );
-  // 로그인한 유저의 연락 가능한 시간에 접근해서 patch합니다.
+
   const { isLoading: editUserTimeLoading, mutate: editUserTimeMutate } =
     useMutation((user: { id: string; contactTime: string }) =>
       patchUsers(saveUser.uid, user)
