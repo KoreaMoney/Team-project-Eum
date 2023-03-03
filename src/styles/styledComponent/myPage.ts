@@ -135,15 +135,18 @@ export const ProfileNavWrapper = styled.div`
   button {
     width: 8rem;
     height: 32px;
-    font-size: 100%;
+    font-size: ${theme.fontSize.title16};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.gray20};
+    color: ${(props) => props.theme.colors.orange01};
     border: none;
-    border-bottom: 2px solid ${(props) => props.theme.colors.gray10};
+    border-bottom: 2px solid ${(props) => props.theme.colors.orange01};
     &:hover {
       cursor: pointer;
-      color: ${(props) => props.theme.colors.gray30};
-      border-bottom: 2px solid ${(props) => props.theme.colors.gray30};
+      color: ${(props) => props.theme.colors.white};
+      background-color: ${theme.colors.orange03};
+      border-bottom: 2px solid ${(props) => props.theme.colors.orange03};
+      border-start-start-radius: 10px;
+      border-start-end-radius: 10px;
     }
   }
 `;

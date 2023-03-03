@@ -57,8 +57,10 @@ const PointHistoryList = () => {
   // nav 스타일
   const categoryStyle = {
     color: `${theme.colors.white}`,
-    borderRadius: `10px`,
     backgroundColor: `${theme.colors.orange01}`,
+    borderBottom: `2px solid ${theme.colors.orange01}`,
+    borderStartStartRadius: `10px`,
+    borderStartEndRadius: `10px`,
   };
 
   return (
@@ -155,12 +157,14 @@ const PointWrapper = styled.button`
   background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.orange01};
   border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.orange03};
+  border-bottom: 1px solid ${(props) => props.theme.colors.orange01};
   &:hover {
     cursor: pointer;
     color: ${(props) => props.theme.colors.white};
-    border-radius: 10px;
     background-color: ${theme.colors.orange03};
+    border-bottom: 2px solid ${(props) => props.theme.colors.orange03};
+    border-start-start-radius: 10px;
+    border-start-end-radius: 10px;
   }
 `;
 
