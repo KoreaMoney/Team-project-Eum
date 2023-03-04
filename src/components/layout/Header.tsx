@@ -60,6 +60,7 @@ const Header = () => {
   useEffect(() => {
     const handlePopState = () => {
       setWriteActive(false);
+      setActiveIndex(-1);
     };
     window.onpopstate = handlePopState;
     return () => {
