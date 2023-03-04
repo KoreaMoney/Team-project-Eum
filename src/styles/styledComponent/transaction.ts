@@ -6,34 +6,7 @@ export const TransactionContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const TransactionText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
 
-  h1 {
-    text-align: center;
-    font-weight: 800;
-    font-size: 50px;
-  }
-
-  button {
-    position: absolute;
-    top: 10rem;
-    bottom: 0;
-    background-color: transparent;
-    border: none;
-    color: yellow;
-  }
-`;
 
 export const TransactionWrapper = styled.div`
   display: flex;

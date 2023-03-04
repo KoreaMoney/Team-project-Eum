@@ -24,7 +24,8 @@ const WritePage = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLSelectElement>(null);
+  const [category, setCategory] = useState('')
+
   const toolbarOptions = [
     // [{ header: [1, 2, 3, false] }],
     [{ align: [] }],
@@ -68,10 +69,11 @@ const WritePage = () => {
   const sellerUid = saveUser.uid;
   const nickName = user?.nickName;
 
+
   const { mutate } = useMutation((newPost: postType) => postPosts(newPost), {
     onSuccess: () => {
       setTimeout(() => {
-        navigate(`/detail/${post.category}/${post.id}`);
+        navigate(`/detail/${category}/${post.id}`);
       }, 500);
     },
   });
@@ -90,7 +92,7 @@ const WritePage = () => {
     content: '',
     price: 0,
     imgURL: '',
-    category: '',
+    category:'',
     like: [],
     views: 0,
     createAt: Date.now(),
@@ -98,9 +100,9 @@ const WritePage = () => {
     tsCount: 0,
     commentsCount: 0,
   });
-
+console.log('post.category: ', post.category);
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
-  const { title, content, price, imgURL, category } = post;
+  const { title, content, price, imgURL } = post;
 
   // user정보가 있을 때에는 이렇게 저장됩니다.
   useEffect(() => {
@@ -121,9 +123,6 @@ const WritePage = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
       };
-
-
-      
     }
   };
 
@@ -157,12 +156,16 @@ const WritePage = () => {
     });
   };
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
-  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPost({
-      ...post,
-      category: e.target.value,
-    });
-  };
+// const onClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+//  const value = e.currentTarget.value;
+//  setPost({
+//    ...post,
+//    category: value,
+//  });
+// };
+
+
+  
 
   // React-quill 웹 에디터의 value -> html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거
   const parsingHtml = (html: string): string => {
@@ -174,7 +177,6 @@ const WritePage = () => {
   const validation = () => {
     if (!category) {
       customInfoAlert('카테고리를 선택해주세요');
-      categoryRef.current?.focus();
       return true;
     }
     if (!title.trim()) {
@@ -202,6 +204,7 @@ const WritePage = () => {
     }
     const newPost: postType = {
       ...post,
+      category: category,
       price: Number(price.toString().replace(/[^0-9]/g, '')),
     };
     await mutate(newPost); //
@@ -211,97 +214,118 @@ const WritePage = () => {
   if (!saveUser) {
     return <SignIn />;
   }
-
+  const deleteImg = () => {
+    setPost({ ...post, imgURL: '' });
+  };
   return (
     <a.WriteContainer>
-      <a.WriteWrapper>
-        <a.WriteForm onSubmit={onSubmitHandler}>
-          <a.WriteInputWrapper>
-            <a.WriteCategory>
-              <select
-                name="pets"
-                id="pet-select"
-                onChange={onChangeCategory}
-                ref={categoryRef}
-              >
-                <option value="" aria-label="선택하기">
-                  --선택--
-                </option>
-                <option value="play" aria-label="놀이">
-                  놀이
-                </option>
-                <option value="study" aria-label="공부">
-                  공부
-                </option>
-                <option value="advice" aria-label="상담">
-                  상담
-                </option>
-                <option value="etc" aria-label="기타">
-                  기타
-                </option>
-              </select>
-              <input
-                ref={titleRef}
-                type="text"
-                name="title"
-                value={title}
-                onChange={onChange}
-                placeholder="제목"
-                maxLength={16}
-              />
-            </a.WriteCategory>
-            <div>
-              <input
-                ref={priceRef}
-                onKeyDown={(e) =>
-                  ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                }
-                type="text"
-                name="price"
-                value={price}
-                onChange={onChangePrice}
-                placeholder="가격"
-                maxLength={11}
-                min={0}
-              />
-              원
-            </div>
-          </a.WriteInputWrapper>
-          <a.WriteQuill>
-            <ReactQuill
-              theme="snow"
-              ref={contentsRef}
-              modules={modules}
-              formats={formats}
-              value={content}
-              onChange={(value) => {
-                setPost({ ...post, content: value });
-              }}
-            />
-          </a.WriteQuill>
-          <a.Button>
-            <button aria-label="작성완료">작성완료</button>
-          </a.Button>
-        </a.WriteForm>
-        <a.WriteImgContainer>
-          <a.WriteImgWrapper>
-            <a.ImgBox img={imgURL} />
-            <a.WriteImgBtn>
-              <label htmlFor="changeImg" aria-label="사진 올리기">
-                사진 올리기
+      <a.MainTitle>글쓰기</a.MainTitle>
+      <a.WriteForm onSubmit={onSubmitHandler}>
+        <a.ContentsContainer>
+          <a.EachContainer>
+            <a.Title>사진</a.Title>
+            <a.PhotosContainer>
+              <label htmlFor="changeImg">
+                <a.AddPhotoBox>
+                  <input
+                    hidden
+                    type="file"
+                    id="changeImg"
+                    onChange={saveImgFile}
+                    ref={imgRef}
+                    name="profile_img"
+                    accept="image/*"
+                  />
+                  <a.PhotoIcon />
+                </a.AddPhotoBox>
               </label>
-            </a.WriteImgBtn>
-            <input
-              hidden
-              id="changeImg"
-              type="file"
-              placeholder="파일선택"
-              onChange={saveImgFile}
-              ref={imgRef}
+              {imgURL && (
+                <a.ImgBox img={imgURL}>
+                  <a.DeleteIcon onClick={deleteImg} />
+                </a.ImgBox>
+              )}
+            </a.PhotosContainer>
+          </a.EachContainer>
+          <a.EachContainer>
+            <a.Title>제목/가격</a.Title>
+            <a.TextInput
+              ref={titleRef}
+              type="text"
+              name="title"
+              value={title}
+              onChange={onChange}
+              placeholder="제목"
+              maxLength={16}
             />
-          </a.WriteImgWrapper>
-        </a.WriteImgContainer>
-      </a.WriteWrapper>
+            <a.TextInput
+              ref={priceRef}
+              onKeyDown={(e) =>
+                ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+              }
+              type="text"
+              name="price"
+              value={price === 0 ? '' : price}
+              onChange={onChangePrice}
+              placeholder="가격"
+              maxLength={11}
+              min={0}
+            />
+          </a.EachContainer>
+          <a.EachContainer>
+            <a.Title>카테고리</a.Title>
+            <a.CategorysContainer>
+              <a.CategoryButton
+                aria-label="공부"
+                onClick={() => setCategory('study')}
+                selected={category === 'study'}
+                type="button"
+              >
+                공부
+              </a.CategoryButton>
+              <a.CategoryButton
+                aria-label="놀이"
+                onClick={() => setCategory('play')}
+                selected={category === 'play'}
+                type="button"
+              >
+                놀이
+              </a.CategoryButton>
+              <a.CategoryButton
+                aria-label="상담"
+                onClick={() => setCategory('advice')}
+                selected={category === 'advice'}
+                type="button"
+              >
+                상담
+              </a.CategoryButton>
+              <a.CategoryButton
+                aria-label="기타"
+                onClick={() => setCategory('etc')}
+                selected={category === 'etc'}
+                type="button"
+              >
+                기타
+              </a.CategoryButton>
+            </a.CategorysContainer>
+          </a.EachContainer>
+          <a.EachContainer>
+            <a.Title>설명</a.Title>
+            <a.WriteQuill>
+              <ReactQuill
+                theme="snow"
+                ref={contentsRef}
+                modules={modules}
+                formats={formats}
+                value={content}
+                onChange={(value) => {
+                  setPost({ ...post, content: value });
+                }}
+              />
+            </a.WriteQuill>
+          </a.EachContainer>
+          <a.SubmitButton>작성 완료</a.SubmitButton>
+        </a.ContentsContainer>
+      </a.WriteForm>
     </a.WriteContainer>
   );
 };
