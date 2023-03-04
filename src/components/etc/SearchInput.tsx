@@ -9,8 +9,8 @@ import { theme } from '../../styles/theme';
  * 2. 선택 데이터 변경하기
  */
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState<string>('');
-  const [selectValue, setSelectValue] = useState<string>('');
+  const [searchText, setSearchText] = useState('');
+  const [selectValue, setSelectValue] = useState('');
   const { categoryName } = useParams();
   const [searchOpen, setSearchOpen] = useState(false);
   const inputAnimation = useAnimation();
@@ -57,7 +57,7 @@ const SearchInput = () => {
           <motion.svg
             onClick={toggleSearch}
             transition={{ type: 'linear' }}
-            animate={{ x: searchOpen ? 145 : 300 }}
+            animate={{ x: searchOpen ? 143 : 310 }}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +140,7 @@ const Input = styled(motion.input)`
   padding-left: 40px;
   width: 50%;
   height: 40px;
-  border: none;
+  border: 2px solid ${theme.colors.black};
   outline: none;
   font-size: ${theme.fontSize.title18};
 `;

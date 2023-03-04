@@ -6,8 +6,9 @@ declare module 'styled-components' {
       black: string;
       green: string;
       Blue: string;
+      orange00: string;
       orange01: string;
-      orange02: string;
+      orange02Main: string;
       orange03: string;
       gray05: string;
       gray10: string;
@@ -15,7 +16,6 @@ declare module 'styled-components' {
       gray30: string;
       gray40: string;
       gray50: string;
-      gray60: string;
     };
     fontSize: {
       ad56: string;
@@ -40,7 +40,7 @@ declare module 'styled-components' {
     fontWeight: {
       bold: number;
       medium: number;
-      reqular: number;
+      regular: number;
     };
   }
 }

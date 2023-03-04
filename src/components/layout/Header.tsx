@@ -1,6 +1,6 @@
 import { auth } from '../../firebase/Firebase';
 import { signOut } from 'firebase/auth';
-import { useMatch, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   motion,
@@ -11,16 +11,16 @@ import {
 import styled from 'styled-components';
 import { BsPersonCircle } from 'react-icons/bs';
 import SearchInput from '../etc/SearchInput';
+import { useEffect, useState } from 'react';
+import { theme } from '../../styles/theme';
 
 const Header = () => {
   const navigate = useNavigate();
-  const allMatch = useMatch('/categorypage/all');
-  const studyMatch = useMatch('/categorypage/study');
-  const playMatch = useMatch('/categorypage/play');
-  const adviceMatch = useMatch('/categorypage/advice');
-  const etcMatch = useMatch('/categorypage/etc');
+  const location = useLocation();
   const navAnimation = useAnimation();
   const { scrollY } = useScroll();
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [writeActive, setWriteActive] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', () => {
     if (scrollY.get() > 80) {
@@ -43,40 +43,77 @@ const Header = () => {
       });
   };
 
+  const writeActiveChange = () => {
+    if (!navigate) {
+      setWriteActive(false);
+    }
+    navigate('/writepage');
+    setWriteActive(true);
+    setActiveIndex(-1);
+  };
+
+  const handleClick = (index: any) => {
+    setActiveIndex(index);
+    setWriteActive(false);
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setWriteActive(false);
+    };
+    window.onpopstate = handlePopState;
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    // 라우트가 변경될 때마다 activeIndex 상태 업데이트
+    categories.forEach((category, index) => {
+      if (location.pathname === category.path) {
+        setActiveIndex(index);
+      }
+    });
+  }, [activeIndex, location]);
+
+  const categories = [
+    { label: '전체', path: '/categorypage/all' },
+    { label: '공부', path: '/categorypage/study' },
+    { label: '놀이', path: '/categorypage/play' },
+    { label: '상담', path: '/categorypage/advice' },
+    { label: '기타', path: '/categorypage/etc' },
+  ];
+
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={'top'}>
       <HeaderContainer>
         <HeaderWrapper>
-          <Link to="/" aria-label="홈으로 이동">
+          <Link
+            to="/"
+            aria-label="홈으로 이동"
+            onClick={() => {
+              setWriteActive(false);
+              setActiveIndex(-1);
+            }}
+          >
             <Logo>이음</Logo>
           </Link>
           <CategoryWrapper>
             <Items>
-              <Item>
-                <Link to="/categorypage/all" aria-label="전체">
-                  전체{allMatch && <Bar layoutId="bar" />}
-                </Link>
-              </Item>
-              <Item>
-                <Link to="/categorypage/study" aria-label="공부">
-                  공부 {studyMatch && <Bar layoutId="bar" />}
-                </Link>
-              </Item>
-              <Item>
-                <Link to="/categorypage/play" aria-label="놀이">
-                  놀이 {playMatch && <Bar layoutId="bar" />}
-                </Link>
-              </Item>
-              <Item>
-                <Link to="/categorypage/advice" aria-label="상담">
-                  상담 {adviceMatch && <Bar layoutId="bar" />}
-                </Link>
-              </Item>
-              <Item>
-                <Link to="/categorypage/etc" aria-label="기타">
-                  기타 {etcMatch && <Bar layoutId="bar" />}
-                </Link>
-              </Item>
+              {categories.map((category, index) => (
+                <Item
+                  key={index}
+                  className={activeIndex === index ? 'active' : ''}
+                >
+                  <Link
+                    to={category.path}
+                    onClick={() => handleClick(index)}
+                    aria-label={category.label}
+                  >
+                    {category.label}
+                  </Link>
+                </Item>
+              ))}
             </Items>
           </CategoryWrapper>
         </HeaderWrapper>
@@ -90,14 +127,16 @@ const Header = () => {
                     <Link
                       to={`/mypage/${saveUser.uid}`}
                       aria-label="마이페이지 이동"
+                      onClick={() => {
+                        setWriteActive(false);
+                      }}
                     >
-                      <BsPersonCircle size={26} />
+                      <BsPersonCircle size={30} />
                     </Link>
                   </span>
                   <WriteBtn
-                    onClick={() => {
-                      navigate('/writepage');
-                    }}
+                    className={writeActive ? 'active' : ''}
+                    onClick={writeActiveChange}
                   >
                     글쓰기
                   </WriteBtn>
@@ -181,25 +220,19 @@ const Item = styled.li`
   margin-right: 40px;
   width: 50px;
   transition: color 0.3s ease-in-out;
+  color: ${(props) => props.theme.colors.gray30};
   position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.colors.orange03};
+    color: ${(props) => props.theme.colors.black};
   }
-`;
-
-const Bar = styled(motion.span)`
-  position: absolute;
-  width: 38px;
-  height: 3px;
-  bottom: -7px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  background-color: ${(props) => props.theme.colors.orange03};
+  &.active {
+    color: ${(props) => props.theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
+  }
 `;
 
 const HeaderRightContainer = styled.div`
@@ -224,8 +257,8 @@ const WriteBtn = styled.button`
   background-color: transparent;
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
-  border: 2px solid ${(props) => props.theme.colors.orange01};
-  color: ${(props) => props.theme.colors.orange01};
+  border: 2px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 23px;
   width: 81px;
   height: 40px;
@@ -233,8 +266,14 @@ const WriteBtn = styled.button`
 
   cursor: pointer;
   &:hover {
-    border: 2px solid ${(props) => props.theme.colors.black};
+    border: 3px solid ${(props) => props.theme.colors.black};
     color: ${(props) => props.theme.colors.black};
+    font-weight: ${(props) => props.theme.fontWeight.bold};
+  }
+  &.active {
+    border: 3px solid ${(props) => props.theme.colors.orange02Main};
+    color: ${(props) => props.theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
 
@@ -242,7 +281,8 @@ const LogOutBtn = styled.button`
   background-color: transparent;
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
-  border: 2px solid ${(props) => props.theme.colors.black};
+  border: 2px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 23px;
   width: 94px;
   height: 40px;
@@ -250,7 +290,8 @@ const LogOutBtn = styled.button`
 
   cursor: pointer;
   &:hover {
-    border: 2px solid ${(props) => props.theme.colors.orange01};
-    color: ${(props) => props.theme.colors.orange01};
+    border: 3px solid ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.black};
+    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;

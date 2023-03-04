@@ -96,13 +96,13 @@ const MyPage = () => {
   const categoryStyle = {
     fontSize: `${theme.fontSize.title20}`,
     fontWeight: `${theme.fontWeight.medium}`,
-    color: `${theme.colors.orange01}`,
+    color: `${theme.colors.orange02Main}`,
   };
 
   const mySellNavStyle = {
     fontSize: `${theme.fontSize.title20}`,
     fontWeight: `${theme.fontWeight.medium}`,
-    color: `${theme.colors.gray60}`,
+    color: `${theme.colors.black}`,
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
 

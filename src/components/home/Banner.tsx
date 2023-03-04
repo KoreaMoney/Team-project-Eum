@@ -51,7 +51,7 @@ const ImageContainer = styled.div`
       }
     }
     button::before {
-      color: ${theme.colors.orange01};
+      color: ${theme.colors.orange02Main};
     }
   }
   .slider .slick-list {
@@ -85,7 +85,7 @@ const SignUp = styled.span`
   top: 27.5rem;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
 `;
 

@@ -2,19 +2,19 @@ import { DefaultTheme } from 'styled-components';
 
 enum Colors {
   'WHITE' = '#FFFFFF',
-  'BLACK' = '#000000',
+  'BLACK' = '#2F3233',
   'GREEN' = '#06C755',
   'BLUE' = '#4270ED',
-  'ORANGE01' = '#FF6C2C',
-  'ORANGE02' = '#FF8955',
-  'ORANGE03' = '#FFA179',
+  'ORANGE00' = '#FFE7DD',
+  'ORANGE01' = '#FFC1A6',
+  'ORANGE02MAIN' = '#FF6C2C',
+  'ORANGE03' = '#E44B09',
   'GRAY05' = '#F9F9F9',
   'GRAY10' = '#EBEAEA',
   'GRAY20' = '#C2C1C1',
   'GRAY30' = '#999797',
   'GRAY40' = '#707070',
   'GRAY50' = '#555555',
-  'GRAY60' = '#2F3233',
 }
 
 const theme: DefaultTheme = {
@@ -23,8 +23,9 @@ const theme: DefaultTheme = {
     black: Colors.BLACK,
     green: Colors.GREEN,
     Blue: Colors.BLUE,
+    orange00: Colors.ORANGE00,
     orange01: Colors.ORANGE01,
-    orange02: Colors.ORANGE02,
+    orange02Main: Colors.ORANGE02MAIN,
     orange03: Colors.ORANGE03,
     gray05: Colors.GRAY05,
     gray10: Colors.GRAY10,
@@ -32,7 +33,6 @@ const theme: DefaultTheme = {
     gray30: Colors.GRAY30,
     gray40: Colors.GRAY40,
     gray50: Colors.GRAY50,
-    gray60: Colors.GRAY60,
   },
 
   fontSize: {
@@ -58,7 +58,7 @@ const theme: DefaultTheme = {
   fontWeight: {
     bold: 700,
     medium: 500,
-    reqular: 300,
+    regular: 300,
   },
 };
 
