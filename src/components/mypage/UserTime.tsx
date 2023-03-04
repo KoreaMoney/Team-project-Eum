@@ -129,8 +129,8 @@ const UserTimeWrapper = styled.div`
     height: 2rem;
     font-weight: ${theme.fontWeight.medium};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange01};
-    border: 1px solid ${theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${theme.colors.orange02Main};
     border-radius: 10px;
     &:hover {
       cursor: pointer;
@@ -160,8 +160,8 @@ const UserTimeEditWrapper = styled.div`
     width: 5rem;
     font-size: ${theme.fontSize.title16};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange01};
-    border: 1px solid ${theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${theme.colors.orange02Main};
     border-radius: 10px;
     &:hover {
       background-color: ${(props) => props.theme.colors.orange03};
@@ -183,7 +183,7 @@ const TimeInputWrapper = styled.div`
   align-items: center;
   width: 10rem;
   input {
-    border: 1px solid ${theme.colors.orange01};
+    border: 1px solid ${theme.colors.orange02Main};
     border-radius: 10px;
     width: 9rem;
     padding: 0.1rem 1rem;

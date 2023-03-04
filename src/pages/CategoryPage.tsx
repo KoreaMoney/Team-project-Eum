@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postType } from '../types';
-import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/category';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
 import SortPosts from '../components/categoryHome/SortPosts';
@@ -87,7 +86,7 @@ const CategoryPage = () => {
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage} =
     useInfiniteQuery(
       ['posts', categoryName ?? 'all', select, word],
       ({ pageParam = 0 }) =>

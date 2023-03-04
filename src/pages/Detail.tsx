@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import CommentsList from '../components/comment/CommentsList';
@@ -22,6 +22,7 @@ import {
 import SellerInfo from '../components/detail/SellerInfo';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
+import Loader from '../components/etc/Loader';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -157,7 +158,11 @@ const Detail = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
   if (!post || post.length === 0) {
     return <div>No data found</div>;
@@ -254,7 +259,6 @@ const Detail = () => {
           <a.InfoTopContainer>
             <a.InfoTopLeftContainer>
               <p>
-                {' '}
                 {post?.[0].category === 'all'
                   ? '전체'
                   : post?.[0].category === 'study'

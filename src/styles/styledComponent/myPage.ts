@@ -52,7 +52,7 @@ export const MyTradeNavWrapper = styled.div`
     font-size: ${theme.fontSize.title20};
     font-weight: ${theme.fontWeight.medium};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.gray60};
+    color: ${(props) => props.theme.colors.black};
     border: none;
     &:hover {
       cursor: pointer;
@@ -77,7 +77,7 @@ export const MyInfoNavWrapper = styled.div`
     font-size: ${theme.fontSize.title20};
     font-weight: ${theme.fontWeight.medium};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.gray60};
+    color: ${(props) => props.theme.colors.black};
     border: none;
     &:hover {
       cursor: pointer;
@@ -92,7 +92,7 @@ export const MyPageContentsContainer = styled.div`
   height: auto;
   padding-left: 102px;
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.gray60};
+  color: ${(props) => props.theme.colors.black};
   p {
     font-size: ${theme.fontSize.ad24};
     font-weight: ${theme.fontWeight.bold};
@@ -209,7 +209,7 @@ export const UserNameWrapper = styled.div`
     height: 2rem;
     font-size: ${theme.fontSize.title20};
     font-weight: ${theme.fontWeight.bold};
-    border-bottom: 1px solid ${theme.colors.orange01};
+    border-bottom: 1px solid ${theme.colors.orange02Main};
     &:hover {
       cursor: pointer;
       color: ${(props) => props.theme.colors.gray40};
@@ -221,8 +221,8 @@ export const UserNameWrapper = styled.div`
     height: 2rem;
     font-size: ${theme.fontSize.title16};
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange01};
-    border: 1px solid ${theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${theme.colors.orange02Main};
     border-radius: 10px;
     &:hover {
       cursor: pointer;
@@ -238,7 +238,7 @@ export const EditInputValue = styled.input`
   font-size: ${theme.fontSize.title18};
   font-weight: ${theme.fontWeight.medium};
   border: none;
-  border-bottom: 1px solid ${theme.colors.orange01};
+  border-bottom: 1px solid ${theme.colors.orange02Main};
   padding: 0 1rem;
   text-align: left;
   :focus {

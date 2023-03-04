@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
+import Loader from '../etc/Loader';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -57,8 +58,8 @@ const PointHistoryList = () => {
   // nav 스타일
   const categoryStyle = {
     color: `${theme.colors.white}`,
-    backgroundColor: `${theme.colors.orange01}`,
-    borderBottom: `2px solid ${theme.colors.orange01}`,
+    backgroundColor: `${theme.colors.orange02Main}`,
+    borderBottom: `2px solid ${theme.colors.orange02Main}`,
     borderStartStartRadius: `10px`,
     borderStartEndRadius: `10px`,
   };
@@ -90,7 +91,9 @@ const PointHistoryList = () => {
       </div>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
-          <div>Loading...</div>
+          <div>
+            <Loader />
+          </div>
         ) : category === 0 ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
@@ -155,9 +158,9 @@ const PointWrapper = styled.button`
   font-size: ${theme.fontSize.title18};
   font-weight: ${theme.fontWeight.medium};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
   border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.orange01};
+  border-bottom: 1px solid ${(props) => props.theme.colors.orange02Main};
   &:hover {
     cursor: pointer;
     color: ${(props) => props.theme.colors.white};
