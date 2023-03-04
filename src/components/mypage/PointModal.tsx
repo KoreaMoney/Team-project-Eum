@@ -114,8 +114,8 @@ const PointButton = styled.button`
   font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.medium};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange01};
-  border: 1px solid ${theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
+  border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
   &:hover {
     cursor: pointer;
@@ -173,8 +173,8 @@ const PointDepositWithdrawButton = styled.button`
   font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.bold};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange01};
-  border: 1px solid ${theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
+  border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
   &:hover {
     cursor: pointer;

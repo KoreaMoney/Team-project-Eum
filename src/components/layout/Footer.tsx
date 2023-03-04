@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 const Footer = () => {
-  const url = 'https://github.com/KoreaMoney/Final-Project-Client.git';
-
   return (
     <FooterContainer>
       <FooterWrapper>
@@ -31,6 +29,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
+  margin-top: 50px;
   width: 100%;
   height: 150px;
   background-color: #f9f9f9;

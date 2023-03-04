@@ -38,7 +38,7 @@ export const SellerContainer = styled.div`
   h2 {
     font-size: 24px;
     font-weight: ${(props) => props.theme.fontWeight.bold};
-    color: ${(props) => props.theme.colors.gray60};
+    color: ${(props) => props.theme.colors.black};
   }
 
   p {
@@ -62,7 +62,7 @@ export const ProfileWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 5rem;
-  background-color: rgba(255, 218, 24, 0.8);
+  background-color: rgba(255, 108, 44, 0.8);
 `;
 
 export const ProfileLeft = styled.div`

@@ -71,7 +71,6 @@ const CommentsList = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-
   //판매자 uid를 post를 이용해 get하기
   const { data: post } = useQuery(['post', id], () => getPostsId(id), {
     staleTime: Infinity,
@@ -142,7 +141,7 @@ const CommentsList = () => {
 export default CommentsList;
 const CommentTitleText = styled.p`
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   padding-bottom: 28px;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};

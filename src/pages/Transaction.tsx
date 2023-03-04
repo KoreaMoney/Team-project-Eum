@@ -18,6 +18,8 @@ import { CustomModal } from '../components/modal/CustomModal';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
+import Loader from '../components/etc/Loader';
+
 
 /**순서
  * 1. query-key만들기
@@ -232,7 +234,11 @@ const Transaction = () => {
   };
   //로딩 구간
   if (isLoading) {
-    return <div>Now Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
   if (!data || data.length === 0) {
     return <div>추가적인 데이터가 없습니다</div>;
@@ -306,6 +312,7 @@ const Transaction = () => {
                 </a.ClearButton>
               ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
                 <a.ClearButton aria-label="취소 완료">취소 완료</a.ClearButton>
+
               ) : null}
 
               {isDone ? (

@@ -136,7 +136,7 @@ const MyImage = styled.label`
   overflow: hidden;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange01};
+    border: 1px solid ${theme.colors.orange02Main};
   }
   img {
     width: 100%;
@@ -158,8 +158,8 @@ const ImgSubmitButton = styled.button`
   height: 2rem;
   font-size: 16px;
   background-color: ${theme.colors.white};
-  color: ${(props) => props.theme.colors.orange01};
-  border: 1px solid ${theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
+  border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
   &:hover {
     cursor: pointer;
@@ -168,7 +168,7 @@ const ImgSubmitButton = styled.button`
   }
 
   &:active {
-    background-color: ${theme.colors.orange01};
+    background-color: ${theme.colors.orange02Main};
   }
   &:disabled {
     cursor: auto;

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { AiFillHeart } from 'react-icons/ai';
 import { BsHeart, BsShare, BsHeartFill } from 'react-icons/bs';
 import { RxClock } from 'react-icons/rx';
 import { GoKebabVertical } from 'react-icons/go';
@@ -48,9 +47,9 @@ export const InfoTopLeftContainer = styled.div`
   align-items: flex-end;
   p {
     font-size: ${(props) => props.theme.fontSize.title14};
-    font-weight: ${(props) => props.theme.fontWeight.reqular};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
     line-height: ${(props) => props.theme.lineHeight.title14};
-    color: ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
     text-decoration: underline;
   }
 `;
@@ -77,13 +76,13 @@ export const IconLeftContainer = styled.div`
 export const HeartIcon = styled(BsHeart)`
   color: ${(props) => props.theme.colors.gray20};
   font-size: ${(props) => props.theme.fontSize.title14};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title14};
 `;
 
 export const LikeLength = styled.p`
   font-size: ${(props) => props.theme.fontSize.title14};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title14};
   color: ${(props) => props.theme.colors.gray20};
 `;
@@ -91,7 +90,7 @@ export const LikeLength = styled.p`
 export const ShareIcon = styled(BsShare)`
   color: ${(props) => props.theme.colors.gray20};
   font-size: ${(props) => props.theme.fontSize.title32};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title32};
   position: absolute;
   left: 8px;
@@ -127,7 +126,7 @@ export const TitleText = styled.p`
 
 export const PostNickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   color: ${(props) => props.theme.colors.gray30};
   margin-bottom: 195px;
@@ -167,7 +166,7 @@ export const LikeButtonContainer = styled.button`
   align-items: center;
   width: 64px;
   height: 64px;
-  border: 1px solid ${(props) => props.theme.colors.orange01};
+  border: 1px solid ${(props) => props.theme.colors.orange02Main};
   margin-top: 40px;
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 10px;
@@ -177,7 +176,7 @@ export const LikeButtonContainer = styled.button`
 export const NoLikeIcon = styled(BsHeart)`
   color: ${(props) => props.theme.colors.gray20};
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
 `;
 
@@ -186,7 +185,7 @@ export const LikeSubmitButton = styled.button`
   height: 64px;
   margin-top: 40px;
   border: none;
-  background-color: ${(props) => props.theme.colors.orange01};
+  background-color: ${(props) => props.theme.colors.orange02Main};
   color: ${(props) => props.theme.colors.white};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.ad24};
@@ -195,22 +194,23 @@ export const LikeSubmitButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange01};
-    border: 1px solid ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
   }
 `;
 
 export const LikeIcon = styled(BsHeartFill)`
-  color: ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
 `;
 
-
 export const NavContainer = styled.div`
+  display: flex;
   position: sticky;
-  top: 0;
+  z-index: 5;
+  top: 112px;
   width: 1200px;
   height: 80px;
   padding: 30px 0;
@@ -231,7 +231,7 @@ export const NavButtons = styled.button<NavButtonProps>`
   font-weight: ${(props) => props.theme.fontWeight.medium};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   color: ${(props) =>
-    props.active ? props.theme.colors.gray60 : props.theme.colors.gray20};
+    props.active ? props.theme.colors.black : props.theme.colors.gray20};
   cursor: pointer;
 `;
 
@@ -242,7 +242,7 @@ export const PostContentWrapper = styled.div`
 export const SellerInfoTitle = styled.div`
   width: 100%;
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   padding-bottom: 24px;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
@@ -280,7 +280,7 @@ export const Profiles = styled.div`
 `;
 export const NickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
 `;
 
@@ -297,7 +297,7 @@ export const ClockIconContainer = styled.div`
 export const ClockIcon = styled(RxClock)`
   color: ${(props) => props.theme.colors.gray20};
   font-size: ${(props) => props.theme.fontSize.title32};
-  font-weight: ${(props) => props.theme.fontWeight.reqular};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
 `;
 
 export const BadgeTitle = styled.p`
@@ -357,7 +357,7 @@ export const DropDownButton = styled.button`
   padding: 20px 0;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
 `;
 export const TransactionText = styled.div`
