@@ -145,6 +145,7 @@ export const PostPrice = styled.p`
 export const LikeContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 486px;
 `;
 
 export const NoLikeButtonContainer = styled.button`
@@ -358,4 +359,77 @@ export const DropDownButton = styled.button`
   &:hover {
     color: ${(props) => props.theme.colors.orange01};
   }
+`;
+export const TransactionText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  h1 {
+    text-align: center;
+    font-weight: 800;
+    font-size: 50px;
+  }
+
+  button {
+    position: absolute;
+    top: 10rem;
+    bottom: 0;
+    background-color: transparent;
+    border: none;
+    color: yellow;
+  }
+`;
+
+export const ClearButton = styled.button`
+  width: 100%;
+  height: 64px;
+  margin-top: 62px;
+  border: none;
+  background-color: ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.white};
+  border-radius: 10px;
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange01};
+    border: 1px solid ${(props) => props.theme.colors.orange01};
+  }
+`;
+
+export const CancelButton = styled.button`
+  width: 100%;
+  height: 64px;
+  margin-top: 62px;
+  border: 1px solid ${(props) => props.theme.colors.orange01};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.orange01};
+  border-radius: 10px;
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.orange01};
+    color: ${(props) => props.theme.colors.white};
+    border: none;
+  }
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24px;
 `;

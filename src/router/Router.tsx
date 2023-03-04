@@ -34,7 +34,7 @@ const Router = () => {
           />
           <Route path="/mypage/:id" element={<MyPage />} />
           <Route
-            path="/detail/:categoryName/:sellerId/:buyerId/:id"
+            path="/detail/:categoryName/:postId/:buyerId/:uuid"
             element={<Transaction />}
           />
         </Route>
