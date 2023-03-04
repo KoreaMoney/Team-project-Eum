@@ -80,32 +80,39 @@ const Header = () => {
             </Items>
           </CategoryWrapper>
         </HeaderWrapper>
-        <HeaderRightWrapper>
-          <SearchInput />
-          {saveUser && (
-            <>
-              <span>
-                <Link
-                  to={`/mypage/${saveUser.uid}`}
-                  aria-label="마이페이지 이동"
-                >
-                  <BsPersonCircle size={26} />
-                </Link>
-              </span>
-              <WriteBtn
-                onClick={() => {
-                  navigate('/writepage');
-                }}
-              >
-                글쓰기
-              </WriteBtn>
-            </>
-          )}
+        <HeaderRightContainer>
+          <HeaderRightWrapper>
+            <SearchInput />
+            <HeaderRightInfo>
+              {saveUser && (
+                <>
+                  <span>
+                    <Link
+                      to={`/mypage/${saveUser.uid}`}
+                      aria-label="마이페이지 이동"
+                    >
+                      <BsPersonCircle size={26} />
+                    </Link>
+                  </span>
+                  <WriteBtn
+                    onClick={() => {
+                      navigate('/writepage');
+                    }}
+                  >
+                    글쓰기
+                  </WriteBtn>
+                </>
+              )}
 
-          <LogOutBtn onClick={() => handelClickLogOut()} aria-label="로그아웃">
-            {!saveUser ? '로그인' : '로그아웃'}
-          </LogOutBtn>
-        </HeaderRightWrapper>
+              <LogOutBtn
+                onClick={() => handelClickLogOut()}
+                aria-label="로그아웃"
+              >
+                {!saveUser ? '로그인' : '로그아웃'}
+              </LogOutBtn>
+            </HeaderRightInfo>
+          </HeaderRightWrapper>
+        </HeaderRightContainer>
       </HeaderContainer>
     </Nav>
   );
@@ -134,6 +141,7 @@ const navVariants = {
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
+  text-align: center;
   width: 100%;
   height: 40px;
   justify-content: space-between;
@@ -141,13 +149,14 @@ const HeaderContainer = styled.div`
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
+  text-align: center;
   width: 50%;
-  height: 40px;
+  height: 42px;
 `;
 
 const Logo = styled.div`
   display: flex;
-  width: 130px;
+  width: 122px;
   height: 42px;
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -155,12 +164,12 @@ const Logo = styled.div`
 
 const CategoryWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   font-weight: ${(props) => props.theme.fontWeight.medium};
   font-size: ${(props) => props.theme.fontSize.title20};
-  width: 80%;
-  height: 40px;
+  width: 410px;
+  height: 20px;
 `;
 
 const Items = styled.ul`
@@ -169,7 +178,8 @@ const Items = styled.ul`
 `;
 
 const Item = styled.li`
-  margin-right: 20px;
+  margin-right: 40px;
+  width: 50px;
   transition: color 0.3s ease-in-out;
   position: relative;
   display: flex;
@@ -192,12 +202,22 @@ const Bar = styled(motion.span)`
   background-color: ${(props) => props.theme.colors.orange03};
 `;
 
+const HeaderRightContainer = styled.div`
+  width: 50%;
+`;
+
 const HeaderRightWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 40%;
-  height: 40px;
+  height: 42px;
+  width: 100%;
+`;
+
+const HeaderRightInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 70%;
 `;
 
 const WriteBtn = styled.button`
@@ -208,6 +228,8 @@ const WriteBtn = styled.button`
   color: ${(props) => props.theme.colors.orange01};
   border-radius: 23px;
   width: 81px;
+  height: 40px;
+  margin-left: 40px;
 
   cursor: pointer;
   &:hover {
@@ -223,6 +245,8 @@ const LogOutBtn = styled.button`
   border: 2px solid ${(props) => props.theme.colors.black};
   border-radius: 23px;
   width: 94px;
+  height: 40px;
+  margin-left: 40px;
 
   cursor: pointer;
   &:hover {

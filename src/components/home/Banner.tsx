@@ -70,9 +70,9 @@ const Image = styled.img`
 `;
 const Text = styled.div`
   position: absolute;
-  top: 19rem;
-  right: 0;
-  left: 980px;
+  top: 22rem;
+  left: 15%;
+  transform: translate(-50%, -50%);
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -81,9 +81,8 @@ const Text = styled.div`
 const SignUp = styled.span`
   font-size: ${(props) => props.theme.fontSize.title20};
   position: absolute;
-  right: 0;
-  left: 990px;
-  top: 28rem;
+  left: 13%;
+  top: 27.5rem;
   cursor: pointer;
   &:hover {
     color: ${(props) => props.theme.colors.orange01};

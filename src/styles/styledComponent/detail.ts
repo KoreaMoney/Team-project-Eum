@@ -206,10 +206,11 @@ export const LikeIcon = styled(BsHeartFill)`
   line-height: ${(props) => props.theme.lineHeight.ad24};
 `;
 
-
 export const NavContainer = styled.div`
+  display: flex;
   position: sticky;
-  top: 0;
+  z-index: 5;
+  top: 112px;
   width: 1200px;
   height: 80px;
   padding: 30px 0;

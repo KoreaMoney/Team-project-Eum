@@ -57,7 +57,7 @@ const SearchInput = () => {
           <motion.svg
             onClick={toggleSearch}
             transition={{ type: 'linear' }}
-            animate={{ x: searchOpen ? 140 : 335 }}
+            animate={{ x: searchOpen ? 145 : 300 }}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +115,7 @@ const Search = styled.span`
   flex-direction: row;
   justify-content: center;
   svg {
-    height: 25px;
+    height: 30px;
   }
 `;
 const SearchWrapper = styled.div`
@@ -130,13 +130,16 @@ const Select = styled(motion.select)`
   background-color: transparent;
   border: none;
   outline: none;
+  height: 40px;
+
   font-size: ${theme.fontSize.title18};
 `;
 const Input = styled(motion.input)`
   transform-origin: right center;
   background-color: transparent;
   padding-left: 40px;
-  width: 60%;
+  width: 50%;
+  height: 40px;
   border: none;
   outline: none;
   font-size: ${theme.fontSize.title18};
