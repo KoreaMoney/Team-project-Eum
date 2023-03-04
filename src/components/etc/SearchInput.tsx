@@ -57,7 +57,7 @@ const SearchInput = () => {
           <motion.svg
             onClick={toggleSearch}
             transition={{ type: 'linear' }}
-            animate={{ x: searchOpen ? 140 : 335 }}
+            animate={{ x: searchOpen ? 140 : 320 }}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"

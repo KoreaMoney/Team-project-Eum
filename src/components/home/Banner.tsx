@@ -72,7 +72,8 @@ const Text = styled.div`
   position: absolute;
   top: 19rem;
   right: 0;
-  left: 980px;
+  left: 60rem;
+  z-index: 20px;
   color: ${(props) => props.theme.colors.black};
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
