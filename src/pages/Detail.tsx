@@ -22,6 +22,7 @@ import {
 import SellerInfo from '../components/detail/SellerInfo';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
+import axios from 'axios';
 import Loader from '../components/etc/Loader';
 
 /**순서
@@ -88,6 +89,17 @@ const Detail = () => {
       staleTime: Infinity,
     }
   );
+
+  /**판매중인 글 */
+  const { data: myOnSale } = useQuery(['myOnSale'], async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${saveUser.uid}&isDone=${false}&isCancel=${false}`
+    );
+    return response.data;
+  });
+
+  console.log( 'myOnSale: ' ,myOnSale);
+  
 
   useEffect(() => {
     if (post) {
@@ -318,12 +330,21 @@ const Detail = () => {
                 >
                   <a.LikeIcon />
                 </a.LikeButtonContainer>
-                <a.LikeSubmitButton
-                  onClick={onClickApplyBuy}
-                  aria-label="바로 구매하기"
-                >
-                  바로 구매하기
-                </a.LikeSubmitButton>
+                {saveUser?.uid === post?.[0].sellerUid ? (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="판매중"
+                  >
+                    판매중({myOnSale.length === 0 ? '0' : myOnSale.length})
+                  </a.LikeSubmitButton>
+                ) : (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="바로 구매하기"
+                  >
+                    바로 구매하기
+                  </a.LikeSubmitButton>
+                )}
               </>
             ) : (
               <>
@@ -335,8 +356,12 @@ const Detail = () => {
                 </a.NoLikeButtonContainer>
 
                 {saveUser?.uid === post?.[0].sellerUid ? (
-                  <a.LikeSubmitButton aria-label="대화 중인 채팅방">
-                    대화 중인 채팅방
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="판매중"
+                  >
+                    판매중({myOnSale?.length ? myOnSale?.length : 0}
+                    )
                   </a.LikeSubmitButton>
                 ) : (
                   <a.LikeSubmitButton

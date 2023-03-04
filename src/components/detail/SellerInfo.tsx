@@ -6,11 +6,16 @@ import * as a from '../../styles/styledComponent/detail';
 import basicIMG from '../../styles/basicIMG.webp';
 
 const SellerInfo = () => {
-  const { id } = useParams();
+  const { postId, id } = useParams();
+const identifier = id ? id : postId;
 
-  const { data: post } = useQuery(['post', id], () => getPostsId(id), {
-    staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
-  });
+  const { data: post } = useQuery(
+    ['post', identifier],
+    () => getPostsId(identifier),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
   // 판매자의 프로필이미지를 위해 데이터 가져오기
   const { data: seller } = useQuery(
     ['user', post?.[0].sellerUid],
