@@ -131,13 +131,9 @@ const CommentsList = () => {
           </Fragment>
         ))}
 
-        {/* <CommentContainer ref={observerElem}>
-          {isFetching || isFetchingNextPage
-            ? 'Loading more...'
-            : hasNextPage
-            ? 'Scroll to load more posts'
-            : 'No more Reviews...'}
-        </CommentContainer> */}
+        <CommentContainer style={{border:"none", height:"0"}} ref={observerElem}>
+          
+        </CommentContainer>
       </CommentsContainer>
     </div>
   );
