@@ -1,11 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
-
-import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,
   customSuccessAlert,
