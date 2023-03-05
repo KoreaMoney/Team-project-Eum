@@ -10,7 +10,6 @@ import {
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
-import Chart from '../components/mypage/Chart';
 import UserTime from '../components/mypage/UserTime';
 import UserName from '../components/mypage/UserName';
 import { theme } from '../styles/theme';
@@ -185,7 +184,7 @@ console.log('tradeBuyData: ', myLikePostList);
           {category === '회원정보 변경' ? (
             <a.MyInfoTop>
               <div>{saveUser.displayName}님의 회원정보</div>
-              <div>비밀번호 변경› 회원탈퇴›</div>
+              <div>비밀번호 변경›　회원탈퇴›</div>
             </a.MyInfoTop>
           ) : null}
           <a.MyPageContentsWrapper>
@@ -272,25 +271,16 @@ console.log('tradeBuyData: ', myLikePostList);
                 })
               : null}
             {category === '회원정보 변경' ? (
-              <>
+              <a.MyInfoWrapper>
                 <ProfileImg />
                 <UserName />
                 <UserTime />
-                <span>내가 가진 배지</span>
                 <a.UserBadge>배지</a.UserBadge>
-                <div>
-                  <span>조회수/리뷰 Chart</span>
-                  <Chart />
-                </div>
-              </>
+              </a.MyInfoWrapper>
             ) : null}
             {category === '포인트 관리' ? (
               <>
                 <PointModal />
-                <div>
-                  <span>조회수/리뷰 Chart</span>
-                  <Chart />
-                </div>
               </>
             ) : null}
           </a.MyPageContentsWrapper>

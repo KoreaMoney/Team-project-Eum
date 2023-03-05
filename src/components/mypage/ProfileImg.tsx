@@ -109,28 +109,29 @@ export default function Profile(params: any) {
 }
 
 const UserProfileImgContainer = styled.div`
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
 `;
 
 const MyImageWrapper = styled.div`
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin: 20px auto 0 auto;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
 `;
 
 const MyImage = styled.label`
-  width: 200px;
-  height: 200px;
+  width: 155px;
+  height: 155px;
   border-radius: 50%;
   text-align: center;
   overflow: hidden;

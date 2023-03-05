@@ -194,6 +194,17 @@ export const MySellListWrapper = styled.div`
   border-bottom: 1px solid ${theme.colors.gray20};
 `;
 
+export const MyInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 590px;
+  height: auto;
+  font-size: ${theme.fontSize.title20};
+  font-weight: ${theme.fontWeight.bold};
+`;
+
 export const UserProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
