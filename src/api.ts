@@ -37,6 +37,13 @@ export const deletePosts = async (id: string) => {
   return response.data;
 };
 
+/**판매자의 post의 글들을 가져옵니다. */
+export const getSellerPosts = async (seller: string) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/posts?sellerUid=${seller}`
+  );
+  return response.data;
+};
 /**users CRUD API
  * 1. 특정 user를 출력한다
  * 2. 새로운 user를 추가한다

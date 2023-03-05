@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { commentType } from '../../types';
 import { customConfirm } from '../modal/CustomAlert';
 import { deleteComments, getPostsId, getUsers, patchUsers } from '../../api';
+import Loader from '../etc/Loader';
 
 /**순서
  * 1. 저장된 유저 정보 가져오기
@@ -130,8 +131,11 @@ const CommentsList = () => {
           </Fragment>
         ))}
 
-        <CommentContainer style={{border:"none", height:"0"}} ref={observerElem}>
-          
+        <CommentContainer
+          style={{ border: 'none', height: '0' }}
+          ref={observerElem}
+        >
+          {isFetching || isFetchingNextPage ? <Loader /> : null}
         </CommentContainer>
       </CommentsContainer>
     </div>

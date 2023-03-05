@@ -5,10 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postType } from '../types';
 import * as a from '../styles/styledComponent/category';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
-import SortPosts from '../components/categoryHome/SortPosts';
 import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
+import Loader from '../components/etc/Loader';
 import Loader from '../components/etc/Loader';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
@@ -20,7 +20,7 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   const { categoryName, select, word } = useParams();
   const observerElem = useRef<HTMLDivElement | null>(null);
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 6;
   const [sort, setSort] = useRecoilState(sortAtom);
 
   //fetchPost Category setUp
@@ -87,7 +87,14 @@ const CategoryPage = () => {
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery(
     ['posts', categoryName ?? 'all', select, word],
     ({ pageParam = 0 }) =>
       fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
@@ -135,28 +142,30 @@ const CategoryPage = () => {
     },
     [setSort]
   );
-
+ if (isLoading) {
+   return (
+     <div>
+       <Loader />
+     </div>
+   );
+ }
   return (
     <a.PageContainer>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <CategoryIntros categoryName={categoryName} />
-          <SortPosts onSortClick={handleSortClick} />
-          <a.PostsContainer>
-            {data?.pages.map((page, i) => (
-              <Fragment key={i}>
-                {page.map((post: postType) => (
-                  <Post post={post} onClick={handlePostClick} />
-                ))}
-              </Fragment>
+      <CategoryIntros categoryName={categoryName} />
+      <a.PostsContainer>
+        {data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.map((post: postType) => (
+              <Post post={post} onClick={handlePostClick} />
             ))}
+          </Fragment>
+        ))}
 
-            <a.PostContainer ref={observerElem}></a.PostContainer>
-          </a.PostsContainer>
-        </>
-      )}
+        <a.PostContainer ref={observerElem}></a.PostContainer>
+        {isFetching || isFetchingNextPage ? (
+          <Loader />
+        ) : null}
+      </a.PostsContainer>
     </a.PageContainer>
   );
 };
