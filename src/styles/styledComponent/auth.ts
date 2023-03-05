@@ -194,3 +194,117 @@ export const PassMSG = styled.p`
   margin-top: 0.3rem;
   font-size: ${theme.fontSize.title14};
 `;
+
+export const SignUpForm = styled.form`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 530px;
+`;
+
+export const SignUpInputWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 64px;
+  padding-left: 32px;
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 10px;
+`;
+
+export const SignUpPwWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 64px;
+  padding-left: 32px;
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 10px;
+  margin-top: 40px;
+`;
+
+export const SignUpPwCheckWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 64px;
+  padding-left: 32px;
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 10px;
+`;
+
+export const SignUpNickname = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  margin-top: 56px;
+`;
+
+export const SignUpNicknameWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 269px;
+  height: 100%;
+  padding-left: 32px;
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 10px;
+`;
+
+export const SignUpCheckBtn = styled.button`
+  width: 90px;
+  height: 100%;
+  color: ${theme.colors.orange02Main};
+  font-size: ${theme.fontSize.title16};
+  font-weight: ${theme.fontWeight.medium};
+  border: 1px solid ${theme.colors.orange02Main};
+  border-radius: 10px;
+  background-color: transparent;
+  &:hover {
+    cursor: pointer;
+    background-color: ${theme.colors.orange02Main};
+    color: ${theme.colors.white};
+  }
+`;
+
+export const SignUpInputNick = styled.input`
+  width: 80%;
+  height: 22px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: ${theme.fontSize.title14};
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray20};
+    font-size: 12px;
+  }
+`;
+
+export const SignUpBtn = styled.button`
+  width: 100%;
+  height: 64px;
+  border-radius: 10px;
+  margin-top: 56px;
+  background-color: ${theme.colors.orange02Main};
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeight.medium};
+  font-size: ${theme.fontSize.title16};
+  border: none;
+  outline: none;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid ${theme.colors.orange02Main};
+    background-color: ${theme.colors.white};
+    color: ${theme.colors.orange02Main};
+  }
+`;

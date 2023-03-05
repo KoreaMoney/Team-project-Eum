@@ -14,8 +14,6 @@ import {
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
 import Header from '../components/layout/Header';
-import styled from 'styled-components';
-import { theme } from '../styles/theme';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -186,11 +184,11 @@ const SignUp = () => {
       <Header />
       <a.LoginContainer>
         <a.LoginText>회원가입</a.LoginText>
-        <SignUpForm
+        <a.SignUpForm
           onSubmit={handleSubmit(onSubmitHandler)}
           aria-label="이메일 비밀번호 입력하기"
         >
-          <SignUpInputWrapper
+          <a.SignUpInputWrapper
             style={{ borderColor: errors?.email?.message ? '#ff334b' : '' }}
           >
             <a.LoginInputText>이메일 아이디</a.LoginInputText>
@@ -206,9 +204,9 @@ const SignUp = () => {
                 aria-label="닫기"
               />
             </a.LoginMiniWrapper>
-          </SignUpInputWrapper>
+          </a.SignUpInputWrapper>
           <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
-          <SignUpPwWrapper
+          <a.SignUpPwWrapper
             style={{ borderColor: errors?.pw?.message ? '#ff334b' : '' }}
           >
             <a.LoginInputText>비밀번호</a.LoginInputText>
@@ -225,9 +223,9 @@ const SignUp = () => {
                 aria-label="비밀번호 입력하기"
               />
             </a.LoginMiniWrapper>
-          </SignUpPwWrapper>
+          </a.SignUpPwWrapper>
           <a.ErrMsg>{errors.pw?.message}</a.ErrMsg>
-          <SignUpPwCheckWrapper
+          <a.SignUpPwCheckWrapper
             style={{
               borderColor: errors?.checkPw?.message ? '#ff334b' : '',
             }}
@@ -247,155 +245,41 @@ const SignUp = () => {
                 aria-label="비밀번호 확인하기"
               />
             </a.LoginMiniWrapper>
-          </SignUpPwCheckWrapper>
+          </a.SignUpPwCheckWrapper>
           <a.ErrMsg>{errors.checkPw?.message}</a.ErrMsg>
-          <SignUpNickname>
-            <SignUpNicknameWrapper
+          <a.SignUpNickname>
+            <a.SignUpNicknameWrapper
               style={{
                 borderColor: errors?.nickName?.message ? '#ff334b' : '',
               }}
             >
               <a.LoginInputText>닉네임</a.LoginInputText>
-              <SignUpInputNick
+              <a.SignUpInputNick
                 type="text"
                 placeholder=""
                 {...register('nickName')}
               />
-            </SignUpNicknameWrapper>
-            <SignUpCheckBtn
+            </a.SignUpNicknameWrapper>
+            <a.SignUpCheckBtn
               type="button"
               onClick={handleCheckOverlapNickName}
               aria-label="중복확인"
             >
               중복확인
-            </SignUpCheckBtn>
-          </SignUpNickname>
+            </a.SignUpCheckBtn>
+          </a.SignUpNickname>
           <a.ErrMsg>
             {errors.nickName?.message}
             {checkNick === 0 && errMsg}
             {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
           </a.ErrMsg>
-          <SignUpBtn disabled={registering} aria-label="회원가입">
+          <a.SignUpBtn disabled={registering} aria-label="회원가입">
             회원가입
-          </SignUpBtn>
-        </SignUpForm>
+          </a.SignUpBtn>
+        </a.SignUpForm>
       </a.LoginContainer>
       {console.log('registering', registering)}
     </>
   );
 };
 export default SignUp;
-
-const SignUpForm = styled.form`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 530px;
-`;
-
-const SignUpInputWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 64px;
-  padding-left: 32px;
-  border: 1px solid ${theme.colors.gray20};
-  border-radius: 10px;
-`;
-
-const SignUpPwWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 64px;
-  padding-left: 32px;
-  border: 1px solid ${theme.colors.gray20};
-  border-radius: 10px;
-  margin-top: 40px;
-`;
-
-const SignUpPwCheckWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 64px;
-  padding-left: 32px;
-  border: 1px solid ${theme.colors.gray20};
-  border-radius: 10px;
-`;
-
-const SignUpNickname = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 64px;
-  margin-top: 56px;
-`;
-
-const SignUpNicknameWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 269px;
-  height: 100%;
-  padding-left: 32px;
-  border: 1px solid ${theme.colors.gray20};
-  border-radius: 10px;
-`;
-
-const SignUpCheckBtn = styled.button`
-  width: 90px;
-  height: 100%;
-  color: ${theme.colors.orange02Main};
-  font-size: ${theme.fontSize.title16};
-  font-weight: ${theme.fontWeight.medium};
-  border: 1px solid ${theme.colors.orange02Main};
-  border-radius: 10px;
-  background-color: transparent;
-  &:hover {
-    cursor: pointer;
-    background-color: ${theme.colors.orange02Main};
-    color: ${theme.colors.white};
-  }
-`;
-
-const SignUpInputNick = styled.input`
-  width: 80%;
-  height: 22px;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: ${theme.fontSize.title14};
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    color: ${(props) => props.theme.colors.gray20};
-    font-size: 12px;
-  }
-`;
-
-const SignUpBtn = styled.button`
-  width: 100%;
-  height: 64px;
-  border-radius: 10px;
-  margin-top: 56px;
-  background-color: ${theme.colors.orange02Main};
-  color: ${theme.colors.white};
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.title16};
-  border: none;
-  outline: none;
-  &:hover {
-    cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
-    background-color: ${theme.colors.white};
-    color: ${theme.colors.orange02Main};
-  }
-`;
