@@ -1,0 +1,354 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  customConfirm,
+  customSuccessAlert,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
+import { auth } from '../firebase/Firebase';
+import SignIn from './SignIn';
+import parse from 'html-react-parser';
+import basicIMG from '../styles/basicIMG.webp';
+import * as a from '../styles/styledComponent/detail';
+import { userType } from '../types';
+import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
+import { IoExitOutline } from 'react-icons/io5';
+import { CustomModal } from '../components/modal/CustomModal';
+import { useRecoilState } from 'recoil';
+import { isCancelAtom, isDoneAtom } from '../atom';
+import SellerInfo from '../components/detail/SellerInfo';
+import Loader from '../components/etc/Loader';
+
+/**순서
+ * 1. query-key만들기
+ * 2. 판매자, 구매자 데이터 가져오기
+ * 3. 포인트 취소, 완료, 환불 기능추가하기
+ */
+const Transaction = () => {
+  const navigate = useNavigate();
+
+  const [isDrop, setIsDrop] = useState(false);
+  const { uuid } = useParams();
+  const [current, setCurrent] = useState(false);
+  const queryClient = useQueryClient();
+  const onClickBtn = () => {
+    navigate(-1);
+  };
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [isDone, setIsDone] = useRecoilState(isDoneAtom);
+  const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
+  const [isCancelConfirmed, setIsCancelConfirmed] = useState(0);
+  auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
+  const [isReviewActive, setIsReviewActive] = useState(false);
+  //쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
+  const { data, isLoading } = useQuery(
+    ['salePost', uuid],
+    () => getOnSalePost(uuid),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['salePost0', uuid]),
+    }
+  );
+  console.log('data: ', data);
+
+  const [buyerData, setBuyerData] = useState<userType | null>(null);
+  const [sellerData, setSellerData] = useState<userType | null>(null);
+
+  useEffect(() => {
+    if (data && data[0]) {
+      const fetchBuyer = async () => {
+        const buyer = await getUsers(data[0].buyerUid);
+        setBuyerData(buyer);
+      };
+      const fetchSeller = async () => {
+        const seller = await getUsers(data[0].sellerUid);
+        setSellerData(seller);
+      };
+
+      fetchBuyer();
+      fetchSeller();
+    }
+  }, [data]);
+
+  // 거래완료 시 판매자의 포인트를 더해주는 mutation 함수
+  const { mutate: updateUser } = useMutation(
+    (newUser: { point: number; isDoneCount: number }) =>
+      patchUsers(data?.[0]?.sellerUid, newUser),
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries(['sellerData', sellerData?.id]),
+    }
+  );
+
+  // 완료 시 isDone을 true로 만들기 위한 함수
+  const { mutate: clearRequest } = useMutation(
+    (newSalePosts: { isDone: boolean; doneTime: number }) =>
+      patchOnSalePost(uuid, newSalePosts),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['salePost1', uuid]);
+        setIsDone(true);
+        navigate(`/review/${data[0].id}`);
+      },
+    }
+  );
+  useEffect(() => {
+    if (data?.[0].isDone) {
+      setIsDone(true);
+    }
+  }, [data?.[0].isDone, setIsDone]);
+  useEffect(() => {
+    if (data?.[0].isCancel) {
+      setIsCancel(true);
+    }
+  }, [data?.[0].isCancel, setIsCancel]);
+
+  // 취소 시 cancel data를 업데이트 해주기 위한 함수
+  const { mutate: sellerCancel } = useMutation(
+    (newSalePost: { isSellerCancel: boolean }) =>
+      patchOnSalePost(uuid, newSalePost),
+    {
+      onSuccess: (newSalePost) => {
+        queryClient.invalidateQueries(['salePost2', uuid]);
+        if (newSalePost.isSellerCancel && newSalePost.isBuyerCancel) {
+          giveBackPoint({
+            point: Number(buyerData?.point) + Number(data?.[0]?.price),
+          });
+        }
+      },
+    }
+  );
+
+  const { mutate: buyerCancel } = useMutation(
+    (newSalePost: { isBuyerCancel: boolean }) =>
+      patchOnSalePost(uuid, newSalePost),
+    {
+      onSuccess: (newSalePost) => {
+        queryClient.invalidateQueries(['salePost3', uuid]);
+        if (newSalePost.isSellerCancel && newSalePost.isBuyerCancel) {
+          giveBackPoint({
+            point: Number(buyerData?.point) + Number(data?.[0]?.price),
+          });
+        }
+      },
+    }
+  );
+
+  const { mutate: cancelTrue } = useMutation(
+    (newSalePosts: { cancelTime: number; isCancel: boolean }) =>
+      patchOnSalePost(uuid, newSalePosts),
+    {
+      onSuccess: () => {
+        setIsCancel(true);
+        queryClient.invalidateQueries(['salePost4', uuid]);
+      },
+    }
+  );
+
+  // 취소 시 구매자의 point를 복구시켜주는 함수
+  const { mutate: giveBackPoint } = useMutation(
+    (newUser: { point: number }) => patchUsers(buyerData?.id, newUser),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['buyerData', buyerData?.id]);
+        cancelTrue({
+          cancelTime: Date.now(),
+          isCancel: true,
+        });
+      },
+    }
+  );
+  /** 포인트 순서
+   * 1. 구매자가 완료버튼을 누르면 판매자에게 price만큼 포인트를 더한다
+   * 2. 등급을 위한 user의 isDoneCount 데이터도 +1 추가
+   * 3. isDone도 true로 변경되어 판매,구매가 완료
+   */
+
+  const onClickClearRequest = async () => {
+    await updateUser({
+      point: Number(sellerData?.point) + Number(data?.[0]?.price),
+      isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
+    });
+    await clearRequest({
+      isDone: true,
+      doneTime: Date.now(),
+    });
+  };
+
+  /**현재 URL 복사 */
+  const linkCopy = () => {
+    const url = window.location.href;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        customSuccessAlert('복사되었습니다.');
+      })
+      .catch((error) => {
+        console.error(`Could not copy URL to clipboard: ${error}`);
+      });
+  };
+
+  // 판매자,구매자가 취소버튼을 누르면 실행되는 함수입니다.
+  const onClickCancel = () => {
+    queryClient.invalidateQueries(['salePost', uuid]);
+
+    customConfirm(
+      '취소 하시겠습니까?',
+      '구매자, 판매자 전부 취소버튼을 눌러야 취소됩니다.',
+      '확인',
+      async () => {
+        if (saveUser.uid === data?.[0]?.sellerUid) {
+          await sellerCancel({
+            isSellerCancel: true,
+          });
+        } else if (saveUser.uid === data?.[0]?.buyerUid) {
+          await buyerCancel({
+            isBuyerCancel: true,
+          });
+        }
+      }
+    );
+  };
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  /**후기 누르면 후기로 */
+  const goRivew = () => {
+    window.scrollTo({
+      top: 1306,
+      behavior: 'smooth',
+    });
+  };
+  /**화면 중간 네브바*/
+  const onClickNavExSeller = () => {
+    setIsDescriptionActive(true);
+    setIsReviewActive(false);
+    scrollToTop();
+  };
+  const onClickNavReview = () => {
+    setIsDescriptionActive(false);
+    setIsReviewActive(true);
+    goRivew();
+  };
+  //로딩 구간
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
+  if (!data || data.length === 0) {
+    return <div>추가적인 데이터가 없습니다</div>;
+  }
+  if (!saveUser) {
+    return <SignIn />;
+  }
+
+  return (
+    <a.DetailContainer>
+      {isDone && (
+        <a.TransactionText>
+          <button onClick={onClickBtn}>
+            <IoExitOutline size={50} />
+          </button>
+          <h1>거래가 완료되었습니다.</h1>
+        </a.TransactionText>
+      )}
+      {isCancel && (
+        <a.TransactionText>
+          <button onClick={onClickBtn}>
+            <IoExitOutline size={50} />
+          </button>
+          <h1>거래가 취소되었습니다.</h1>
+        </a.TransactionText>
+      )}
+      <a.PostContainer>
+        <a.PostImage img={data[0].imgURL} aria-label="post이미지" />
+        <a.PostInfoWrapper>
+          <a.InfoTopContainer>
+            <a.InfoTopLeftContainer>
+              <p>
+                {' '}
+                {data?.[0].category === 'all'
+                  ? '전체'
+                  : data?.[0].category === 'study'
+                  ? '공부'
+                  : data?.[0].category === 'play'
+                  ? '놀이'
+                  : data?.[0].category === 'advice'
+                  ? '상담'
+                  : data?.[0].category === 'etc'
+                  ? '기타'
+                  : '전체'}
+              </p>
+            </a.InfoTopLeftContainer>
+            <a.InfoTopRightContainer>
+              {/* <a.IconLeftContainer>
+                <a.HeartIcon />
+                <a.LikeLength>{data?.[0].like.length}</a.LikeLength>
+              </a.IconLeftContainer> */}
+              <a.IconRigntContainer>
+                <a.ShareIcon onClick={linkCopy} />
+              </a.IconRigntContainer>
+            </a.InfoTopRightContainer>
+          </a.InfoTopContainer>
+          <a.TextContainer>
+            <a.TitleText>{data?.[0].title}</a.TitleText>
+          </a.TextContainer>
+          <a.PostNickName>{data?.[0].nickName}</a.PostNickName>
+          <a.PostPrice>
+            {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
+          </a.PostPrice>
+
+          {saveUser.uid === data?.[0]?.buyerUid ||
+          saveUser.uid === data?.[0]?.sellerUid ? (
+            <a.ButtonsContainer>
+              {saveUser.uid === data?.[0].buyerUid && !isCancel ? (
+                <a.ClearButton onClick={onClickClearRequest} aria-label="완료">
+                  완료
+                </a.ClearButton>
+              ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
+                <a.ClearButton aria-label="취소 완료">취소 완료</a.ClearButton>
+              ) : null}
+
+              {isDone ? (
+                <a.CancelButton aria-label="거래종료">거래종료</a.CancelButton>
+              ) : (
+                <a.CancelButton
+                  onClick={() => {
+                    onClickCancel();
+                  }}
+                  aria-label="거래취소"
+                >
+                  거래취소
+                </a.CancelButton>
+              )}
+            </a.ButtonsContainer>
+          ) : null}
+        </a.PostInfoWrapper>
+      </a.PostContainer>
+
+      <a.PostRow>
+        <a.PostContentWrapper>
+          <a.SellerInfoTitle>
+            <p>설명</p>
+          </a.SellerInfoTitle>
+          <a.SellerInfoContent>
+            <p>{parse(data[0].content)}</p>
+          </a.SellerInfoContent>
+        </a.PostContentWrapper>
+        <a.PostContentWrapper>
+          <a.SellerInfoTitle>
+            <p>판매자</p>
+          </a.SellerInfoTitle>
+          <SellerInfo />
+        </a.PostContentWrapper>
+      </a.PostRow>
+    </a.DetailContainer>
+  );
+};
+
+export default Transaction;
