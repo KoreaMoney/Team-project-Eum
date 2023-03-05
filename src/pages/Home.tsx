@@ -45,6 +45,8 @@ const Home = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     draggable: true,
+    autoplay: true,
+    autoplaySpeed: 8000,
   };
 
   return (
@@ -90,7 +92,7 @@ const Home = () => {
             <a.Line />
             <a.HotEum>
               <span>요즘 잘 나가요</span>
-              <p>많은 사랑을 받은 이음인이에요!</p>
+              <p> 인기 급상승!&nbsp; 많은 사랑을 받은 이음인이에요!</p>
             </a.HotEum>
             <PostContainer>
               <Slider {...settings}>
@@ -129,16 +131,19 @@ const Home = () => {
             </PostContainer>
             <a.Line />
             <a.HotEum>
-              <span>새로운 재능이 나왔어요</span>
+              <span> 새로운 재능이 나왔어요</span>
               <p>따근따근 방금 올라온 게시물이에요!</p>
             </a.HotEum>
-            <NewContentsWrapper>
+            <PostContainer>
               <Slider {...settings}>
                 {data
                   ?.sort((a: any, b: any) => b.createAt - a.createAt)
                   ?.slice(0, 9)
                   .map((post: postType) => (
-                    <div key={post.id} onClick={() => handlePostClick(post)}>
+                    <a.PostWrapper
+                      key={post.id}
+                      onClick={() => handlePostClick(post)}
+                    >
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
@@ -160,10 +165,10 @@ const Home = () => {
                         </a.InfoProfile>
                         <a.InfoNickName>{post.nickName}</a.InfoNickName>
                       </a.PostInfoWrapper>
-                    </div>
+                    </a.PostWrapper>
                   ))}
               </Slider>
-            </NewContentsWrapper>
+            </PostContainer>
           </a.HomePostContainer>
         </>
       )}
@@ -204,37 +209,6 @@ const KingContext = styled.p`
 `;
 
 const PostContainer = styled.div`
-  width: 60vw;
-  height: 300px;
-  margin-bottom: 170px;
-
-  .slick-dots {
-    .slick-active {
-      button::before {
-        color: ${theme.colors.orange03};
-      }
-    }
-    button::before {
-      color: ${theme.colors.orange02Main};
-    }
-  }
-  .slider .slick-list {
-    margin: 0 -30px;
-  }
-  .slider {
-    position: relative;
-  }
-  .slick-prev:before,
-  .slick-next:before {
-    color: ${theme.colors.orange03};
-    font-size: 25px;
-  }
-  .slick-prev:before {
-    margin-right: 30px;
-  }
-`;
-
-const NewContentsWrapper = styled.div`
   width: 60vw;
   height: 300px;
   margin-bottom: 170px;

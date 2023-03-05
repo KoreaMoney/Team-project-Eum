@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { AiFillHeart } from 'react-icons/ai';
 import { HiOutlineChevronDown } from 'react-icons/hi';
+import { theme } from '../theme';
 
 export const PageContainer = styled.div`
   width: 1200px;
@@ -15,8 +15,8 @@ export const CategoryIntroTitle = styled.p`
 `;
 export const CategoryIntroContentContainer = styled.p`
   padding: 40px 0;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray20}; ;
-  margin-bottom:180px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+  margin-bottom: 180px;
 `;
 export const PTag = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
@@ -86,11 +86,26 @@ export const PostContainer = styled.div`
 
 export const PostIMG = styled.div<{ bgPhoto: string }>`
   width: 100%;
-  height: 224px;
+  height: 300px;
   background-image: url(${(props) => props.bgPhoto});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 3px ${theme.colors.gray20};
+  }
+`;
+
+export const InfoBest = styled.div`
+  text-decoration: underline;
+  margin: auto;
+  color: ${theme.colors.green};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  margin-bottom: 16px;
 `;
 
 export const ContentContainer = styled.div`
