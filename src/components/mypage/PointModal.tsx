@@ -28,8 +28,7 @@ const PointModal = () => {
     <>
       <PointModalContainer>
         <PointImgWrapper>
-          <img src="/assets/walletmoney.png" alt="지갑" loading="lazy" />
-          <div>　내 포인트</div>
+          <div>내 포인트</div>
         </PointImgWrapper>
         <CurrentPoint>
           {profileData?.[0] &&
@@ -40,24 +39,22 @@ const PointModal = () => {
           P
         </CurrentPoint>
         <PointDepositWithdrawWrapper>
-          <PointDepositWithdrawButton
-            onClick={() => {
-              pointChargeHandle();
-            }}
-            aria-label="충전하기"
-          >
-            <img src="/assets/moneysend.png" alt="충전" loading="lazy" />
-            <div>　충전하기</div>
-          </PointDepositWithdrawButton>
-          <PointDepositWithdrawButton
+          <PointWithdrawButton
             onClick={() => {
               pointWithDrawHandle();
             }}
             aria-label="출금하기"
           >
-            <img src="/assets/emptywalletadd.png" alt="출금" loading="lazy" />
-            <div>　출금하기</div>
-          </PointDepositWithdrawButton>
+            <div>출금하기</div>
+          </PointWithdrawButton>
+          <PointDepositButton
+            onClick={() => {
+              pointChargeHandle();
+            }}
+            aria-label="충전하기"
+          >
+            <div>충전하기</div>
+          </PointDepositButton>
         </PointDepositWithdrawWrapper>
         <PointHistoryList />
       </PointModalContainer>
@@ -66,61 +63,75 @@ const PointModal = () => {
 };
 
 const PointModalContainer = styled.div`
-  width: 800px;
-  height: 800px;
-  padding: 10%;
+  width: 792px;
+  height: auto;
   color: ${(props) => props.theme.colors.black};
 `;
 
 const PointImgWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   width: 100%;
-  font-size: ${theme.fontSize.title20};
-  font-weight: ${theme.fontWeight.bold};
+  font-size: ${theme.fontSize.title16};
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.gray20};
 `;
 
 const CurrentPoint = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
-  padding: 12px 40px;
+  margin-bottom: 48px;
   width: 100%;
-  height: 80px;
-  font-size: ${theme.fontSize.title20};
-  border: 1px solid ${theme.colors.gray30};
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.gray50};
-  border-radius: 10px;
+  height: 47px;
+  color: ${(props) => props.theme.colors.black};
+  font-size: ${theme.fontSize.title32};
+  font-weight: ${theme.fontWeight.bold};
 `;
 
 const PointDepositWithdrawWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  width: 100%;
-  gap: 1.5rem;
+  margin-bottom: 48px;
+  width: 588px;
+  height: auto;
+  gap: 24px;
 `;
 
-const PointDepositWithdrawButton = styled.button`
+const PointWithdrawButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  height: 72px;
-  font-size: ${theme.fontSize.title16};
-  font-weight: ${theme.fontWeight.bold};
-  background-color: ${(props) => props.theme.colors.white};
+  width: 282px;
+  height: 64px;
+  font-size: ${theme.fontSize.ad24};
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${(props) => props.theme.colors.orange00};
   color: ${(props) => props.theme.colors.orange02Main};
-  border: 1px solid ${theme.colors.orange02Main};
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.orange01};
+  }
+`;
+
+const PointDepositButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 282px;
+  height: 64px;
+  font-size: ${theme.fontSize.ad24};
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${(props) => props.theme.colors.orange02Main};
+  color: ${(props) => props.theme.colors.white};
+  border: none;
   border-radius: 10px;
   &:hover {
     cursor: pointer;
     background-color: ${(props) => props.theme.colors.orange03};
-    color: ${(props) => props.theme.colors.white};
   }
 `;
 
