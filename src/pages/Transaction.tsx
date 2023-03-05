@@ -90,6 +90,7 @@ const Transaction = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['salePost1', uuid]);
         setIsDone(true);
+        navigate(`/review/${data[0].id}`);
       },
     }
   );
@@ -305,6 +306,7 @@ const Transaction = () => {
 
           {saveUser.uid === data?.[0]?.buyerUid ||
           saveUser.uid === data?.[0]?.sellerUid ? (
+
             <>
               {buyerisCancel || data?.[0].isBuyerCancel ? (
                 <>
@@ -335,6 +337,7 @@ const Transaction = () => {
                     </>
                   )}
                 </>
+
               ) : (
                 <>
                   <a.ButtonsContainer>

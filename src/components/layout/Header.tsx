@@ -60,6 +60,7 @@ const Header = () => {
   useEffect(() => {
     const handlePopState = () => {
       setWriteActive(false);
+      setActiveIndex(-1);
     };
     window.onpopstate = handlePopState;
     return () => {
@@ -228,6 +229,7 @@ const Item = styled.li`
   cursor: pointer;
   &:hover {
     color: ${(props) => props.theme.colors.black};
+    font-weight: ${theme.fontWeight.bold};
   }
   &.active {
     color: ${(props) => props.theme.colors.orange02Main};

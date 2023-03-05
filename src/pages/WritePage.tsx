@@ -25,7 +25,7 @@ const WritePage = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('');
 
   const toolbarOptions = [
     // [{ header: [1, 2, 3, false] }],
@@ -63,14 +63,12 @@ const WritePage = () => {
   };
 
   // 글쓴이의 유저정보를 가지고옵니다.
-  const { data: user,isLoading } = useQuery(['user', saveUser.uid], () =>
+  const { data: user, isLoading } = useQuery(['user', saveUser.uid], () =>
     getUsers(saveUser.uid)
   );
 
-
   const sellerUid = saveUser.uid;
   const nickName = user?.nickName;
-
 
   const { mutate } = useMutation((newPost: postType) => postPosts(newPost), {
     onSuccess: () => {
@@ -94,7 +92,7 @@ const WritePage = () => {
     content: '',
     price: 0,
     imgURL: '',
-    category:'',
+    category: '',
     like: [],
     views: 0,
     createAt: Date.now(),
@@ -102,7 +100,7 @@ const WritePage = () => {
     tsCount: 0,
     commentsCount: 0,
   });
-console.log('post.category: ', post.category);
+  console.log('post.category: ', post.category);
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price, imgURL } = post;
 
@@ -158,16 +156,13 @@ console.log('post.category: ', post.category);
     });
   };
   // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
-// const onClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-//  const value = e.currentTarget.value;
-//  setPost({
-//    ...post,
-//    category: value,
-//  });
-// };
-
-
-  
+  // const onClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //  const value = e.currentTarget.value;
+  //  setPost({
+  //    ...post,
+  //    category: value,
+  //  });
+  // };
 
   // React-quill 웹 에디터의 value -> html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거
   const parsingHtml = (html: string): string => {
@@ -216,13 +211,13 @@ console.log('post.category: ', post.category);
   if (!saveUser) {
     return <SignIn />;
   }
-     if (isLoading) {
-       return (
-         <div>
-           <Loader />
-         </div>
-       );
-     }
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
   const deleteImg = () => {
     setPost({ ...post, imgURL: '' });
   };

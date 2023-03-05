@@ -141,13 +141,13 @@ const CategoryPage = () => {
     },
     [setSort]
   );
- if (isLoading) {
-   return (
-     <div>
-       <Loader />
-     </div>
-   );
- }
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
   return (
     <a.PageContainer>
       <CategoryIntros categoryName={categoryName} />
@@ -161,9 +161,7 @@ const CategoryPage = () => {
         ))}
 
         <a.PostContainer ref={observerElem}></a.PostContainer>
-        {isFetching || isFetchingNextPage ? (
-          <Loader />
-        ) : null}
+        {isFetching || isFetchingNextPage ? <Loader /> : null}
       </a.PostsContainer>
     </a.PageContainer>
   );
