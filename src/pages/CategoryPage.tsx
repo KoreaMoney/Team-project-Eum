@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postType } from '../types';
 import * as a from '../styles/styledComponent/category';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
-import SortPosts from '../components/categoryHome/SortPosts';
 import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
@@ -146,7 +145,6 @@ const CategoryPage = () => {
   return (
     <a.PageContainer>
       <CategoryIntros categoryName={categoryName} />
-      <SortPosts onSortClick={handleSortClick} />
       <a.PostsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
@@ -156,8 +154,7 @@ const CategoryPage = () => {
           </Fragment>
         ))}
 
-        <a.PostContainer ref={observerElem}>
-        </a.PostContainer>
+        <a.PostContainer ref={observerElem}></a.PostContainer>
       </a.PostsContainer>
     </a.PageContainer>
   );
