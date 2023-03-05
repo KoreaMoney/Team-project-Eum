@@ -25,8 +25,10 @@
 <img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/><br/>
 <img src="https://img.shields.io/badge/Recoil-blue?style=flat-square&logo=Recoil&logoColor=white"/><br/>
 <img src="https://img.shields.io/badge/React-Query-blue?style=flat-square&logo=React-Query&logoColor=black"/><br/>
-<img src="https://img.shields.io/badge/Socket.io-blue?style=flat-square&logo=Socket.io&logoColor=black"/><br/>
+<img src="https://img.shields.io/badge/React-Quill-blue?style=flat-square&logo=React-Quill&logoColor=black"/><br/>
 <img src="https://img.shields.io/badge/Styled-Components-red?style=flat-square&logo=Styled-Components&logoColor=white"/><br/><br/><br/>
+<img src="https://img.shields.io/badge/React-red?style=flat-square&logo=React&logoColor=blue"/><br/><br/><br/>
+
 
 
 ✅ 주요기능<br/><br/>
