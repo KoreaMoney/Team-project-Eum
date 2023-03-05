@@ -17,6 +17,7 @@ import {
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
 import { customWarningAlert } from '../components/modal/CustomAlert';
+import basicIMG from '../styles/basicIMG.webp';
 import Header from '../components/layout/Header';
 
 const SignIn = () => {
@@ -146,17 +147,20 @@ const SignIn = () => {
             nickName: auth.currentUser?.displayName,
             point: 10000000,
             contactTime: '',
-            profileImg: null,
+            profileImg: `${basicIMG}`,
             like: [],
             isDoneCount: 0,
             commentsCount: 0,
+            kakaoId: '',
+            birthDate:'',
             time: 0,
             fast: 0,
             manner: 0,
             service: 0,
             cheap: 0,
             donation: 0,
-            repBadge: '',
+            repBadge:'',
+
           });
         }
         navigate('/');

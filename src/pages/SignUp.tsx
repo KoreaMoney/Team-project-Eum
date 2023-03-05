@@ -13,6 +13,7 @@ import {
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
+import basicIMG from '../styles/basicIMG.webp'
 import Header from '../components/layout/Header';
 
 const SignUp = () => {
@@ -144,9 +145,11 @@ const SignUp = () => {
             point: 10000000,
             contactTime: '',
             like: [],
-            profileImg: null,
+            profileImg: `${basicIMG}`,
             isDoneCount: 0,
             commentsCount: 0,
+            kakaoId: '',
+            birthDate: '',
             time: 0,
             fast: 0,
             manner: 0,

@@ -4,6 +4,10 @@ export interface ISignUpForm {
   checkPw: string;
   nickName: string;
 }
+export interface kakaoType {
+  id: string;
+  kakao: string;
+}
 export interface NavButtonProps {
   active?: boolean;
 }
@@ -21,6 +25,8 @@ export interface userType {
   isDoneCount: number;
   commentsCount: number;
   id: string | undefined;
+  kakaoId: string | undefined;
+  birthDate: string | undefined;
   time: number;
   fast: number;
   manner: number;

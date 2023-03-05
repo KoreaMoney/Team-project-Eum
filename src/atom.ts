@@ -7,7 +7,19 @@ import { atom } from 'recoil';
 //   key: 'isDark',
 //   default: true,
 // });
+export const choiceBadgeAtom = atom({
+  key: 'choiceBadge',
+  default:'',
+})
+export const addKakaoAtom = atom({
+  key: 'addKakaoId',
+  default: '',
+})
 
+export const addBirthDateAtom = atom({
+  key: 'addBirthDate',
+  default: '',
+});
 export const loginUserCheckState = atom<User | null>({
   key: 'loginUserCheck',
   default: null,
