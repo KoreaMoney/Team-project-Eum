@@ -146,12 +146,15 @@ const SignUp = () => {
             profileImg: `${basicIMG}`,
             isDoneCount: 0,
             commentsCount: 0,
+            kakaoId: '',
+            birthDate: '',
             time: 0,
             fast: 0,
             manner: 0,
             service: 0,
             cheap: 0,
             donation: 0,
+            repBadge: '',
           });
 
           await updateProfile(auth.currentUser, {

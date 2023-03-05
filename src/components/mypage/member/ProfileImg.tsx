@@ -4,9 +4,9 @@ import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { auth, storageService } from '../../firebase/Firebase';
-import { theme } from '../../styles/theme';
-import { customSuccessAlert } from '../modal/CustomAlert';
+import { auth, storageService } from '../../../firebase/Firebase';
+import { theme } from '../../../styles/theme';
+import { customSuccessAlert } from '../../modal/CustomAlert';
 
 export default function Profile(params: any) {
   const queryClient = useQueryClient();
@@ -73,16 +73,19 @@ export default function Profile(params: any) {
 
   return (
     <UserProfileImgContainer>
-      <MyImageWrapper
-        style={
-          data?.[0]?.profileImg
-            ? { backgroundColor: 'transform' }
-            : { backgroundImage: 'url(https://ifh.cc/g/OoQLa8.jpg)' }
-        }
-      >
+      <MyImageWrapper>
         <MyImage htmlFor="changeImg">
           <img src={data?.[0]?.profileImg} alt="" decoding="async" />
         </MyImage>
+        {imgEditBtnToggle ? (
+          <ImgSubmitButton
+            onClick={handleClick}
+            disabled={loading || !photo}
+            aria-label="프로필 이미지 변경"
+          >
+            {!photo ? ' ' : '프로필 이미지 변경'}
+          </ImgSubmitButton>
+        ) : null}
       </MyImageWrapper>
       <EditImgWrapper>
         <input
@@ -94,15 +97,6 @@ export default function Profile(params: any) {
           name="profile_img"
           accept="image/*"
         />
-        {imgEditBtnToggle ? (
-          <ImgSubmitButton
-            onClick={handleClick}
-            disabled={loading || !photo}
-            aria-label="프로필 이미지 변경"
-          >
-            {!photo ? ' ' : '프로필 이미지 변경'}
-          </ImgSubmitButton>
-        ) : null}
       </EditImgWrapper>
     </UserProfileImgContainer>
   );
@@ -110,29 +104,23 @@ export default function Profile(params: any) {
 
 const UserProfileImgContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items:flex-start ;
   width: 100%;
-  height: auto;
 `;
 
 const MyImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+ display: flex;
+ flex-direction: column;
   width: 155px;
-  height: 155px;
-  border-radius: 50%;
+  height: 195px;
+
 `;
 
 const MyImage = styled.label`
   width: 155px;
   height: 155px;
-  border-radius: 50%;
+  border-radius: 100%;
   text-align: center;
   overflow: hidden;
   &:hover {
@@ -140,8 +128,8 @@ const MyImage = styled.label`
     border: 1px solid ${theme.colors.orange02Main};
   }
   img {
-    width: 100%;
-    height: 100%;
+    width: 155px;
+    height: 155px;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -151,17 +139,19 @@ const EditImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 155px;
 `;
 
 const ImgSubmitButton = styled.button`
-  width: 100%;
-  height: 2rem;
-  font-size: 16px;
+  width: 110px;
+  height: 1.5rem;
+  font-size: 12px;
   background-color: ${theme.colors.white};
   color: ${(props) => props.theme.colors.orange02Main};
   border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 5px;
   &:hover {
     cursor: pointer;
     color: ${(props) => props.theme.colors.white};

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { theme } from '../theme';
-
+import { AiOutlineRight } from 'react-icons/ai';
 export const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,9 +14,12 @@ export const MyPageHeader = styled.div`
   justify-content: center;
   align-items: center;
   font-size: ${theme.fontSize.title32};
+  font-weight: ${theme.fontWeight.bold};
+  line-height: ${theme.lineHeight.title32};
   width: 100%;
   height: auto;
-  margin-bottom: 48px;
+  margin-top: 80px;
+  margin-bottom: 96px;
 `;
 
 export const MyPageBody = styled.div`
@@ -93,13 +96,14 @@ export const MyPageContentsContainer = styled.div`
   padding-left: 102px;
   background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.black};
-  p {
-    font-size: ${theme.fontSize.ad24};
-    font-weight: ${theme.fontWeight.bold};
-    width: 180px;
-    height: 24px;
-    margin-bottom: 56px;
-  }
+`;
+
+export const MypageCategoryTop = styled.div`
+  font-size: ${theme.fontSize.ad24};
+  font-weight: ${theme.fontWeight.bold};
+  width: 180px;
+  height: 24px;
+  margin-bottom: 56px;
 `;
 
 export const MySellNav = styled.div`
@@ -133,6 +137,35 @@ export const MyInfoTop = styled.div`
   height: 24px;
   font-size: ${theme.fontSize.title20};
   font-weight: ${theme.fontWeight.bold};
+  margin-bottom: 24px;
+`;
+
+export const MyNickName = styled.p`
+  width: 300px !important;
+  font-size: ${theme.fontSize.title20};
+  font-weight: ${theme.fontWeight.bold};
+  line-height: ${theme.fontSize.title20};
+  span {
+    color: ${theme.colors.orange02Main};
+  }
+`;
+
+export const MyInfoTopRight = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  p {
+    font-size: ${theme.fontSize.title18};
+    font-weight: ${theme.fontWeight.medium};
+    line-height: ${theme.fontSize.title18};
+  }
+`;
+
+export const RightIcon = styled(AiOutlineRight)`
+  width: 18px;
+  height: 18px;
 `;
 
 export const MyPageContentsWrapper = styled.div`
@@ -279,33 +312,7 @@ export const EditInputValue = styled.input`
   }
 `;
 
-export const MyPageTimeWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-  width: 18rem;
-  div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  button {
-    width: 62px;
-    height: 28px;
-    font-size: 100%;
-    background-color: ${(props) => props.theme.colors.gray30};
-    color: ${(props) => props.theme.colors.white};
-    border: none;
-    border-radius: 10px;
-    &:hover {
-      cursor: pointer;
-      background-color: ${(props) => props.theme.colors.gray20};
-      color: ${(props) => props.theme.colors.gray30};
-    }
-  }
-`;
+
 
 export const UserBadge = styled.div`
   display: flex;
@@ -349,4 +356,83 @@ export const InfoBest = styled.div`
   color: ${theme.colors.green};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+`;
+
+export const CategoryName = styled.p`
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  line-height: ${(props) => props.theme.fontSize.ad24};
+  margin-bottom: 32px !important;
+`;
+
+export const UserInfoBox = styled.div`
+  width: 588px;
+  height: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 56px;
+`;
+
+export const UserInfoTitle = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+`;
+
+export const UserInfoContent = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.fontSize.title18};
+  padding-bottom: 16px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+`;
+
+export const KakaoIdBox = styled.div`
+  position: relative;
+  margin-bottom: 16px;
+`;
+
+export const KakaoTitle = styled.p`
+position: absolute;
+top:20px;
+left:40px;
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+`;
+
+export const KakaoInfo = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
+export const KakaoId = styled.input`
+  width: 588px;
+  height: 91px;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  border-radius: 10px;
+  padding: 48px 40px 16px 40px;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.fontSize.title18};
+  &:focus {
+    outline: none;
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
+export const BirthInfo = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+  margin: 16px 0 8px 5px;
 `;

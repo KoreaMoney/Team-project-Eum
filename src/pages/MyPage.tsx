@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ProfileImg from '../components/mypage/ProfileImg';
+import ProfileImg from '../components/mypage/member/ProfileImg';
 import { useQuery } from '@tanstack/react-query';
 import {
   getOnSalePostBuyer,
@@ -10,16 +10,30 @@ import {
 import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
-import UserTime from '../components/mypage/UserTime';
-import UserName from '../components/mypage/UserName';
 import { theme } from '../styles/theme';
+
+import MemberInfo from '../components/mypage/member/MemberInfo';
+import { deleteUser } from 'firebase/auth';
+import { auth } from '../firebase/Firebase';
+import {
+  customConfirm,
+  customSuccessAlert,
+} from '../components/modal/CustomAlert';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MyPage = () => {
   const [category, setCategory] = useState('관심목록');
   const [sellCategory, setSellCategory] = useState('판매중');
+  const navigate = useNavigate();
+  const { id } = useParams();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log('saveUser.displayName', saveUser.displayName);
-
+  console.log('saveUser?.displayName', saveUser?.displayName);
+  if (!saveUser) {
+    navigate('/signin');
+  }
+  if (!(saveUser.uid === id)) {
+    navigate('/')
+  }
   /* 거래 목록을 받아옵니다.
    * 1. 전체 거래 목록을 받아옵니다.
    * 2. 유저가 찜 한 목록을 받아옵니다.
@@ -44,8 +58,8 @@ const MyPage = () => {
     isLoading: getTradeBuyListLoading,
     isError: getTradeBuyListIsError,
     data: tradeBuyData,
-  } = useQuery(['onSaleBuyPosts', saveUser.uid], () =>
-    getOnSalePostBuyer(saveUser.uid)
+  } = useQuery(['onSaleBuyPosts', saveUser?.uid], () =>
+    getOnSalePostBuyer(saveUser?.uid)
   );
   console.log('tradeBuyData', tradeBuyData);
 
@@ -53,7 +67,7 @@ const MyPage = () => {
     isLoading: getTradeSellListLoading,
     isError: getTradeSellListIsError,
     data: tradeSellData,
-  } = useQuery(['onSaleSellPosts', saveUser.uid], () =>
+  } = useQuery(['onSaleSellPosts', saveUser?.uid], () =>
     getOnSalePostSeller(saveUser.uid)
   );
   console.log('tradeSellData', tradeSellData);
@@ -78,19 +92,37 @@ const MyPage = () => {
   });
   console.log('waitTradeSellList', waitTradeSellList);
 
+  /**회원탈퇴 */
+  const user = auth.currentUser;
+  console.log('user: ', user);
+
+  const deleteAuth = () => {
+    customConfirm('탈퇴 하시겠습니까?', '회원 탈퇴 하기', '회원 탈퇴', () => {
+      if (user) {
+        deleteUser(user)
+          .then(() => {
+            sessionStorage.removeItem('user');
+            customSuccessAlert('탈퇴가 완료되었습니다.');
+            navigate('/');
+          })
+          .catch((error) => {
+            console.log('error: ', error);
+          });
+      } else {
+        alert('ㅇㅇ');
+      }
+    });
+  };
   // 내 작성 후기 목록을 받아옵니다.
   const {
     isLoading: getMyCommentListLoading,
     isError: getMyCommentListIsError,
     data: writeMyCommentsData,
-  } = useQuery(['writeMyComments', saveUser.uid], () =>
+  } = useQuery(['writeMyComments', saveUser?.uid], () =>
     getWriteMyComments(saveUser.uid)
   );
-  console.log('writeMyCommentsData', writeMyCommentsData);
 
-  if (!saveUser) {
-    return <SignIn />;
-  }
+  console.log('writeMyCommentsData', writeMyCommentsData);
 
   // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
@@ -108,6 +140,7 @@ const MyPage = () => {
   console.log('tradeBuyData: ', myLikePostList);
 
   return (
+    
     <a.MyPageContainer>
       <a.MyPageHeader>마이페이지</a.MyPageHeader>
       <a.MyPageBody>
@@ -162,7 +195,7 @@ const MyPage = () => {
           </a.MyInfoNavWrapper>
         </a.MyPageNavWrapper>
         <a.MyPageContentsContainer>
-          <p>{category}</p>
+          <a.CategoryName>{category}</a.CategoryName>
           {category === '나의 판매내역' ? (
             <a.MySellNav>
               <div
@@ -183,8 +216,13 @@ const MyPage = () => {
           ) : null}
           {category === '회원정보 변경' ? (
             <a.MyInfoTop>
-              <div>{saveUser.displayName}님의 회원정보</div>
-              <div>비밀번호 변경›　회원탈퇴›</div>
+              <a.MyNickName>
+                <span>{saveUser.displayName}</span>님의 회원정보
+              </a.MyNickName>
+              <a.MyInfoTopRight onClick={deleteAuth}>
+                　회원탈퇴
+                <a.RightIcon />
+              </a.MyInfoTopRight>
             </a.MyInfoTop>
           ) : null}
           <a.MyPageContentsWrapper>
@@ -271,9 +309,7 @@ const MyPage = () => {
               : null}
             {category === '회원정보 변경' ? (
               <a.MyInfoWrapper>
-                <ProfileImg />
-                <UserName />
-                <UserTime />
+                <MemberInfo />
                 <a.UserBadge>배지</a.UserBadge>
               </a.MyInfoWrapper>
             ) : null}
