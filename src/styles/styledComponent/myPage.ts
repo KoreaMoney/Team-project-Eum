@@ -125,6 +125,16 @@ export const MySellNav = styled.div`
   }
 `;
 
+export const MyInfoTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: top;
+  height: 24px;
+  font-size: ${theme.fontSize.title20};
+  font-weight: ${theme.fontWeight.bold};
+`;
+
 export const MyPageContentsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -156,9 +166,6 @@ export const MyLikeDiv = styled.div`
 export const PostImg = styled.img`
   width: auto;
   height: 200px;
-  background-image: url('https://ifh.cc/g/OoQLa8.jpg');
-  background-size: cover;
-  background-position: center;
 `;
 
 export const LikeImg = styled.img`

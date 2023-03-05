@@ -19,6 +19,7 @@ const MyPage = () => {
   const [category, setCategory] = useState('관심목록');
   const [sellCategory, setSellCategory] = useState('판매중');
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  console.log('saveUser.displayName', saveUser.displayName);
 
   /* 거래 목록을 받아옵니다.
    * 1. 전체 거래 목록을 받아옵니다.
@@ -66,12 +67,12 @@ const MyPage = () => {
   const isDoneTradeBuyList = tradeBuyData?.filter((post: any) => {
     return post.isDone == true;
   });
-  console.log('isDoneTradeList', isDoneTradeBuyList);
+  console.log('isDoneTradeBuyList', isDoneTradeBuyList);
 
   const isDoneTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone == true;
   });
-  console.log('isDoneTradeList', isDoneTradeSellList);
+  console.log('isDoneTradeSellList', isDoneTradeSellList);
 
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone == false;
@@ -169,16 +170,22 @@ const MyPage = () => {
                 style={sellCategory === '판매중' ? mySellNavStyle : undefined}
                 aria-label="판매중"
               >
-                판매중
+                판매중 {waitTradeSellList?.length}
               </div>
               <div
                 onClick={() => setSellCategory('거래완료')}
                 style={sellCategory === '거래완료' ? mySellNavStyle : undefined}
                 aria-label="거래완료"
               >
-                거래완료
+                거래완료 {isDoneTradeSellList?.length}
               </div>
             </a.MySellNav>
+          ) : null}
+          {category === '회원정보 변경' ? (
+            <a.MyInfoTop>
+              <div>{saveUser.displayName}님의 회원정보</div>
+              <div>비밀번호 변경› 회원탈퇴›</div>
+            </a.MyInfoTop>
           ) : null}
           <a.MyPageContentsWrapper>
             {category === '관심목록'
@@ -190,7 +197,11 @@ const MyPage = () => {
                         alt="찜"
                         loading="lazy"
                       />
-                      <a.PostImg src={list.imgURL} />
+                      <a.PostImg
+                        src={
+                          list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
+                        }
+                      />
                       <a.MyLikeDiv>{list.category}</a.MyLikeDiv>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
                       <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
@@ -199,36 +210,51 @@ const MyPage = () => {
                   );
                 })
               : null}
-            {sellCategory === '판매중'
-              ? waitTradeSellList?.map((list: any) => {
-                  return (
-                    <a.UserSellBuyWrapper key={list.id}>
-                      <img src={list.imgURL} />
-                      <div>{list.title}</div>
-                      <div>{list.price}</div>
-                      <div>{list.like.length}</div>
-                    </a.UserSellBuyWrapper>
-                  );
-                })
-              : isDoneTradeSellList?.map((list: any) => {
-                  return (
-                    <a.UserSellBuyWrapper key={list.id}>
-                      <img src={list.imgURL} />
-                      <div>{list.title}</div>
-                      <div>{list.price}</div>
-                      <div>{list.like.length}</div>
-                    </a.UserSellBuyWrapper>
-                  );
-                })}
+            {category === '나의 판매내역'
+              ? sellCategory === '판매중'
+                ? waitTradeSellList?.map((list: any) => {
+                    return (
+                      <a.MyLikeList key={list.id}>
+                        <a.PostImg
+                          src={
+                            list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
+                          }
+                        />
+                        <a.MyLikeDiv>{list.category}</a.MyLikeDiv>
+                        <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                        <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                      </a.MyLikeList>
+                    );
+                  })
+                : isDoneTradeSellList?.map((list: any) => {
+                    return (
+                      <a.MyLikeList key={list.id}>
+                        <a.PostImg
+                          src={
+                            list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
+                          }
+                        />
+                        <a.MyLikeDiv>{list.category}</a.MyLikeDiv>
+                        <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                        <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                      </a.MyLikeList>
+                    );
+                  })
+              : null}
+
             {category === '구매내역'
               ? tradeBuyData?.map((list: any) => {
                   return (
-                    <a.UserSellBuyWrapper key={list.id}>
-                      <img src={list.imgURL} />
-                      <div>{list.title}</div>
-                      <div>{list.price}</div>
-                      <div>{list.like.length}</div>
-                    </a.UserSellBuyWrapper>
+                    <a.MyLikeList key={list.id}>
+                      <a.PostImg
+                        src={
+                          list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
+                        }
+                      />
+                      <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                      <a.MyLikeDiv>{list.price}</a.MyLikeDiv>
+                      <a.MyLikeDiv>{list.like.length}</a.MyLikeDiv>
+                    </a.MyLikeList>
                   );
                 })
               : null}
