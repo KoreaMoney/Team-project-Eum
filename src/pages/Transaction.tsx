@@ -20,7 +20,6 @@ import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
 import Loader from '../components/etc/Loader';
 
-
 /**순서
  * 1. query-key만들기
  * 2. 판매자, 구매자 데이터 가져오기
@@ -36,7 +35,7 @@ const Transaction = () => {
   const onClickBtn = () => {
     navigate(-1);
   };
-  const [isCancelled, setIsCancelled] = useState(false);
+
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
   const [isCancelConfirmed, setIsCancelConfirmed] = useState(0);
@@ -53,7 +52,7 @@ const Transaction = () => {
     }
   );
   console.log('data: ', data);
-
+  const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0].isBuyerCnacle);
   const [buyerData, setBuyerData] = useState<userType | null>(null);
   const [sellerData, setSellerData] = useState<userType | null>(null);
 
@@ -126,6 +125,7 @@ const Transaction = () => {
       patchOnSalePost(uuid, newSalePost),
     {
       onSuccess: (newSalePost) => {
+        setBuyerIsCancel(true);
         queryClient.invalidateQueries(['salePost3', uuid]);
         if (newSalePost.isSellerCancel && newSalePost.isBuyerCancel) {
           giveBackPoint({
@@ -254,7 +254,7 @@ const Transaction = () => {
           <button onClick={onClickBtn}>
             <IoExitOutline size={50} />
           </button>
-          <h1>거래가 완료되었습니다.</h1>
+          <h1>이음이 연결되었습니다.</h1>
         </a.TransactionText>
       )}
       {isCancel && (
@@ -262,7 +262,7 @@ const Transaction = () => {
           <button onClick={onClickBtn}>
             <IoExitOutline size={50} />
           </button>
-          <h1>거래가 취소되었습니다.</h1>
+          <h1>이음이 취소되었습니다.</h1>
         </a.TransactionText>
       )}
       <a.PostContainer>
@@ -305,29 +305,70 @@ const Transaction = () => {
 
           {saveUser.uid === data?.[0]?.buyerUid ||
           saveUser.uid === data?.[0]?.sellerUid ? (
-            <a.ButtonsContainer>
-              {saveUser.uid === data?.[0].buyerUid && !isCancel ? (
-                <a.ClearButton onClick={onClickClearRequest} aria-label="완료">
-                  완료
-                </a.ClearButton>
-              ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
-                <a.ClearButton aria-label="취소 완료">취소 완료</a.ClearButton>
-
-              ) : null}
-
-              {isDone ? (
-                <a.CancelButton aria-label="거래종료">거래종료</a.CancelButton>
+            <>
+              {buyerisCancel || data?.[0].isBuyerCancel ? (
+                <>
+                  {saveUser.uid === data?.[0]?.buyerUid ? (
+                    <>
+                      <a.ButtonsContainer>
+                        <a.ClearButton aria-label="취소를 기다리는중">
+                          판매자의 동의를 기다리고있습니다.
+                        </a.ClearButton>
+                      </a.ButtonsContainer>
+                    </>
+                  ) : (
+                    <>
+                      {isDone ? (
+                        <a.CancelButton aria-label="거래종료">
+                          거래종료
+                        </a.CancelButton>
+                      ) : (
+                        <a.CancelButton
+                          onClick={() => {
+                            onClickCancel();
+                          }}
+                          aria-label="거래취소"
+                        >
+                          거래취소
+                        </a.CancelButton>
+                      )}
+                    </>
+                  )}
+                </>
               ) : (
-                <a.CancelButton
-                  onClick={() => {
-                    onClickCancel();
-                  }}
-                  aria-label="거래취소"
-                >
-                  거래취소
-                </a.CancelButton>
+                <>
+                  <a.ButtonsContainer>
+                    {saveUser.uid === data?.[0].buyerUid && !isCancel ? (
+                      <a.ClearButton
+                        onClick={onClickClearRequest}
+                        aria-label="완료"
+                      >
+                        완료
+                      </a.ClearButton>
+                    ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
+                      <a.ClearButton aria-label="취소 완료">
+                        취소 완료
+                      </a.ClearButton>
+                    ) : null}
+
+                    {isDone ? (
+                      <a.CancelButton aria-label="거래종료">
+                        거래종료
+                      </a.CancelButton>
+                    ) : (
+                      <a.CancelButton
+                        onClick={() => {
+                          onClickCancel();
+                        }}
+                        aria-label="거래취소"
+                      >
+                        거래취소
+                      </a.CancelButton>
+                    )}
+                  </a.ButtonsContainer>
+                </>
               )}
-            </a.ButtonsContainer>
+            </>
           ) : null}
         </a.PostInfoWrapper>
       </a.PostContainer>

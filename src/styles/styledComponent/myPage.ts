@@ -155,6 +155,14 @@ export const MyLikeList = styled.div`
   height: 400px;
   gap: 16px;
   overflow: hidden;
+
+  p {
+    font-size: ${(props) => props.theme.fontSize.title16};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: ${(props) => props.theme.lineHeight.title16};
+    color: ${(props) => props.theme.colors.gray20};
+    text-align: center;
+  }
 `;
 export const MyLikeDiv = styled.div`
   text-align: center;
@@ -321,4 +329,10 @@ export const UserSellBuyWrapper = styled.div`
     background-size: cover;
     background-position: center;
   }
+`;
+export const InfoBest = styled.div`
+  text-decoration: underline;
+  color: ${theme.colors.green};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
 `;
