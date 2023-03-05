@@ -14,6 +14,7 @@ import {
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
+import basicIMG from '../styles/basicIMG.webp'
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -142,7 +143,7 @@ const SignUp = () => {
             point: 10000000,
             contactTime: '',
             like: [],
-            profileImg: null,
+            profileImg: `${basicIMG}`,
             isDoneCount: 0,
             commentsCount: 0,
             time: 0,

@@ -18,6 +18,7 @@ import {
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
 import { customWarningAlert } from '../components/modal/CustomAlert';
+import basicIMG from '../styles/basicIMG.webp';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ const SignIn = () => {
             nickName: auth.currentUser?.displayName,
             point: 10000000,
             contactTime: '',
-            profileImg: null,
+            profileImg: `${basicIMG}`,
             like: [],
             isDoneCount: 0,
             commentsCount: 0,
