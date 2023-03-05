@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { IoCloseOutline } from 'react-icons/io5';
 import camera from '../camera.png';
 import deleteBt from '../deleteBt.png';
+import { theme } from '../theme';
 //WritePage 스타일
 export const WriteContainer = styled.div`
   width: 792px;
@@ -121,7 +122,9 @@ export const CategoryButton = styled.button<{ selected?: boolean }>`
   width: 100%;
   height: 100%;
   background-color: ${(props) =>
-    props.selected ? props.theme.colors.orange02Main : props.theme.colors.white};
+    props.selected
+      ? props.theme.colors.orange02Main
+      : props.theme.colors.white};
   color: ${(props) =>
     props.selected ? props.theme.colors.white : props.theme.colors.gray20};
   border: none;
@@ -134,9 +137,7 @@ export const WriteWrapper = styled.div`
   width: 70%;
   margin: 5px auto;
 `;
-export const WriteForm = styled.form`
-
-`;
+export const WriteForm = styled.form``;
 
 export const WriteInputWrapper = styled.div`
   display: flex;
@@ -180,6 +181,7 @@ export const WriteQuill = styled.div`
     border: 1px solid ${(props) => props.theme.colors.gray20};
     border-radius: 0 0 10px 10px;
     min-height: 192px;
+    font-size: ${theme.fontSize.title18};
   }
   .ql-editor {
     min-height: 192px;

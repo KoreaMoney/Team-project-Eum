@@ -31,7 +31,7 @@ export default Footer;
 const FooterContainer = styled.div`
   margin-top: 50px;
   width: 100%;
-  height: 150px;
+  height: 280px;
   background-color: #f9f9f9;
 `;
 
@@ -44,7 +44,8 @@ const FooterWrapper = styled.div`
 `;
 
 const LogoText = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title20};
+  margin-bottom: 70px;
+  font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
 const InfoWrapper = styled.div`
@@ -58,6 +59,7 @@ const EumInfo = styled.div`
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  margin-bottom: 21px;
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   color: ${(props) => props.theme.colors.gray30};

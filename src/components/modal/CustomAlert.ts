@@ -18,8 +18,8 @@ export const customConfirm = (
     text: text,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#4270ED',
+    cancelButtonColor: '#ff334b',
     confirmButtonText: confirmButton,
     cancelButtonText: '취소',
     // id값이 맞아야 삭제가 되는데.....
@@ -38,7 +38,7 @@ export const customSuccessAlert = (title: string) => {
   Swal.fire({
     icon: 'success',
     title: title,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#4270ED',
   });
 };
 
@@ -46,7 +46,7 @@ export const customWarningAlert = (title: string) => {
   Swal.fire({
     icon: 'warning',
     title: title,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#ff334b',
   });
 };
 
@@ -54,6 +54,6 @@ export const customInfoAlert = (title: string) => {
   Swal.fire({
     icon: 'info',
     title: title,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#06C755',
   });
 };

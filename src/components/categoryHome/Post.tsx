@@ -34,7 +34,9 @@ const Post: React.FC<PostProps> = ({ post, onClick }) => {
   return (
     <a.PostContainer key={post.id} onClick={() => onClick(post)}>
       <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+
       <a.ContentContainer>
+        <a.InfoBest>{post.category}</a.InfoBest>
         <p>{post.title}</p>
         <p>
           {post.price

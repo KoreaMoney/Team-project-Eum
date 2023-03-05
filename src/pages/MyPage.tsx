@@ -65,17 +65,17 @@ const MyPage = () => {
    * 3. 판매 대기 목록을 받아옵니다.
    */
   const isDoneTradeBuyList = tradeBuyData?.filter((post: any) => {
-    return post.isDone == true;
+    return post.isDone === true;
   });
   console.log('isDoneTradeBuyList', isDoneTradeBuyList);
 
   const isDoneTradeSellList = tradeSellData?.filter((post: any) => {
-    return post.isDone == true;
+    return post.isDone === true;
   });
   console.log('isDoneTradeSellList', isDoneTradeSellList);
 
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
-    return post.isDone == false;
+    return post.isDone === false;
   });
   console.log('waitTradeSellList', waitTradeSellList);
 

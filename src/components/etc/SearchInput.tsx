@@ -57,7 +57,7 @@ const SearchInput = () => {
           <motion.svg
             onClick={toggleSearch}
             transition={{ type: 'linear' }}
-            animate={{ x: searchOpen ? 143 : 310 }}
+            animate={{ x: searchOpen ? 140 : 315 }}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -69,26 +69,28 @@ const SearchInput = () => {
             ></path>
           </motion.svg>
           <SearchWrapper>
-            <Select
-              value={selectValue}
-              onChange={onChangeSelect}
-              animate={inputAnimation}
-              transition={{ type: 'linear' }}
-              initial={{ scaleX: 0 }}
-            >
-              <option value="" aria-label="선택">
-                선택
-              </option>
-              <option value="title" aria-label="제목">
-                제목
-              </option>
-              <option value="content" aria-label="내용">
-                내용
-              </option>
-              <option value="nickName" aria-label="작성자">
-                작성자
-              </option>
-            </Select>
+            <SelectWrapper>
+              <Select
+                value={selectValue}
+                onChange={onChangeSelect}
+                animate={inputAnimation}
+                transition={{ type: 'linear' }}
+                initial={{ scaleX: 0 }}
+              >
+                <option value="" aria-label="선택">
+                  선택
+                </option>
+                <option value="title" aria-label="제목">
+                  제목
+                </option>
+                <option value="content" aria-label="내용">
+                  내용
+                </option>
+                <option value="nickName" aria-label="작성자">
+                  작성자
+                </option>
+              </Select>
+            </SelectWrapper>
             <Input
               type="text"
               onChange={onChangeSearchInput}
@@ -96,7 +98,7 @@ const SearchInput = () => {
               animate={inputAnimation}
               transition={{ type: 'linear' }}
               initial={{ scaleX: 0 }}
-              placeholder="검색"
+              placeholder="검색어를 입력해주세요"
             />
           </SearchWrapper>
         </Search>
@@ -107,7 +109,9 @@ const SearchInput = () => {
 
 export default SearchInput;
 
-const SearchContainer = styled.div``;
+const SearchContainer = styled.div`
+  margin-left: 23px;
+`;
 const Search = styled.span`
   color: ${theme.colors.black};
   display: flex;
@@ -125,22 +129,29 @@ const SearchWrapper = styled.div`
   justify-content: center;
   height: 40px;
 `;
+
+const SelectWrapper = styled.div`
+  margin-right: 20px;
+`;
 const Select = styled(motion.select)`
   transform-origin: right center;
   background-color: transparent;
   border: none;
   outline: none;
   height: 40px;
-
   font-size: ${theme.fontSize.title18};
+  option {
+    font-size: ${theme.fontSize.title20};
+  }
 `;
 const Input = styled(motion.input)`
   transform-origin: right center;
   background-color: transparent;
   padding-left: 40px;
-  width: 50%;
+  width: 245px;
   height: 40px;
   border: 2px solid ${theme.colors.black};
+  border-radius: 23px;
   outline: none;
-  font-size: ${theme.fontSize.title18};
+  font-size: ${theme.fontSize.title16};
 `;

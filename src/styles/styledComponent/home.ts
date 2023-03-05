@@ -12,6 +12,7 @@ export const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
 `;
 
 export const HomePostContainer = styled.div`
@@ -106,4 +107,11 @@ export const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
 export const InfoNickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   color: ${theme.colors.gray30};
+`;
+
+export const InfoNew = styled.div`
+  text-decoration: underline;
+  color: ${theme.colors.Blue};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
 `;
