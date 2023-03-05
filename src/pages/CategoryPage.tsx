@@ -19,7 +19,7 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   const { categoryName, select, word } = useParams();
   const observerElem = useRef<HTMLDivElement | null>(null);
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 6;
   const [sort, setSort] = useRecoilState(sortAtom);
 
   //fetchPost Category setUp
@@ -86,18 +86,24 @@ const CategoryPage = () => {
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isLoading} =
-    useInfiniteQuery(
-      ['posts', categoryName ?? 'all', select, word],
-      ({ pageParam = 0 }) =>
-        fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage = allPages.length + 1;
-          return lastPage.length !== 0 ? nextPage : undefined;
-        },
-      }
-    );
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery(
+    ['posts', categoryName ?? 'all', select, word],
+    ({ pageParam = 0 }) =>
+      fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        return lastPage.length !== 0 ? nextPage : undefined;
+      },
+    }
+  );
 
   //무한스크롤 observer
   const handleObserver = useCallback(
@@ -155,6 +161,9 @@ const CategoryPage = () => {
         ))}
 
         <a.PostContainer ref={observerElem}></a.PostContainer>
+        {isFetching || isFetchingNextPage ? (
+          <Loader />
+        ) : null}
       </a.PostsContainer>
     </a.PageContainer>
   );
