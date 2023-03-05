@@ -9,6 +9,7 @@ import SortPosts from '../components/categoryHome/SortPosts';
 import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
+import Loader from '../components/etc/Loader';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -86,7 +87,7 @@ const CategoryPage = () => {
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage} =
+  const { data, fetchNextPage, hasNextPage, isLoading} =
     useInfiniteQuery(
       ['posts', categoryName ?? 'all', select, word],
       ({ pageParam = 0 }) =>
@@ -135,7 +136,13 @@ const CategoryPage = () => {
     },
     [setSort]
   );
-
+ if (isLoading) {
+   return (
+     <div>
+       <Loader />
+     </div>
+   );
+ }
   return (
     <a.PageContainer>
       <CategoryIntros categoryName={categoryName} />

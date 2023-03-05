@@ -121,7 +121,7 @@ export const CategoryButton = styled.button<{ selected?: boolean }>`
   width: 100%;
   height: 100%;
   background-color: ${(props) =>
-    props.selected ? props.theme.colors.orange01 : props.theme.colors.white};
+    props.selected ? props.theme.colors.orange02Main : props.theme.colors.white};
   color: ${(props) =>
     props.selected ? props.theme.colors.white : props.theme.colors.gray20};
   border: none;
@@ -232,17 +232,17 @@ export const WriteImgBtn = styled.button`
 export const SubmitButton = styled.button`
   width: 383px;
   height: 64px;
-  border: 1px solid ${(props) => props.theme.colors.orange01};
+  border: 1px solid ${(props) => props.theme.colors.orange02Main};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.ad24};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange01};
+  color: ${(props) => props.theme.colors.orange02Main};
   margin: 0 auto;
   margin-bottom: 240px;
   &:hover {
-    background-color: ${(props) => props.theme.colors.orange01};
+    background-color: ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.white};
   }
 `;
