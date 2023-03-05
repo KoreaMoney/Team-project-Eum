@@ -105,6 +105,7 @@ const MyPage = () => {
     color: `${theme.colors.black}`,
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
+console.log('tradeBuyData: ', myLikePostList);
 
   return (
     <a.MyPageContainer>
@@ -201,10 +202,10 @@ const MyPage = () => {
                           list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                         }
                       />
-                      <a.MyLikeDiv>{list.category}</a.MyLikeDiv>
+                      <a.InfoBest>{list.category}</a.InfoBest>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
                       <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
-                      <a.MyLikeDiv>{list.nickName}</a.MyLikeDiv>
+                      <p>{list.nickName}</p>
                     </a.MyLikeList>
                   );
                 })
@@ -250,9 +251,12 @@ const MyPage = () => {
                           list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                         }
                       />
+                      <a.InfoBest>{list.category}</a.InfoBest>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                      <a.MyLikeDiv>{list.price}</a.MyLikeDiv>
-                      <a.MyLikeDiv>{list.like?.length}</a.MyLikeDiv>
+
+                      <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                      <p>{list.sellerNickName}</p>
+
                     </a.MyLikeList>
                   );
                 })
