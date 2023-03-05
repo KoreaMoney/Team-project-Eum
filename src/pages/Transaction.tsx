@@ -301,12 +301,11 @@ const Transaction = () => {
           </a.TextContainer>
           <a.PostNickName>{data?.[0].nickName}</a.PostNickName>
           <a.PostPrice>
-            {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
+            {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
           </a.PostPrice>
 
           {saveUser.uid === data?.[0]?.buyerUid ||
           saveUser.uid === data?.[0]?.sellerUid ? (
-
             <>
               {buyerisCancel || data?.[0].isBuyerCancel ? (
                 <>
@@ -337,7 +336,6 @@ const Transaction = () => {
                     </>
                   )}
                 </>
-
               ) : (
                 <>
                   <a.ButtonsContainer>

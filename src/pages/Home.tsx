@@ -120,7 +120,7 @@ const Home = () => {
                             {post.price
                               .toString()
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            원
+                            P
                           </p>
                         </a.InfoProfile>
                         <a.InfoNickName>{post.nickName}</a.InfoNickName>
@@ -160,7 +160,7 @@ const Home = () => {
                             {post.price
                               .toString()
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            원
+                            P
                           </p>
                         </a.InfoProfile>
                         <a.InfoNickName>{post.nickName}</a.InfoNickName>

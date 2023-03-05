@@ -42,7 +42,7 @@ const Post: React.FC<PostProps> = ({ post, onClick }) => {
           {post.price
             ? post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             : 0}{' '}
-          원
+          P
         </p>
 
         <a.BottomContainer>

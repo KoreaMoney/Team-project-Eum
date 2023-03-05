@@ -174,6 +174,9 @@ export const MyLikeDiv = styled.div`
 export const PostImg = styled.img`
   width: auto;
   height: 200px;
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
 export const LikeImg = styled.img`
