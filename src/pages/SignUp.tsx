@@ -153,6 +153,7 @@ const SignUp = () => {
             service: 0,
             cheap: 0,
             donation: 0,
+            repBadge: '',
           });
 
           await updateProfile(auth.currentUser, {

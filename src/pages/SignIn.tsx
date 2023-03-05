@@ -156,6 +156,7 @@ const SignIn = () => {
             service: 0,
             cheap: 0,
             donation: 0,
+            repBadge: '',
           });
         }
         navigate('/');
@@ -256,8 +257,8 @@ const SignIn = () => {
           <CustomModal
             modal={isModalActive}
             setModal={setIsModalActive}
-            width="600"
-            height="300"
+            width="544"
+            height="432"
             element={
               <div>
                 <FindPW />
