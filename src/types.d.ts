@@ -10,7 +10,7 @@ export interface kakaoType {
 }
 export interface NavButtonProps {
   active?: boolean;
-};
+}
 export interface ILoginForm {
   email: string;
   password: string;

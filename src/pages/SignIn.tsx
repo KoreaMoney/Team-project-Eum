@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { useNavigate, useLocation } from 'react-router';
-import { IoIosGitMerge } from 'react-icons/io';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -19,6 +18,7 @@ import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
 import { customWarningAlert } from '../components/modal/CustomAlert';
 import basicIMG from '../styles/basicIMG.webp';
+import Header from '../components/layout/Header';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -73,14 +73,14 @@ const SignIn = () => {
   const schema = yup.object().shape({
     email: yup
       .string()
-      .required('이메일을 입력해주세요.')
-      .email('올바른 이메일 형식이 아닙니다.'),
+      .required('❗이메일을 입력해주세요.')
+      .email('❗올바른 이메일 형식이 아닙니다.'),
     password: yup
       .string()
-      .required('비밀번호를 입력해주세요.')
+      .required('❗비밀번호를 입력해주세요.')
       .matches(
         passwordRule,
-        '비밀번호는 영문+숫자+특수문자형식 8글자 이상 입니다.'
+        '❗비밀번호는 영문+숫자+특수문자형식 8글자 이상 입니다.'
       ),
   });
 
@@ -120,11 +120,11 @@ const SignIn = () => {
           setAuthenticating(false);
           const errorMessage = error.message;
           if (errorMessage.includes('user-not-found')) {
-            setErr('가입된 회원이 아닙니다.');
+            setErr('❗가입된 회원이 아닙니다.');
             customWarningAlert('가입된 회원이 아닙니다.');
             return;
           } else if (errorMessage.includes('wrong-password')) {
-            setErr('비밀번호가 일치하지 않습니다.');
+            setErr('❗비밀번호가 일치하지 않습니다.');
             customWarningAlert('비밀번호가 일치하지 않습니다.');
           }
         });
@@ -160,6 +160,7 @@ const SignIn = () => {
             cheap: 0,
             donation: 0,
             repBadge:'',
+
           });
         }
         navigate('/');
@@ -183,89 +184,96 @@ const SignIn = () => {
   }, [isModalActive]);
 
   return (
-    <a.AuthContainer>
-      <div>
-        <a.AuthName>
-          세상 모든 재능을 이어주다
-          <span>우리가 별거아니라고 생각한 재능들을 가치있게 만드세요</span>
-          <div>
-            <IoIosGitMerge />
-            eum
-          </div>
-        </a.AuthName>
-      </div>
-      <a.FormTag
-        onSubmit={handleSubmit(onSubmitHandler)}
-        aria-label="이메일 비밀번호 입력하기"
-      >
-        <a.SignInContainer>
-          <a.ItemContainer>
-            <a.InputBox
-              type="email"
-              placeholder="이메일"
-              {...register('email')}
-              style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
-            />
-            <a.CloseIcon onClick={handleInputValueClickBT} aria-label="닫기" />
-            <a.ErrorMSG>{errors.email?.message}</a.ErrorMSG>
-          </a.ItemContainer>
+    <>
+      <Header />
+      <a.LoginContainer>
+        <a.LoginText>로그인</a.LoginText>
+        <a.LoginForm
+          onSubmit={handleSubmit(onSubmitHandler)}
+          aria-label="이메일 비밀번호 입력하기"
+        >
+          <a.LoginInputWrapper
+            style={{
+              borderColor: errors?.email?.message ? '#ff334b' : '',
+            }}
+          >
+            <a.LoginInputText>이메일 아이디</a.LoginInputText>
+            <a.LoginMiniWrapper>
+              <a.LoginInput
+                type="email"
+                placeholder=""
+                {...register('email')}
+                autoFocus
+              />
+              <a.LoginCloseIcon
+                size={20}
+                onClick={handleInputValueClickBT}
+                aria-label="닫기"
+              />
+            </a.LoginMiniWrapper>
+          </a.LoginInputWrapper>
+          <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
+          <a.LoginInputWrapper
+            style={{
+              borderColor: errors?.password?.message ? '#ff334b' : '',
+            }}
+          >
+            <a.LoginInputText>비밀번호</a.LoginInputText>
+            <a.LoginMiniWrapper>
+              <a.LoginInput
+                type={isViewPW ? 'text' : 'password'}
+                placeholder=""
+                {...register('password')}
+              />
 
-          <a.ItemContainer>
-            <a.InputBox
-              type={isViewPW ? 'text' : 'password'}
-              placeholder="비밀번호"
-              {...register('password')}
-              style={{
-                borderColor: errors?.password?.message ? '#FF0000' : '',
-              }}
-            />
+              <a.LoginPwIcon
+                size={22}
+                onClick={handleClickViewPW}
+                style={{ color: isViewPW ? '#FF6C2C' : '#C2C1C1' }}
+                aria-label="비밀번호 입력하기"
+              />
+            </a.LoginMiniWrapper>
+          </a.LoginInputWrapper>
+          <a.ErrMsg>{errors.password?.message}</a.ErrMsg>
+          <a.SubmitLogin type="submit" aria-label="로그인">
+            로그인
+          </a.SubmitLogin>
+        </a.LoginForm>
+        <a.LoginAnd>또는</a.LoginAnd>
+        <a.GoogleWrapper>
+          <a.GoogleBtn onClick={onGoogleClick} aria-label="구글 로그인">
+            <a.GoogleIconWrapper>
+              <a.GoogleIcon size={30} />
+              <p>Google 계정으로 계속하기</p>
+            </a.GoogleIconWrapper>
+          </a.GoogleBtn>
+        </a.GoogleWrapper>
+        <a.LoginOther>
+          <button onClick={() => navigate('/signup')} aria-label="회원가입">
+            회원가입
+          </button>
 
-            <a.ViewIcon
-              onClick={handleClickViewPW}
-              style={{ color: isViewPW ? '#000' : '#ddd' }}
-              aria-label="비밀번호 입력하기"
-            />
-            <a.ErrorMSG>{errors.password?.message}</a.ErrorMSG>
-          </a.ItemContainer>
-        </a.SignInContainer>
-        <a.LoginButton type="submit" aria-label="로그인">
-          로그인 하기
-        </a.LoginButton>
-      </a.FormTag>
-      <a.PTag>SNS 로그인</a.PTag>
-      <a.SocialContainer>
-        <button onClick={onGoogleClick} aria-label="구글 로그인">
-          <a.GoogleIcon />
-          구글 로그인 하기
-        </button>
-      </a.SocialContainer>
-      <a.MoveSignUpButton
-        onClick={() => navigate('/signup')}
-        aria-label="회원가입"
-      >
-        아직 회원이 아니신가요?
-      </a.MoveSignUpButton>
-      <a.PwLossButtonContainer>
-        <a.PwLossButton onClick={onClickToggleModal} aria-label="비밀번호 찾기">
-          비밀번호를 잊으셨나요?
-        </a.PwLossButton>
-      </a.PwLossButtonContainer>
-      {isModalActive ? (
-        <CustomModal
-          modal={isModalActive}
-          setModal={setIsModalActive}
-          width="600"
-          height="300"
-          element={
-            <div>
-              <FindPW />
-            </div>
-          }
-        />
-      ) : (
-        ''
-      )}
-    </a.AuthContainer>
+          <button onClick={onClickToggleModal} aria-label="비밀번호 찾기">
+            비밀번호 찾기
+          </button>
+        </a.LoginOther>
+        {isModalActive ? (
+          <CustomModal
+            modal={isModalActive}
+            setModal={setIsModalActive}
+            width="544"
+            height="432"
+            element={
+              <div>
+                <FindPW />
+              </div>
+            }
+          />
+        ) : (
+          ''
+        )}
+      </a.LoginContainer>
+    </>
   );
 };
 

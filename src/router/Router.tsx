@@ -15,6 +15,7 @@ const SignUp = loadable(() => import('../pages/SignUp'));
 const Transaction = loadable(() => import('../pages/Transaction'));
 const WritePage = loadable(() => import('../pages/WritePage'));
 const ReviewPage = loadable(() => import('../pages/ReviewPage'));
+const Error404 = loadable(() => import('../components/error/Error404'));
 
 const Router = () => {
   return (
@@ -42,6 +43,7 @@ const Router = () => {
         </Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );
