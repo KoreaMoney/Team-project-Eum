@@ -9,7 +9,6 @@ import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
 import Loader from '../components/etc/Loader';
-import Loader from '../components/etc/Loader';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -142,13 +141,13 @@ const CategoryPage = () => {
     },
     [setSort]
   );
- if (isLoading) {
-   return (
-     <div>
-       <Loader />
-     </div>
-   );
- }
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
   return (
     <a.PageContainer>
       <CategoryIntros categoryName={categoryName} />
@@ -162,9 +161,7 @@ const CategoryPage = () => {
         ))}
 
         <a.PostContainer ref={observerElem}></a.PostContainer>
-        {isFetching || isFetchingNextPage ? (
-          <Loader />
-        ) : null}
+        {isFetching || isFetchingNextPage ? <Loader /> : null}
       </a.PostsContainer>
     </a.PageContainer>
   );
