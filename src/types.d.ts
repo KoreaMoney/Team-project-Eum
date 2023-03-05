@@ -6,7 +6,7 @@ export interface ISignUpForm {
 }
 export interface NavButtonProps {
   active?: boolean;
-};
+}
 export interface ILoginForm {
   email: string;
   password: string;
@@ -27,6 +27,7 @@ export interface userType {
   service: number;
   cheap: number;
   donation: number;
+  repBadge: string;
 }
 export interface postType {
   id: string | undefined;

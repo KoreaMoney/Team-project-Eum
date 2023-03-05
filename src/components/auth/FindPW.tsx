@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ISignUpForm } from '../../types';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase/Firebase';
+import { theme } from '../../styles/theme';
 
 /**순서
  * 1. email작성
@@ -60,93 +61,134 @@ const FindPW = () => {
   };
 
   return (
-    <>
-      <ModalTitle>비밀번호 찾기</ModalTitle>
-      <FormTag
+    <FindPwContainer>
+      <FindPwText>비밀번호 찾기</FindPwText>
+      <FindPwForm
         onSubmit={handleSubmit(onSubmitHandler)}
         aria-label="비밀번호 찾기"
       >
-        <ItemContainer>
-          <InputBox
-            type="email"
-            placeholder="이메일"
-            {...register('email')}
-            style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
-            onChange={onChangeEmailHandler}
-            value={email}
-          />
-          {email ? (
-            <CloseIcon onClick={handleInputValueClickBT} aria-label="확인" />
-          ) : undefined}
-        </ItemContainer>
-        {err && <ErrorMSG>{err}</ErrorMSG>}
-        {success && <SuccessMSG>이메일이 발송되었습니다.</SuccessMSG>}
-        <SendEmailButton aria-label="인증메일 전송">
-          인증메일 발송
-        </SendEmailButton>
-      </FormTag>
-    </>
+        <FindPWInputWrapper>
+          <FindPWInputText>이메일 아이디</FindPWInputText>
+          <FindPwIconBox>
+            <FindPWInput
+              type="email"
+              placeholder=""
+              {...register('email')}
+              style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
+              onChange={onChangeEmailHandler}
+              value={email}
+            />
+            {email ? (
+              <CloseIcon onClick={handleInputValueClickBT} aria-label="확인" />
+            ) : undefined}
+          </FindPwIconBox>
+        </FindPWInputWrapper>
+        {err && <ErrorMSG>❗{err}</ErrorMSG>}
+        {success && <SuccessMSG>✅ 이메일이 발송되었습니다.</SuccessMSG>}
+        <FindPWBtn aria-label="인증메일 전송">인증메일 발송</FindPWBtn>
+      </FindPwForm>
+    </FindPwContainer>
   );
 };
 export default FindPW;
-const ModalTitle = styled.h2`
-  margin-bottom: 3rem;
-  text-align: center;
-  color: ${(props) => props.theme.colors.black};
+
+const FindPwContainer = styled.div`
+  width: 384px;
+  height: 272px;
 `;
-const FormTag = styled.form`
+
+const FindPwText = styled.div`
+  color: ${theme.colors.black};
+  font-size: ${theme.fontSize.title32};
+  font-weight: ${theme.fontWeight.bold};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FindPwForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 96px;
   width: 100%;
+  height: 144px;
 `;
-const ItemContainer = styled.div`
-  position: relative;
-  width: 25rem;
-  height: 2.8rem;
-`;
-const InputBox = styled.input`
+
+const FindPWInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid ${theme.colors.orange02Main};
   width: 100%;
-  height: 2.4rem;
-  padding: 0 3rem 0 1rem;
-  font-size: 1rem;
-  background-color: ${(props) => props.theme.colors.white};
-  border: 2px solid yellow;
-  border-radius: 8px;
-  &::placeholder {
-    color: ${(props) => props.theme.colors.gray10};
-  }
-  &:focus {
-    outline: none;
-  }
+  height: 64px;
+  padding: 13px;
 `;
-const CloseIcon = styled(AiFillCloseCircle)`
-  position: absolute;
-  bottom: 13px;
-  right: 20px;
-  font-size: 26px;
-  color: ${(props) => props.theme.colors.gray10};
-  cursor: pointer;
-  &:hover {
-    color: ${(props) => props.theme.colors.gray30};
-  }
+
+const FindPWInputText = styled.span`
+  font-size: 12px;
+  width: 120px;
+  height: 18px;
+  margin-bottom: 3px;
+  color: ${theme.colors.gray30}; ;
 `;
-const SuccessMSG = styled.p`
-  color: blue;
-  font-size: 0.8rem;
+
+const FindPwIconBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
-const ErrorMSG = styled.p`
-  color: tomato;
-  font-size: 0.8rem;
-`;
-const SendEmailButton = styled.button`
+
+const FindPWInput = styled.input`
   width: 100%;
-  height: 3rem;
-  margin: 1rem 0 0 0;
+  height: 21px;
+  font-size: ${theme.fontSize.title14};
+  background-color: transparent;
   border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  color: ${(props) => props.theme.colors.gray40};
-  background-color: yellow;
-  cursor: pointer;
+  outline: none;
+`;
+
+const CloseIcon = styled(AiFillCloseCircle)`
+  color: ${theme.colors.gray20};
   &:hover {
-    background-color: ${(props) => props.theme.colors.gray10};
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
   }
+`;
+
+const FindPWBtn = styled.button`
+  width: 100%;
+  height: 64px;
+  margin-top: 16px;
+  color: ${theme.colors.white};
+  background-color: ${theme.colors.orange02Main};
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${theme.colors.white};
+    color: ${theme.colors.orange02Main};
+    border: 1px solid ${theme.colors.orange02Main};
+  }
+  &:active {
+    color: ${theme.colors.white};
+    background-color: ${theme.colors.orange02Main};
+    border: none;
+  }
+`;
+
+const SuccessMSG = styled.p`
+  color: ${theme.colors.green};
+  font-size: 13px;
+  width: 100%;
+  height: 16px;
+  padding: 5px;
+`;
+
+const ErrorMSG = styled.p`
+  color: ${theme.colors.red};
+  font-size: 13px;
+  width: 100%;
+  height: 16px;
+  padding: 5px;
 `;
