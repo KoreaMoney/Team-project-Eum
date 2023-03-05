@@ -93,13 +93,14 @@ export const MyPageContentsContainer = styled.div`
   padding-left: 102px;
   background-color: ${(props) => props.theme.colors.white};
   color: ${(props) => props.theme.colors.black};
-  p {
-    font-size: ${theme.fontSize.ad24};
-    font-weight: ${theme.fontWeight.bold};
-    width: 180px;
-    height: 24px;
-    margin-bottom: 56px;
-  }
+`;
+
+export const MypageCategoryTop = styled.div`
+  font-size: ${theme.fontSize.ad24};
+  font-weight: ${theme.fontWeight.bold};
+  width: 180px;
+  height: 24px;
+  margin-bottom: 56px;
 `;
 
 export const MySellNav = styled.div`

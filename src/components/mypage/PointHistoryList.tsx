@@ -12,7 +12,7 @@ import Loader from '../etc/Loader';
  *4. 전체거래 목록 보기
  */
 const PointHistoryList = () => {
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState('전체');
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
@@ -31,11 +31,13 @@ const PointHistoryList = () => {
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.buyerUid;
   });
+  console.log('buyTradeList', buyTradeList);
 
   // 거래완료 목룩 중 내 구매목록
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.sellerUid;
   });
+  console.log('sellTradeList', sellTradeList);
 
   // 내 전체 거래 목록
   let NewTradeList;
@@ -44,6 +46,7 @@ const PointHistoryList = () => {
   } else {
     NewTradeList = undefined;
   }
+  console.log('NewTradeList', NewTradeList);
 
   // 거래 일자 출력
   const getTradeDate = (prev: number) => {
@@ -57,51 +60,54 @@ const PointHistoryList = () => {
 
   // nav 스타일
   const categoryStyle = {
-    color: `${theme.colors.white}`,
-    backgroundColor: `${theme.colors.orange02Main}`,
-    borderBottom: `2px solid ${theme.colors.orange02Main}`,
-    borderStartStartRadius: `10px`,
-    borderStartEndRadius: `10px`,
+    color: `${theme.colors.orange02Main}`,
+    backgroundColor: `${theme.colors.white}`,
   };
 
   return (
     <div>
-      <div>
-        <PointWrapper
-          onClick={() => setCategory(0)}
-          style={category === 0 ? categoryStyle : undefined}
-          aria-label="전체"
-        >
-          전체
-        </PointWrapper>
-        <PointWrapper
-          onClick={() => setCategory(1)}
-          style={category === 1 ? categoryStyle : undefined}
-          aria-label="판매"
-        >
-          판매
-        </PointWrapper>
-        <PointWrapper
-          onClick={() => setCategory(2)}
-          style={category === 2 ? categoryStyle : undefined}
-          aria-label="구매"
-        >
-          구매
-        </PointWrapper>
-      </div>
+      <DropDown>
+        <DropDownBtn>
+          <div>{category}</div>
+          <img src="/assets/Vector.png" />
+        </DropDownBtn>
+        <DropDownBox className="DropDownBox">
+          <PointWrapper
+            onClick={() => setCategory('전체')}
+            style={category === '전체' ? categoryStyle : undefined}
+            aria-label="전체"
+          >
+            전체
+          </PointWrapper>
+          <PointWrapper
+            onClick={() => setCategory('출금')}
+            style={category === '출금' ? categoryStyle : undefined}
+            aria-label="출금"
+          >
+            출금
+          </PointWrapper>
+          <PointWrapper
+            onClick={() => setCategory('입금')}
+            style={category === '입금' ? categoryStyle : undefined}
+            aria-label="입금"
+          >
+            입금
+          </PointWrapper>
+        </DropDownBox>
+      </DropDown>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
           <div>
             <Loader />
           </div>
-        ) : category === 0 ? (
+        ) : category === '전체' ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
               <PointHistoryDate>
                 {prev.buyerUid === saveUser.uid
-                  ? '구매'
+                  ? '입금'
                   : prev.sellerUid
-                  ? '판매'
+                  ? '출금'
                   : '에러'}
               </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
@@ -117,7 +123,7 @@ const PointHistoryList = () => {
               </PointHistoryAmount>
             </PointHistory>
           ))
-        ) : category === 1 ? (
+        ) : category === '입금' ? (
           sellTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
               <PointHistoryDate>
@@ -127,7 +133,7 @@ const PointHistoryList = () => {
               <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
             </PointHistory>
           ))
-        ) : category === 2 && buyTradeList ? (
+        ) : category === '출금' && buyTradeList ? (
           buyTradeList.map((prev: any) => (
             <PointHistory key={prev.id}>
               <PointHistoryDate>
@@ -146,65 +152,105 @@ const PointHistoryList = () => {
 };
 export default PointHistoryList;
 
+const DropDown = styled.div`
+  width: 68px;
+  height: 27px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 48px;
+  &:hover {
+    .DropDownBox {
+      display: flex;
+    }
+  }
+`;
+
+const DropDownBtn = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 68px;
+  height: 27px;
+  color: ${theme.colors.black};
+  font-size: ${theme.fontSize.title18};
+  font-weight: ${theme.fontWeight.medium};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.gray30};
+  }
+`;
+
+const DropDownBox = styled.div`
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: ${theme.colors.white};
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 10px;
+  z-index: 1;
+  height: 192px;
+  width: 170px;
+  right: 0;
+`;
+
+const PointWrapper = styled.button`
+  width: 100%;
+  height: 32px;
+  font-size: ${theme.fontSize.title20};
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.black};
+  border: none;
+  &:hover {
+    cursor: pointer;
+    color: ${(props) => props.theme.colors.orange02Main};
+    background-color: ${theme.colors.white};
+  }
+`;
+
 const PlusOrMinus = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const PointWrapper = styled.button`
-  width: 8rem;
-  height: 32px;
-  font-size: ${theme.fontSize.title18};
+const PointHistoryWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 588px;
+  height: auto;
+  gap: 24px;
+  font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.medium};
-  background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange02Main};
-  border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.orange02Main};
-  &:hover {
-    cursor: pointer;
-    color: ${(props) => props.theme.colors.white};
-    background-color: ${theme.colors.orange03};
-    border-bottom: 2px solid ${(props) => props.theme.colors.orange03};
-    border-start-start-radius: 10px;
-    border-start-end-radius: 10px;
-  }
+  color: ${(props) => props.theme.colors.gray30};
 `;
 
-const PointHistoryWrapper = styled.div`
-  margin: 12px 0;
-  padding: 12px 24px;
-  width: 100%;
-  height: 360px;
-  background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.gray50};
-  border: 1px solid ${theme.colors.gray30};
-  border-radius: 10px;
-  margin-bottom: 24px;
-  overflow-y: auto;
-`;
 const PointHistory = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 1rem 0;
+  align-items: flex-start;
   width: 100%;
-  height: 1.5rem;
-  font-size: 1rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray30};
+  height: 59px;
 `;
+
 const PointHistoryDate = styled.div`
   width: 10rem;
   display: flex;
-  justify-content: left;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
+
 const PointHistoryContent = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
   width: 25rem;
 `;
+
 const PointHistoryAmount = styled.div`
   display: flex;
   justify-content: left;

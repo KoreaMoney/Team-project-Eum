@@ -162,7 +162,7 @@ const MyPage = () => {
           </a.MyInfoNavWrapper>
         </a.MyPageNavWrapper>
         <a.MyPageContentsContainer>
-          <p>{category}</p>
+          <a.MypageCategoryTop>{category}</a.MypageCategoryTop>
           {category === '나의 판매내역' ? (
             <a.MySellNav>
               <div
