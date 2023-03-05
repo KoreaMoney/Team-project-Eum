@@ -296,4 +296,9 @@ const LogOutBtn = styled.button`
     color: ${(props) => props.theme.colors.black};
     font-weight: ${(props) => props.theme.fontWeight.bold};
   }
+  &:active {
+    border: 3px solid ${(props) => props.theme.colors.orange02Main};
+    color: ${(props) => props.theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
+  }
 `;

@@ -1,64 +1,93 @@
 import styled from 'styled-components';
 import { AiFillCloseCircle, AiFillEye } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
+import { theme } from '../theme';
 
 //회원가입 & 로그인 동일한 스타일
-export const AuthContainer = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 27rem;
+  flex-direction: column;
+  width: 384px;
+  height: 712px;
   margin: 0 auto;
+  padding-top: 70px;
 `;
 
-export const AuthName = styled.div`
+export const LoginText = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 32px;
+  margin-bottom: 60px;
+  font-size: ${theme.fontSize.title32};
+  font-weight: ${theme.fontWeight.bold};
+  color: ${theme.colors.black};
+`;
+
+export const LoginForm = styled.form`
+  display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 12rem;
-  gap: 1.5rem;
-  font-size: 30px;
-  cursor: default;
-  span {
-    font-size: 16px;
-  }
+  height: 280px;
 `;
 
-export const FormTag = styled.form`
+export const LoginInputWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
-`;
-
-export const ItemContainer = styled.div`
-  position: relative;
-  height: 3rem;
-`;
-
-export const InputBox = styled.input`
-  width: 100%;
-  height: 2.6rem;
-  font-size: 1rem;
-  padding: 0.7rem;
-  box-shadow: 0.5px 1px 2px 0.5px ${(props) => props.theme.colors.gray20};
-  background-color: ${(props) => props.theme.colors.white};
-  border: 2px solid ${(props) => props.theme.colors.black};
+  height: 64px;
+  padding-left: 32px;
+  border: 1px solid ${theme.colors.gray20};
   border-radius: 10px;
-  &::placeholder {
-    color: ${(props) => props.theme.colors.gray20};
-  }
+  margin-top: 14px;
+`;
+
+export const LoginInputText = styled.span`
+  font-size: 13px;
+  height: 18px;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  color: ${theme.colors.gray20};
+`;
+
+export const LoginInput = styled.input`
+  width: 85%;
+  height: 22px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: ${theme.fontSize.title14};
   &:focus {
     outline: none;
   }
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray20};
+    font-size: 12px;
+  }
 `;
 
-export const CloseIcon = styled(AiFillCloseCircle)`
-  position: absolute;
-  right: 1rem;
-  top: 0.55rem;
-  font-size: 24px;
+export const LoginMiniWrapper = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const LoginCloseIcon = styled(AiFillCloseCircle)`
+  color: ${(props) => props.theme.colors.gray20};
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
+export const LoginPwIcon = styled(AiFillEye)`
   color: ${(props) => props.theme.colors.gray20};
   cursor: pointer;
   &:hover {
@@ -66,189 +95,102 @@ export const CloseIcon = styled(AiFillCloseCircle)`
   }
 `;
 
-export const ViewIcon = styled(AiFillEye)`
-  position: absolute;
-  bottom: 10px;
-  right: 18px;
-  font-size: 30px;
-  cursor: pointer;
-`;
-
-export const ErrorMSG = styled.p`
-  padding: 0.2rem;
-  color: ${(props) => props.theme.colors.black};
-  font-size: 12px;
-`;
-
-//회원가입 스타일
-export const SignUpInputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 12rem;
+export const SubmitLogin = styled.button`
   width: 100%;
-  gap: 1rem;
-`;
-
-export const CheckBT = styled.button`
-  position: absolute;
-  border: none;
-  width: 20%;
-  height: 2rem;
-  right: 0.3rem;
-  top: 0.32rem;
-  border-radius: 6px;
-  font-size: 16px;
-  color: ${(props) => props.theme.colors.gray30};
-  background-color: black;
-  cursor: pointer;
-  &:hover {
-    border: 3px solid tomato;
-    color: black;
-  }
-`;
-
-export const MoveSignInButton = styled.button`
-  border: none;
-  background-color: white;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: 16px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-  }
-`;
-
-export const PassMSG = styled.p`
-  color: green;
-  margin-top: 0.3rem;
-  font-size: 12px;
-`;
-
-export const JoinButton = styled.button`
-  width: 100%;
-  height: 3rem;
+  height: 64px;
   border-radius: 10px;
-  margin-top: 2rem;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: 20px;
-  background-color: tomato;
+  margin-top: 15px;
+  margin-bottom: 16px;
+  background-color: ${theme.colors.orange02Main};
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeight.medium};
+  font-size: ${theme.fontSize.title16};
   border: none;
-  cursor: pointer;
+  outline: none;
   &:hover {
-    border: 4px solid tomato;
-    color: ${(props) => props.theme.colors.black};
-  }
-  &:active {
-    background-color: ${(props) => props.theme.colors.white};
+    cursor: pointer;
+    border: 1px solid ${theme.colors.orange02Main};
+    background-color: ${theme.colors.white};
+    color: ${theme.colors.orange02Main};
   }
 `;
 
-//로그인 스타일
-
-export const SignInContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const ErrMsg = styled.div`
   width: 100%;
-  gap: 1rem;
+  padding: 0.4rem;
+  padding-left: 1rem;
+  font-size: ${theme.fontSize.title14};
+  color: ${theme.colors.red};
 `;
 
-export const LoginButton = styled.button`
+export const LoginAnd = styled.div`
+  font-size: ${theme.fontSize.title14};
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.gray30};
+  margin-bottom: 16px;
+`;
+
+export const GoogleWrapper = styled.div`
   width: 100%;
-  height: 3rem;
+  height: 64px;
+`;
+
+export const GoogleBtn = styled.button`
+  width: 100%;
+  height: 100%;
+  outline: none;
+  background-color: ${theme.colors.white};
+  border: 1px solid ${theme.colors.black};
   border-radius: 10px;
-  margin-top: 1rem;
-  color: ${(props) => props.theme.colors.gray40};
-  font-size: 20px;
-  background-color: tomato;
-  border: none;
-  cursor: pointer;
   &:hover {
-    border: 4px solid tomato;
-    color: ${(props) => props.theme.colors.black};
-  }
-  &:active {
-    background-color: ${(props) => props.theme.colors.white};
+    cursor: pointer;
+    border: 1px solid ${theme.colors.orange02Main};
+    color: ${theme.colors.orange02Main};
   }
 `;
 
-export const PTag = styled.span`
-  font-size: 16px;
-  color: ${(props) => props.theme.colors.gray30};
-  margin-top: 2rem;
-`;
-
-export const SocialContainer = styled.div`
+export const GoogleIconWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 23px;
+  height: 32px;
   width: 100%;
-  gap: 1rem;
-  margin-top: 1rem;
+  p {
+    font-size: ${theme.fontSize.title16};
+    font-weight: ${theme.fontWeight.medium};
+  }
+`;
+export const GoogleIcon = styled(FcGoogle)`
+  margin-right: 47px;
+`;
 
+export const LoginOther = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 18px;
+  margin-top: 32px;
   button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 3rem;
     border: none;
     outline: none;
-    border-radius: 10px;
-    gap: 1rem;
-    font-size: 20px;
-    color: ${(props) => props.theme.colors.gray40};
-    background-color: tomato;
-    cursor: pointer;
+    font-size: ${theme.fontSize.title14};
+    background-color: transparent;
+    color: ${theme.colors.gray30};
+    font-weight: ${theme.fontWeight.medium};
+
     &:hover {
-      border: 4px solid tomato;
-      color: ${(props) => props.theme.colors.black};
-    }
-    &:active {
-      background-color: ${(props) => props.theme.colors.white};
+      cursor: pointer;
+      color: ${theme.colors.orange02Main};
+      font-weight: ${theme.fontWeight.bold};
     }
   }
 `;
 
-export const GoogleIcon = styled(FcGoogle)`
-  font-size: 2rem;
-`;
-
-export const MoveSignUpButton = styled.button`
-  border: none;
-  background-color: white;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: 16px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-  }
-`;
-
-export const PwLossButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 23rem;
-  cursor: pointer;
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-  }
-`;
-
-export const PwLossButton = styled.button`
+//회원가입
+export const PassMSG = styled.p`
+  color: ${theme.colors.green};
   margin-top: 0.3rem;
-  border: none;
-  background-color: transparent;
-  color: ${(props) => props.theme.colors.gray30};
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-  }
+  font-size: ${theme.fontSize.title14};
 `;
