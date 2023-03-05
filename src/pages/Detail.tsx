@@ -216,6 +216,7 @@ const Detail = () => {
         isCancel: false,
         cancelTime: 0,
         doneTime: 0,
+        reviewDone: false,
       });
       setTimeout(() => {
         navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);

@@ -20,7 +20,6 @@ import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
 import Loader from '../components/etc/Loader';
 
-
 /**순서
  * 1. query-key만들기
  * 2. 판매자, 구매자 데이터 가져오기
@@ -91,6 +90,7 @@ const Transaction = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['salePost1', uuid]);
         setIsDone(true);
+        navigate(`/review/${data[0].id}`);
       },
     }
   );
@@ -312,7 +312,6 @@ const Transaction = () => {
                 </a.ClearButton>
               ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
                 <a.ClearButton aria-label="취소 완료">취소 완료</a.ClearButton>
-
               ) : null}
 
               {isDone ? (

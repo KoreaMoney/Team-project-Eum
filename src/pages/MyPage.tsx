@@ -253,7 +253,7 @@ const MyPage = () => {
                       />
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
                       <a.MyLikeDiv>{list.price}</a.MyLikeDiv>
-                      <a.MyLikeDiv>{list.like.length}</a.MyLikeDiv>
+                      <a.MyLikeDiv>{list.like?.length}</a.MyLikeDiv>
                     </a.MyLikeList>
                   );
                 })

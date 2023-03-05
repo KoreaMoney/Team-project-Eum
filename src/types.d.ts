@@ -20,6 +20,13 @@ export interface userType {
   like: [];
   isDoneCount: number;
   commentsCount: number;
+  id: string | undefined;
+  time: number;
+  fast: number;
+  manner: number;
+  service: number;
+  cheap: number;
+  donation: number;
 }
 export interface postType {
   id: string | undefined;
@@ -56,7 +63,6 @@ export interface commentType {
   createAt: number;
   writerNickName: string | null | undefined;
 }
-
 export interface onSalePostType {
   id: string | undefined;
   postsId: string | undefined;
@@ -74,6 +80,7 @@ export interface onSalePostType {
   isCancel: boolean;
   cancelTime: number;
   doneTime: number;
+  reviewDone: boolean;
 }
 export interface LocationState {
   from: Location;
