@@ -15,6 +15,7 @@ import { postType } from '../types';
 import SignIn from './SignIn';
 import * as a from '../styles/styledComponent/writeEdit';
 import { getUsers, postPosts } from '../api';
+import Loader from '../components/etc/Loader';
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -62,9 +63,10 @@ const WritePage = () => {
   };
 
   // 글쓴이의 유저정보를 가지고옵니다.
-  const { data: user } = useQuery(['user', saveUser.uid], () =>
+  const { data: user,isLoading } = useQuery(['user', saveUser.uid], () =>
     getUsers(saveUser.uid)
   );
+
 
   const sellerUid = saveUser.uid;
   const nickName = user?.nickName;
@@ -214,6 +216,13 @@ console.log('post.category: ', post.category);
   if (!saveUser) {
     return <SignIn />;
   }
+     if (isLoading) {
+       return (
+         <div>
+           <Loader />
+         </div>
+       );
+     }
   const deleteImg = () => {
     setPost({ ...post, imgURL: '' });
   };

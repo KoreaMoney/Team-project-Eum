@@ -13,6 +13,7 @@ import {
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/writeEdit';
 import { getPostsId, getUsers, patchPosts } from '../api';
+import Loader from '../components/etc/Loader';
 
 const EditPage = () => {
   const navigate = useNavigate();
@@ -195,123 +196,126 @@ const EditPage = () => {
     setPrice(postdata?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   }, [postdata]);
 
-  if (isLoading) return <div>Now Loading...</div>;
   /**사진삭제 */
 const deleteImg = () => {
   setImgURL('');
 };
   return (
-    
-      <a.WriteContainer>
-        <a.MainTitle>수정하기</a.MainTitle>
-        <a.WriteForm onSubmit={onSubmitHandler}>
-          <a.ContentsContainer>
-            <a.EachContainer>
-              <a.Title>사진</a.Title>
-              <a.PhotosContainer>
-                <label htmlFor="changeImg">
-                  <a.AddPhotoBox>
-                    <input
-                      hidden
-                      type="file"
-                      id="changeImg"
-                      onChange={saveImgFile}
-                      ref={imgRef}
-                      name="profile_img"
-                      accept="image/*"
-                    />
-                    <a.PhotoIcon />
-                  </a.AddPhotoBox>
-                </label>
-                {imgURL && (
-                  <a.ImgBox img={imgURL}>
-                    <a.DeleteIcon onClick={deleteImg} />
-                  </a.ImgBox>
-                )}
-              </a.PhotosContainer>
-            </a.EachContainer>
-            <a.EachContainer>
-              <a.Title>제목/가격</a.Title>
-              <a.TextInput
-                ref={titleRef}
-                type="text"
-                name="title"
-                value={title}
-                onChange={onChange}
-                placeholder="제목"
-                maxLength={16}
-              />
-              <a.TextInput
-                ref={priceRef}
-                onKeyDown={(e) =>
-                  ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                }
-                type="text"
-                name="price"
-                value={price === 0 ? '' : price}
-                onChange={onChangePrice}
-                placeholder="가격"
-                maxLength={11}
-                min={0}
-              />
-            </a.EachContainer>
-            <a.EachContainer>
-              <a.Title>카테고리</a.Title>
-              <a.CategorysContainer>
-                <a.CategoryButton
-                  aria-label="공부"
-                  onClick={() => setCategory('study')}
-                  selected={category === 'study'}
-                  type="button"
-                >
-                  공부
-                </a.CategoryButton>
-                <a.CategoryButton
-                  aria-label="놀이"
-                  onClick={() => setCategory('play')}
-                  selected={category === 'play'}
-                  type="button"
-                >
-                  놀이
-                </a.CategoryButton>
-                <a.CategoryButton
-                  aria-label="상담"
-                  onClick={() => setCategory('advice')}
-                  selected={category === 'advice'}
-                  type="button"
-                >
-                  상담
-                </a.CategoryButton>
-                <a.CategoryButton
-                  aria-label="기타"
-                  onClick={() => setCategory('etc')}
-                  selected={category === 'etc'}
-                  type="button"
-                >
-                  기타
-                </a.CategoryButton>
-              </a.CategorysContainer>
-            </a.EachContainer>
-            <a.EachContainer>
-              <a.Title>설명</a.Title>
-              <a.WriteQuill>
-                <ReactQuill
-                  theme="snow"
-                  ref={contentsRef}
-                  modules={modules}
-                  formats={formats}
-                  value={content || ''}
-                  onChange={(value) => {
-                    setContent(value);
-                  }}
+    <a.WriteContainer>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <a.MainTitle>수정하기</a.MainTitle>
+          <a.WriteForm onSubmit={onSubmitHandler}>
+            <a.ContentsContainer>
+              <a.EachContainer>
+                <a.Title>사진</a.Title>
+                <a.PhotosContainer>
+                  <label htmlFor="changeImg">
+                    <a.AddPhotoBox>
+                      <input
+                        hidden
+                        type="file"
+                        id="changeImg"
+                        onChange={saveImgFile}
+                        ref={imgRef}
+                        name="profile_img"
+                        accept="image/*"
+                      />
+                      <a.PhotoIcon />
+                    </a.AddPhotoBox>
+                  </label>
+                  {imgURL && (
+                    <a.ImgBox img={imgURL}>
+                      <a.DeleteIcon onClick={deleteImg} />
+                    </a.ImgBox>
+                  )}
+                </a.PhotosContainer>
+              </a.EachContainer>
+              <a.EachContainer>
+                <a.Title>제목/가격</a.Title>
+                <a.TextInput
+                  ref={titleRef}
+                  type="text"
+                  name="title"
+                  value={title}
+                  onChange={onChange}
+                  placeholder="제목"
+                  maxLength={16}
                 />
-              </a.WriteQuill>
-            </a.EachContainer>
-            <a.SubmitButton>수정 완료</a.SubmitButton>
-          </a.ContentsContainer>
-        </a.WriteForm>
-      </a.WriteContainer>
-
+                <a.TextInput
+                  ref={priceRef}
+                  onKeyDown={(e) =>
+                    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                  }
+                  type="text"
+                  name="price"
+                  value={price === 0 ? '' : price}
+                  onChange={onChangePrice}
+                  placeholder="가격"
+                  maxLength={11}
+                  min={0}
+                />
+              </a.EachContainer>
+              <a.EachContainer>
+                <a.Title>카테고리</a.Title>
+                <a.CategorysContainer>
+                  <a.CategoryButton
+                    aria-label="공부"
+                    onClick={() => setCategory('study')}
+                    selected={category === 'study'}
+                    type="button"
+                  >
+                    공부
+                  </a.CategoryButton>
+                  <a.CategoryButton
+                    aria-label="놀이"
+                    onClick={() => setCategory('play')}
+                    selected={category === 'play'}
+                    type="button"
+                  >
+                    놀이
+                  </a.CategoryButton>
+                  <a.CategoryButton
+                    aria-label="상담"
+                    onClick={() => setCategory('advice')}
+                    selected={category === 'advice'}
+                    type="button"
+                  >
+                    상담
+                  </a.CategoryButton>
+                  <a.CategoryButton
+                    aria-label="기타"
+                    onClick={() => setCategory('etc')}
+                    selected={category === 'etc'}
+                    type="button"
+                  >
+                    기타
+                  </a.CategoryButton>
+                </a.CategorysContainer>
+              </a.EachContainer>
+              <a.EachContainer>
+                <a.Title>설명</a.Title>
+                <a.WriteQuill>
+                  <ReactQuill
+                    theme="snow"
+                    ref={contentsRef}
+                    modules={modules}
+                    formats={formats}
+                    value={content || ''}
+                    onChange={(value) => {
+                      setContent(value);
+                    }}
+                  />
+                </a.WriteQuill>
+              </a.EachContainer>
+              <a.SubmitButton>수정 완료</a.SubmitButton>
+            </a.ContentsContainer>
+          </a.WriteForm>
+        </>
+      )}
+    </a.WriteContainer>
   );
 };
 

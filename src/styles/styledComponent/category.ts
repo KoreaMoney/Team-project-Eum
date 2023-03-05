@@ -16,6 +16,7 @@ export const CategoryIntroTitle = styled.p`
 export const CategoryIntroContentContainer = styled.p`
   padding: 40px 0;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20}; ;
+  margin-bottom:180px;
 `;
 export const PTag = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
