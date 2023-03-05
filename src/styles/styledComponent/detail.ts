@@ -371,12 +371,14 @@ export const TransactionText = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 231, 221, 0.6);
 
   h1 {
-    text-align: center;
-    font-weight: 800;
-    font-size: 50px;
+    font-size: ${(props) => props.theme.fontSize.title64};
+    font-weight: ${(props) => props.theme.fontWeight.bold};
+    line-height: ${(props) => props.theme.lineHeight.title64};
+    color: ${(props) => props.theme.colors.black};
+    margin-bottom: 100px;
   }
 
   button {
@@ -385,7 +387,11 @@ export const TransactionText = styled.div`
     bottom: 0;
     background-color: transparent;
     border: none;
-    color: yellow;
+    color: ${(props) => props.theme.colors.black};
+    cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.colors.orange02Main};
+    }
   }
 `;
 
@@ -412,18 +418,18 @@ export const CancelButton = styled.button`
   width: 100%;
   height: 64px;
   margin-top: 62px;
-  border: 1px solid ${(props) => props.theme.colors.orange02Main};
-  background-color: ${(props) => props.theme.colors.white};
-  color: ${(props) => props.theme.colors.orange02Main};
+  border: none;
+  background-color: ${(props) => props.theme.colors.orange02Main};
+  color: ${(props) => props.theme.colors.white};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.ad24};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.colors.orange02Main};
-    color: ${(props) => props.theme.colors.white};
-    border: none;
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
   }
 `;
 
