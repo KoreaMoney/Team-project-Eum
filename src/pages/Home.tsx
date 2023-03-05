@@ -143,7 +143,7 @@ const Home = () => {
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
-                        <InfoNew>New</InfoNew>
+                        <a.InfoNew>New</a.InfoNew>
                         <a.InfoTitle>{post.title}</a.InfoTitle>
                         <a.InfoProfile>
                           <a.ProfileIMG
@@ -263,11 +263,4 @@ const NewContentsWrapper = styled.div`
   .slick-prev:before {
     margin-right: 30px;
   }
-`;
-
-const InfoNew = styled.div`
-  text-decoration: underline;
-  color: ${theme.colors.Blue};
-  font-size: ${(props) => props.theme.fontSize.title16};
-  font-weight: ${(props) => props.theme.fontWeight.medium};
 `;

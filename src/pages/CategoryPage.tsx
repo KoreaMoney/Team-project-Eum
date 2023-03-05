@@ -9,6 +9,7 @@ import SortPosts from '../components/categoryHome/SortPosts';
 import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
+import Loader from '../components/etc/Loader';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -86,18 +87,17 @@ const CategoryPage = () => {
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage} =
-    useInfiniteQuery(
-      ['posts', categoryName ?? 'all', select, word],
-      ({ pageParam = 0 }) =>
-        fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage = allPages.length + 1;
-          return lastPage.length !== 0 ? nextPage : undefined;
-        },
-      }
-    );
+  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
+    ['posts', categoryName ?? 'all', select, word],
+    ({ pageParam = 0 }) =>
+      fetchPosts('posts', categoryName ?? 'all', select, word, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        return lastPage.length !== 0 ? nextPage : undefined;
+      },
+    }
+  );
 
   //무한스크롤 observer
   const handleObserver = useCallback(
@@ -138,20 +138,25 @@ const CategoryPage = () => {
 
   return (
     <a.PageContainer>
-      <CategoryIntros categoryName={categoryName} />
-      <SortPosts onSortClick={handleSortClick} />
-      <a.PostsContainer>
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.map((post: postType) => (
-              <Post post={post} onClick={handlePostClick} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CategoryIntros categoryName={categoryName} />
+          <SortPosts onSortClick={handleSortClick} />
+          <a.PostsContainer>
+            {data?.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.map((post: postType) => (
+                  <Post post={post} onClick={handlePostClick} />
+                ))}
+              </Fragment>
             ))}
-          </Fragment>
-        ))}
 
-        <a.PostContainer ref={observerElem}>
-        </a.PostContainer>
-      </a.PostsContainer>
+            <a.PostContainer ref={observerElem}></a.PostContainer>
+          </a.PostsContainer>
+        </>
+      )}
     </a.PageContainer>
   );
 };

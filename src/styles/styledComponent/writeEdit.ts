@@ -13,7 +13,7 @@ export const MainTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.title32};
   line-height: ${(props) => props.theme.lineHeight.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
-  color: ${(props) => props.theme.colors.gray60};
+  color: ${(props) => props.theme.colors.black};
   text-align: center;
   margin-bottom: 48px;
 `;
@@ -134,9 +134,7 @@ export const WriteWrapper = styled.div`
   width: 70%;
   margin: 5px auto;
 `;
-export const WriteForm = styled.form`
-
-`;
+export const WriteForm = styled.form``;
 
 export const WriteInputWrapper = styled.div`
   display: flex;

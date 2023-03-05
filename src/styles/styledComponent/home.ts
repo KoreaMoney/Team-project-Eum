@@ -107,3 +107,10 @@ export const InfoNickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   color: ${theme.colors.gray30};
 `;
+
+export const InfoNew = styled.div`
+  text-decoration: underline;
+  color: ${theme.colors.Blue};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+`;
