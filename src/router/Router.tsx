@@ -14,6 +14,7 @@ const SignIn = loadable(() => import('../pages/SignIn'));
 const SignUp = loadable(() => import('../pages/SignUp'));
 const Transaction = loadable(() => import('../pages/Transaction'));
 const WritePage = loadable(() => import('../pages/WritePage'));
+const ReviewPage = loadable(() => import('../pages/ReviewPage'));
 
 const Router = () => {
   return (
@@ -37,6 +38,7 @@ const Router = () => {
             path="/detail/:categoryName/:sellerId/:buyerId/:id"
             element={<Transaction />}
           />
+          <Route path="review/:id" element={<ReviewPage />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

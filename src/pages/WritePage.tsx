@@ -121,9 +121,6 @@ const WritePage = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
       };
-
-
-      
     }
   };
 

@@ -85,6 +85,7 @@ const Transaction = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['salePost1', id]);
         setIsDone(true);
+        navigate(`/review/${data[0].id}`);
       },
     }
   );
@@ -266,9 +267,7 @@ const Transaction = () => {
                   완료
                 </button>
               ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
-                <button aria-label="취소 완료">
-                  취소 완료
-                </button>
+                <button aria-label="취소 완료">취소 완료</button>
               ) : null}
 
               {isDone ? (
