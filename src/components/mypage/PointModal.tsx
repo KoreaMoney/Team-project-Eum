@@ -5,6 +5,7 @@ import PointHistoryList from './PointHistoryList';
 import styled from 'styled-components';
 import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
 import { getUsers } from '../../api';
+import { theme } from '../../styles/theme';
 
 /**순서
  * 1.커스텀 모달을 부른다
@@ -57,7 +58,7 @@ const PointModal = () => {
               </CloseButton>
               <PointImgWrapper>
                 <img src="/assets/walletmoney.png" alt="지갑" loading="lazy" />
-                <h3>　내 포인트</h3>
+                <div>　내 포인트</div>
               </PointImgWrapper>
               <CurrentPoint>
                 {profileData?.[0] &&
@@ -68,16 +69,16 @@ const PointModal = () => {
                 P
               </CurrentPoint>
               <PointDepositWithdrawWrapper>
-                <PointDepositButton
+                <PointDepositWithdrawButton
                   onClick={() => {
                     pointChargeHandle();
                   }}
                   aria-label="충전하기"
                 >
                   <img src="/assets/moneysend.png" alt="충전" loading="lazy" />
-                  <h3>　충전하기</h3>
-                </PointDepositButton>
-                <PointWithdrawButton
+                  <div>　충전하기</div>
+                </PointDepositWithdrawButton>
+                <PointDepositWithdrawButton
                   onClick={() => {
                     pointWithDrawHandle();
                   }}
@@ -88,8 +89,8 @@ const PointModal = () => {
                     alt="출금"
                     loading="lazy"
                   />
-                  <h3>　출금하기</h3>
-                </PointWithdrawButton>
+                  <div>　출금하기</div>
+                </PointDepositWithdrawButton>
               </PointDepositWithdrawWrapper>
               <PointHistoryList />
             </PointModalContainer>
@@ -109,11 +110,18 @@ const PointButton = styled.button`
   margin-bottom: 2rem;
   width: 18rem;
   height: 2rem;
-  font-size: 100%;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
-  border: none;
+  padding: 0 1rem;
+  font-size: ${theme.fontSize.title16};
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.orange02Main};
+  border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.orange03};
+    color: ${(props) => props.theme.colors.white};
+  }
 `;
 
 const PointModalContainer = styled.div`
@@ -128,7 +136,8 @@ const PointImgWrapper = styled.div`
   align-items: center;
   margin-bottom: 12px;
   width: 100%;
-  font-size: 100%;
+  font-size: ${theme.fontSize.title20};
+  font-weight: ${theme.fontWeight.bold};
 `;
 
 const CurrentPoint = styled.div`
@@ -138,8 +147,11 @@ const CurrentPoint = styled.div`
   padding: 12px 40px;
   width: 100%;
   height: 80px;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${theme.fontSize.title20};
+  border: 1px solid ${theme.colors.gray30};
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.gray50};
   border-radius: 10px;
 `;
 
@@ -149,42 +161,25 @@ const PointDepositWithdrawWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
   width: 100%;
-  gap: 24px;
+  gap: 1.5rem;
 `;
 
-const PointDepositButton = styled.button`
+const PointDepositWithdrawButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
   height: 72px;
-  font-size: 1rem;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
-  border: none;
+  font-size: ${theme.fontSize.title16};
+  font-weight: ${theme.fontWeight.bold};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.orange02Main};
+  border: 1px solid ${theme.colors.orange02Main};
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    background-color: ${(props) => props.theme.colors.gray20};
-    color: ${(props) => props.theme.colors.gray40};
-  }
-`;
-
-const PointWithdrawButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  height: 72px;
-  font-size: 1rem;
-  background-color: ${(props) => props.theme.colors.gray10};
-  color: ${(props) => props.theme.colors.gray30};
-  border: none;
-  border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    background-color: ${(props) => props.theme.colors.gray20};
-    color: ${(props) => props.theme.colors.gray40};
+    background-color: ${(props) => props.theme.colors.orange03};
+    color: ${(props) => props.theme.colors.white};
   }
 `;
 

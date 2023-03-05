@@ -31,4 +31,9 @@ export const isDoneAtom = atom({
   key: 'isDoneAtom',
   default: false,
 });
+
+export const sortAtom = atom({
+  key: 'sortAtom',
+  default: '최신순',
+});
 /**여기 아래에는 속도개선을 위해 custom을 components에서 recoil로 전환 */

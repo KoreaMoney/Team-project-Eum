@@ -2,12 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import CommentInput from '../components/comment/CommentInput';
 import CommentsList from '../components/comment/CommentsList';
-
-import { FcLikePlaceholder } from 'react-icons/fc';
 import {
   customConfirm,
+  customSuccessAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
 import { onSalePostType } from '../types';
@@ -24,6 +22,8 @@ import {
 import SellerInfo from '../components/detail/SellerInfo';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
+import axios from 'axios';
+import Loader from '../components/etc/Loader';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -42,7 +42,7 @@ const Detail = () => {
 
   const { id } = useParams();
   const { categoryName } = useParams();
-
+  const [isDrop, setIsDrop] = useState(false);
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const location = useLocation();
@@ -51,7 +51,8 @@ const Detail = () => {
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const queryClient = useQueryClient();
-
+  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
+  const [isReviewActive, setIsReviewActive] = useState(false);
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   setIsCancel(false);
@@ -88,6 +89,17 @@ const Detail = () => {
       staleTime: Infinity,
     }
   );
+
+  /**판매중인 글 */
+  const { data: myOnSale } = useQuery(['myOnSale'], async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${saveUser.uid}&isDone=${false}&isCancel=${false}`
+    );
+    return response.data;
+  });
+
+  console.log( 'myOnSale: ' ,myOnSale);
+  
 
   useEffect(() => {
     if (post) {
@@ -145,7 +157,7 @@ const Detail = () => {
     }
   };
 
-  // 글 삭제
+  /**글 삭제 */
   const { mutate: deletePost } = useMutation((id: string) => deletePosts(id), {
     onSuccess: () => {
       navigate('/categorypage/all');
@@ -158,7 +170,11 @@ const Detail = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
   if (!post || post.length === 0) {
     return <div>No data found</div>;
@@ -179,7 +195,7 @@ const Detail = () => {
     const point = Number(user?.point) || 0;
     const price = Number(post?.[0]?.price) || 0;
 
-    // 구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트ㄴ
+    /**구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트 */
     if (point >= price) {
       await updateUser({ point: point - price });
       const uuid = uuidv4();
@@ -210,74 +226,191 @@ const Detail = () => {
     }
   };
 
-  // 대신 데이터가 업데이트 될 때만 데이터를 다시 업데이트 해준다.
+  /**화면 중간 네브바*/
+  const onClickNavExSeller = () => {
+    setIsDescriptionActive(true);
+    setIsReviewActive(false);
+    scrollToTop();
+  };
+  const onClickNavReview = () => {
+    setIsDescriptionActive(false);
+    setIsReviewActive(true);
+    goRivew();
+  };
+
+  /**현재 URL 복사 */
+  const linkCopy = () => {
+    const url = window.location.href;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        customSuccessAlert('복사되었습니다.');
+      })
+      .catch((error) => {
+        console.error(`Could not copy URL to clipboard: ${error}`);
+      });
+  };
+
+  /**설명이나 판매자 누르면 맨위로 */
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  /**후기 누르면 후기로 */
+  const goRivew = () => {
+    window.scrollTo({
+      top: 1306,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <a.DetailContainer>
-      <a.EditBtnWrapper>
-        {saveUser?.uid === seller?.id && (
-          <>
-            <button
-              onClick={() => navigate(`/editpage/${id}`)}
-              aria-label="수정"
-            >
-              수정
-            </button>
-            <button
-              onClick={() => onClickDeleteComment(post[0].id)}
-              aria-label="삭제"
-            >
-              삭제
-            </button>
-          </>
-        )}
-      </a.EditBtnWrapper>
       <a.PostContainer>
         <a.PostImage img={post[0].imgURL} aria-label="post이미지" />
         <a.PostInfoWrapper>
-          <a.TitleText>{post[0].title}</a.TitleText>
+          <a.InfoTopContainer>
+            <a.InfoTopLeftContainer>
+              <p>
+                {post?.[0].category === 'all'
+                  ? '전체'
+                  : post?.[0].category === 'study'
+                  ? '공부'
+                  : post?.[0].category === 'play'
+                  ? '놀이'
+                  : post?.[0].category === 'advice'
+                  ? '상담'
+                  : post?.[0].category === 'etc'
+                  ? '기타'
+                  : '전체'}
+              </p>
+            </a.InfoTopLeftContainer>
+            <a.InfoTopRightContainer>
+              <a.IconLeftContainer>
+                <a.HeartIcon />
+                <a.LikeLength>{post?.[0].like.length}</a.LikeLength>
+              </a.IconLeftContainer>
+              <a.IconRigntContainer>
+                <a.ShareIcon onClick={linkCopy} />
+              </a.IconRigntContainer>
+            </a.InfoTopRightContainer>
+          </a.InfoTopContainer>
+          <a.TextContainer>
+            <a.TitleText>{post?.[0].title}</a.TitleText>
+            {saveUser?.uid === post?.[0].sellerUid && (
+              <a.DropDonwContainer>
+                <a.KebobIcon onClick={() => setIsDrop(!isDrop)} />
+                {isDrop && (
+                  <a.DropDownBox>
+                    <a.DropDownButton
+                      onClick={() => navigate(`/editpage/${id}`)}
+                      aria-label="수정"
+                    >
+                      게시글 수정
+                    </a.DropDownButton>
+                    <a.DropDownButton
+                      onClick={() => onClickDeleteComment(post?.[0].id)}
+                    >
+                      삭제
+                    </a.DropDownButton>
+                  </a.DropDownBox>
+                )}
+              </a.DropDonwContainer>
+            )}
+          </a.TextContainer>
+          <a.PostNickName>{post?.[0].nickName}</a.PostNickName>
           <a.PostPrice>
             {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원
           </a.PostPrice>
-          <a.LikeAndSubmitContainer>
+          <a.LikeContainer>
             {postCountCheck ? (
-              <a.PostLikeButtonContainer
-                onClick={postCounter}
-                aria-label="좋아요 더하기"
-              >
-                <a.HeartIcon />
-              </a.PostLikeButtonContainer>
+              <>
+                <a.LikeButtonContainer
+                  onClick={postCounter}
+                  aria-label="좋아요 더하기"
+                >
+                  <a.LikeIcon />
+                </a.LikeButtonContainer>
+                {saveUser?.uid === post?.[0].sellerUid ? (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="판매중"
+                  >
+                    판매중({myOnSale.length === 0 ? '0' : myOnSale.length})
+                  </a.LikeSubmitButton>
+                ) : (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="바로 구매하기"
+                  >
+                    바로 구매하기
+                  </a.LikeSubmitButton>
+                )}
+              </>
             ) : (
-              <a.PostLikeButtonContainer
-                onClick={postCounter}
-                aria-label="좋아요 빼기"
-              >
-                <FcLikePlaceholder />
-              </a.PostLikeButtonContainer>
+              <>
+                <a.NoLikeButtonContainer
+                  onClick={postCounter}
+                  aria-label="좋아요 빼기"
+                >
+                  <a.NoLikeIcon />
+                </a.NoLikeButtonContainer>
+
+                {saveUser?.uid === post?.[0].sellerUid ? (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="판매중"
+                  >
+                    판매중({myOnSale?.length ? myOnSale?.length : 0}
+                    )
+                  </a.LikeSubmitButton>
+                ) : (
+                  <a.LikeSubmitButton
+                    onClick={onClickApplyBuy}
+                    aria-label="바로 구매하기"
+                  >
+                    바로 구매하기
+                  </a.LikeSubmitButton>
+                )}
+              </>
             )}
-            <button onClick={onClickApplyBuy} aria-label="바로 신청하기">
-              바로 신청하기
-            </button>
-          </a.LikeAndSubmitContainer>
+          </a.LikeContainer>
         </a.PostInfoWrapper>
       </a.PostContainer>
+      <a.NavContainer>
+        <a.NavButtons active={isDescriptionActive} onClick={onClickNavExSeller}>
+          설명
+        </a.NavButtons>
+        <a.NavButtons active={isDescriptionActive} onClick={onClickNavExSeller}>
+          판매자
+        </a.NavButtons>
+        <a.NavButtons
+          active={isReviewActive}
+          style={{ borderRight: 'none' }}
+          onClick={onClickNavReview}
+        >
+          후기
+        </a.NavButtons>
+      </a.NavContainer>
+
       <a.PostRow>
         <a.PostContentWrapper>
-          <a.SellerInfo>
+          <a.SellerInfoTitle>
             <p>설명</p>
-            {parse(post[0].content)}
-          </a.SellerInfo>
+          </a.SellerInfoTitle>
+          <a.SellerInfoContent>
+            <p>{parse(post[0].content)}</p>
+          </a.SellerInfoContent>
         </a.PostContentWrapper>
         <a.PostContentWrapper>
-          <a.SellerInfo>
-            <p>판매자 정보</p>
-            <SellerInfo />
-          </a.SellerInfo>
+          <a.SellerInfoTitle>
+            <p>판매자</p>
+          </a.SellerInfoTitle>
+          <SellerInfo />
         </a.PostContentWrapper>
       </a.PostRow>
       <div>
         <div>
-          {saveUser && <CommentInput />}
           <CommentsList />
         </div>
       </div>

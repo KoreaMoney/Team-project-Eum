@@ -2,10 +2,13 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import parse from 'html-react-parser';
 import { postType } from '../types';
-import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/category';
+import CategoryIntros from '../components/categoryHome/CategoryIntros';
+import SortPosts from '../components/categoryHome/SortPosts';
+import Post from '../components/categoryHome/Post';
+import { useRecoilState } from 'recoil';
+import { sortAtom } from '../atom';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -14,12 +17,10 @@ import * as a from '../styles/styledComponent/category';
 
 const CategoryPage = () => {
   const navigate = useNavigate();
-
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const { categoryName, select, word } = useParams();
   const observerElem = useRef<HTMLDivElement | null>(null);
-
   const PAGE_SIZE = 12;
+  const [sort, setSort] = useRecoilState(sortAtom);
 
   //fetchPost Category setUp
   const fetchPosts = async (
@@ -43,10 +44,12 @@ const CategoryPage = () => {
       params: {
         _page: page,
         _limit: PAGE_SIZE,
-        _sort: 'createAt', // createAt 필드를 기준으로 정렬
+        _sort: sort === '최신순' ? 'createAt' : 'like.length', // createAt 필드를 기준으로 정렬
         _order: 'desc', // 내림차순으로 정렬
       },
     });
+    console.log('response.data: ', response.data);
+
     return response.data;
   };
 
@@ -81,31 +84,9 @@ const CategoryPage = () => {
   };
 
   // 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력됩니다.
-  const getTimeGap = (posting: number) => {
-    const msGap = Date.now() - posting;
-    const minuteGap = Math.floor(msGap / 60000);
-    const hourGap = Math.floor(msGap / 3600000);
-    if (msGap < 0) {
-      return '방금 전';
-    }
-    if (hourGap > 24) {
-      const time = new Date(posting);
-      const timeGap = time.toJSON().substring(0, 10);
-      return timeGap;
-    }
-    if (minuteGap > 59) {
-      return `${hourGap}시간 전`;
-    } else {
-      if (minuteGap === 0) {
-        return '방금 전';
-      } else {
-        return `${minuteGap}분 전`;
-      }
-    }
-  };
 
   //카테고리 무한 스크롤
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage} =
     useInfiniteQuery(
       ['posts', categoryName ?? 'all', select, word],
       ({ pageParam = 0 }) =>
@@ -117,12 +98,6 @@ const CategoryPage = () => {
         },
       }
     );
-  console.log('data: ', data?.pages);
-
-  const parsingHtml = (html: string): string => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || '';
-  };
 
   //무한스크롤 observer
   const handleObserver = useCallback(
@@ -144,85 +119,37 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
+  const handleSortClick = useCallback(
+    (sortValue: string) => {
+      setSort(sortValue);
+      const queryFn = async () => {
+        const data = await fetchPosts(
+          'posts',
+          categoryName ?? 'all',
+          select,
+          word
+        );
+        return data;
+      };
+      queryClient.fetchQuery(['posts'], queryFn);
+    },
+    [setSort]
+  );
+
   return (
     <a.PageContainer>
-      {saveUser && (
-        <a.NavContainer>
-          <p>
-            {categoryName === 'all'
-              ? '전체'
-              : categoryName === 'study'
-              ? '공부'
-              : categoryName === 'play'
-              ? '놀이'
-              : categoryName === 'advice'
-              ? '상담'
-              : categoryName === 'etc'
-              ? '기타'
-              : '전체'}
-          </p>
-          <button
-            onClick={() => {
-              navigate('/writepage');
-            }}
-          >
-            글쓰기
-          </button>
-        </a.NavContainer>
-      )}
+      <CategoryIntros categoryName={categoryName} />
+      <SortPosts onSortClick={handleSortClick} />
       <a.PostsContainer>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((post: postType) => (
-              <a.PostContainer
-                key={post.id}
-                onClick={() => handlePostClick(post)}
-              >
-                <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
-                <a.ContentContainer>
-                  <h2>{post.title}</h2>
-                  <a.CreateAtText>{getTimeGap(post.createAt)}</a.CreateAtText>
-                  <a.ContentText>
-                    {post.content ? parsingHtml(post.content) : null}
-                  </a.ContentText>
-                  <a.BottomContainer>
-                    <a.LeftContainer>
-                      <a.ProfileIMG
-                        profileIMG={
-                          post?.profileImg ? post?.profileImg : basicIMG
-                        }
-                      />
-                      <p>{post.nickName}</p>
-                    </a.LeftContainer>
-                    <a.RightContainer>
-                      <a.LikeIconContainer>
-                        <a.LikeIcon />
-                        <span>{post.like?.length}</span>
-                      </a.LikeIconContainer>
-                      <p>
-                        {post.price
-                          ? post.price
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                          : 0}{' '}
-                        원
-                      </p>
-                    </a.RightContainer>
-                  </a.BottomContainer>
-                </a.ContentContainer>
-              </a.PostContainer>
+              <Post post={post} onClick={handlePostClick} />
             ))}
           </Fragment>
         ))}
 
         <a.PostContainer ref={observerElem}>
-          <a.EndPostDiv>
-            {isFetching || isFetchingNextPage
-              ? 'Loading more...'
-              : hasNextPage
-              ? 'Scroll to load more posts'
-              : 'No more posts'}
-          </a.EndPostDiv>
         </a.PostContainer>
       </a.PostsContainer>
     </a.PageContainer>

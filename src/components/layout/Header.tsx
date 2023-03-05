@@ -1,29 +1,38 @@
-import styled from 'styled-components';
 import { auth } from '../../firebase/Firebase';
 import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import SearchInput from '../etc/SearchInput';
-import { motion } from 'framer-motion';
 import {
-  HiQueueList,
-  HiPencil,
-  HiChatBubbleLeftRight,
-  HiEllipsisHorizontalCircle,
-} from 'react-icons/hi2';
-import { IoGameController } from 'react-icons/io5';
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll,
+} from 'framer-motion';
+import styled from 'styled-components';
+import { BsPersonCircle } from 'react-icons/bs';
+import SearchInput from '../etc/SearchInput';
+import { useEffect, useState } from 'react';
+import { theme } from '../../styles/theme';
 
-const svg = {
-  start: { pathLength: 0, fill: 'rgba(255, 255, 255, 0)' },
-  end: {
-    fill: 'rgba(0, 0, 0, 1)',
-    pathLength: 1,
-  },
-};
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const navAnimation = useAnimation();
+  const { scrollY } = useScroll();
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [writeActive, setWriteActive] = useState(false);
+
+  useMotionValueEvent(scrollY, 'change', () => {
+    if (scrollY.get() > 80) {
+      navAnimation.start('scroll');
+    } else {
+      navAnimation.start('top');
+    }
+  });
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
-  const navigate = useNavigate();
+  //로그아웃 버튼
   const handelClickLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -34,205 +43,255 @@ const Header = () => {
       });
   };
 
-  return (
-    <HeaderContainer>
-      <HeaderWrapper>
-        <Div>
-          <LoGoSpan>
-            <Link to="/" aria-label="홈으로 이동">
-              <LogoWrapper>
-                <Svg>
-                  <svg
-                    focusable="false"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 448 512"
-                  >
-                    <motion.path
-                      transition={{
-                        default: { duration: 5 },
-                        fill: { duration: 1, delay: 3 },
-                      }}
-                      variants={svg}
-                      initial="start"
-                      animate="end"
-                      d="M80 104c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24zm32.4 49.2c28-12.4 47.6-40.5 47.6-73.2c0-44.2-35.8-80-80-80S0 35.8 0 80c0 32.8 19.7 61 48 73.3V358.7C19.7 371 0 399.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-32.8-19.7-61-48-73.3V272c26.7 20.1 60 32 96 32h86.7c12.3 28.3 40.5 48 73.3 48c44.2 0 80-35.8 80-80s-35.8-80-80-80c-32.8 0-61 19.7-73.3 48H208c-49.9 0-91-38.1-95.6-86.8zM80 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24zM392 272c0 13.3-10.7 24-24 24s-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24z"
-                    />
-                  </svg>
-                </Svg>
-                <Eum>eum</Eum>
-              </LogoWrapper>
-            </Link>
-          </LoGoSpan>
+  const writeActiveChange = () => {
+    if (!navigate) {
+      setWriteActive(false);
+    }
+    navigate('/writepage');
+    setWriteActive(true);
+    setActiveIndex(-1);
+  };
 
-          <PageSpan>
-            {saveUser && (
-              <>
-                <Span>
+  const handleClick = (index: any) => {
+    setActiveIndex(index);
+    setWriteActive(false);
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setWriteActive(false);
+    };
+    window.onpopstate = handlePopState;
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    // 라우트가 변경될 때마다 activeIndex 상태 업데이트
+    categories.forEach((category, index) => {
+      if (location.pathname === category.path) {
+        setActiveIndex(index);
+      }
+    });
+  }, [activeIndex, location]);
+
+  const categories = [
+    { label: '전체', path: '/categorypage/all' },
+    { label: '공부', path: '/categorypage/study' },
+    { label: '놀이', path: '/categorypage/play' },
+    { label: '상담', path: '/categorypage/advice' },
+    { label: '기타', path: '/categorypage/etc' },
+  ];
+
+  return (
+    <Nav variants={navVariants} animate={navAnimation} initial={'top'}>
+      <HeaderContainer>
+        <HeaderWrapper>
+          <Link
+            to="/"
+            aria-label="홈으로 이동"
+            onClick={() => {
+              setWriteActive(false);
+              setActiveIndex(-1);
+            }}
+          >
+            <Logo>이음</Logo>
+          </Link>
+          <CategoryWrapper>
+            <Items>
+              {categories.map((category, index) => (
+                <Item
+                  key={index}
+                  className={activeIndex === index ? 'active' : ''}
+                >
                   <Link
-                    to={`/mypage/${saveUser.uid}`}
-                    aria-label="마이페이지 이동"
+                    to={category.path}
+                    onClick={() => handleClick(index)}
+                    aria-label={category.label}
                   >
-                    MY PAGE
+                    {category.label}
                   </Link>
-                </Span>
-                <Span>
-                  <div>MY LIKE</div>
-                </Span>
-              </>
-            )}
-            <LogOutBtn
-              onClick={() => handelClickLogOut()}
-              aria-label="로그아웃"
-            >
-              {!saveUser ? 'LOGIN' : 'LOGOUT'}
-            </LogOutBtn>
-          </PageSpan>
-        </Div>
-        <CategoriesWrapper>
-          <Ul style={{ display: 'flex', gap: '10px' }}>
-            <Link to="/categorypage/all" aria-label="전체">
-              <Icon>
-                <HiQueueList />
-                <li>전체</li>
-              </Icon>
-            </Link>
-            <Link to="/categorypage/study" aria-label="공부">
-              <Icon>
-                <HiPencil />
-                <li>공부</li>
-              </Icon>
-            </Link>
-            <Link to="/categorypage/play" aria-label="놀이">
-              <Icon>
-                <IoGameController /> <li>놀이</li>
-              </Icon>
-            </Link>
-            <Link to="/categorypage/advice" aria-label="상담">
-              <Icon>
-                <HiChatBubbleLeftRight /> <li>상담</li>
-              </Icon>
-            </Link>
-            <Link to="/categorypage/etc" aria-label="기타">
-              <Icon>
-                <HiEllipsisHorizontalCircle /> <li>기타</li>
-              </Icon>
-            </Link>
-          </Ul>
-          <SearchDiv>
+                </Item>
+              ))}
+            </Items>
+          </CategoryWrapper>
+        </HeaderWrapper>
+        <HeaderRightContainer>
+          <HeaderRightWrapper>
             <SearchInput />
-          </SearchDiv>
-        </CategoriesWrapper>
-      </HeaderWrapper>
-    </HeaderContainer>
+            <HeaderRightInfo>
+              {saveUser && (
+                <>
+                  <span>
+                    <Link
+                      to={`/mypage/${saveUser.uid}`}
+                      aria-label="마이페이지 이동"
+                      onClick={() => {
+                        setWriteActive(false);
+                      }}
+                    >
+                      <BsPersonCircle size={30} />
+                    </Link>
+                  </span>
+                  <WriteBtn
+                    className={writeActive ? 'active' : ''}
+                    onClick={writeActiveChange}
+                  >
+                    글쓰기
+                  </WriteBtn>
+                </>
+              )}
+
+              <LogOutBtn
+                onClick={() => handelClickLogOut()}
+                aria-label="로그아웃"
+              >
+                {!saveUser ? '로그인' : '로그아웃'}
+              </LogOutBtn>
+            </HeaderRightInfo>
+          </HeaderRightWrapper>
+        </HeaderRightContainer>
+      </HeaderContainer>
+    </Nav>
   );
 };
 export default Header;
-const HeaderContainer = styled.div`
-  background-color: yellow;
-  width: 100%;
-  height: 10rem;
-  /* position: sticky; //상단 고정
-  top: 0px; //상단고정
-  z-index: 10; //상단 고정 */
-`;
-const HeaderWrapper = styled.div`
-  width: 70%;
-  margin: 0 auto;
-`;
-const Div = styled.div`
+
+const Nav = styled(motion.nav)`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-`;
-const LoGoSpan = styled.span`
-  margin-top: 2rem;
+  position: sticky;
+  height: 112px;
+  width: 100%;
+  top: 0;
+  padding: 20px 60px;
+  z-index: 10;
   color: ${(props) => props.theme.colors.black};
 `;
-const LogoWrapper = styled(motion.div)`
+
+const navVariants = {
+  top: { backgroundColor: 'rgba(255,255,255,1)' },
+  scroll: {
+    backgroundColor: 'rgba(255,255,255,1)',
+  },
+};
+
+const HeaderContainer = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 4rem;
-  width: 50%;
-`;
-
-const Svg = styled.svg`
+  text-align: center;
   width: 100%;
-  height: 3rem;
-  path {
-    stroke: ${(props) => props.theme.colors.black};
-    stroke-width: 2;
-  }
+  height: 40px;
+  justify-content: space-between;
+`;
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 50%;
+  height: 42px;
 `;
 
-const Eum = styled.div`
-  font-size: 36px;
+const Logo = styled.div`
+  display: flex;
+  width: 122px;
+  height: 42px;
+  font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
 
-const PageSpan = styled.span`
+const CategoryWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: end;
   align-items: center;
-  width: 100%;
-  gap: 2rem;
-  font-size: 16px;
+  justify-content: space-between;
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  font-size: ${(props) => props.theme.fontSize.title20};
+  width: 410px;
+  height: 20px;
 `;
 
-const Span = styled.div`
-  color: ${(props) => props.theme.colors.black};
-  margin-top: 2rem;
-  transition: color 0.1s ease-in;
+const Items = styled.ul`
+  display: flex;
+  align-items: center;
+`;
+
+const Item = styled.li`
+  margin-right: 40px;
+  width: 50px;
+  transition: color 0.3s ease-in-out;
+  color: ${(props) => props.theme.colors.gray30};
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
   &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
+    color: ${(props) => props.theme.colors.black};
+  }
+  &.active {
+    color: ${(props) => props.theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
+  }
+`;
+
+const HeaderRightContainer = styled.div`
+  width: 50%;
+`;
+
+const HeaderRightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 42px;
+  width: 100%;
+`;
+
+const HeaderRightInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 70%;
+`;
+
+const WriteBtn = styled.button`
+  background-color: transparent;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  border: 2px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
+  border-radius: 23px;
+  width: 81px;
+  height: 40px;
+  margin-left: 40px;
+
+  cursor: pointer;
+  &:hover {
+    border: 3px solid ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.black};
+    font-weight: ${(props) => props.theme.fontWeight.bold};
+  }
+  &.active {
+    border: 3px solid ${(props) => props.theme.colors.orange02Main};
+    color: ${(props) => props.theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
 
 const LogOutBtn = styled.button`
   background-color: transparent;
-  color: ${(props) => props.theme.colors.black};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  margin-top: 2rem;
-  font-size: 16px;
-  transition: color 0.1s ease-in;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  border: 2px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
+  border-radius: 23px;
+  width: 94px;
+  height: 40px;
+  margin-left: 40px;
+
+  cursor: pointer;
   &:hover {
-    color: tomato;
-    font-weight: ${(props) => props.theme.fontWeight.medium};
+    border: 3px solid ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.black};
+    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
-`;
-
-const CategoriesWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
-  width: 100%;
-`;
-
-const Ul = styled.ul`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  font-size: 16px;
-  width: 40%;
-`;
-
-const Icon = styled.span`
-  display: flex;
-  flex-direction: row;
-  color: ${(props) => props.theme.colors.black};
-  transition: color 0.1s ease-in;
-  &:hover {
-    color: tomato;
-  }
-`;
-
-const SearchDiv = styled.div`
-  width: 28%;
 `;

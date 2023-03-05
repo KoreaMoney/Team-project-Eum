@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosSearch } from 'react-icons/io';
 import styled from 'styled-components';
+import { useAnimation, motion } from 'framer-motion';
+import { theme } from '../../styles/theme';
 
 /**순서
  * 1. 검색 데이터 변경넣기
  * 2. 선택 데이터 변경하기
  */
 const SearchInput = () => {
-  const [searchText, setSearchText] = useState<string>('');
-  const [selectValue, setSelectValue] = useState<string>('');
+  const [searchText, setSearchText] = useState('');
+  const [selectValue, setSelectValue] = useState('');
   const { categoryName } = useParams();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const inputAnimation = useAnimation();
+
+  const toggleSearch = () => {
+    if (searchOpen) {
+      inputAnimation.start({
+        scaleX: 0,
+      });
+    } else {
+      inputAnimation.start({
+        scaleX: 1,
+      });
+    }
+    setSearchOpen((prev) => !prev);
+  };
 
   const navigate = useNavigate();
 
@@ -35,57 +51,96 @@ const SearchInput = () => {
   };
 
   return (
-    <div>
+    <SearchContainer>
       <form onSubmit={onSubmitSearchPost} aria-label="검색창">
-        <SearchWrapper>
-          <select value={selectValue} onChange={onChangeSelect}>
-            <option value="" aria-label="선택">선택</option>
-            <option value="title" aria-label="제목">제목</option>
-            <option value="content" aria-label="내용">내용</option>
-            <option value="nickName" aria-label="작성자">작성자</option>
-          </select>
-          <button aria-label="찾기">
-            <IoIosSearch size={20} />
-          </button>
-          <input
-            type="text"
-            onChange={onChangeSearchInput}
-            value={searchText}
-          />
-        </SearchWrapper>
+        <Search>
+          <motion.svg
+            onClick={toggleSearch}
+            transition={{ type: 'linear' }}
+            animate={{ x: searchOpen ? 143 : 310 }}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clipRule="evenodd"
+            ></path>
+          </motion.svg>
+          <SearchWrapper>
+            <Select
+              value={selectValue}
+              onChange={onChangeSelect}
+              animate={inputAnimation}
+              transition={{ type: 'linear' }}
+              initial={{ scaleX: 0 }}
+            >
+              <option value="" aria-label="선택">
+                선택
+              </option>
+              <option value="title" aria-label="제목">
+                제목
+              </option>
+              <option value="content" aria-label="내용">
+                내용
+              </option>
+              <option value="nickName" aria-label="작성자">
+                작성자
+              </option>
+            </Select>
+            <Input
+              type="text"
+              onChange={onChangeSearchInput}
+              value={searchText}
+              animate={inputAnimation}
+              transition={{ type: 'linear' }}
+              initial={{ scaleX: 0 }}
+              placeholder="검색"
+            />
+          </SearchWrapper>
+        </Search>
       </form>
-    </div>
+    </SearchContainer>
   );
 };
 
 export default SearchInput;
 
-const SearchWrapper = styled.label`
+const SearchContainer = styled.div``;
+const Search = styled.span`
+  color: ${theme.colors.black};
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  select {
-    border: none;
-    outline: none;
-    background-color: ${(props) => props.theme.colors.white};
-    height: 2.5em;
-    border-radius: 3px 0 0 3px;
+  flex-direction: row;
+  justify-content: center;
+  svg {
+    height: 30px;
   }
+`;
+const SearchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  height: 40px;
+`;
+const Select = styled(motion.select)`
+  transform-origin: right center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: 40px;
 
-  button {
-    border: none;
-    outline: none;
-    background-color: ${(props) => props.theme.colors.white};
-    height: 2.5em;
-  }
-
-  input {
-    border: none;
-    outline: none;
-    background-color: ${(props) => props.theme.colors.white};
-    height: 2.5em;
-    border-radius: 0 3px 3px 0;
-    width: 150%;
-  }
+  font-size: ${theme.fontSize.title18};
+`;
+const Input = styled(motion.input)`
+  transform-origin: right center;
+  background-color: transparent;
+  padding-left: 40px;
+  width: 50%;
+  height: 40px;
+  border: 2px solid ${theme.colors.black};
+  outline: none;
+  font-size: ${theme.fontSize.title18};
 `;

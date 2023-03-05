@@ -53,7 +53,8 @@ const UserName = () => {
             value={editNickNameValue}
             autoFocus={true}
             placeholder="닉네임을 입력해주세요."
-            maxLength={12}
+            maxLength={8}
+            spellCheck={false}
           />
           <button
             onClick={() => {
@@ -66,15 +67,13 @@ const UserName = () => {
         </>
       ) : (
         <>
-          <div>{data?.nickName}</div>
-          <button
+          <div
             onClick={() => {
               setIsEdit(true);
             }}
-            aria-label="수정"
           >
-            수정
-          </button>
+            {data?.nickName}
+          </div>
         </>
       )}
     </a.UserNameWrapper>

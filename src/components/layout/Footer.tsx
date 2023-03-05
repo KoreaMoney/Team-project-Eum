@@ -1,51 +1,27 @@
 import styled from 'styled-components';
-import { FaGithubSquare } from 'react-icons/fa';
-import MoveTop from '../modal/MoveTop';
 
 const Footer = () => {
-  const url = 'https://github.com/KoreaMoney/Final-Project-Client.git';
-
   return (
     <FooterContainer>
       <FooterWrapper>
-        <FooterMiniWrapper>
-          <FooterDiv>
-            <div>웹 소개</div>
-            <span>웹 프로젝트 소개</span>
-          </FooterDiv>
-          <FooterDiv>
-            <div>팀 블로그</div>
-            <button
-              onClick={() => {
-                window.open(url);
-              }}
-              aria-label="깃헙"
-            >
-              <FaGithubSquare size={30} />
-            </button>
-          </FooterDiv>
-          <FooterDiv>
-            <div>고객안내</div>
-            <span>이용약관</span>
-            <span>이용안내</span>
-          </FooterDiv>
-          <FooterDiv>
-            <div>고객센터</div>
-            <span>공지사항</span>
-            <span>자주하는 질문</span>
-          </FooterDiv>
-        </FooterMiniWrapper>
-        <FooterDiv>
-          <NameDiv>
-            <div>대표: 김미영 | 디자이너: 김예은</div>
-
-            <TeamMember>팀원: 김도원, 정진수, 김남규</TeamMember>
-            <span>주소: 서울특별시 강남구 테헤란로44길</span>
-            <span>전화: 1522-8016</span>
-          </NameDiv>
-        </FooterDiv>
+        <LogoText>이음</LogoText>
+        <InfoWrapper>
+          <EumInfo>
+            <p>상표 : 이음</p> &nbsp;| &nbsp;<p>대표 : 김미영</p> &nbsp;| &nbsp;
+            <p>디자이너 : 김예은</p> &nbsp;| &nbsp;
+            <p>사업자등록번호 : 783-86-01715</p>
+          </EumInfo>
+          <EumInfo>
+            <p>전화 : 1522-8016</p> &nbsp;| &nbsp;
+            <p>주소 : 서울특별시 테헤란로 44길 8 12층</p> &nbsp;| &nbsp;
+            <p>이메일 : hopeun710@gmail.com</p>
+          </EumInfo>
+          <EumInfo>
+            <p>Copyright 2023&nbsp;ⓒ Yeeun Kim.</p> &nbsp;
+            <p>All right reserved.</p>
+          </EumInfo>
+        </InfoWrapper>
       </FooterWrapper>
-      <MoveTop />
     </FooterContainer>
   );
 };
@@ -53,68 +29,36 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
+  margin-top: 50px;
   width: 100%;
-  background-color: white;
-  color: ${(props) => props.theme.colors.gray40};
+  height: 150px;
+  background-color: #f9f9f9;
 `;
 
 const FooterWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 auto;
+  align-items: center;
   width: 70%;
+  height: 100%;
+  margin: 0 auto;
 `;
 
-const FooterMiniWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 50%;
-  margin-top: 2rem;
+const LogoText = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title20};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
 `;
-
-const FooterDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  div {
-    margin-bottom: 1em;
-    font-size: 20px;
-    font-weight: 600;
-  }
-
-  span {
-    margin-bottom: 5px;
-  }
-
-  button {
-    border: none;
-    outline: none;
-    background-color: transparent;
-    color: ${(props) => props.theme.colors.gray40};
-
-    &:hover {
-      color: ${(props) => props.theme.colors.black};
-    }
-  }
-`;
-
-const NameDiv = styled.div`
+const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 10px;
-  margin-top: 2rem;
-
-  div {
-    font-size: 20px;
-  }
-
-  span {
-    font-size: 16px;
-  }
+  margin: 0 auto;
 `;
-const TeamMember = styled.p`
-  font-size: 16px;
-  margin-top: 5px;
+
+const EumInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin-bottom: 10px;
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${(props) => props.theme.colors.gray30};
 `;
