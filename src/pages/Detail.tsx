@@ -93,13 +93,14 @@ const Detail = () => {
   /**판매중인 글 */
   const { data: myOnSale } = useQuery(['myOnSale'], async () => {
     const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${saveUser.uid}&isDone=${false}&isCancel=${false}`
+      `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${
+        saveUser.uid
+      }&isDone=${false}&isCancel=${false}`
     );
     return response.data;
   });
 
-  console.log( 'myOnSale: ' ,myOnSale);
-  
+  console.log('myOnSale: ', myOnSale);
 
   useEffect(() => {
     if (post) {
@@ -326,7 +327,7 @@ const Detail = () => {
               <a.PostNickName>{post?.[0].nickName}</a.PostNickName>
               <a.PostPrice>
                 {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                원
+                P
               </a.PostPrice>
               <a.LikeContainer>
                 {postCountCheck ? (
