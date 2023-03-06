@@ -24,22 +24,22 @@ const KakaoModal = () => {
     }
   }, [isModalActive]);
 
-    const { data: post, isLoading } = useQuery(
-      ['post', id],
-      () => getPostsId(id),
-      {
-        staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
-      }
-    );
-    const { data: seller } = useQuery(
-      ['user', post?.[0].sellerUid],
-      () => getUsers(post?.[0].sellerUid),
-      {
-        enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-        staleTime: Infinity,
-      }
-    );
-  
+  const { data: post, isLoading } = useQuery(
+    ['post', id],
+    () => getPostsId(id),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+  const { data: seller } = useQuery(
+    ['user', post?.[0]?.sellerUid],
+    () => getUsers(post?.[0]?.sellerUid),
+    {
+      enabled: Boolean(post?.[0]?.sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
+      staleTime: Infinity,
+    }
+  );
+
   return (
     <>
       {isModalActive ? (
@@ -59,11 +59,16 @@ const KakaoModal = () => {
                 <KakaoInfo>판매자에게 궁금한 점을 물어보세요!</KakaoInfo>
               </KakaoInfoContainer>
               <Seller>
-                {seller?.nickName}<span>님의</span> {post?.[0].title}
+                {seller?.nickName}
+                <span>님의</span> {post?.[0]?.title}
               </Seller>
               <KakaoIdContainer>
                 <KakaoIdTitle>카카오톡ID</KakaoIdTitle>
-                <KakaoId>{seller?.kakaoId ? seller?.kakaoId : 'ID가 등록되지 않았습니다.'}</KakaoId>
+                <KakaoId>
+                  {seller?.kakaoId
+                    ? seller?.kakaoId
+                    : 'ID가 등록되지 않았습니다.'}
+                </KakaoId>
               </KakaoIdContainer>
             </Container>
           }

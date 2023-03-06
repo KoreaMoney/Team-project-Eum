@@ -85,7 +85,7 @@ const FindPW = () => {
         </FindPWInputWrapper>
         {err && <ErrorMSG>❗{err}</ErrorMSG>}
         {success && <SuccessMSG>✅ 이메일이 발송되었습니다.</SuccessMSG>}
-        <FindPWBtn aria-label="인증메일 전송">인증메일 발송</FindPWBtn>
+        <FindPWBtn aria-label="인증메일 전송">인증메일 발송 하기</FindPWBtn>
       </FindPwForm>
     </FindPwContainer>
   );
@@ -161,6 +161,7 @@ const FindPWBtn = styled.button`
   height: 64px;
   margin-top: 16px;
   color: ${theme.colors.white};
+  font-size: ${theme.fontSize.title16};
   background-color: ${theme.colors.orange02Main};
   border: none;
   border-radius: 10px;

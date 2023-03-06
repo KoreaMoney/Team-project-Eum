@@ -35,7 +35,7 @@ const SignUp = () => {
   const schema = yup.object().shape({
     email: yup
       .string()
-      .required('이메일을 입력해주세요.')
+      .required('❗이메일을 입력해주세요.')
       .email('❗올바른 이메일 형식이 아닙니다.'),
     pw: yup
       .string()
@@ -43,7 +43,7 @@ const SignUp = () => {
       .matches(passwordRule, '❗영문+숫자+특수문자형식 8글자 이상입니다.'),
     checkPw: yup
       .string()
-      .required('비밀번호를 입력해주세요.')
+      .required('❗비밀번호를 입력해주세요.')
       .oneOf([yup.ref('pw')], '❗비밀번호가 일치하지 않습니다.'),
     nickName: yup.string().required('❗닉네임을 입력해주세요.'),
   });
@@ -96,7 +96,7 @@ const SignUp = () => {
   const handleCheckOverlapNickName = () => {
     const nickName = getValues('nickName');
     if (!nickName) {
-      setErrMsg('닉네임을 입력해주세요.');
+      customWarningAlert('닉네임을 입력해주세요.');
     }
     const result = nickNameList.includes(nickName);
     if (result) {

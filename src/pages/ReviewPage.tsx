@@ -30,6 +30,7 @@ import nc_service from '../styles/badge/notChoice/nc_service.webp';
 
 import c_time from '../styles/badge/choice/c_time.webp';
 import nc_time from '../styles/badge/notChoice/nc_time.webp';
+import { customSuccessAlert } from '../components/modal/CustomAlert';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -160,13 +161,18 @@ function ReviewPage() {
     if (!badge && !review.trim()) {
       changeReviewDone({ reviewDone: true });
     }
+    customSuccessAlert(
+      '후기 등록이 되었습니다!\n\n숨겨둔 재능! 숨기지 말아요!'
+    );
   };
+
   const onChangeReview = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReview(e.target.value);
   };
   if (isLoading) {
     return <div></div>;
   }
+
   return (
     <Container>
       <ContainerTitle>후기 보내기</ContainerTitle>
@@ -199,7 +205,6 @@ function ReviewPage() {
           />
 
           <BadgeImg
-
             imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
             onClick={() => setBadge('service')}
           />
@@ -262,8 +267,6 @@ const GridBox = styled.div`
   padding: 32px 40px;
   border: 1px solid ${(props) => props.theme.colors.gray20};
   border-radius: 10px;
-  div {
-  }
 `;
 
 const ProductContainer = styled.div`
@@ -303,6 +306,7 @@ const BadgeImg = styled.div<{ imageUrl: string | null }>`
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-repeat: no-repeat;
+  cursor: pointer;
 `;
 
 const ReivewContainer = styled.div`

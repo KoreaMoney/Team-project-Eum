@@ -170,7 +170,7 @@ const Transaction = () => {
    */
   const onClickClearRequest = () => {
     customSuccessAlert(
-      '이음 재능연결이 완료되었습니다!\n후기 작성을 해주세요.'
+      '이음 재능연결이 완료되었습니다!\n\n후기 작성을 해주세요.'
     );
     let categoryCount;
     if (data[0].category === 'study') {

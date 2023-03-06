@@ -78,7 +78,6 @@ const Home = () => {
     });
     navigate(`/detail/${post.category}/${post.id}`);
   };
-  console.log(result[0].data[0].nickName);
   const settings = {
     dots: true,
     infinite: true,
@@ -88,7 +87,7 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 8000,
+    autoplaySpeed: 6000,
   };
 
   return (
@@ -110,25 +109,25 @@ const Home = () => {
                 <KingBox>
                   <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
                   <KingName>공부신</KingName>
-                  <KingNick>{result?.[0]?.data[0]?.nickName}</KingNick>
+                  <KingNick>{result?.[0]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
                   <KingName>놀이신</KingName>
-                  <KingNick>{result?.[1]?.data[0]?.nickName}</KingNick>
+                  <KingNick>{result?.[1]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
                   <KingName>상담신</KingName>
-                  <KingNick>{result?.[2]?.data[0]?.nickName}</KingNick>
+                  <KingNick>{result?.[2]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
                   <KingName>기타신</KingName>
-                  <KingNick>{result?.[3]?.data[0]?.nickName}</KingNick>
+                  <KingNick>{result?.[3]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
               </>
