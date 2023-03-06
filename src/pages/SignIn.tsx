@@ -7,7 +7,6 @@ import * as yup from 'yup';
 import { auth } from '../firebase/Firebase';
 import { userType, ILoginForm } from '../types';
 import { CustomModal } from '../components/modal/CustomModal';
-import FindPW from '../components/auth/FindPW';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   GoogleAuthProvider,
@@ -18,7 +17,10 @@ import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
 import { customWarningAlert } from '../components/modal/CustomAlert';
 import basicIMG from '../styles/basicIMG.webp';
-import Header from '../components/layout/Header';
+import loadable from '@loadable/component';
+
+const FindPW = loadable(() => import('../components/auth/FindPW'));
+const Header = loadable(() => import('../components/layout/Header'));
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -152,15 +154,14 @@ const SignIn = () => {
             isDoneCount: 0,
             commentsCount: 0,
             kakaoId: '',
-            birthDate:'',
+            birthDate: '',
             time: 0,
             fast: 0,
             manner: 0,
             service: 0,
             cheap: 0,
             donation: 0,
-            repBadge:'',
-
+            repBadge: '',
           });
         }
         navigate('/');
