@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import CommentsList from '../components/comment/CommentsList';
@@ -21,9 +21,10 @@ import {
 } from '../api';
 import SellerInfo from '../components/detail/SellerInfo';
 import { useRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom } from '../atom';
+import { isCancelAtom, isDoneAtom, viewModalAtom } from '../atom';
 import axios from 'axios';
 import Loader from '../components/etc/Loader';
+import BuyerModal from '../components/transaction/BuyerModal';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -46,13 +47,22 @@ const Detail = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const location = useLocation();
-  const [sellerData, setSellerData] = useState<{ like: any[] }>({ like: [] });
   const [postData, setPostData] = useState<{ like: any[] }>({ like: [] });
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const queryClient = useQueryClient();
   const [isDescriptionActive, setIsDescriptionActive] = useState(true);
   const [isReviewActive, setIsReviewActive] = useState(false);
+  const [isModalActive, setIsModalActive] = useRecoilState(viewModalAtom);
+  const [newSalePosts,setNewSalePosts] = useState([])
+
+console.log( 'newSalePosts: ' ,newSalePosts);
+
+  /** 판매중 모달 */
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
+
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   setIsCancel(false);
@@ -91,14 +101,20 @@ const Detail = () => {
   );
 
   /**판매중인 글 */
-  const { data: myOnSale } = useQuery(['myOnSale'], async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${
-        saveUser.uid
-      }&isDone=${false}&isCancel=${false}`
-    );
-    return response.data;
-  });
+  const { data: myOnSale } = useQuery(
+    ['myOnSale'],
+    async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${
+          saveUser.uid
+        }&isDone=${false}&isCancel=${false}`
+      );
+      return response.data;
+    },
+    {
+      onSuccess: (data) => setNewSalePosts(data)
+    }
+  );
 
   console.log('myOnSale: ', myOnSale);
 
@@ -185,6 +201,7 @@ const Detail = () => {
    * user 데이터의 point가 price만큼 빠지고
    * mutate로 데이터를 저장합니다
    */
+console.log( 'user?.nickName: ' ,user?.nickName);
 
   const onClickApplyBuy = () => {
     customConfirm(
@@ -281,6 +298,7 @@ const Detail = () => {
       ) : (
         <>
           <a.PostContainer>
+            <BuyerModal newSalePosts={newSalePosts} />
             <a.PostImage
               img={post[0].imgURL}
               aria-label="post이미지"
@@ -354,10 +372,10 @@ const Detail = () => {
                     </a.LikeButtonContainer>
                     {saveUser?.uid === post?.[0].sellerUid ? (
                       <a.LikeSubmitButton
-                        onClick={onClickApplyBuy}
+                        onClick={onClickToggleModal}
                         aria-label="판매중"
                       >
-                        판매중({myOnSale.length === 0 ? '0' : myOnSale.length})
+                        판매중({myOnSale?.length === 0 ? '0' : myOnSale?.length})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton
@@ -433,8 +451,7 @@ const Detail = () => {
                 <p>판매자</p>
               </a.SellerInfoTitle>
 
-                <SellerInfo />
-                <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
+              <SellerInfo />
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
