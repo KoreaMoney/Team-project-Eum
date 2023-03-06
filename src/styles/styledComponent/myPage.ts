@@ -361,7 +361,7 @@ export const CategoryName = styled.p`
   font-size: ${(props) => props.theme.fontSize.ad24};
   font-weight: ${(props) => props.theme.fontWeight.bold};
   line-height: ${(props) => props.theme.fontSize.ad24};
-  margin-bottom: 32px !important;
+  margin-bottom: 56px !important;
 `;
 
 export const UserInfoBox = styled.div`
