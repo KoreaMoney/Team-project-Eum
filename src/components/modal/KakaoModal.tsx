@@ -51,6 +51,9 @@ const KakaoModal = () => {
           overflow="hidden"
           element={
             <Container>
+              <CloseButton onClick={onClickToggleModal} aria-label="닫기">
+                X
+              </CloseButton>
               <Title>문의하기</Title>
               <KakaoInfoContainer>
                 <KakaoInfo>
@@ -152,4 +155,17 @@ const KakaoId = styled.p`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
   color: ${(props) => props.theme.colors.black};
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  font-size: 24px;
+  font-weight: 600;
+  width: 40px;
+  height: 40px;
+  right: 12px;
+  top: 12px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
