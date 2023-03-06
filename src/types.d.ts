@@ -74,6 +74,7 @@ export interface onSalePostType {
   id: string | undefined;
   postsId: string | undefined;
   buyerUid: string | null | undefined;
+  buyerNickName: string | null | undefined;
   sellerUid: string | null | undefined;
   sellerNickName: string | null | undefined;
   title: string;

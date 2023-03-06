@@ -53,7 +53,7 @@ const Transaction = () => {
     }
   );
   console.log('data: ', data);
-  const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0].isBuyerCnacle);
+  const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCnacle);
   const [buyerData, setBuyerData] = useState<userType | null>(null);
   const [sellerData, setSellerData] = useState<userType | null>(null);
 

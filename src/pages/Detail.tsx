@@ -209,6 +209,7 @@ const Detail = () => {
             id: uuid,
             postsId: id,
             buyerUid: saveUser.uid,
+            buyerNickName: user?.nickName,
             sellerUid: post?.[0]?.sellerUid,
             sellerNickName: post?.[0]?.nickName,
             title: post?.[0]?.title,
