@@ -290,6 +290,7 @@ console.log( 'user?.nickName: ' ,user?.nickName);
       behavior: 'smooth',
     });
   };
+console.log( 'post: ' ,post);
 
   return (
     <a.DetailContainer>
@@ -373,9 +374,9 @@ console.log( 'user?.nickName: ' ,user?.nickName);
                     {saveUser?.uid === post?.[0].sellerUid ? (
                       <a.LikeSubmitButton
                         onClick={onClickToggleModal}
-                        aria-label="판매중"
+                        aria-label="구매자명단"
                       >
-                        판매중({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                        구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton

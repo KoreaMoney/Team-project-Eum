@@ -53,7 +53,6 @@ const Transaction = () => {
       onSuccess: () => queryClient.invalidateQueries(['salePost0', uuid]),
     }
   );
-  console.log('data: ', data);
   const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCnacle);
   const [buyerData, setBuyerData] = useState<userType | null>(null);
   const [sellerData, setSellerData] = useState<userType | null>(null);
@@ -229,6 +228,7 @@ const Transaction = () => {
       behavior: 'smooth',
     });
   };
+
   /**화면 중간 네브바*/
   const onClickNavExSeller = () => {
     setIsDescriptionActive(true);
@@ -254,6 +254,7 @@ const Transaction = () => {
   if (!saveUser) {
     return <SignIn />;
   }
+
 
   return (
     <a.DetailContainer>
@@ -305,7 +306,7 @@ const Transaction = () => {
           <a.TextContainer>
             <a.TitleText>{data?.[0].title}</a.TitleText>
           </a.TextContainer>
-          <a.PostNickName>{data?.[0].nickName}</a.PostNickName>
+          <a.PostNickName>{data?.[0].sellerNickName}</a.PostNickName>
           <a.PostPrice>
             {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
           </a.PostPrice>

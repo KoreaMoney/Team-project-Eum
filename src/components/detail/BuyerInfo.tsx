@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPostsId, getSellerPosts, getUsers } from '../../api';
 import * as a from '../../styles/styledComponent/detail';
@@ -18,8 +18,7 @@ const SellerInfo = () => {
   const { postId, id, buyerId } = useParams();
   const identifier = id ? id : postId;
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
- 
-
+  const [badgeLength, setBadgeLength] = useState(0);
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
     ['sellerPost', buyerId],
@@ -29,12 +28,27 @@ const SellerInfo = () => {
     }
   );
 
-
-  // 구매자의 프로필이미지를 위해 데이터 가져오기
+  /**구매자 정보 가져오기 */
   const { data: buyer } = useQuery(['user', buyerId], () => getUsers(buyerId), {
     staleTime: Infinity,
   });
+  console.log('buyer: ', buyer);
 
+  /**배지 개수 구하기 */
+  useEffect(() => {
+    const time = buyer?.time >= 10 ? true : false;
+    const cheap = buyer?.cheap >= 10 ? true : false;
+    const fast = buyer?.fast >= 10 ? true : false;
+    const service = buyer?.service >= 10 ? true : false;
+    const donation = buyer?.donation >= 10 ? true : false;
+    const result = [time, cheap, fast, service, donation];
+
+    console.log('time: ', time);
+    const trueValues = result.filter((value) => value === true);
+    setBadgeLength(trueValues.length);
+  }, [buyer]);
+
+  /**배지 이미지 정하기 */
   let userBadge;
   switch (buyer?.repBadge) {
     case 'time':
@@ -84,7 +98,7 @@ const SellerInfo = () => {
       </a.ProfileContainer>
 
       <a.ProfileInfoContainer>
-        <a.ProfileInfos>배지 5개</a.ProfileInfos>
+        <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
         <a.ProfileInfos aria-label="판매상품 10개">
           판매상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
