@@ -356,7 +356,7 @@ const Transaction = () => {
                         onClick={onClickClearRequest}
                         aria-label="완료"
                       >
-                        완료
+                        거래완료
                       </a.ClearButton>
                     ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
                       <a.ClearButton aria-label="취소 완료">

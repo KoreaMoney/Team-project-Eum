@@ -1,19 +1,22 @@
 import { useNavigate } from 'react-router';
-import { postType, userType } from '../types';
+import { postType } from '../types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
-import { getPosts, getAuthUsers } from '../api';
+import { getPosts } from '../api';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import NextArrow from '../components/home/NextArrow';
-import PrevArrow from '../components/home/PrevArrow';
 import Slider from 'react-slick';
 import { theme } from '../styles/theme';
-import Banner from '../components/home/Banner';
-import Loader from '../components/etc/Loader';
+import loadable from '@loadable/component';
+
+const NextArrow = loadable(() => import('../components/home/NextArrow'));
+const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
+const Banner = loadable(() => import('../components/home/Banner'));
+const Loader = loadable(() => import('../components/etc/Loader'));
+
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
  * 2. React-query통신하기
@@ -29,19 +32,6 @@ const Home = () => {
     staleTime: 5000,
   });
 
-  // const { data: isDoneCount } = useQuery(
-  //   ['isDoneUser'],
-  //   async () => {
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_JSON}/users/?_sort=isDoneCount&_order=DESC&_limit=4`
-  //     );
-  //     return response.data;
-  //   },
-  //   {
-  //     staleTime: 5000,
-  //   }
-  // );
-  // 글 클릭하면 조회수 1씩 늘리기!!
   const handlePostClick = async (post: postType) => {
     await axios.patch(`${process.env.REACT_APP_JSON}/posts/${post.id}`, {
       views: post.views + 1,

@@ -13,8 +13,10 @@ import {
 } from '../components/modal/CustomAlert';
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
-import basicIMG from '../styles/basicIMG.webp'
-import Header from '../components/layout/Header';
+import basicIMG from '../styles/basicIMG.webp';
+import loadable from '@loadable/component';
+
+const Header = loadable(() => import('../components/layout/Header'));
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -282,7 +284,6 @@ const SignUp = () => {
           </a.SignUpBtn>
         </a.SignUpForm>
       </a.LoginContainer>
-      {console.log('registering', registering)}
     </>
   );
 };

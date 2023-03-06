@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import Slider from 'react-slick';
-import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { RxChevronRight } from 'react-icons/rx';
+import Slider from 'react-slick';
+import styled from 'styled-components';
 
 const Banner = () => {
   const settings = {
@@ -19,20 +19,20 @@ const Banner = () => {
     <ImageContainer>
       <Slider {...settings}>
         <div>
-          <Image src="https://ifh.cc/g/RZyJOY.webp " alt="" />
+          <Image src="https://ifh.cc/g/RZyJOY.webp " alt="" loading="lazy" />
           <Text>
             <p>회원가입 이벤트!!</p>
             <br />
             <p>"50,000" 포인트를 지급해 드립니다.</p>
           </Text>
           <SignUp>
-            <Link to="/signup">
+            <Link to="/signup" aria-label="회원가입으로 이동">
               회원가입하러 가기 <Icon size={30} />
             </Link>
           </SignUp>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/2x2nVj.webp" alt="" />
+          <Image src="https://ifh.cc/g/2x2nVj.webp" alt="" loading="lazy" />
           <Text1>
             <span>세상에 모든 재능을 이음</span>
             <br />
@@ -42,13 +42,14 @@ const Banner = () => {
               onClick={() =>
                 window.open('https://forms.gle/ut6gMUXJZ8pTqkvz7', '_blank')
               }
+              aria-label="설문조사하러 이동"
             >
               더 나은 이음을 위해 설문하러 가기
             </button>
           </Text1>
         </div>
-        <Image src="https://ifh.cc/g/8O0vYz.webp" alt="" />
-        <Image src="https://ifh.cc/g/jNVbX8.webp" alt="" />
+        <Image src="https://ifh.cc/g/8O0vYz.webp" alt="" loading="lazy" />
+        <Image src="https://ifh.cc/g/jNVbX8.webp" alt="" loading="lazy" />
       </Slider>
     </ImageContainer>
   );
