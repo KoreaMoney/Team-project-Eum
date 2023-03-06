@@ -19,6 +19,7 @@ import { CustomModal } from '../components/modal/CustomModal';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
+import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
 
 /**순서
@@ -273,7 +274,13 @@ const Transaction = () => {
         </a.TransactionText>
       )}
       <a.PostContainer>
-        <a.PostImage img={data[0].imgURL} aria-label="post이미지" />
+        <a.PostImage
+          img={data[0].imgURL}
+          aria-label="post이미지"
+          onClick={() => {
+            window.open(data[0].imgURL);
+          }}
+        />
         <a.PostInfoWrapper>
           <a.InfoTopContainer>
             <a.InfoTopLeftContainer>
@@ -396,10 +403,21 @@ const Transaction = () => {
           </a.SellerInfoContent>
         </a.PostContentWrapper>
         <a.PostContentWrapper>
-          <a.SellerInfoTitle>
-            <p>판매자</p>
-          </a.SellerInfoTitle>
-          <SellerInfo />
+          {saveUser.uid === data[0].sellerUid ? (
+            <>
+              <a.SellerInfoTitle>
+                <p>구매자</p>
+              </a.SellerInfoTitle>
+              <BuyerInfo />
+            </>
+          ) : (
+            <>
+              <a.SellerInfoTitle>
+                <p>판매자</p>
+              </a.SellerInfoTitle>
+              <SellerInfo />
+            </>
+          )}
         </a.PostContentWrapper>
       </a.PostRow>
     </a.DetailContainer>

@@ -77,18 +77,18 @@ const PointHistoryList = () => {
             전체
           </PointWrapper>
           <PointWrapper
-            onClick={() => setCategory('출금')}
-            style={category === '출금' ? categoryStyle : undefined}
-            aria-label="출금"
-          >
-            출금
-          </PointWrapper>
-          <PointWrapper
             onClick={() => setCategory('입금')}
             style={category === '입금' ? categoryStyle : undefined}
             aria-label="입금"
           >
             입금
+          </PointWrapper>
+          <PointWrapper
+            onClick={() => setCategory('출금')}
+            style={category === '출금' ? categoryStyle : undefined}
+            aria-label="출금"
+          >
+            출금
           </PointWrapper>
         </DropDownBox>
       </DropDown>

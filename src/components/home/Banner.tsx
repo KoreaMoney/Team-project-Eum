@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { theme } from '../../styles/theme';
-import { RxChevronRight } from 'react-icons/rx';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+import { HiChevronRight } from 'react-icons/hi2';
 
 const Banner = () => {
   const settings = {
@@ -12,44 +12,87 @@ const Banner = () => {
     slidesToScroll: 1,
     pauseOnHover: true,
     autoplay: true,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 8000,
   };
 
   return (
     <ImageContainer>
       <Slider {...settings}>
         <div>
-          <Image src="https://ifh.cc/g/RZyJOY.webp " alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/1mcNzR.webp" alt="" loading="lazy" />
           <Text>
-            <p>회원가입 이벤트!!</p>
-            <br />
-            <p>"50,000" 포인트를 지급해 드립니다.</p>
+            <Text1>회원가입 시</Text1>
+            <p>50,000P 즉시 지급!</p>
+            <span>
+              <Link to="/signup" aria-label="회원가입으로 이동">
+                <Move>
+                  회원가입하러 가기
+                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                </Move>
+              </Link>
+            </span>
           </Text>
-          <SignUp>
-            <Link to="/signup" aria-label="회원가입으로 이동">
-              회원가입하러 가기 <Icon size={30} />
-            </Link>
-          </SignUp>
         </div>
         <div>
-          <Image1 src="https://ifh.cc/g/2x2nVj.webp" alt="" loading="lazy" />
-          <Text1>
-            <span>세상에 모든 재능을 이음</span>
-            <br />
-            <p>가장 작은 재능이</p>
-            <p>가장 큰 가치를 가진다.</p>
-            <button
-              onClick={() =>
-                window.open('https://forms.gle/ut6gMUXJZ8pTqkvz7', '_blank')
-              }
-              aria-label="설문조사하러 이동"
-            >
-              더 나은 이음을 위해 설문하러 가기
-            </button>
-          </Text1>
+          <Image src="https://ifh.cc/g/f3oFYw.webp" alt="" loading="lazy" />
+          <Text2>
+            <Text22>저절로 얼굴에</Text22>
+            <p>스마일이 지어는 시간</p>
+            <span>
+              <Link to="/categorypage/play" aria-label="놀이 이동">
+                <Move>
+                  스마일 만드는 시간
+                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                </Move>
+              </Link>
+            </span>
+          </Text2>
         </div>
-        <Image src="https://ifh.cc/g/8O0vYz.webp" alt="" loading="lazy" />
-        <Image src="https://ifh.cc/g/jNVbX8.webp" alt="" loading="lazy" />
+        <div>
+          <Image src="https://ifh.cc/g/cL6TKb.webp" alt="" loading="lazy" />
+          <Text3>
+            <Text33>수학 풀이를 봐도</Text33>
+            <p>이해가 안되신다구요?</p>
+            <span>
+              <Link to="/categorypage/study" aria-label=" 공부 이동">
+                <Move>
+                  모르는 수학 문제 바로 풀어드려요!
+                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                </Move>
+              </Link>
+            </span>
+          </Text3>
+        </div>
+        <div>
+          <Image src="https://ifh.cc/g/XA83gW.webp" alt="" loading="lazy" />
+          <Text4>
+            <Text44>500원으로</Text44>
+            <p>더 예뻐지고 싶으시다구요?</p>
+            <span>
+              <Link to="/categorypage/advice" aria-label="상담 이동">
+                <Move>
+                  사진 보정해드려요
+                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                </Move>
+              </Link>
+            </span>
+          </Text4>
+        </div>
+        <div>
+          <Image src="https://ifh.cc/g/ThpO56.webp" alt="" loading="lazy" />
+          <Text5>
+            <Text55>인플루언서가</Text55>
+            <p>되고 싶다면?</p>
+            <span>
+              <Link to="/categorypage/etc" aria-label="기타 이동">
+                <Move>
+                  인스타그램 팔로잉 해드려요
+                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                </Move>
+              </Link>
+            </span>
+          </Text5>
+        </div>
       </Slider>
     </ImageContainer>
   );
@@ -57,17 +100,25 @@ const Banner = () => {
 
 export default Banner;
 
+const Move = styled.div`
+  display: flex;
+  align-items: center;
+  height: 60px;
+`;
+
 const ImageContainer = styled.div`
-  width: 56vw;
-  margin-bottom: 170px;
+  width: 80vw;
+  margin-bottom: 56px;
   .slick-dots {
+    position: absolute;
+    top: 34rem;
     .slick-active {
       button::before {
-        color: ${theme.colors.orange03};
+        color: ${theme.colors.black};
       }
     }
     button::before {
-      color: ${theme.colors.orange02Main};
+      color: ${theme.colors.gray30};
     }
   }
   .slider .slick-list {
@@ -79,74 +130,124 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 700px;
+  width: 990px;
   height: 600px;
   margin: auto;
   position: relative;
 `;
 
-const Image1 = styled.img`
-  width: 700px;
-  height: 600px;
-  margin: auto;
-  position: relative;
-`;
 const Text = styled.div`
   position: absolute;
-  top: 22rem;
-  left: 15%;
+  top: 27rem;
+  left: 12.3%;
   transform: translate(-50%, -50%);
-  color: ${(props) => props.theme.colors.black};
-  font-size: ${(props) => props.theme.fontSize.title32};
+  font-size: 45px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
-`;
-
-const SignUp = styled.span`
-  font-size: ${(props) => props.theme.fontSize.title20};
-  position: absolute;
-  left: 13%;
-  top: 27.5rem;
-  cursor: pointer;
-  &:hover {
-    color: ${(props) => props.theme.colors.orange02Main};
-  }
-`;
-
-const Icon = styled(RxChevronRight)`
-  padding-top: 6px;
-  height: 24px;
-  width: 24px;
-`;
-
-const Text1 = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  font-size: 35px;
-  color: ${theme.colors.white};
-  z-index: 3px;
-  height: 30%;
-  top: 18rem;
-  left: 24.5%;
-  span {
-    text-shadow: 1px 2px 2px ${theme.colors.black};
-  }
+  color: ${(props) => props.theme.colors.black};
   p {
-    margin-bottom: 10px;
-    text-shadow: 1px 2px 2px ${theme.colors.black};
+    margin-bottom: 20px;
   }
-  button {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    background-color: transparent;
-    font-weight: ${theme.fontWeight.medium};
-    font-size: ${(props) => props.theme.fontSize.title18};
-    border: none;
-    outline: none;
-    color: ${theme.colors.orange02Main};
+  span {
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
     &:hover {
-      cursor: pointer;
+      color: ${(props) => props.theme.colors.orange02Main};
     }
   }
+`;
+
+const Text1 = styled.p`
+  margin-bottom: 20px;
+`;
+
+const Text2 = styled.div`
+  position: absolute;
+  top: 26rem;
+  left: 21.5%;
+  transform: translate(-50%, -50%);
+  font-size: 45px;
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  color: ${(props) => props.theme.colors.black};
+  p {
+    margin-bottom: 20px;
+  }
+  span {
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    &:hover {
+      color: ${(props) => props.theme.colors.orange02Main};
+    }
+  }
+`;
+const Text22 = styled.p`
+  margin-bottom: 20px;
+`;
+
+const Text3 = styled.div`
+  position: absolute;
+  top: 26rem;
+  left: 30.7%;
+  transform: translate(-50%, -50%);
+  font-size: 45px;
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  color: ${(props) => props.theme.colors.black};
+  p {
+    margin-bottom: 20px;
+  }
+  span {
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    &:hover {
+      color: ${(props) => props.theme.colors.orange02Main};
+    }
+  }
+`;
+const Text33 = styled.p`
+  margin-bottom: 20px;
+`;
+
+const Text4 = styled.div`
+  position: absolute;
+  top: 26rem;
+  left: 40.2%;
+  transform: translate(-50%, -50%);
+  font-size: 45px;
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  color: ${(props) => props.theme.colors.black};
+  p {
+    margin-bottom: 20px;
+  }
+  span {
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    &:hover {
+      color: ${(props) => props.theme.colors.orange02Main};
+    }
+  }
+`;
+const Text44 = styled.p`
+  margin-bottom: 20px;
+`;
+
+const Text5 = styled.div`
+  position: absolute;
+  top: 26rem;
+  left: 48.5%;
+  transform: translate(-50%, -50%);
+  font-size: 45px;
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  color: ${(props) => props.theme.colors.black};
+  p {
+    margin-bottom: 20px;
+  }
+  span {
+    font-size: ${theme.fontSize.title20};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    &:hover {
+      color: ${(props) => props.theme.colors.orange02Main};
+    }
+  }
+`;
+const Text55 = styled.p`
+  margin-bottom: 20px;
 `;

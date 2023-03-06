@@ -7,7 +7,7 @@ const Footer = () => {
         <LogoText>이음</LogoText>
         <InfoWrapper>
           <EumInfo>
-            <p>상표 : 이음</p> &nbsp;| &nbsp;<p>대표 : 김미영</p> &nbsp;| &nbsp;
+            <p>상표 : 이음</p> &nbsp;| &nbsp;<p>리더 : 김미영</p> &nbsp;| &nbsp;
             <p>디자이너 : 김예은</p> &nbsp;| &nbsp;
             <p>팀원 : 김도원, 김남규, 정진수</p>
           </EumInfo>
@@ -29,7 +29,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
-  margin-top: 50px;
+  
   width: 100%;
   height: 280px;
   background-color: #f9f9f9;

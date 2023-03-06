@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   getOnSalePostBuyer,
@@ -85,7 +85,10 @@ const MyPage = () => {
     return post.isDone === false;
   });
 
-  /**회원탈퇴 */
+  /*판매대기
+   */
+
+  /*회원탈퇴 */
   const user = auth.currentUser;
 
   const deleteAuth = () => {
@@ -265,6 +268,7 @@ const MyPage = () => {
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                           P
                         </a.MyLikeDiv>
+                        <p>{list.buyerNickName}</p>
                       </a.MyLikeList>
                     );
                   })
@@ -285,6 +289,7 @@ const MyPage = () => {
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                           P
                         </a.MyLikeDiv>
+                        <p>{list.buyerNickName}</p>
                       </a.MyLikeList>
                     );
                   })

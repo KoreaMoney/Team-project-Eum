@@ -173,6 +173,7 @@ const Home = () => {
                   ))}
               </Slider>
             </PostContainer>
+            <a.Line />
           </a.HomePostContainer>
         </>
       )}
@@ -184,7 +185,7 @@ export default Home;
 const HotKingWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 128px;
+  margin-bottom: 130px;
 `;
 const KingBox = styled.div`
   display: flex;
@@ -216,15 +217,14 @@ const PostContainer = styled.div`
   width: 60vw;
   height: 300px;
   margin-bottom: 170px;
-
   .slick-dots {
     .slick-active {
       button::before {
-        color: ${theme.colors.orange03};
+        color: ${theme.colors.black};
       }
     }
     button::before {
-      color: ${theme.colors.orange02Main};
+      color: ${theme.colors.gray30};
     }
   }
   .slider .slick-list {
@@ -232,13 +232,5 @@ const PostContainer = styled.div`
   }
   .slider {
     position: relative;
-  }
-  .slick-prev:before,
-  .slick-next:before {
-    color: ${theme.colors.orange03};
-    font-size: 25px;
-  }
-  .slick-prev:before {
-    margin-right: 30px;
   }
 `;
