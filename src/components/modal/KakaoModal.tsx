@@ -8,7 +8,7 @@ import { viewKakaoModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 
 const KakaoModal = () => {
-  const { id } = useParams();
+  const { postId } = useParams();
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
@@ -25,8 +25,8 @@ const KakaoModal = () => {
   }, [isModalActive]);
 
   const { data: post, isLoading } = useQuery(
-    ['post', id],
-    () => getPostsId(id),
+    ['post', postId],
+    () => getPostsId(postId),
     {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
     }
