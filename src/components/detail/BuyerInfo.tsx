@@ -13,6 +13,7 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
+
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { postId, id, buyerId } = useParams();

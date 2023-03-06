@@ -21,10 +21,10 @@ import {
 } from '../api';
 import SellerInfo from '../components/detail/SellerInfo';
 import { useRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom, viewModalAtom } from '../atom';
+import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
 import axios from 'axios';
 import Loader from '../components/etc/Loader';
-import BuyerModal from '../components/transaction/BuyerModal';
+import BuyerModal from '../components/modal/BuyerModal';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -53,9 +53,9 @@ const Detail = () => {
   const queryClient = useQueryClient();
   const [isDescriptionActive, setIsDescriptionActive] = useState(true);
   const [isReviewActive, setIsReviewActive] = useState(false);
-  const [isModalActive, setIsModalActive] = useRecoilState(viewModalAtom);
+  const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const [newSalePosts,setNewSalePosts] = useState([])
-
+  
 console.log( 'newSalePosts: ' ,newSalePosts);
 
   /** 판매중 모달 */

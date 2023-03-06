@@ -264,6 +264,7 @@ const SignIn = () => {
             setModal={setIsModalActive}
             width="544"
             height="432"
+            overflow='hidden'
             element={
               <div>
                 <FindPW />
