@@ -7,9 +7,12 @@ import { atom } from 'recoil';
 //   key: 'isDark',
 //   default: true,
 // });
-
-export const viewModalAtom = atom({
-  key: 'viewModal',
+export const viewKakaoModalAtom = atom({
+  key: 'viewKakaoModal',
+  default: false,
+});
+export const viewBuyerModalAtom = atom({
+  key: 'viewBuyerModal',
   default: false,
 });
 export const choiceBadgeAtom = atom({

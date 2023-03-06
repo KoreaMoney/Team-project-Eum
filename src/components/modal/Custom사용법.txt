@@ -37,6 +37,7 @@ const Test = () => {
           setModal={setIsModalActive}
           width="400"
           height="500"
+          overflow="scroll"
           element={
             <div>
               <ComponentSpace>Div에는 component가 들어갑니다</ComponentSpace>

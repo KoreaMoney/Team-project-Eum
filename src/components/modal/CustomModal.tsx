@@ -6,6 +6,7 @@ interface ModalProps {
   modal: any;
   width: string;
   height: string;
+  overflow: string;
   element: JSX.Element;
   setModal: Dispatch<SetStateAction<boolean>>;
 }
@@ -15,6 +16,7 @@ export const CustomModal = ({
   height,
   element,
   setModal,
+  overflow
 }: ModalProps) => {
   const disableModal = () => {
     setModal(false);
@@ -22,7 +24,7 @@ export const CustomModal = ({
 
   return (
     <>
-      <Container width={width} height={height}>
+      <Container width={width} height={height} overflow={overflow}>
         <Wrapper>{element}</Wrapper>
       </Container>
       <Canvas onClick={disableModal} />
@@ -30,7 +32,7 @@ export const CustomModal = ({
   );
 };
 
-const Container = styled.div<{ width: string; height: string }>`
+const Container = styled.div<{ width: string; height: string; overflow: string; }>`
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -49,7 +51,7 @@ const Container = styled.div<{ width: string; height: string }>`
   align-items: center;
   font-size: ${theme.fontSize.title20};
   border: none;
-  overflow: scroll;
+  overflow: ${(props) => props.overflow};
 `;
 
 const Canvas = styled.div`
