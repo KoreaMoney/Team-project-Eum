@@ -40,15 +40,11 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
           setModal={setIsModalActive}
           width="672"
           height="719"
-          overflow='scroll'
+          overflow="scroll"
           element={
             <>
               <Container>
                 <ModalTitle>구매한 사람들</ModalTitle>
-                <ModalContent>
-                  <span>수제 딸기우유 슬라임 팔아요</span> 를 구매한
-                  사람들이에요.
-                </ModalContent>
                 <ModalContent>
                   바로가기 버튼을 누르면 진행 상황을 수정할 수 있어요.
                 </ModalContent>
