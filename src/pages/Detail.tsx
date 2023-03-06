@@ -376,7 +376,8 @@ console.log( 'post: ' ,post);
                         onClick={onClickToggleModal}
                         aria-label="구매자명단"
                       >
-                        구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                        구매자 (
+                        {myOnSale?.length === 0 ? '0' : myOnSale?.length})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton
@@ -398,10 +399,10 @@ console.log( 'post: ' ,post);
 
                     {saveUser?.uid === post?.[0].sellerUid ? (
                       <a.LikeSubmitButton
-                        onClick={onClickApplyBuy}
-                        aria-label="판매중"
+                        onClick={onClickToggleModal}
+                        aria-label="구매자명단"
                       >
-                        판매중({myOnSale?.length ? myOnSale?.length : 0})
+                        구매자({myOnSale?.length ? myOnSale?.length : 0})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton
