@@ -2,17 +2,19 @@ import { auth } from '../../firebase/Firebase';
 import { signOut } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { BsPersonCircle } from 'react-icons/bs';
+import { useEffect, useState } from 'react';
+import { theme } from '../../styles/theme';
 import {
   motion,
   useAnimation,
   useMotionValueEvent,
   useScroll,
 } from 'framer-motion';
-import styled from 'styled-components';
-import { BsPersonCircle } from 'react-icons/bs';
-import SearchInput from '../etc/SearchInput';
-import { useEffect, useState } from 'react';
-import { theme } from '../../styles/theme';
+import loadable from '@loadable/component';
+
+const SearchInput = loadable(() => import('../etc/SearchInput'));
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,6 +24,10 @@ const Header = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [writeActive, setWriteActive] = useState(false);
 
+  //JSON서버 섹션스토리지 작성하기
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
+  //y축 이동 사항 확인
   useMotionValueEvent(scrollY, 'change', () => {
     if (scrollY.get() > 80) {
       navAnimation.start('scroll');
@@ -29,8 +35,6 @@ const Header = () => {
       navAnimation.start('top');
     }
   });
-
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   //로그아웃 버튼
   const handelClickLogOut = () => {
@@ -138,6 +142,7 @@ const Header = () => {
                   <WriteBtn
                     className={writeActive ? 'active' : ''}
                     onClick={writeActiveChange}
+                    aria-label="글쓰기"
                   >
                     글쓰기
                   </WriteBtn>

@@ -74,7 +74,7 @@ const FindPW = () => {
               type="email"
               placeholder=""
               {...register('email')}
-              style={{ borderColor: errors?.email?.message ? '#FF0000' : '' }}
+              style={{ borderColor: errors?.email?.message ? '#ff334b' : '' }}
               onChange={onChangeEmailHandler}
               value={email}
             />

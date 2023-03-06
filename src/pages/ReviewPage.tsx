@@ -30,7 +30,6 @@ import nc_service from '../styles/badge/notChoice/nc_service.webp';
 
 import c_time from '../styles/badge/choice/c_time.webp';
 import nc_time from '../styles/badge/notChoice/nc_time.webp';
-import ReactQuill from 'react-quill';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -200,6 +199,7 @@ function ReviewPage() {
           />
 
           <BadgeImg
+
             imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
             onClick={() => setBadge('service')}
           />
@@ -264,9 +264,6 @@ const GridBox = styled.div`
   border-radius: 10px;
   div {
   }
-`;
-const ReviewSelectBox = styled.div`
-  border: 1px solid;
 `;
 
 const ProductContainer = styled.div`
@@ -354,7 +351,13 @@ const SubmitButton = styled.button`
   margin: 0 auto;
   margin-bottom: 240px;
   &:hover {
+    cursor: pointer;
     background-color: ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.white};
+  }
+  &:active {
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
 `;
