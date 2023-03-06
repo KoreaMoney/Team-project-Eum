@@ -194,17 +194,18 @@ function ReviewPage() {
           />
 
           <BadgeImg
-            imageUrl={badge === 'manner' ? images[2][0] : images[2][1]}
+            imageUrl={badge === 'manner' ? images[1][0] : images[1][1]}
             onClick={() => setBadge('manner')}
           />
 
           <BadgeImg
-            imageUrl={badge === 'service' ? images[1][0] : images[1][1]}
+
+            imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
             onClick={() => setBadge('service')}
           />
 
           <BadgeImg
-            imageUrl={badge === 'cheap' ? images[4][0] : images[4][1]}
+            imageUrl={badge === 'cheap' ? images[2][0] : images[2][1]}
             onClick={() => setBadge('cheap')}
           />
 
