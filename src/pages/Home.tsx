@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
@@ -70,25 +70,25 @@ const Home = () => {
                 <KingBox>
                   <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
                   <KingName>공부신</KingName>
-                  <KingNick>다람쥐</KingNick>
+                  <KingNick>엄준식</KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
                   <KingName>놀이신</KingName>
-                  <KingNick>고구마콩나물</KingNick>
+                  <KingNick>엄준식</KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
                   <KingName>상담신</KingName>
-                  <KingNick>히말라야</KingNick>
+                  <KingNick>엄준식</KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
                   <KingName>기타신</KingName>
-                  <KingNick>조지아</KingNick>
+                  <KingNick>엄준식</KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
               </>
