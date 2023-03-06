@@ -101,14 +101,27 @@ const CommentsList = () => {
   /**댓글 작성 시간을 n분전 으로 출력해주는 함수
    * 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력
    */
-  const getTimeGap = (creat: number) => {
-    const now = new Date(creat);
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const date = String(now.getDate()).padStart(2, '0');
-    const formattedDate = `${year}.${month}.${date}`;
-
-    return formattedDate;
+  const getTimeGap = (posting: number) => {
+    const msGap = Date.now() - posting;
+    const minuteGap = Math.floor(msGap / 60000);
+    const hourGap = Math.floor(msGap / 3600000);
+    if (msGap < 0) {
+      return '방금 전';
+    }
+    if (hourGap > 24) {
+      const time = new Date(posting);
+      const timeGap = time.toJSON().substring(0, 10);
+      return timeGap;
+    }
+    if (minuteGap > 59) {
+      return `${hourGap}시간 전`;
+    } else {
+      if (minuteGap === 0) {
+        return '방금 전';
+      } else {
+        return `${minuteGap}분 전`;
+      }
+    }
   };
 
   return (
