@@ -12,8 +12,9 @@ const PointModal = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   // 로그인한 유저 정보를 불러옵니다
-  const { data: profileData } = useQuery(['users'], () => getUsers(saveUser));
-  console.log('profileData', profileData);
+  const { data: profileData } = useQuery(['users'], () =>
+    getUsers(saveUser.uid)
+  );
 
   const pointChargeHandle = () => {
     customInfoAlert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
@@ -31,9 +32,9 @@ const PointModal = () => {
           <div>내 포인트</div>
         </PointImgWrapper>
         <CurrentPoint>
-          {profileData?.[0] &&
-            profileData[0].point &&
-            profileData[0].point
+          {profileData &&
+            profileData?.point &&
+            profileData?.point
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
           P
