@@ -19,7 +19,7 @@ const Banner = () => {
     <ImageContainer>
       <Slider {...settings}>
         <div>
-          <Image src="https://ifh.cc/g/Cswrlm.webp " alt="" />
+          <Image src="https://ifh.cc/g/RZyJOY.webp " alt="" />
           <Text>
             <p>회원가입 이벤트!!</p>
             <br />
@@ -31,9 +31,24 @@ const Banner = () => {
             </Link>
           </SignUp>
         </div>
-        <Image src="https://ifh.cc/g/C97Oca.webp" alt="" />
-        <Image src="https://ifh.cc/g/mqZCnp.webp" alt="" />
-        <Image src="https://ifh.cc/g/049LTR.webp" alt="" />
+        <div>
+          <Image src="https://ifh.cc/g/2x2nVj.webp" alt="" />
+          <Text1>
+            <span>세상에 모든 재능을 이음</span>
+            <br />
+            <p>가장 작은 재능이</p>
+            <p>가장 큰 가치를 가진다.</p>
+            <button
+              onClick={() =>
+                window.open('https://forms.gle/ut6gMUXJZ8pTqkvz7', '_blank')
+              }
+            >
+              더 나은 이음을 위해 설문하러 가기
+            </button>
+          </Text1>
+        </div>
+        <Image src="https://ifh.cc/g/8O0vYz.webp" alt="" />
+        <Image src="https://ifh.cc/g/jNVbX8.webp" alt="" />
       </Slider>
     </ImageContainer>
   );
@@ -93,4 +108,37 @@ const Icon = styled(RxChevronRight)`
   padding-top: 6px;
   height: 24px;
   width: 24px;
+`;
+
+const Text1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  font-size: 35px;
+  color: ${theme.colors.white};
+  z-index: 3px;
+  height: 30%;
+  top: 18rem;
+  left: 24.5%;
+  span {
+    text-shadow: 1px 2px 2px ${theme.colors.black};
+  }
+  p {
+    margin-bottom: 10px;
+    text-shadow: 1px 2px 2px ${theme.colors.black};
+  }
+  button {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    background-color: transparent;
+    font-weight: ${theme.fontWeight.medium};
+    font-size: ${(props) => props.theme.fontSize.title18};
+    border: none;
+    outline: none;
+    color: ${theme.colors.orange02Main};
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
