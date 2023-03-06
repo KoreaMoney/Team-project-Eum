@@ -269,6 +269,11 @@ export const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
+
+  p{
+    width: 100%;
+    text-align: left;
+  }
 `;
 export const Profiles = styled.div`
   width: 100%;
@@ -448,3 +453,24 @@ export const ButtonsContainer = styled.div`
   width: 100%;
   gap: 24px;
 `;
+
+export const KakaoButton = styled.button`
+  width: 100%;
+  height: 64px;
+  margin-top: 24px;
+  margin-bottom: 80px;
+  border: none;
+  background-color: ${(props) => props.theme.colors.orange02Main};
+  color: ${(props) => props.theme.colors.white};
+  border-radius: 10px;
+  font-size: ${(props) => props.theme.fontSize.ad24};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.lineHeight.ad24};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+

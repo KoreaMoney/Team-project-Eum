@@ -425,7 +425,8 @@ const Detail = () => {
               <a.SellerInfoTitle>
                 <p>판매자</p>
               </a.SellerInfoTitle>
-              <SellerInfo />
+                <SellerInfo />
+                <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
