@@ -1,6 +1,7 @@
-import { createGlobalStyle } from 'styled-components';
-const GlobalStyle = createGlobalStyle`
 
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
 @import '~slick-carousel/slick/slick.css';
 @import '~slick-carousel/slick/slick-theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
@@ -62,4 +63,5 @@ a{
   color: inherit;
 }
 `;
+
 export default GlobalStyle;

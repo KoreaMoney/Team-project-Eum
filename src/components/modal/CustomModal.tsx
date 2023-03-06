@@ -41,7 +41,7 @@ const Container = styled.div<{ width: string; height: string }>`
   padding: 8px;
   background-color: ${theme.colors.white};
   border-radius: 8px;
-  z-index: 10;
+  z-index: 10000;
   color: ${theme.colors.white};
   display: flex;
   justify-content: center;
@@ -49,6 +49,7 @@ const Container = styled.div<{ width: string; height: string }>`
   align-items: center;
   font-size: ${theme.fontSize.title20};
   border: none;
+  overflow: scroll;
 `;
 
 const Canvas = styled.div`
@@ -56,9 +57,9 @@ const Canvas = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: 3;
+  z-index: 100;
 `;
 
 const Wrapper = styled.div`

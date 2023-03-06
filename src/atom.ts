@@ -7,14 +7,19 @@ import { atom } from 'recoil';
 //   key: 'isDark',
 //   default: true,
 // });
+
+export const viewModalAtom = atom({
+  key: 'viewModal',
+  default: false,
+});
 export const choiceBadgeAtom = atom({
   key: 'choiceBadge',
-  default:'',
-})
+  default: '',
+});
 export const addKakaoAtom = atom({
   key: 'addKakaoId',
   default: '',
-})
+});
 
 export const addBirthDateAtom = atom({
   key: 'addBirthDate',
