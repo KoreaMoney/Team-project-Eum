@@ -22,6 +22,7 @@ import SellerInfo from '../components/detail/SellerInfo';
 import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
 import { number } from 'yup';
+import KakaoModal from '../components/modal/KakaoModal';
 
 /**순서
  * 1. query-key만들기
@@ -309,10 +310,6 @@ const Transaction = () => {
               </p>
             </a.InfoTopLeftContainer>
             <a.InfoTopRightContainer>
-              {/* <a.IconLeftContainer>
-                <a.HeartIcon />
-                <a.LikeLength>{data?.[0].like.length}</a.LikeLength>
-              </a.IconLeftContainer> */}
               <a.IconRigntContainer>
                 <a.ShareIcon onClick={linkCopy} />
               </a.IconRigntContainer>
@@ -426,6 +423,7 @@ const Transaction = () => {
                 <p>판매자</p>
               </a.SellerInfoTitle>
               <SellerInfo />
+              <KakaoModal />
             </>
           )}
         </a.PostContentWrapper>

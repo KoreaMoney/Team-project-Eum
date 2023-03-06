@@ -25,6 +25,8 @@ import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
 import axios from 'axios';
 import Loader from '../components/etc/Loader';
 import BuyerModal from '../components/modal/BuyerModal';
+import styled from 'styled-components';
+import { theme } from '../styles/theme';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -54,9 +56,9 @@ const Detail = () => {
   const [isDescriptionActive, setIsDescriptionActive] = useState(true);
   const [isReviewActive, setIsReviewActive] = useState(false);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
-  const [newSalePosts,setNewSalePosts] = useState([])
-  
-console.log( 'newSalePosts: ' ,newSalePosts);
+  const [newSalePosts, setNewSalePosts] = useState([]);
+
+  console.log('newSalePosts: ', newSalePosts);
 
   /** 판매중 모달 */
   const onClickToggleModal = useCallback(() => {
@@ -112,7 +114,7 @@ console.log( 'newSalePosts: ' ,newSalePosts);
       return response.data;
     },
     {
-      onSuccess: (data) => setNewSalePosts(data)
+      onSuccess: (data) => setNewSalePosts(data),
     }
   );
 
@@ -201,7 +203,7 @@ console.log( 'newSalePosts: ' ,newSalePosts);
    * user 데이터의 point가 price만큼 빠지고
    * mutate로 데이터를 저장합니다
    */
-console.log( 'user?.nickName: ' ,user?.nickName);
+  console.log('user?.nickName: ', user?.nickName);
 
   const onClickApplyBuy = () => {
     customConfirm(
@@ -290,7 +292,7 @@ console.log( 'user?.nickName: ' ,user?.nickName);
       behavior: 'smooth',
     });
   };
-console.log( 'post: ' ,post);
+  console.log('post: ', post);
 
   return (
     <a.DetailContainer>
@@ -376,7 +378,8 @@ console.log( 'post: ' ,post);
                         onClick={onClickToggleModal}
                         aria-label="구매자명단"
                       >
-                        구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                        구매자 (
+                        {myOnSale?.length === 0 ? '0' : myOnSale?.length})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton
@@ -451,8 +454,8 @@ console.log( 'post: ' ,post);
               <a.SellerInfoTitle>
                 <p>판매자</p>
               </a.SellerInfoTitle>
-
               <SellerInfo />
+              <KakoDiv />
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
@@ -467,3 +470,11 @@ console.log( 'post: ' ,post);
 };
 
 export default Detail;
+
+const KakoDiv = styled.div`
+  background-color: ${theme.colors.white};
+  position: absolute;
+  z-index: 2;
+  height: 100px;
+  width: 100%;
+`;

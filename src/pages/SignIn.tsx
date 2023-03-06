@@ -208,7 +208,6 @@ const SignIn = () => {
                 type="email"
                 placeholder=""
                 {...register('email')}
-                autoFocus
               />
               <a.LoginCloseIcon
                 size={20}
@@ -268,7 +267,7 @@ const SignIn = () => {
             setModal={setIsModalActive}
             width="544"
             height="432"
-            overflow='hidden'
+            overflow="hidden"
             element={
               <div>
                 <FindPW />

@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { viewKakaoModalAtom } from '../../atom';
 import KakaoModal from '../modal/KakaoModal';
+
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { postId, id } = useParams();
@@ -125,12 +126,10 @@ const SellerInfo = () => {
       </a.ProfileInfoContainer>
 
       {!(saveUser?.uid === post?.[0]?.sellerUid) && (
-
         <>
           <a.KakaoButton onClick={() => setIsModalActive(true)}>
             카카오톡으로 문의하기
           </a.KakaoButton>
-          <KakaoModal />
         </>
       )}
     </a.SellerInfoContainer>
