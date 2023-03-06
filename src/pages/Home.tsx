@@ -48,7 +48,7 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 8000,
+    autoplaySpeed: 6000,
   };
 
   return (

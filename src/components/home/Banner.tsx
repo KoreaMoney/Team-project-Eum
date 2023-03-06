@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { theme } from '../../styles/theme';
 import Slider from 'react-slick';
 import styled from 'styled-components';
-import { HiChevronRight } from 'react-icons/hi2';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '../../api';
 
 const Banner = () => {
   const settings = {
@@ -15,6 +16,12 @@ const Banner = () => {
     autoplaySpeed: 8000,
   };
 
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
+  const { data } = useQuery(['userInfo', saveUser?.uid], () =>
+    getUsers(saveUser?.uid)
+  );
+
   return (
     <ImageContainer>
       <Slider {...settings}>
@@ -24,12 +31,25 @@ const Banner = () => {
             <Text1>회원가입 시</Text1>
             <p>50,000P 즉시 지급!</p>
             <span>
-              <Link to="/signup" aria-label="회원가입으로 이동">
-                <Move>
-                  회원가입하러 가기
-                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
-                </Move>
-              </Link>
+              {data?.id ? (
+                <>
+                  <Link to="/categorypage/all" aria-label="카테고리 이동">
+                    <Move>
+                      이음 재능 구경하기
+                      <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                    </Move>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/signup" aria-label="회원가입으로 이동">
+                    <Move>
+                      회원가입하러 가기
+                      <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                    </Move>
+                  </Link>
+                </>
+              )}
             </span>
           </Text>
         </div>

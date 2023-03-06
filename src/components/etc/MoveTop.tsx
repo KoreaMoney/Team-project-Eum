@@ -75,6 +75,6 @@ const Btn = styled.button`
 
   &:hover {
     cursor: pointer;
-    border: 3px solid ${theme.colors.orange02Main};
+    background-color: ${theme.colors.black};
   }
 `;

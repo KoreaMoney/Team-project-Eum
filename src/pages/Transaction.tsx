@@ -171,7 +171,7 @@ const Transaction = () => {
 
   const onClickClearRequest = async () => {
     customSuccessAlert(
-      '이음 재능연결이 완료되었습니다!\n후기 작성을 해주세요.'
+      '이음 재능연결이 완료되었습니다!\n\n후기 작성을 해주세요.'
     );
 
     await updateUser({
