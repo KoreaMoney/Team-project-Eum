@@ -244,7 +244,12 @@ export const SubmitButton = styled.button`
   margin: 0 auto;
   margin-bottom: 240px;
   &:hover {
+    cursor: pointer;
     background-color: ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.white};
+  }
+  &:active {
+    color: ${(props) => props.theme.colors.orange02Main};
+    background-color: ${(props) => props.theme.colors.white};
   }
 `;

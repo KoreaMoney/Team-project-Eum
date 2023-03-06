@@ -26,6 +26,7 @@ export const PostImage = styled.div<{ img: string }>`
   background-size: cover;
   background-position: center center;
   background-image: url(${(props) => props.img});
+  cursor: pointer;
 `;
 
 export const PostInfoWrapper = styled.div`
@@ -270,7 +271,9 @@ export const ProfileContainer = styled.div`
   align-items: center;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 
+
   p{
+
     width: 100%;
     text-align: left;
   }

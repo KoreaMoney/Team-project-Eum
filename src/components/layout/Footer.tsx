@@ -9,7 +9,7 @@ const Footer = () => {
           <EumInfo>
             <p>상표 : 이음</p> &nbsp;| &nbsp;<p>대표 : 김미영</p> &nbsp;| &nbsp;
             <p>디자이너 : 김예은</p> &nbsp;| &nbsp;
-            <p>사업자등록번호 : 783-86-01715</p>
+            <p>팀원 : 김도원, 김남규, 정진수</p>
           </EumInfo>
           <EumInfo>
             <p>전화 : 1522-8016</p> &nbsp;| &nbsp;

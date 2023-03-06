@@ -105,16 +105,15 @@ export default function Profile(params: any) {
 const UserProfileImgContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items:flex-start ;
+  align-items: flex-start;
   width: 100%;
 `;
 
 const MyImageWrapper = styled.div`
- display: flex;
- flex-direction: column;
+  display: flex;
+  flex-direction: column;
   width: 155px;
   height: 195px;
-
 `;
 
 const MyImage = styled.label`
@@ -143,7 +142,7 @@ const EditImgWrapper = styled.div`
 `;
 
 const ImgSubmitButton = styled.button`
-  width: 110px;
+  width: 130px;
   height: 1.5rem;
   font-size: 12px;
   background-color: ${theme.colors.white};
