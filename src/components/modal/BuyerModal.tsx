@@ -9,6 +9,9 @@ import { CustomModal } from './CustomModal';
 const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
   const navigate = useNavigate();
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -44,6 +47,9 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
           element={
             <>
               <Container>
+                <CloseButton onClick={onClickToggleModal} aria-label="닫기">
+                  X
+                </CloseButton>
                 <ModalTitle>구매한 사람들</ModalTitle>
                 <ModalContent>
                   바로가기 버튼을 누르면 진행 상황을 수정할 수 있어요.
@@ -210,4 +216,17 @@ const MoveButton = styled.button`
     color: ${(props) => props.theme.colors.orange02Main};
     border-radius: 10px;
   }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  font-size: 24px;
+  font-weight: 600;
+  width: 40px;
+  height: 40px;
+  right: 12px;
+  top: 12px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
