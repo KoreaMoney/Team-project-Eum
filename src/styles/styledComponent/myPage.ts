@@ -207,6 +207,7 @@ export const MyLikeDiv = styled.div`
 export const PostImg = styled.img`
   width: auto;
   height: 200px;
+  cursor: pointer;
   &:hover {
     scale: 1.1;
   }
@@ -312,8 +313,6 @@ export const EditInputValue = styled.input`
   }
 `;
 
-
-
 export const UserBadge = styled.div`
   display: flex;
   justify-content: center;
@@ -396,9 +395,9 @@ export const KakaoIdBox = styled.div`
 `;
 
 export const KakaoTitle = styled.p`
-position: absolute;
-top:20px;
-left:40px;
+  position: absolute;
+  top: 20px;
+  left: 40px;
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.fontSize.title16};

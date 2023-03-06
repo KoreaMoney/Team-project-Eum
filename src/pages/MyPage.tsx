@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import ProfileImg from '../components/mypage/member/ProfileImg';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   getOnSalePostBuyer,
@@ -7,7 +6,6 @@ import {
   getWriteMyComments,
   getPosts,
 } from '../api';
-import SignIn from './SignIn';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
 import { theme } from '../styles/theme';
@@ -20,6 +18,8 @@ import {
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { postType } from '../types';
 
 const MyPage = () => {
   const [category, setCategory] = useState('관심목록');
@@ -27,7 +27,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log('saveUser?.displayName', saveUser?.displayName);
+
   if (!saveUser) {
     navigate('/signin');
   }
@@ -43,12 +43,10 @@ const MyPage = () => {
     isError: getPostListIsError,
     data: postData,
   } = useQuery(['Posts'], () => getPosts());
-  console.log('postData', postData);
 
   const myLikePostList = postData?.filter((post: any) => {
     return post.like == saveUser.uid;
   });
-  console.log('myLikePostList', myLikePostList);
 
   /* 내 거래 목록을 받아옵니다.
    * 1. 구매 목록을 받아옵니다.
@@ -61,7 +59,6 @@ const MyPage = () => {
   } = useQuery(['onSaleBuyPosts', saveUser?.uid], () =>
     getOnSalePostBuyer(saveUser?.uid)
   );
-  console.log('tradeBuyData', tradeBuyData);
 
   const {
     isLoading: getTradeSellListLoading,
@@ -70,7 +67,6 @@ const MyPage = () => {
   } = useQuery(['onSaleSellPosts', saveUser?.uid], () =>
     getOnSalePostSeller(saveUser.uid)
   );
-  console.log('tradeSellData', tradeSellData);
 
   /* 내 거래 완료 목록을 받아옵니다.
    * 1. 구매 완료 목록을 받아옵니다.
@@ -80,21 +76,17 @@ const MyPage = () => {
   const isDoneTradeBuyList = tradeBuyData?.filter((post: any) => {
     return post.isDone === true;
   });
-  console.log('isDoneTradeBuyList', isDoneTradeBuyList);
 
   const isDoneTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone === true;
   });
-  console.log('isDoneTradeSellList', isDoneTradeSellList);
 
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
   });
-  console.log('waitTradeSellList', waitTradeSellList);
 
   /**회원탈퇴 */
   const user = auth.currentUser;
-  console.log('user: ', user);
 
   const deleteAuth = () => {
     customConfirm('탈퇴 하시겠습니까?', '회원 탈퇴 하기', '회원 탈퇴', () => {
@@ -106,7 +98,7 @@ const MyPage = () => {
             navigate('/');
           })
           .catch((error) => {
-            console.log('error: ', error);
+            console.dir('error: ', error);
           });
       } else {
         alert('ㅇㅇ');
@@ -122,7 +114,21 @@ const MyPage = () => {
     getWriteMyComments(saveUser.uid)
   );
 
-  console.log('writeMyCommentsData', writeMyCommentsData);
+  /* 1. 관심목록에서 포스트 클릭 시 조회수 + 1 후 해당 페이지로 이동합니다.
+   * 2. 판매, 구매목록에서 포스트 클릭 시 해당 페이지로 이동합니다.
+   */
+  const handleLikePostClick = async (list: postType) => {
+    await axios.patch(`${process.env.REACT_APP_JSON}/posts/${list.id}`, {
+      views: list.views + 1,
+    });
+    navigate(`/detail/${list.category}/${list.id}`);
+  };
+
+  const handleBuyPostClick = async (list: any) => {
+    navigate(
+      `/detail/${list.category}/${list.postsId}/${list.buyerUid}/${list.id}`
+    );
+  };
 
   // 마이페이지 Nav 클릭시 Nav 이미지
   const categoryStyle = {
@@ -137,7 +143,6 @@ const MyPage = () => {
     color: `${theme.colors.black}`,
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
-  console.log('tradeBuyData: ', myLikePostList);
 
   return (
     <a.MyPageContainer>
@@ -219,7 +224,7 @@ const MyPage = () => {
           ) : null}
           <a.MyPageContentsWrapper>
             {category === '관심목록'
-              ? myLikePostList?.map((list: any) => {
+              ? myLikePostList?.map((list: postType) => {
                   return (
                     <a.MyLikeList key={list.id}>
                       <a.LikeImg
@@ -231,6 +236,7 @@ const MyPage = () => {
                         src={
                           list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                         }
+                        onClick={() => handleLikePostClick(list)}
                       />
                       <a.InfoBest>{list.category}</a.InfoBest>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
@@ -249,6 +255,7 @@ const MyPage = () => {
                           src={
                             list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                           }
+                          onClick={() => handleBuyPostClick(list)}
                         />
                         <a.InfoBest>{list.category}</a.InfoBest>
                         <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
@@ -268,6 +275,7 @@ const MyPage = () => {
                           src={
                             list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                           }
+                          onClick={() => handleBuyPostClick(list)}
                         />
                         <a.InfoBest>{list.category}</a.InfoBest>
                         <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
@@ -290,6 +298,7 @@ const MyPage = () => {
                         src={
                           list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                         }
+                        onClick={() => handleBuyPostClick(list)}
                       />
                       <a.InfoBest>{list.category}</a.InfoBest>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
