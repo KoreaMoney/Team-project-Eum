@@ -32,7 +32,7 @@ const MyPage = () => {
     navigate('/signin');
   }
   if (!(saveUser.uid === id)) {
-    navigate('/')
+    navigate('/');
   }
   /* 거래 목록을 받아옵니다.
    * 1. 전체 거래 목록을 받아옵니다.
@@ -140,7 +140,6 @@ const MyPage = () => {
   console.log('tradeBuyData: ', myLikePostList);
 
   return (
-    
     <a.MyPageContainer>
       <a.MyPageHeader>마이페이지</a.MyPageHeader>
       <a.MyPageBody>
@@ -168,13 +167,6 @@ const MyPage = () => {
             >
               구매내역
             </div>
-            <div
-              onClick={() => setCategory('후기관리')}
-              style={category === '후기관리' ? categoryStyle : undefined}
-              aria-label="후기관리"
-            >
-              후기관리
-            </div>
           </a.MyTradeNavWrapper>
           <a.MyInfoNavWrapper>
             <span>회원 정보</span>
@@ -195,7 +187,6 @@ const MyPage = () => {
           </a.MyInfoNavWrapper>
         </a.MyPageNavWrapper>
         <a.MyPageContentsContainer>
-
           <a.CategoryName>{category}</a.CategoryName>
           {category === '나의 판매내역' ? (
             <a.MySellNav>
@@ -261,7 +252,12 @@ const MyPage = () => {
                         />
                         <a.InfoBest>{list.category}</a.InfoBest>
                         <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                        <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                        <a.MyLikeDiv>
+                          {list.price
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          P
+                        </a.MyLikeDiv>
                       </a.MyLikeList>
                     );
                   })
@@ -275,7 +271,12 @@ const MyPage = () => {
                         />
                         <a.InfoBest>{list.category}</a.InfoBest>
                         <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                        <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                        <a.MyLikeDiv>
+                          {list.price
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          P
+                        </a.MyLikeDiv>
                       </a.MyLikeList>
                     );
                   })
@@ -293,18 +294,14 @@ const MyPage = () => {
                       <a.InfoBest>{list.category}</a.InfoBest>
                       <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
 
-                      <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                      <a.MyLikeDiv>
+                        {list.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        P
+                      </a.MyLikeDiv>
                       <p>{list.sellerNickName}</p>
                     </a.MyLikeList>
-                  );
-                })
-              : null}
-            {category === '후기관리'
-              ? writeMyCommentsData?.map((list: any) => {
-                  return (
-                    <a.UserBadge key={list.id}>
-                      <div>{list.content}</div>
-                    </a.UserBadge>
                   );
                 })
               : null}

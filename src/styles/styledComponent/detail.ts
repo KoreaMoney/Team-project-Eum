@@ -412,6 +412,12 @@ export const ClearButton = styled.button`
     color: ${(props) => props.theme.colors.orange02Main};
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
   }
+  &:active {
+    font-size: ${(props) => props.theme.fontSize.ad24};
+    font-weight: ${(props) => props.theme.fontWeight.medium};
+    background-color: ${(props) => props.theme.colors.orange02Main};
+    color: ${(props) => props.theme.colors.white};
+  }
 `;
 
 export const CancelButton = styled.button`

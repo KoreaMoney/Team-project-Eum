@@ -7,7 +7,10 @@ import Terms from './Terms';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchUsers } from '../../../api';
-import { customSuccessAlert, customWarningAlert } from '../../modal/CustomAlert';
+import {
+  customSuccessAlert,
+  customWarningAlert,
+} from '../../modal/CustomAlert';
 import Badge from './Badge';
 
 const MemberInfo = () => {
@@ -17,7 +20,7 @@ const MemberInfo = () => {
   const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
   const [repBadgeChoice, setRepBadgeChoice] = useRecoilState(choiceBadgeAtom);
   const { mutate: updateUser } = useMutation(
-    (newUser: { kakaoId: string; birthDate: string; repBadge: string; }) =>
+    (newUser: { kakaoId: string; birthDate: string; repBadge: string }) =>
       patchUsers(saveUser?.uid, newUser),
     {
       onSuccess: () => queryClient.invalidateQueries(['user', saveUser?.uid]),
@@ -25,10 +28,10 @@ const MemberInfo = () => {
   );
 
   const validateBirthDate = (value: string) => {
-  const pattern = /^\d{4}-\d{2}-\d{2}$/;
-  return pattern.test(value);
+    const pattern = /^\d{4}-\d{2}-\d{2}$/;
+    return pattern.test(value);
   };
-  
+
   const onSubmitMember = () => {
     if (!validateBirthDate(editBirthValue)) {
       customWarningAlert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
@@ -67,6 +70,7 @@ const SubmitButton = styled.button`
   border-radius: 10px;
   margin-bottom: 234px;
   &:hover {
+    cursor: pointer;
     background-color: ${(props) => props.theme.colors.white};
     color: ${(props) => props.theme.colors.orange02Main};
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
