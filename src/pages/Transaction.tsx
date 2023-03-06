@@ -21,6 +21,7 @@ import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
 import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
+import { number } from 'yup';
 
 /**순서
  * 1. query-key만들기
@@ -167,17 +168,26 @@ const Transaction = () => {
    * 2. 등급을 위한 user의 isDoneCount 데이터도 +1 추가
    * 3. isDone도 true로 변경되어 판매,구매가 완료
    */
-
-  const onClickClearRequest = async () => {
+  const onClickClearRequest = () => {
     customSuccessAlert(
       '이음 재능연결이 완료되었습니다!\n후기 작성을 해주세요.'
     );
-
-    await updateUser({
+    let categoryCount;
+    if (data[0].category === 'study') {
+      categoryCount = { study: (sellerData?.study ?? 0) + 1 };
+    } else if (data[0].category === 'play') {
+      categoryCount = { play: (sellerData?.play ?? 0) + 1 };
+    } else if (data[0].category === 'advice') {
+      categoryCount = { advice: (sellerData?.advice ?? 0) + 1 };
+    } else {
+      categoryCount = { etc: (sellerData?.etc ?? 0) + 1 };
+    }
+    updateUser({
       point: Number(sellerData?.point) + Number(data?.[0]?.price),
       isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
+      ...categoryCount,
     });
-    await clearRequest({
+    clearRequest({
       isDone: true,
       doneTime: Date.now(),
     });

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { theme } from '../styles/theme';
 import loadable from '@loadable/component';
-
+import { deleteUser } from 'firebase/auth';
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
 const Banner = loadable(() => import('../components/home/Banner'));
@@ -32,13 +32,53 @@ const Home = () => {
     staleTime: 5000,
   });
 
+  const result = useQueries({
+    queries: [
+      {
+        queryKey: ['user', 1],
+        queryFn: async () => {
+          const response = await axios.get(
+            `https://orchid-sprinkle-snapdragon.glitch.me/users?_sort=study&_order=DESC&_limit=1`
+          );
+          return response.data;
+        },
+      },
+      {
+        queryKey: ['user', 2],
+        queryFn: async () => {
+          const response = await axios.get(
+            `https://orchid-sprinkle-snapdragon.glitch.me/users?_sort=play&_order=DESC&_limit=1`
+          );
+          return response.data;
+        },
+      },
+      {
+        queryKey: ['user', 3],
+        queryFn: async () => {
+          const response = await axios.get(
+            `https://orchid-sprinkle-snapdragon.glitch.me/users?_sort=advice&_order=DESC&_limit=1`
+          );
+          return response.data;
+        },
+      },
+      {
+        queryKey: ['user', 4],
+        queryFn: async () => {
+          const response = await axios.get(
+            `https://orchid-sprinkle-snapdragon.glitch.me/users?_sort=etc&_order=DESC&_limit=1`
+          );
+          return response.data;
+        },
+      },
+    ],
+  });
   const handlePostClick = async (post: postType) => {
     await axios.patch(`${process.env.REACT_APP_JSON}/posts/${post.id}`, {
       views: post.views + 1,
     });
     navigate(`/detail/${post.category}/${post.id}`);
   };
-
+  console.log(result[0].data[0].nickName);
   const settings = {
     dots: true,
     infinite: true,
@@ -70,25 +110,25 @@ const Home = () => {
                 <KingBox>
                   <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
                   <KingName>공부신</KingName>
-                  <KingNick>다람쥐</KingNick>
+                  <KingNick>{result?.[0]?.data[0]?.nickName}</KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
                   <KingName>놀이신</KingName>
-                  <KingNick>고구마콩나물</KingNick>
+                  <KingNick>{result?.[1]?.data[0]?.nickName}</KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
                   <KingName>상담신</KingName>
-                  <KingNick>히말라야</KingNick>
+                  <KingNick>{result?.[2]?.data[0]?.nickName}</KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
                   <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
                   <KingName>기타신</KingName>
-                  <KingNick>조지아</KingNick>
+                  <KingNick>{result?.[3]?.data[0]?.nickName}</KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
               </>
