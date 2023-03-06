@@ -121,12 +121,17 @@ const MyPage = () => {
   );
 
   /* 1. 관심목록에서 포스트 클릭 시 조회수 + 1 후 해당 페이지로 이동합니다.
-   * 2. 판매, 구매목록에서 포스트 클릭 시 해당 페이지로 이동합니다.
+   * 2. 판매중 목록에서 포스트 클릭 시 해당 페이지로 이동합니다.
+   * 3. 판매, 구매목록에서 포스트 클릭 시 해당 페이지로 이동합니다.
    */
   const handleLikePostClick = async (list: postType) => {
     await axios.patch(`${process.env.REACT_APP_JSON}/posts/${list.id}`, {
       views: list.views + 1,
     });
+    navigate(`/detail/${list.category}/${list.id}`);
+  };
+
+  const handleSellingPostClick = async (list: any) => {
     navigate(`/detail/${list.category}/${list.id}`);
   };
 
@@ -261,7 +266,7 @@ const MyPage = () => {
                           src={
                             list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
                           }
-                          onClick={() => handleBuyPostClick(list)}
+                          onClick={() => handleSellingPostClick(list)}
                         />
                         <a.InfoBest>{list.category}</a.InfoBest>
                         <a.MyLikeDiv>{list.title}</a.MyLikeDiv>

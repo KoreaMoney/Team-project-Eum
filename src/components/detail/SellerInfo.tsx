@@ -123,7 +123,9 @@ const SellerInfo = () => {
           후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
+
       {!(saveUser?.uid === post?.[0]?.sellerUid) && (
+
         <>
           <a.KakaoButton onClick={() => setIsModalActive(true)}>
             카카오톡으로 문의하기
