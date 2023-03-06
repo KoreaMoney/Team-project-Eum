@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   getOnSalePostBuyer,
   getOnSalePostSeller,
   getWriteMyComments,
   getPosts,
+  deleteUsers,
 } from '../api';
 import PointModal from '../components/mypage/PointModal';
 import * as a from '../styles/styledComponent/myPage';
@@ -90,9 +91,8 @@ const MyPage = () => {
 
   /*회원탈퇴 */
   const user = auth.currentUser;
-
-  const deleteAuth = () => {
-    customConfirm('탈퇴 하시겠습니까?', '회원 탈퇴 하기', '회원 탈퇴', () => {
+  const { mutate: deletedUser } = useMutation((id: string|undefined) => deleteUsers(id), {
+    onSuccess: () => {
       if (user) {
         deleteUser(user)
           .then(() => {
@@ -106,6 +106,12 @@ const MyPage = () => {
       } else {
         alert('ㅇㅇ');
       }
+    },
+  });
+  // deleteUsers
+  const deleteAuth = () => {
+    customConfirm('탈퇴 하시겠습니까?', '회원 탈퇴 하기', '회원 탈퇴', async () => {
+      await deletedUser(id)
     });
   };
   // 내 작성 후기 목록을 받아옵니다.
