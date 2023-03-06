@@ -199,7 +199,7 @@ function ReviewPage() {
           />
 
           <BadgeImg
-            imageUrl={badge === 'fast' ? images[1][0] : images[1][1]}
+            imageUrl={badge === 'fast' ? images[3][0] : images[3][1]}
             onClick={() => setBadge('fast')}
           />
 
@@ -209,7 +209,7 @@ function ReviewPage() {
           />
 
           <BadgeImg
-            imageUrl={badge === 'service' ? images[3][0] : images[3][1]}
+            imageUrl={badge === 'service' ? images[1][0] : images[1][1]}
             onClick={() => setBadge('service')}
           />
 

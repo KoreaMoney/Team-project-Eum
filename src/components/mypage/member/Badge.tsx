@@ -153,7 +153,7 @@ const images = [
           imageUrl={
             !myData
               ? null
-              : myData.repBadge === 'donation'
+              : repBadgeChoice === 'donation'
               ? images[5][0]
               : myData.donation < 10
               ? images[5][1]
