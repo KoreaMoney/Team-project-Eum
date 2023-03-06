@@ -37,6 +37,7 @@ const MyPage = () => {
   /* 거래 목록을 받아옵니다.
    * 1. 전체 거래 목록을 받아옵니다.
    * 2. 유저가 찜 한 목록을 받아옵니다.
+   * 3. 유저의 판매 목록을 받아옵니다.
    */
   const {
     isLoading: getPostListLoading,
@@ -47,6 +48,11 @@ const MyPage = () => {
   const myLikePostList = postData?.filter((post: any) => {
     return post.like == saveUser.uid;
   });
+
+  const mySellPostList = postData?.filter((post: any) => {
+    return post.sellerUid == saveUser.uid;
+  });
+  console.log('mySellPostList', mySellPostList);
 
   /* 내 거래 목록을 받아옵니다.
    * 1. 구매 목록을 받아옵니다.
@@ -84,9 +90,6 @@ const MyPage = () => {
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
   });
-
-  /*판매대기
-   */
 
   /*회원탈퇴 */
   const user = auth.currentUser;
@@ -203,7 +206,7 @@ const MyPage = () => {
                 style={sellCategory === '판매중' ? mySellNavStyle : undefined}
                 aria-label="판매중"
               >
-                판매중 {waitTradeSellList?.length}
+                판매중 {mySellPostList?.length}
               </div>
               <div
                 onClick={() => setSellCategory('거래완료')}
@@ -251,7 +254,7 @@ const MyPage = () => {
               : null}
             {category === '나의 판매내역'
               ? sellCategory === '판매중'
-                ? waitTradeSellList?.map((list: any) => {
+                ? mySellPostList?.map((list: any) => {
                     return (
                       <a.MyLikeList key={list.id}>
                         <a.PostImg
