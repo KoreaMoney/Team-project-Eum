@@ -271,7 +271,9 @@ export const ProfileContainer = styled.div`
   align-items: center;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 
-  p {
+
+  p{
+
     width: 100%;
     text-align: left;
   }
@@ -474,3 +476,4 @@ export const KakaoButton = styled.button`
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
   }
 `;
+

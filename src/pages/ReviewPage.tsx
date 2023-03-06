@@ -56,7 +56,7 @@ function ReviewPage() {
         return data[0];
       },
       onSuccess: (data) => {
-        if (!saveUser || saveUser.uid !== data.buyerUid || data.isCancel) {
+        if (!saveUser || saveUser.uid !== data.buyerUid || !data.isDone) {
           navigate('/');
         }
         if (data.reviewDone) {
@@ -77,17 +77,10 @@ function ReviewPage() {
   const { data: reviewer } = useQuery(['reviewer', id], () =>
     getUsers(saveUser.uid)
   );
-  const { mutate } = useMutation(
-    (data: any) => {
-      const { userId, newUser } = data;
-      return patchUsers(userId, newUser);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['test', id]);
-      },
-    }
-  );
+  const { mutate } = useMutation((data: any) => {
+    const { userId, newUser } = data;
+    return patchUsers(userId, newUser);
+  });
   //포스트 데이터 가져오기
   const { data: post } = useQuery(
     ['post', id],
@@ -105,9 +98,7 @@ function ReviewPage() {
       patchOnSalePost(id, newSalePosts),
     {
       onSuccess: () => {
-        if (!review) {
-          navigate('/');
-        }
+        navigate('/');
       },
     }
   );
@@ -146,25 +137,25 @@ function ReviewPage() {
     (newComment: commentType) => postComments(newComment),
     {
       onSuccess: () => {
-        navigate('/');
+        changeReviewDone({ reviewDone: true });
       },
     }
   );
   //1. 판매자 카운트 2. 포스트 카운트, 3.댓글 만들기
   const submitReview = () => {
-    if (badge !== '') {
+    if (badge) {
       const newUser = { [badge]: user[badge] + 1 };
       const userId = data.sellerUid;
       mutate({ userId, newUser });
-      changeReviewDone({ reviewDone: true });
+      if (!review.trim()) {
+        changeReviewDone({ reviewDone: true });
+      }
     }
-    if (review.trim() !== '') {
+    if (review.trim()) {
       const newUser = {
         commentsCount: user.commentsCount + 1,
       };
       updateUser(newUser);
-      setReview('');
-      changeReviewDone({ reviewDone: true });
     }
     if (!badge && !review.trim()) {
       changeReviewDone({ reviewDone: true });
