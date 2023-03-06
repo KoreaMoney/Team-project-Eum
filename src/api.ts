@@ -38,7 +38,7 @@ export const deletePosts = async (id: string) => {
 };
 
 /**판매자의 post의 글들을 가져옵니다. */
-export const getSellerPosts = async (seller: string) => {
+export const getSellerPosts = async (seller: string | undefined) => {
   const response = await axios.get(
     `${process.env.REACT_APP_JSON}/posts?sellerUid=${seller}`
   );
