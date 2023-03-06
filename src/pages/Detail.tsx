@@ -186,46 +186,53 @@ const Detail = () => {
    * mutate로 데이터를 저장합니다
    */
 
-  const onClickApplyBuy = async () => {
-    if (!saveUser) {
-      navigate('/signin', { state: { from: location.pathname } });
-      return;
-    }
+  const onClickApplyBuy = () => {
+    customConfirm(
+      '거래를 하시겠습니까?',
+      '확인을 누르시면 포인트가 차감됩니다.',
+      '확인',
+      async () => {
+        if (!saveUser) {
+          navigate('/signin', { state: { from: location.pathname } });
+          return;
+        }
 
-    /**null인 경우 0으로 초기화 */
-    const point = Number(user?.point) || 0;
-    const price = Number(post?.[0]?.price) || 0;
+        /**null인 경우 0으로 초기화 */
+        const point = Number(user?.point) || 0;
+        const price = Number(post?.[0]?.price) || 0;
 
-    /**구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트 */
-    if (point >= price) {
-      await updateUser({ point: point - price });
-      const uuid = uuidv4();
-      await onSalePosts({
-        id: uuid,
-        postsId: id,
-        buyerUid: saveUser.uid,
-        sellerUid: post?.[0]?.sellerUid,
-        sellerNickName: post?.[0]?.nickName,
-        title: post?.[0]?.title,
-        content: post?.[0]?.content,
-        imgURL: post?.[0]?.imgURL,
-        price: post?.[0]?.price,
-        category: post?.[0]?.category,
-        createdAt: Date.now(),
-        isDone: false,
-        isSellerCancel: false,
-        isBuyerCancel: false,
-        isCancel: false,
-        cancelTime: 0,
-        doneTime: 0,
-        reviewDone: false,
-      });
-      setTimeout(() => {
-        navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
-      }, 500);
-    } else {
-      customWarningAlert('포인트가 부족합니다.');
-    }
+        /**구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트 */
+        if (point >= price) {
+          await updateUser({ point: point - price });
+          const uuid = uuidv4();
+          await onSalePosts({
+            id: uuid,
+            postsId: id,
+            buyerUid: saveUser.uid,
+            sellerUid: post?.[0]?.sellerUid,
+            sellerNickName: post?.[0]?.nickName,
+            title: post?.[0]?.title,
+            content: post?.[0]?.content,
+            imgURL: post?.[0]?.imgURL,
+            price: post?.[0]?.price,
+            category: post?.[0]?.category,
+            createdAt: Date.now(),
+            isDone: false,
+            isSellerCancel: false,
+            isBuyerCancel: false,
+            isCancel: false,
+            cancelTime: 0,
+            doneTime: 0,
+            reviewDone: false,
+          });
+          setTimeout(() => {
+            navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
+          }, 500);
+        } else {
+          customWarningAlert('포인트가 부족합니다.');
+        }
+      }
+    );
   };
 
   /**화면 중간 네브바*/

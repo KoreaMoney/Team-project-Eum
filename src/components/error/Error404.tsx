@@ -40,7 +40,7 @@ const Main = styled.div`
   flex-direction: column;
   width: 40%;
   margin: 0 auto;
-  margin-top: 14rem;
+  margin-top: 12rem;
   span {
     font-size: ${theme.fontSize.ad56};
     font-weight: ${theme.fontWeight.bold};
@@ -53,7 +53,7 @@ const Main = styled.div`
   }
   button {
     width: 40%;
-    margin-top: 20px;
+    margin-top: 10px;
     height: 40px;
     background-color: ${theme.colors.black};
     color: ${theme.colors.white};

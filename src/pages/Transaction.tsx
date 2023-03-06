@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   customConfirm,
+  customInfoAlert,
   customSuccessAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
@@ -168,6 +169,10 @@ const Transaction = () => {
    */
 
   const onClickClearRequest = async () => {
+    customSuccessAlert(
+      '이음 재능연결이 완료되었습니다!\n후기 작성을 해주세요.'
+    );
+
     await updateUser({
       point: Number(sellerData?.point) + Number(data?.[0]?.price),
       isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
@@ -212,6 +217,7 @@ const Transaction = () => {
       }
     );
   };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -272,7 +278,6 @@ const Transaction = () => {
           <a.InfoTopContainer>
             <a.InfoTopLeftContainer>
               <p>
-                {' '}
                 {data?.[0].category === 'all'
                   ? '전체'
                   : data?.[0].category === 'study'
@@ -312,7 +317,14 @@ const Transaction = () => {
                   {saveUser.uid === data?.[0]?.buyerUid ? (
                     <>
                       <a.ButtonsContainer>
-                        <a.ClearButton aria-label="취소를 기다리는중">
+                        <a.ClearButton
+                          onClick={() =>
+                            customInfoAlert(
+                              '구매자, 판매자 전부 취소버튼을 \n\n눌러야 취소됩니다.'
+                            )
+                          }
+                          aria-label="취소를 기다리는중"
+                        >
                           판매자의 동의를 기다리고있습니다.
                         </a.ClearButton>
                       </a.ButtonsContainer>

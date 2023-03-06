@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
-import { postType } from '../types';
+import { postType, userType } from '../types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
-import { getPosts } from '../api';
+import { getPosts, getAuthUsers } from '../api';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -29,6 +29,18 @@ const Home = () => {
     staleTime: 5000,
   });
 
+  // const { data: isDoneCount } = useQuery(
+  //   ['isDoneUser'],
+  //   async () => {
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_JSON}/users/?_sort=isDoneCount&_order=DESC&_limit=4`
+  //     );
+  //     return response.data;
+  //   },
+  //   {
+  //     staleTime: 5000,
+  //   }
+  // );
   // 글 클릭하면 조회수 1씩 늘리기!!
   const handlePostClick = async (post: postType) => {
     await axios.patch(`${process.env.REACT_APP_JSON}/posts/${post.id}`, {
@@ -64,30 +76,32 @@ const Home = () => {
               <p>재능이 가장 많은 이음이 친구들 4분을 모셔봤어요!</p>
             </a.HotEum>
             <HotKingWrapper>
-              <KingBox>
-                <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
-                <KingName>공부신</KingName>
-                <KingNick>닉네임</KingNick>
-                <KingContext>여기에는 내용이 들어갑니다</KingContext>
-              </KingBox>
-              <KingBox>
-                <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
-                <KingName>놀이신</KingName>
-                <KingNick>닉네임</KingNick>
-                <KingContext>여기에는 내용이 들어갑니다</KingContext>
-              </KingBox>
-              <KingBox>
-                <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
-                <KingName>상담신</KingName>
-                <KingNick>닉네임</KingNick>
-                <KingContext>여기에는 내용이 들어갑니다</KingContext>
-              </KingBox>
-              <KingBox>
-                <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
-                <KingName>기타신</KingName>
-                <KingNick>닉네임</KingNick>
-                <KingContext>여기에는 내용이 들어갑니다</KingContext>
-              </KingBox>
+              <>
+                <KingBox>
+                  <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
+                  <KingName>공부신</KingName>
+                  <KingNick>다람쥐</KingNick>
+                  <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
+                </KingBox>
+                <KingBox>
+                  <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
+                  <KingName>놀이신</KingName>
+                  <KingNick>고구마콩나물</KingNick>
+                  <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
+                </KingBox>
+                <KingBox>
+                  <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
+                  <KingName>상담신</KingName>
+                  <KingNick>히말라야</KingNick>
+                  <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
+                </KingBox>
+                <KingBox>
+                  <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
+                  <KingName>기타신</KingName>
+                  <KingNick>조지아</KingNick>
+                  <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
+                </KingBox>
+              </>
             </HotKingWrapper>
             <a.Line />
             <a.HotEum>
