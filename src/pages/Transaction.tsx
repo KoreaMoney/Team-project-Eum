@@ -274,7 +274,13 @@ const Transaction = () => {
         </a.TransactionText>
       )}
       <a.PostContainer>
-        <a.PostImage img={data[0].imgURL} aria-label="post이미지" />
+        <a.PostImage
+          img={data[0].imgURL}
+          aria-label="post이미지"
+          onClick={() => {
+            window.open(data[0].imgURL);
+          }}
+        />
         <a.PostInfoWrapper>
           <a.InfoTopContainer>
             <a.InfoTopLeftContainer>

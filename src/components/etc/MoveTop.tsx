@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { theme } from '../../styles/theme';
 import styled from 'styled-components';
-import { TiArrowUpOutline } from 'react-icons/ti';
 
 const MoveTop = () => {
   const [toggleBtn, setToggleBtn] = useState(true);
@@ -28,21 +28,53 @@ const MoveTop = () => {
   };
 
   return (
-    <div>
+    <TopContainer>
       {toggleBtn ? (
-        <UpBtn>
-          <TiArrowUpOutline onClick={goToTop} size={40} />
-        </UpBtn>
+        <Cicle>
+          <Btn onClick={goToTop}>
+            <img src="https://ifh.cc/g/LToplJ.png" alt="위로 올라가기" />
+          </Btn>
+        </Cicle>
       ) : null}
-    </div>
+    </TopContainer>
   );
 };
 
 export default MoveTop;
 
-const UpBtn = styled.span`
-  color: ${(props) => props.theme.colors.black};
+const TopContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: end;
-  margin-right: 2rem;
+  width: 90%;
+  margin-top: 120px;
+  margin-bottom: 20px;
+`;
+
+const Cicle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  border: 1px solid ${theme.colors.gray20};
+  border-radius: 100%;
+  background-color: transparent;
+`;
+
+const Btn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  outline: none;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+
+  &:hover {
+    cursor: pointer;
+    border: 3px solid ${theme.colors.orange02Main};
+  }
 `;
