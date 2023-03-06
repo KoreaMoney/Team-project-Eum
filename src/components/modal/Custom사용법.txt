@@ -12,6 +12,16 @@ const Test = () => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
 
+/** 모달이 나왔을 때 뒷 배경 스크롤 불가하게 만들었어요 */
+  useEffect(() => {
+     const body = document.querySelector('body');
+     if (body) {
+       body.style.overflow = isModalActive ? 'hidden' : 'auto';
+       return () => {
+         body.style.overflow = 'auto';
+       };
+     }
+   }, [isModalActive]);
 
   /**CustomModal width와 height를 조절할 수있습니다
    * 모달 구간에 작업하시면 되십니다
