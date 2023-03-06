@@ -32,7 +32,7 @@ const Banner = () => {
           </SignUp>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/2x2nVj.webp" alt="" loading="lazy" />
+          <Image1 src="https://ifh.cc/g/2x2nVj.webp" alt="" loading="lazy" />
           <Text1>
             <span>세상에 모든 재능을 이음</span>
             <br />
@@ -58,7 +58,7 @@ const Banner = () => {
 export default Banner;
 
 const ImageContainer = styled.div`
-  width: 50vw;
+  width: 56vw;
   margin-bottom: 170px;
   .slick-dots {
     .slick-active {
@@ -79,6 +79,13 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
+  width: 700px;
+  height: 600px;
+  margin: auto;
+  position: relative;
+`;
+
+const Image1 = styled.img`
   width: 700px;
   height: 600px;
   margin: auto;

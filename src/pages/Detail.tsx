@@ -280,7 +280,13 @@ const Detail = () => {
       ) : (
         <>
           <a.PostContainer>
-            <a.PostImage img={post[0].imgURL} aria-label="post이미지" />
+            <a.PostImage
+              img={post[0].imgURL}
+              aria-label="post이미지"
+              onClick={() => {
+                window.open(post[0].imgURL);
+              }}
+            />
             <a.PostInfoWrapper>
               <a.InfoTopContainer>
                 <a.InfoTopLeftContainer>
@@ -425,8 +431,8 @@ const Detail = () => {
               <a.SellerInfoTitle>
                 <p>판매자</p>
               </a.SellerInfoTitle>
-                <SellerInfo />
-                <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
+              <SellerInfo />
+              <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
