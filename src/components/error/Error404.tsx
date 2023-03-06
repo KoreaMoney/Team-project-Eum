@@ -20,7 +20,7 @@ const Error404 = () => {
           <div>요청하신 페이지를 찾을 수 없습니다.</div>
           <div>입력하신 주소를 다시 확인해주세요.</div>
           <button onClick={homeClick} aria-label="홈 화면으로 이동">
-            메인페이지
+            메인페이지로 돌아가기
           </button>
         </Main>
       </ErrorContainer>
@@ -57,7 +57,7 @@ const Main = styled.div`
     margin-bottom: 10px;
   }
   button {
-    width: 282px;
+    width: 384px;
     margin-top: 80px;
     height: 64px;
     background-color: ${theme.colors.orange02Main};

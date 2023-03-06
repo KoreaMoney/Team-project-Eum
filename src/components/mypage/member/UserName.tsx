@@ -26,8 +26,8 @@ const UserName = () => {
   useEffect(() => {
     setEditKakaoValue(data?.kakaoId);
     setEditBirthValue(data?.birthDate);
-  }, [data])
-  
+  }, [data]);
+
   const onChangeBirthDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -66,7 +66,7 @@ const UserName = () => {
         />
       </a.KakaoIdBox>
       <a.KakaoInfo>
-        •ㅤ카카오톡 아이디는 상품 판매에 활용되므로 정확하게 입력해주세요.
+        •ㅤ카카오톡 아이디는 매칭 서비스에 활용되므로 정확하게 입력해주세요.
       </a.KakaoInfo>
       <a.KakaoIdBox>
         <a.KakaoTitle>생일정보</a.KakaoTitle>
