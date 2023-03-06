@@ -152,6 +152,10 @@ const SignIn = () => {
             profileImg: `${basicIMG}`,
             like: [],
             isDoneCount: 0,
+            study: 0,
+            play: 0,
+            advice: 0,
+            etc: 0,
             commentsCount: 0,
             kakaoId: '',
             birthDate: '',
@@ -264,6 +268,7 @@ const SignIn = () => {
             setModal={setIsModalActive}
             width="544"
             height="432"
+            overflow='hidden'
             element={
               <div>
                 <FindPW />

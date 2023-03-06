@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { viewModalAtom } from '../../atom';
+import { viewBuyerModalAtom } from '../../atom';
 import { onSalePostType } from '../../types';
-import { CustomModal } from '../modal/CustomModal';
+import { CustomModal } from './CustomModal';
 
 const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
   const navigate = useNavigate();
-  const [isModalActive, setIsModalActive] = useRecoilState(viewModalAtom);
+  const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -40,6 +40,7 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
           setModal={setIsModalActive}
           width="672"
           height="719"
+          overflow='scroll'
           element={
             <>
               <Container>

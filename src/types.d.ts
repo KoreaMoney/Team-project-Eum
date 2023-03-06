@@ -23,6 +23,10 @@ export interface userType {
   contactTime: string;
   like: [];
   isDoneCount: number;
+  study: number;
+  play: number;
+  advice: number;
+  etc: number;
   commentsCount: number;
   id: string | undefined;
   kakaoId: string | undefined;

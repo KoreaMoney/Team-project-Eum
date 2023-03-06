@@ -32,10 +32,20 @@ const MemberInfo = () => {
     return pattern.test(value);
   };
 
+  /**프로필 저장 */
   const onSubmitMember = () => {
-    if (!validateBirthDate(editBirthValue)) {
-      customWarningAlert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
-      return;
+    if(editBirthValue){
+      if (!validateBirthDate(editBirthValue)) {
+        customWarningAlert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
+        return;
+      } else {
+        updateUser({
+          kakaoId: editKakaoValue,
+          birthDate: editBirthValue,
+          repBadge: repBadgeChoice,
+        });
+        customSuccessAlert('프로필 수정이 완료되었습니다.');
+      }
     } else {
       updateUser({
         kakaoId: editKakaoValue,
