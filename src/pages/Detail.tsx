@@ -450,7 +450,6 @@ const Detail = () => {
                 <p>판매자</p>
               </a.SellerInfoTitle>
               <SellerInfo />
-              <a.KakoDiv />
             </a.PostContentWrapper>
           </a.PostRow>
           <div>

@@ -1,9 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPostsId, getSellerPosts, getUsers } from '../../api';
 import { useRecoilState } from 'recoil';
 import { viewKakaoModalAtom } from '../../atom';
+import { customWarningAlert } from '../modal/CustomAlert';
+import {
+  getOnSalePostBuyer,
+  getPostsId,
+  getSellerPosts,
+  getUsers,
+} from '../../api';
 
 import * as a from '../../styles/styledComponent/detail';
 import basicIMG from '../../styles/basicIMG.webp';
@@ -15,12 +21,13 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
+import KakaoModal from '../modal/KakaoModal';
 
 const SellerInfo = () => {
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { postId, id } = useParams();
   const identifier = id ? id : postId;
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
 
   const [badgeLength, setBadgeLength] = useState(0);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
@@ -42,6 +49,14 @@ const SellerInfo = () => {
     }
   );
 
+  const { data: onSalePostBuyerData } = useQuery(
+    ['onSalePosts', saveUser?.uid],
+    () => getOnSalePostBuyer(saveUser?.uid)
+  );
+  const isPostBuyer = onSalePostBuyerData?.filter((list: any) => {
+    return list?.postsId === post?.[0]?.id;
+  });
+
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
   const { data: seller } = useQuery(
     ['user', post?.[0].sellerUid],
@@ -60,7 +75,6 @@ const SellerInfo = () => {
     const service = seller?.service >= 10 ? true : false;
     const donation = seller?.donation >= 10 ? true : false;
     const result = [time, cheap, fast, service, donation];
-
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [seller]);
@@ -117,19 +131,28 @@ const SellerInfo = () => {
       <a.ProfileInfoContainer>
         <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
         <a.ProfileInfos aria-label="매칭 상품">
-          매칭상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
+          매칭 상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
           후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-
-      {!(saveUser?.uid === post?.[0]?.sellerUid) && (
+      {isPostBuyer?.length > 0 ? (
         <>
           <a.KakaoButton onClick={() => setIsModalActive(true)}>
             카카오톡으로 문의하기
           </a.KakaoButton>
+          <KakaoModal />
         </>
+      ) : (
+        <a.KakaoButton
+          onClick={() =>
+            customWarningAlert('구매자에게만\n제공되는 서비스입니다.')
+          }
+          aria-label="안내 알림"
+        >
+          카카오톡으로 문의하기
+        </a.KakaoButton>
       )}
     </a.SellerInfoContainer>
   );
