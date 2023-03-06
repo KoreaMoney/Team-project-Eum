@@ -262,9 +262,8 @@ const Transaction = () => {
     return <div>추가적인 데이터가 없습니다</div>;
   }
   if (!saveUser) {
-    return <SignIn />;
+    navigate('/signin');
   }
-
 
   return (
     <a.DetailContainer>
