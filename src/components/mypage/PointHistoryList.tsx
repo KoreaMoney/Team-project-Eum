@@ -102,9 +102,9 @@ const PointHistoryList = () => {
             <PointHistory key={prev.id}>
               <PointHistoryDate>
                 {prev.buyerUid === saveUser.uid
-                  ? '입금'
-                  : prev.sellerUid
                   ? '출금'
+                  : prev.sellerUid
+                  ? '입금'
                   : '에러'}
               </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
