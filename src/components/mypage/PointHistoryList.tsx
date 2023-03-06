@@ -31,13 +31,11 @@ const PointHistoryList = () => {
   const buyTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.buyerUid;
   });
-  console.log('buyTradeList', buyTradeList);
 
   // 거래완료 목룩 중 내 구매목록
   const sellTradeList = isDoneTradeList?.filter((user: any) => {
     return saveUser?.uid === user?.sellerUid;
   });
-  console.log('sellTradeList', sellTradeList);
 
   // 내 전체 거래 목록
   let NewTradeList;
@@ -46,7 +44,6 @@ const PointHistoryList = () => {
   } else {
     NewTradeList = undefined;
   }
-  console.log('NewTradeList', NewTradeList);
 
   // 거래 일자 출력
   const getTradeDate = (prev: number) => {
