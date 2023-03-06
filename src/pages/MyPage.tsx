@@ -23,10 +23,12 @@ import axios from 'axios';
 import { postType } from '../types';
 
 const MyPage = () => {
-  const [category, setCategory] = useState('관심목록');
-  const [sellCategory, setSellCategory] = useState('판매중');
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const [category, setCategory] = useState('관심목록');
+  const [sellCategory, setSellCategory] = useState('판매중');
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   if (!saveUser) {
@@ -47,11 +49,11 @@ const MyPage = () => {
   } = useQuery(['Posts'], () => getPosts());
 
   const myLikePostList = postData?.filter((post: any) => {
-    return post.like == saveUser.uid;
+    return post.like === saveUser.uid;
   });
 
   const mySellPostList = postData?.filter((post: any) => {
-    return post.sellerUid == saveUser.uid;
+    return post.sellerUid === saveUser.uid;
   });
   console.log('mySellPostList', mySellPostList);
 
@@ -94,37 +96,37 @@ const MyPage = () => {
 
   /*회원탈퇴 */
   const user = auth.currentUser;
-  const { mutate: deletedUser } = useMutation((id: string|undefined) => deleteUsers(id), {
-    onSuccess: () => {
-      if (user) {
-        deleteUser(user)
-          .then(() => {
-            sessionStorage.removeItem('user');
-            customSuccessAlert('탈퇴가 완료되었습니다.');
-            navigate('/');
-          })
-          .catch((error) => {
-            console.dir('error: ', error);
-          });
-      } else {
-        alert('ㅇㅇ');
-      }
-    },
-  });
+  const { mutate: deletedUser } = useMutation(
+    (id: string | undefined) => deleteUsers(id),
+    {
+      onSuccess: () => {
+        if (user) {
+          deleteUser(user)
+            .then(() => {
+              sessionStorage.removeItem('user');
+              customSuccessAlert('탈퇴가 완료되었습니다.');
+              navigate('/');
+            })
+            .catch((error) => {
+              console.dir('error: ', error);
+            });
+        } else {
+          alert('ㅇㅇ');
+        }
+      },
+    }
+  );
   // deleteUsers
   const deleteAuth = () => {
-    customConfirm('탈퇴 하시겠습니까?', '회원 탈퇴 하기', '회원 탈퇴', async () => {
-      await deletedUser(id)
-    });
+    customConfirm(
+      '탈퇴 하시겠습니까?',
+      '회원 탈퇴 하기',
+      '회원 탈퇴',
+      async () => {
+        await deletedUser(id);
+      }
+    );
   };
-  // 내 작성 후기 목록을 받아옵니다.
-  const {
-    isLoading: getMyCommentListLoading,
-    isError: getMyCommentListIsError,
-    data: writeMyCommentsData,
-  } = useQuery(['writeMyComments', saveUser?.uid], () =>
-    getWriteMyComments(saveUser.uid)
-  );
 
   /* 1. 관심목록에서 포스트 클릭 시 조회수 + 1 후 해당 페이지로 이동합니다.
    * 2. 판매중 목록에서 포스트 클릭 시 해당 페이지로 이동합니다.

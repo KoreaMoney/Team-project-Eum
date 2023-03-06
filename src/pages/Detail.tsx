@@ -25,8 +25,6 @@ import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
 import axios from 'axios';
 import Loader from '../components/etc/Loader';
 import BuyerModal from '../components/modal/BuyerModal';
-import styled from 'styled-components';
-import { theme } from '../styles/theme';
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -455,7 +453,7 @@ const Detail = () => {
                 <p>판매자</p>
               </a.SellerInfoTitle>
               <SellerInfo />
-              <KakoDiv />
+              <a.KakoDiv />
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
@@ -470,11 +468,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
-const KakoDiv = styled.div`
-  background-color: ${theme.colors.white};
-  position: absolute;
-  z-index: 2;
-  height: 100px;
-  width: 100%;
-`;
