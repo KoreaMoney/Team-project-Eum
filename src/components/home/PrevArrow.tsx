@@ -14,6 +14,7 @@ export default function PrevArrow({
       onClick={onClick}
       className={className}
       style={{ ...style, display: 'block' }}
+      aria-label="이전으로 이동"
     />
   );
 }

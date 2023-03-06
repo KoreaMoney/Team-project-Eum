@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '../../api';
-import ReactApexChart from 'react-apexcharts';
 import { postType } from '../../types';
 import Loader from '../etc/Loader';
+import ReactApexChart from 'react-apexcharts';
 
 const Chart = () => {
   const { isLoading, data: userPostData } = useQuery<postType[]>(

@@ -14,6 +14,7 @@ export default function NextArrow({
       className={className}
       style={{ ...style, display: 'block' }}
       onClick={onClick}
+      aria-label="다음으로 이동"
     />
   );
 }

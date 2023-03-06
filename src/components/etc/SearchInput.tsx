@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAnimation, motion } from 'framer-motion';
 import { theme } from '../../styles/theme';
 
@@ -61,6 +61,7 @@ const SearchInput = () => {
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
+            aria-label="검색창 보이기"
           >
             <path
               fillRule="evenodd"

@@ -1,7 +1,6 @@
-import React from 'react';
+import { theme } from '../../styles/theme';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { theme } from '../../styles/theme';
 
 const Error404 = () => {
   const navigate = useNavigate();
@@ -17,7 +16,9 @@ const Error404 = () => {
         <p>죄송합니다. 페이지를 찾을 수 없습니다.</p>
         <p>존재하지 않는 주소를 입력하셨거나</p>
         <p>요청하신 페이지의 주소가 변경,삭제되어 찾을 수 없습니다.</p>
-        <button onClick={homeClick}>홈으로</button>
+        <button onClick={homeClick} aria-label="홈 화면으로 이동">
+          홈으로
+        </button>
       </Main>
     </ErrorContainer>
   );
