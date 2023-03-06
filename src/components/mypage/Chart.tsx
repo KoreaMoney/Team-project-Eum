@@ -5,6 +5,8 @@ import Loader from '../etc/Loader';
 import ReactApexChart from 'react-apexcharts';
 
 const Chart = () => {
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const { isLoading, data: userPostData } = useQuery<postType[]>(
     ['postData'],
     () => getPosts(),
@@ -12,8 +14,6 @@ const Chart = () => {
       refetchInterval: 10000,
     }
   );
-
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const chartList = userPostData?.filter((user: any) => {
     return saveUser.uid === user.sellerUid;

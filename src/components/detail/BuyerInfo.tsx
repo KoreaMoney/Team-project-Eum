@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPostsId, getSellerPosts, getUsers } from '../../api';
+import { getSellerPosts, getUsers } from '../../api';
+
 import * as a from '../../styles/styledComponent/detail';
 import basicIMG from '../../styles/basicIMG.webp';
-import axios from 'axios';
 import c_cheap from '../../styles/badge/choice/c_cheap.webp';
 import c_donation from '../../styles/badge/choice/c_donation.webp';
 import c_fast from '../../styles/badge/choice/c_fast.webp';
@@ -16,10 +16,9 @@ import styled from 'styled-components';
 
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
-  const { postId, id, buyerId } = useParams();
-  const identifier = id ? id : postId;
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
+
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
     ['sellerPost', buyerId],
@@ -33,7 +32,6 @@ const SellerInfo = () => {
   const { data: buyer } = useQuery(['user', buyerId], () => getUsers(buyerId), {
     staleTime: Infinity,
   });
-  console.log('buyer: ', buyer);
 
   /**배지 개수 구하기 */
   useEffect(() => {
@@ -44,7 +42,6 @@ const SellerInfo = () => {
     const donation = buyer?.donation >= 10 ? true : false;
     const result = [time, cheap, fast, service, donation];
 
-    console.log('time: ', time);
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [buyer]);
@@ -71,6 +68,7 @@ const SellerInfo = () => {
       userBadge = images[5];
       break;
   }
+
   return (
     <a.SellerInfoContainer>
       <a.ProfileContainer>
@@ -100,8 +98,8 @@ const SellerInfo = () => {
 
       <a.ProfileInfoContainer>
         <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
-        <a.ProfileInfos aria-label="판매상품 10개">
-          판매상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
+        <a.ProfileInfos aria-label="매칭상품">
+          매칭상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
           후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개

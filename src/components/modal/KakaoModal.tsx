@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { getPostsId, getUsers } from '../../api';
 import { viewKakaoModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
+import styled from 'styled-components';
 
 const KakaoModal = () => {
   const { postId } = useParams();
+
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
+
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
@@ -24,13 +26,10 @@ const KakaoModal = () => {
     }
   }, [isModalActive]);
 
-  const { data: post, isLoading } = useQuery(
-    ['post', postId],
-    () => getPostsId(postId),
-    {
-      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
-    }
-  );
+  const { data: post } = useQuery(['post', postId], () => getPostsId(postId), {
+    staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+  });
+
   const { data: seller } = useQuery(
     ['user', post?.[0]?.sellerUid],
     () => getUsers(post?.[0]?.sellerUid),

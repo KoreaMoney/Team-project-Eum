@@ -23,13 +23,14 @@ const SignUp = () => {
 
   const [isViewPW, setIsViewPW] = useState(false);
   const [isViewCheckPW, setIsViewCheckPW] = useState(false);
+  const [registering, setRegistering] = useState(false);
   const [checkNick, setCheckNick] = useState(0);
   const [err, setErr] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [registering, setRegistering] = useState(false);
 
-  // 유효성 검사를 위한 코드들
-  // 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
+  /**유효성 검사를 위한 코드들
+   * 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
+   */
   const passwordRule =
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
   const schema = yup.object().shape({
@@ -51,7 +52,6 @@ const SignUp = () => {
   // react hook form 라이브러리 사용
   const {
     register,
-    watch,
     getValues,
     reset,
     handleSubmit,
@@ -63,12 +63,16 @@ const SignUp = () => {
 
   // 회원가입 성공 시 users에 data 추가
   const { mutate } = useMutation((newUser: userType) => postUsers(newUser));
-  // 여기서 바로 쓸 수 있게끔 에러처리 만들어주기
-  // 닉네임 중복 확인을 위해 데이터를 가져옴
+
+  /**여기서 바로 쓸 수 있게끔 에러처리 만들어주기
+   * 닉네임 중복 확인을 위해 데이터를 가져옴
+   */
   const { data } = useQuery(['users'], getAuthUsers);
   const nickNameList = data?.map((user: userType) => user.nickName);
-  // 비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수
-  // 비밀번호 , 비밀번호체크랑 따로 구현했습니다.
+
+  /**비밀번호 눈알 아이콘 클릭 시 type 변경 할 수 있는 함수
+   * 비밀번호 , 비밀번호체크랑 따로 구현했습니다.
+   */
   const handleClickViewPW = () => {
     setIsViewPW(!isViewPW);
   };
@@ -88,11 +92,9 @@ const SignUp = () => {
    * select옵션, fetch해올 때 데이터를 바깥에다 쓸 때 data.data.map 하면 지저분하니까 깔끔하게 data.map 할 수 있게 가공해줄 수 있음. 그게 select옵션중복된 닉네임입니다
    * 리코일 selector과 비슷함. 가공을 떠올리면 됨, 서버에서 받아온 데이터값을 우리가 원하는 값으로 가공 -> 우리 컴포넌트 안에서 쓸 수 있게 만들어주는 것.
    * useQuery select 검색 하고 사용할 것.
+   * 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
    */
 
-  /**닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
-   *
-   */
   const handleCheckOverlapNickName = () => {
     const nickName = getValues('nickName');
     if (!nickName) {
@@ -141,7 +143,7 @@ const SignUp = () => {
           });
 
         if (auth.currentUser) {
-          await mutate({
+          mutate({
             id: auth.currentUser?.uid,
             nickName: getValues('nickName'),
             point: 10000000,

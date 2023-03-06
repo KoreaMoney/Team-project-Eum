@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPostsId, getSellerPosts, getUsers } from '../../api';
+import { useRecoilState } from 'recoil';
+import { viewKakaoModalAtom } from '../../atom';
+
 import * as a from '../../styles/styledComponent/detail';
 import basicIMG from '../../styles/basicIMG.webp';
-import axios from 'axios';
 import c_cheap from '../../styles/badge/choice/c_cheap.webp';
 import c_donation from '../../styles/badge/choice/c_donation.webp';
 import c_fast from '../../styles/badge/choice/c_fast.webp';
@@ -13,15 +15,13 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { viewKakaoModalAtom } from '../../atom';
-import KakaoModal from '../modal/KakaoModal';
 
 const SellerInfo = () => {
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { postId, id } = useParams();
   const identifier = id ? id : postId;
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const [badgeLength, setBadgeLength] = useState(0);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
 
@@ -61,7 +61,6 @@ const SellerInfo = () => {
     const donation = seller?.donation >= 10 ? true : false;
     const result = [time, cheap, fast, service, donation];
 
-    console.log('time: ', time);
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [seller]);
@@ -117,8 +116,8 @@ const SellerInfo = () => {
 
       <a.ProfileInfoContainer>
         <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
-        <a.ProfileInfos aria-label="판매상품 10개">
-          판매상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
+        <a.ProfileInfos aria-label="매칭 상품">
+          매칭상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
           후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개

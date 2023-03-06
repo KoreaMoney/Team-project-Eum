@@ -2,15 +2,18 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import CommentsList from '../components/comment/CommentsList';
+import { useRecoilState } from 'recoil';
+import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
+import { onSalePostType } from '../types';
+import parse from 'html-react-parser';
+import * as a from '../styles/styledComponent/detail';
+import axios from 'axios';
+import loadable from '@loadable/component';
 import {
   customConfirm,
   customSuccessAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import { onSalePostType } from '../types';
-import parse from 'html-react-parser';
-import * as a from '../styles/styledComponent/detail';
 import {
   deletePosts,
   getPostsId,
@@ -19,12 +22,13 @@ import {
   patchUsers,
   postOnSalePost,
 } from '../api';
-import SellerInfo from '../components/detail/SellerInfo';
-import { useRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
-import axios from 'axios';
-import Loader from '../components/etc/Loader';
-import BuyerModal from '../components/modal/BuyerModal';
+
+const CommentsList = loadable(
+  () => import('../components/comment/CommentsList')
+);
+const Loader = loadable(() => import('../components/etc/Loader'));
+const BuyerModal = loadable(() => import('../components/modal/BuyerModal'));
+const SellerInfo = loadable(() => import('../components/detail/SellerInfo'));
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -40,23 +44,20 @@ import BuyerModal from '../components/modal/BuyerModal';
 
 const Detail = () => {
   const navigate = useNavigate();
-
   const { id } = useParams();
   const { categoryName } = useParams();
-  const [isDrop, setIsDrop] = useState(false);
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const queryClient = useQueryClient();
 
+  const [isDrop, setIsDrop] = useState(false);
+  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
+  const [isReviewActive, setIsReviewActive] = useState(false);
   const location = useLocation();
   const [postData, setPostData] = useState<{ like: any[] }>({ like: [] });
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
-  const queryClient = useQueryClient();
-  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
-  const [isReviewActive, setIsReviewActive] = useState(false);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const [newSalePosts, setNewSalePosts] = useState([]);
-
-  console.log('newSalePosts: ', newSalePosts);
 
   /** 판매중 모달 */
   const onClickToggleModal = useCallback(() => {
@@ -116,8 +117,6 @@ const Detail = () => {
     }
   );
 
-  console.log('myOnSale: ', myOnSale);
-
   useEffect(() => {
     if (post) {
       queryClient.invalidateQueries(['post', id]);
@@ -159,6 +158,7 @@ const Detail = () => {
       },
     }
   );
+
   const postCounter = async () => {
     if (!saveUser) navigate('/signin');
     else {
@@ -180,9 +180,9 @@ const Detail = () => {
       navigate('/categorypage/all');
     },
   });
-  const onClickDeleteComment = async (postId: string) => {
+  const onClickDeleteComment = (postId: string) => {
     customConfirm('정말 삭제하시겠습니까?', '내 글 삭제', '삭제', async () => {
-      await deletePost(postId);
+      deletePost(postId);
     });
   };
 
@@ -201,14 +201,12 @@ const Detail = () => {
    * user 데이터의 point가 price만큼 빠지고
    * mutate로 데이터를 저장합니다
    */
-  console.log('user?.nickName: ', user?.nickName);
-
   const onClickApplyBuy = () => {
     customConfirm(
       '거래를 하시겠습니까?',
       '확인을 누르시면 포인트가 차감됩니다.',
       '확인',
-      async () => {
+      () => {
         if (!saveUser) {
           navigate('/signin', { state: { from: location.pathname } });
           return;
@@ -220,9 +218,9 @@ const Detail = () => {
 
         /**구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트 */
         if (point >= price) {
-          await updateUser({ point: point - price });
+          updateUser({ point: point - price });
           const uuid = uuidv4();
-          await onSalePosts({
+          onSalePosts({
             id: uuid,
             postsId: id,
             buyerUid: saveUser.uid,
@@ -262,7 +260,7 @@ const Detail = () => {
   const onClickNavReview = () => {
     setIsDescriptionActive(false);
     setIsReviewActive(true);
-    goRivew();
+    goReview();
   };
 
   /**현재 URL 복사 */
@@ -284,13 +282,12 @@ const Detail = () => {
   };
 
   /**후기 누르면 후기로 */
-  const goRivew = () => {
+  const goReview = () => {
     window.scrollTo({
       top: 1306,
       behavior: 'smooth',
     });
   };
-  console.log('post: ', post);
 
   return (
     <a.DetailContainer>

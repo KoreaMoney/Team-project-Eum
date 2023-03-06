@@ -1,35 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { editPostType } from '../types';
 import { auth, storageService } from '../firebase/Firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { getPostsId, getUsers, patchPosts } from '../api';
+import * as a from '../styles/styledComponent/writeEdit';
+import Loader from '../components/etc/Loader';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import * as a from '../styles/styledComponent/writeEdit';
-import { getPostsId, getUsers, patchPosts } from '../api';
-import Loader from '../components/etc/Loader';
 
 const EditPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const imgRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLSelectElement>(null);
-  const queryClient = useQueryClient();
+
   const [imgURL, setImgURL] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState(0);
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
+  const [price, setPrice] = useState(0);
 
   /**순서
    * 1. query를 먼저 지정
@@ -133,10 +132,8 @@ const EditPage = () => {
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
 
-     setPrice(Number(value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')));
+    setPrice(Number(value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')));
   };
-
-
 
   // React-quill 웹 에디터의 value는 html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거한다.
   const parsingHtml = (html: string): string => {
@@ -171,7 +168,7 @@ const EditPage = () => {
    * await을 안붙히면 이 mutate 함수가 post를 전달해주러 갔다가 언제 돌아올지 모른다.
    * 안붙혀줬더니 간헐적으로 데이터를 못받아 오는 상황이 생겼었다.
    */
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validation()) {
       return;
@@ -185,7 +182,7 @@ const EditPage = () => {
       profileImg: userData?.profileImg,
       nickName: userData?.nickName,
     };
-    await mutate(post);
+    mutate(post);
   };
 
   useEffect(() => {
@@ -197,9 +194,10 @@ const EditPage = () => {
   }, [postdata]);
 
   /**사진삭제 */
-const deleteImg = () => {
-  setImgURL('');
-};
+  const deleteImg = () => {
+    setImgURL('');
+  };
+
   return (
     <a.WriteContainer>
       {isLoading ? (

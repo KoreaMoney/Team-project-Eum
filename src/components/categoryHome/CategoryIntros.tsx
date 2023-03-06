@@ -27,9 +27,9 @@ const CategoryIntros: React.FC<CategoryIntroTitleProps> = ({
           <a.PTag>전체 글을 한꺼번에 볼 수 있어요.</a.PTag>
         ) : categoryName === 'study' ? (
           <>
-            <a.PTag>수학, 영어, 국어 등 교과목이나</a.PTag>{' '}
+            <a.PTag>수학, 영어, 국어 등 교과목이나</a.PTag>
             <a.PTag>
-              공부하다가 궁금한 점이나 모르는 것이 생기면 주저말고 물어보세요!{' '}
+              공부하다가 궁금한 점이나 모르는 것이 생기면 주저말고 물어보세요!
             </a.PTag>
             <a.PTag>이음이 친구들이 단번에 해결해 줄 거예요.</a.PTag>
           </>

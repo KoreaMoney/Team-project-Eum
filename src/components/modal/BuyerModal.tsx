@@ -1,17 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { viewBuyerModalAtom } from '../../atom';
 import { onSalePostType } from '../../types';
 import { CustomModal } from './CustomModal';
+import styled from 'styled-components';
 
 const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
   const navigate = useNavigate();
+
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
+
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
   }, [isModalActive]);
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -29,11 +32,6 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
     const result = `${mm.replace(/^0+/, '')}월 ` + `${dd.replace(/^0+/, '')}일`;
     return result;
   };
-  console.log(
-    'newSalePosts?.[0].buyerNickName: ',
-    newSalePosts?.[0]?.buyerNickName
-  );
-  console.log('프롭스로가져옴: ', newSalePosts);
 
   return (
     <>
@@ -66,7 +64,7 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
                         <ListContentContainer>
                           <Day>{getTimeGap(salePosts?.createdAt)}</Day>
                           <NickName>{salePosts?.buyerNickName}</NickName>
-                          <Price>{salePosts?.price}원</Price>
+                          <Price>{salePosts?.price}P</Price>
                           <MoveButton
                             onClick={() =>
                               navigate(
@@ -93,10 +91,6 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
 };
 
 export default BuyerModal;
-
-const ComponentSpace = styled.div`
-  color: black;
-`;
 
 const Container = styled.div`
   width: 512px;

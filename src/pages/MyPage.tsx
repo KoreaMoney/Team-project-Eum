@@ -1,26 +1,24 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { theme } from '../styles/theme';
+import { deleteUser } from 'firebase/auth';
+import { auth } from '../firebase/Firebase';
+import { postType } from '../types';
+import PointModal from '../components/mypage/PointModal';
+import * as a from '../styles/styledComponent/myPage';
+import axios from 'axios';
+import MemberInfo from '../components/mypage/member/MemberInfo';
 import {
   getOnSalePostBuyer,
   getOnSalePostSeller,
-  getWriteMyComments,
   getPosts,
   deleteUsers,
 } from '../api';
-import PointModal from '../components/mypage/PointModal';
-import * as a from '../styles/styledComponent/myPage';
-import { theme } from '../styles/theme';
-
-import MemberInfo from '../components/mypage/member/MemberInfo';
-import { deleteUser } from 'firebase/auth';
-import { auth } from '../firebase/Firebase';
 import {
   customConfirm,
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { postType } from '../types';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -42,11 +40,7 @@ const MyPage = () => {
    * 2. 유저가 찜 한 목록을 받아옵니다.
    * 3. 유저의 판매 목록을 받아옵니다.
    */
-  const {
-    isLoading: getPostListLoading,
-    isError: getPostListIsError,
-    data: postData,
-  } = useQuery(['Posts'], () => getPosts());
+  const { data: postData } = useQuery(['Posts'], () => getPosts());
 
   const myLikePostList = postData?.filter((post: any) => {
     return post.like === saveUser.uid;
@@ -55,43 +49,23 @@ const MyPage = () => {
   const mySellPostList = postData?.filter((post: any) => {
     return post.sellerUid === saveUser.uid;
   });
-  console.log('mySellPostList', mySellPostList);
 
   /* 내 거래 목록을 받아옵니다.
    * 1. 구매 목록을 받아옵니다.
    * 2. 판매 목록을 받아옵니다.
    */
-  const {
-    isLoading: getTradeBuyListLoading,
-    isError: getTradeBuyListIsError,
-    data: tradeBuyData,
-  } = useQuery(['onSaleBuyPosts', saveUser?.uid], () =>
-    getOnSalePostBuyer(saveUser?.uid)
+  const { data: tradeBuyData } = useQuery(
+    ['onSaleBuyPosts', saveUser?.uid],
+    () => getOnSalePostBuyer(saveUser?.uid)
   );
 
-  const {
-    isLoading: getTradeSellListLoading,
-    isError: getTradeSellListIsError,
-    data: tradeSellData,
-  } = useQuery(['onSaleSellPosts', saveUser?.uid], () =>
-    getOnSalePostSeller(saveUser.uid)
+  const { data: tradeSellData } = useQuery(
+    ['onSaleSellPosts', saveUser?.uid],
+    () => getOnSalePostSeller(saveUser.uid)
   );
-
-  /* 내 거래 완료 목록을 받아옵니다.
-   * 1. 구매 완료 목록을 받아옵니다.
-   * 2. 판매 완료 목록을 받아옵니다.
-   * 3. 판매 대기 목록을 받아옵니다.
-   */
-  const isDoneTradeBuyList = tradeBuyData?.filter((post: any) => {
-    return post.isDone === true;
-  });
 
   const isDoneTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone === true;
-  });
-
-  const waitTradeSellList = tradeSellData?.filter((post: any) => {
-    return post.isDone === false;
   });
 
   /*회원탈퇴 */
@@ -111,7 +85,7 @@ const MyPage = () => {
               console.dir('error: ', error);
             });
         } else {
-          alert('ㅇㅇ');
+          alert('회원탈퇴가 진행됩니다.');
         }
       },
     }

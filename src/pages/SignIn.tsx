@@ -27,8 +27,8 @@ const SignIn = () => {
   const location = useLocation();
 
   const [isViewPW, setIsViewPW] = useState(false);
-  const [err, setErr] = useState('');
   const [authenticating, setAuthenticating] = useState<boolean>(false);
+  const [err, setErr] = useState('');
 
   /**순서
    * user섹션 저장하기
@@ -89,7 +89,6 @@ const SignIn = () => {
   //비밀번호 유효성 검사
   const {
     register,
-    watch,
     reset,
     handleSubmit,
     formState: { errors },

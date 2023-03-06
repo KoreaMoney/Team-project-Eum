@@ -35,7 +35,6 @@ const Badge = () => {
   const { data: myData } = useQuery(['user', saveUser?.uid], () =>
     getUsers(saveUser?.uid)
   );
-  console.log('myData: ', myData);
 
   useEffect(() => {
     setRepBadgeChoice(myData?.repBadge)

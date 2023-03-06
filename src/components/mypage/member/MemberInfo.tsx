@@ -1,24 +1,27 @@
-import React from 'react';
 import { useRecoilState } from 'recoil';
 import { addBirthDateAtom, addKakaoAtom, choiceBadgeAtom } from '../../../atom';
-import ProfileImg from './ProfileImg';
-import UserName from './UserName';
-import Terms from './Terms';
-import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchUsers } from '../../../api';
+import loadable from '@loadable/component';
+import styled from 'styled-components';
 import {
   customSuccessAlert,
   customWarningAlert,
 } from '../../modal/CustomAlert';
-import Badge from './Badge';
+
+const ProfileImg = loadable(() => import('./ProfileImg'));
+const UserName = loadable(() => import('./UserName'));
+const Terms = loadable(() => import('./Terms'));
+const Badge = loadable(() => import('./Badge'));
 
 const MemberInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
+
   const [editKakaoValue, setEditKakaoValue] = useRecoilState(addKakaoAtom);
   const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
   const [repBadgeChoice, setRepBadgeChoice] = useRecoilState(choiceBadgeAtom);
+
   const { mutate: updateUser } = useMutation(
     (newUser: { kakaoId: string; birthDate: string; repBadge: string }) =>
       patchUsers(saveUser?.uid, newUser),
@@ -34,7 +37,7 @@ const MemberInfo = () => {
 
   /**프로필 저장 */
   const onSubmitMember = () => {
-    if(editBirthValue){
+    if (editBirthValue) {
       if (!validateBirthDate(editBirthValue)) {
         customWarningAlert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
         return;

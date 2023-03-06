@@ -1,26 +1,26 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useEffect, useRef, useCallback, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postType } from '../types';
-import * as a from '../styles/styledComponent/category';
-import CategoryIntros from '../components/categoryHome/CategoryIntros';
-import Post from '../components/categoryHome/Post';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
+import { postType } from '../types';
+import * as a from '../styles/styledComponent/category';
+import axios from 'axios';
+import CategoryIntros from '../components/categoryHome/CategoryIntros';
+import Post from '../components/categoryHome/Post';
 import Loader from '../components/etc/Loader';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
  * 무한 스크롤 구현하기
  */
-
 const CategoryPage = () => {
   const navigate = useNavigate();
   const { categoryName, select, word } = useParams();
-  const observerElem = useRef<HTMLDivElement | null>(null);
   const PAGE_SIZE = 6;
+
   const [sort, setSort] = useRecoilState(sortAtom);
+  const observerElem = useRef<HTMLDivElement | null>(null);
 
   //fetchPost Category setUp
   const fetchPosts = async (
@@ -48,8 +48,6 @@ const CategoryPage = () => {
         _order: 'desc', // 내림차순으로 정렬
       },
     });
-    console.log('response.data: ', response.data);
-
     return response.data;
   };
 
@@ -125,22 +123,6 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  const handleSortClick = useCallback(
-    (sortValue: string) => {
-      setSort(sortValue);
-      const queryFn = async () => {
-        const data = await fetchPosts(
-          'posts',
-          categoryName ?? 'all',
-          select,
-          word
-        );
-        return data;
-      };
-      queryClient.fetchQuery(['posts'], queryFn);
-    },
-    [setSort]
-  );
   if (isLoading) {
     return (
       <div>

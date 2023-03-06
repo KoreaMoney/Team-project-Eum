@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import styled from 'styled-components';
 import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
+import styled from 'styled-components';
 import Loader from '../etc/Loader';
 
 /**순서
@@ -66,7 +66,7 @@ const PointHistoryList = () => {
       <DropDown>
         <DropDownBtn>
           <div>{category}</div>
-          <img src="/assets/Vector.png" />
+          <img src="/assets/Vector.png" alt="" loading="lazy" />
         </DropDownBtn>
         <DropDownBox className="DropDownBox">
           <PointWrapper

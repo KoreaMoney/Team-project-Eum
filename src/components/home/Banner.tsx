@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { theme } from '../../styles/theme';
-import Slider from 'react-slick';
-import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '../../api';
+import Slider from 'react-slick';
+import styled from 'styled-components';
 
 const Banner = () => {
   const settings = {
@@ -36,7 +36,11 @@ const Banner = () => {
                   <Link to="/categorypage/all" aria-label="카테고리 이동">
                     <Move>
                       이음 재능 구경하기
-                      <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                      <img
+                        src="https://ifh.cc/g/PyYoKP.png"
+                        alt="이동"
+                        loading="lazy"
+                      />
                     </Move>
                   </Link>
                 </>
@@ -45,7 +49,11 @@ const Banner = () => {
                   <Link to="/signup" aria-label="회원가입으로 이동">
                     <Move>
                       회원가입하러 가기
-                      <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                      <img
+                        src="https://ifh.cc/g/PyYoKP.png"
+                        alt="이동"
+                        loading="lazy"
+                      />
                     </Move>
                   </Link>
                 </>
@@ -62,7 +70,11 @@ const Banner = () => {
               <Link to="/categorypage/play" aria-label="놀이 이동">
                 <Move>
                   스마일 만드는 시간
-                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                  <img
+                    src="https://ifh.cc/g/PyYoKP.png"
+                    alt="이동"
+                    loading="lazy"
+                  />
                 </Move>
               </Link>
             </span>
@@ -77,7 +89,11 @@ const Banner = () => {
               <Link to="/categorypage/study" aria-label=" 공부 이동">
                 <Move>
                   모르는 수학 문제 바로 풀어드려요!
-                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                  <img
+                    src="https://ifh.cc/g/PyYoKP.png"
+                    alt="이동"
+                    loading="lazy"
+                  />
                 </Move>
               </Link>
             </span>
@@ -92,7 +108,11 @@ const Banner = () => {
               <Link to="/categorypage/advice" aria-label="상담 이동">
                 <Move>
                   사진 보정해드려요
-                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                  <img
+                    src="https://ifh.cc/g/PyYoKP.png"
+                    alt="이동"
+                    loading="lazy"
+                  />
                 </Move>
               </Link>
             </span>
@@ -107,7 +127,11 @@ const Banner = () => {
               <Link to="/categorypage/etc" aria-label="기타 이동">
                 <Move>
                   인스타그램 팔로잉 해드려요
-                  <img src="https://ifh.cc/g/PyYoKP.png" alt="이동" />
+                  <img
+                    src="https://ifh.cc/g/PyYoKP.png"
+                    alt="이동"
+                    loading="lazy"
+                  />
                 </Move>
               </Link>
             </span>
