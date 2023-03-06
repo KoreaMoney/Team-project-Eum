@@ -19,6 +19,7 @@ import { CustomModal } from '../components/modal/CustomModal';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
+import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
 
 /**순서
@@ -396,10 +397,21 @@ const Transaction = () => {
           </a.SellerInfoContent>
         </a.PostContentWrapper>
         <a.PostContentWrapper>
-          <a.SellerInfoTitle>
-            <p>판매자</p>
-          </a.SellerInfoTitle>
-          <SellerInfo />
+          {saveUser.uid === data[0].sellerUid ? (
+            <>
+              <a.SellerInfoTitle>
+                <p>구매자</p>
+              </a.SellerInfoTitle>
+              <BuyerInfo />
+            </>
+          ) : (
+            <>
+              <a.SellerInfoTitle>
+                <p>판매자</p>
+              </a.SellerInfoTitle>
+              <SellerInfo />
+            </>
+          )}
         </a.PostContentWrapper>
       </a.PostRow>
     </a.DetailContainer>

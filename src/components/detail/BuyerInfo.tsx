@@ -15,48 +15,28 @@ import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
-  const { postId, id } = useParams();
+  const { postId, id, buyerId } = useParams();
   const identifier = id ? id : postId;
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const { data: post } = useQuery(
-    ['post', identifier],
-    () => getPostsId(identifier),
-    {
-      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
-    }
-  );
+ 
 
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
-    ['sellerPost', post?.[0].sellerUid],
-    () => getSellerPosts(post?.[0].sellerUid),
+    ['sellerPost', buyerId],
+    () => getSellerPosts(buyerId),
     {
       staleTime: Infinity,
     }
   );
 
-  // 판매자의 프로필이미지를 위해 데이터 가져오기
-  const { data: seller } = useQuery(
-    ['user', post?.[0].sellerUid],
-    () => getUsers(post?.[0].sellerUid),
-    {
-      enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
-    }
-  );
 
   // 구매자의 프로필이미지를 위해 데이터 가져오기
-   const { data: buyer } = useQuery(
-     ['user', post?.[0].buyerUid],
-     () => getUsers(post?.[0].buyerUid),
-     {
-       enabled: Boolean(post?.[0].buyerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-       staleTime: Infinity,
-     }
-   );
-  
+  const { data: buyer } = useQuery(['user', buyerId], () => getUsers(buyerId), {
+    staleTime: Infinity,
+  });
+
   let userBadge;
-  switch (seller?.repBadge) {
+  switch (buyer?.repBadge) {
     case 'time':
       userBadge = images[0];
       break;
@@ -81,13 +61,13 @@ const SellerInfo = () => {
       <a.ProfileContainer>
         <a.Profiles>
           <a.ProfileIMG
-            profileIMG={seller?.profileImg ? seller?.profileImg : basicIMG}
+            profileIMG={buyer?.profileImg ? buyer?.profileImg : basicIMG}
             aria-label="프로필 이미지"
           />
         </a.Profiles>
         <a.Profiles>
           <a.NickName>
-            <p>{seller?.nickName}</p>
+            <p>{buyer?.nickName}</p>
           </a.NickName>
         </a.Profiles>
         <a.Profiles
@@ -95,7 +75,7 @@ const SellerInfo = () => {
             borderLeft: '1px solid #C2C1C1',
           }}
         >
-          {seller?.repBadge ? (
+          {buyer?.repBadge ? (
             <BadgeImg imageUrl={userBadge} />
           ) : (
             <BasicBadgeImg img={basicLock} />
@@ -109,10 +89,9 @@ const SellerInfo = () => {
           판매상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
-          후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
+          후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-      <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
     </a.SellerInfoContainer>
   );
 };

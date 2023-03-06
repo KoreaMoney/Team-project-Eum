@@ -452,7 +452,6 @@ console.log( 'user?.nickName: ' ,user?.nickName);
               </a.SellerInfoTitle>
 
               <SellerInfo />
-              <a.KakaoButton>카카오톡으로 문의하기</a.KakaoButton>
             </a.PostContentWrapper>
           </a.PostRow>
           <div>
