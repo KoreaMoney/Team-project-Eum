@@ -1,10 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPostsId, getSellerPosts, getUsers } from '../../api';
+import {
+  getOnSalePostBuyer,
+  getPostsId,
+  getSellerPosts,
+  getUsers,
+} from '../../api';
 import * as a from '../../styles/styledComponent/detail';
 import basicIMG from '../../styles/basicIMG.webp';
-import axios from 'axios';
 import c_cheap from '../../styles/badge/choice/c_cheap.webp';
 import c_donation from '../../styles/badge/choice/c_donation.webp';
 import c_fast from '../../styles/badge/choice/c_fast.webp';
@@ -16,6 +20,7 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { viewKakaoModalAtom } from '../../atom';
 import KakaoModal from '../modal/KakaoModal';
+import { customWarningAlert } from '../modal/CustomAlert';
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { postId, id } = useParams();
@@ -40,6 +45,16 @@ const SellerInfo = () => {
       staleTime: Infinity,
     }
   );
+  console.log('post', post);
+
+  const { data: onSalePostBuyerData } = useQuery(
+    ['onSalePosts', saveUser?.uid],
+    () => getOnSalePostBuyer(saveUser?.uid)
+  );
+  const isPostBuyer = onSalePostBuyerData?.filter((list: any) => {
+    return list?.postsId === post?.[0]?.id;
+  });
+  console.log('isPostBuyer', isPostBuyer);
 
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
   const { data: seller } = useQuery(
@@ -123,15 +138,19 @@ const SellerInfo = () => {
           후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-
-      {!(saveUser?.uid === post?.[0]?.sellerUid) && (
-
+      {isPostBuyer?.length > 0 ? (
         <>
           <a.KakaoButton onClick={() => setIsModalActive(true)}>
             카카오톡으로 문의하기
           </a.KakaoButton>
           <KakaoModal />
         </>
+      ) : (
+        <a.KakaoButton
+          onClick={() => customWarningAlert('구매자에게만 제공됩니다.')}
+        >
+          카카오톡으로 문의하기
+        </a.KakaoButton>
       )}
     </a.SellerInfoContainer>
   );
