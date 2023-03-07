@@ -38,32 +38,41 @@ export default function Profile() {
     }
   );
 
+  // const saveImgFile = () => {
+  //   if (imgRef.current?.files) {
+  //     const file = imgRef.current.files[0];
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onloadend = () => {
+  //       const resultImg = reader.result;
+  //       shortenUrl(resultImg as string);
+  //     };
+  //   }
   const saveImgFile = () => {
-    if (imgRef.current?.files) {
-      const file = imgRef.current.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const resultImg = reader.result;
-        shortenUrl(resultImg as string);
-      };
+    if (!imgRef.current?.files || imgRef.current.files.length === 0) {
+      return;
     }
 
-    const shortenUrl = async (img: string) => {
-      const imgRef = ref(
-        storageService,
-        `${auth.currentUser?.uid}${Date.now()}`
-      );
-
-      const imgDataUrl = img;
-      let downloadUrl;
-      if (imgDataUrl) {
-        const response = await uploadString(imgRef, imgDataUrl, 'data_url');
-        downloadUrl = await getDownloadURL(response.ref);
-        setPhoto(downloadUrl);
-        setImgEditBtnToggle(true);
-      }
+    const file = imgRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const resultImg = reader.result;
+      shortenUrl(resultImg as string);
     };
+  };
+
+  const shortenUrl = async (img: string) => {
+    const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
+
+    const imgDataUrl = img;
+    let downloadUrl;
+    if (imgDataUrl) {
+      const response = await uploadString(imgRef, imgDataUrl, 'data_url');
+      downloadUrl = await getDownloadURL(response.ref);
+      setPhoto(downloadUrl);
+      setImgEditBtnToggle(true);
+    }
   };
   const handleClick = () => {
     editUser({

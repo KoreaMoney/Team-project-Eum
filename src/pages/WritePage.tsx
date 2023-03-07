@@ -115,15 +115,17 @@ const WritePage = () => {
 
   //이미지 저장
   const saveImgFile = () => {
-    if (imgRef.current?.files) {
-      const file = imgRef.current.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const resultImg = reader.result;
-        shortenUrl(resultImg as string);
-      };
+    if (!imgRef.current?.files || imgRef.current.files.length === 0) {
+      return;
     }
+
+    const file = imgRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const resultImg = reader.result;
+      shortenUrl(resultImg as string);
+    };
   };
 
   // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경
