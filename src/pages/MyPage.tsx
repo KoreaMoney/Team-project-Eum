@@ -14,6 +14,7 @@ import {
   getOnSalePostSeller,
   getPosts,
   deleteUsers,
+  getLikePostsId,
 } from '../api';
 import {
   customConfirm,
@@ -43,12 +44,12 @@ const MyPage = () => {
    */
   const { data: postData, isLoading } = useQuery(['Posts'], () => getPosts());
 
-  const myLikePostList = postData?.filter((post: any) => {
-    return post.like === saveUser.uid;
-  });
+  const { data: likePostData } = useQuery(['LikePosts', saveUser?.uid], () =>
+    getLikePostsId(saveUser?.uid)
+  );
 
   const mySellPostList = postData?.filter((post: any) => {
-    return post.sellerUid === saveUser.uid;
+    return post.sellerUid === saveUser?.uid;
   });
 
   /* 내 거래 목록을 받아옵니다.
@@ -231,7 +232,7 @@ const MyPage = () => {
               ) : null}
               <a.MyPageContentsWrapper>
                 {category === '관심목록'
-                  ? myLikePostList?.map((list: postType) => {
+                  ? likePostData?.map((list: postType) => {
                       return (
                         <a.MyLikeList key={list.id}>
                           <a.LikeImg

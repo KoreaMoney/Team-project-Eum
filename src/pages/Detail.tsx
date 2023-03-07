@@ -66,8 +66,11 @@ const Detail = () => {
 
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
-  setIsCancel(false);
-  setIsDone(false);
+  useEffect(() => {
+    setIsCancel(false);
+    setIsDone(false);
+  }, []);
+
   const { data: post, isLoading } = useQuery(
     ['post', id],
     () => getPostsId(id),

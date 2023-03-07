@@ -19,6 +19,13 @@ export const getPostsId = async (id: string | undefined) => {
   return response.data;
 };
 
+export const getLikePostsId = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/posts?like_like=${id}`
+  );
+  return response.data;
+};
+
 export const postPosts = async (post: postType) => {
   const response = await axios.post(
     `${process.env.REACT_APP_JSON}/posts`,
