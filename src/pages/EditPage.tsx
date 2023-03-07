@@ -128,11 +128,10 @@ const EditPage = () => {
     const value = e.target.value;
     setTitle(value);
   };
-
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
-
-    setPrice(Number(value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')));
+    const parsedValue = value === '' ? 0 : Number(value);
+    setPrice(Number(parsedValue));
   };
 
   // React-quill 웹 에디터의 value는 html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거한다.
