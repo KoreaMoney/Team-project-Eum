@@ -1,10 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import styled from 'styled-components';
-import { getUsers, patchUsers } from '../../../api';
-import * as a from '../../../styles/styledComponent/myPage';
-import { theme } from '../../../styles/theme';
-import { customWarningAlert } from '../../modal/CustomAlert';
 
 const UserTime = () => {
   return (

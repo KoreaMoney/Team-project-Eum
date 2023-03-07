@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { theme } from '../styles/theme';
 import loadable from '@loadable/component';
-import { deleteUser } from 'firebase/auth';
+
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
 const Banner = loadable(() => import('../components/home/Banner'));

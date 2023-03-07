@@ -3,6 +3,7 @@ import { BsHeart, BsShare, BsHeartFill } from 'react-icons/bs';
 import { RxClock } from 'react-icons/rx';
 import { GoKebabVertical } from 'react-icons/go';
 import { NavButtonProps } from '../../types';
+import { theme } from '../theme';
 export const DetailContainer = styled.div`
   width: 1200px;
   margin: 0 auto;
@@ -271,9 +272,7 @@ export const ProfileContainer = styled.div`
   align-items: center;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 
-
-  p{
-
+  p {
     width: 100%;
     text-align: left;
   }
@@ -477,3 +476,10 @@ export const KakaoButton = styled.button`
   }
 `;
 
+export const KakoDiv = styled.div`
+  background-color: ${theme.colors.white};
+  position: absolute;
+  z-index: 2;
+  height: 100px;
+  width: 49%;
+`;

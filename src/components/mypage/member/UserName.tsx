@@ -1,26 +1,22 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { getUsers, patchUsers } from '../../../api';
+import { getUsers } from '../../../api';
 import { addBirthDateAtom, addKakaoAtom } from '../../../atom';
 import * as a from '../../../styles/styledComponent/myPage';
-import { kakaoType } from '../../../types';
-import { customWarningAlert } from '../../modal/CustomAlert';
 
 const UserName = () => {
-  const queryClient = useQueryClient();
-  const [isEdit, setIsEdit] = useState('');
   const [editKakaoValue, setEditKakaoValue] = useRecoilState(addKakaoAtom);
   const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   /* 1. 로그인한 유저 정보를 받아옵니다.
    * 2. 유저의 닉네임에 접근해서 patch합니다.
    * 3. 유저의 닉네임을 수정합니다.
    */
-  const { isLoading: getLoading, data } = useQuery(
-    ['users', saveUser.uid],
-    () => getUsers(saveUser.uid)
+  const { data } = useQuery(['users', saveUser.uid], () =>
+    getUsers(saveUser.uid)
   );
 
   useEffect(() => {
@@ -63,6 +59,7 @@ const UserName = () => {
           value={editKakaoValue}
           type="text"
           onChange={(e) => setEditKakaoValue(e.target.value)}
+          aria-label="카카오톡 아이디 입력하기"
         />
       </a.KakaoIdBox>
       <a.KakaoInfo>
@@ -74,6 +71,7 @@ const UserName = () => {
           value={editBirthValue}
           type="text"
           onChange={onChangeBirthDate}
+          aria-label="생일 정보 입력하기"
         />
       </a.KakaoIdBox>
       <a.BirthInfo>•ㅤ생일을 정확하게 입력해주세요.</a.BirthInfo>

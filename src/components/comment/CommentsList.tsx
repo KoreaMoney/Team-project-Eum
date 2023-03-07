@@ -5,12 +5,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { Fragment, useCallback, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { commentType } from '../../types';
-import { customConfirm } from '../modal/CustomAlert';
-import { deleteComments, getPostsId, getUsers, patchUsers } from '../../api';
+import { getPostsId, getUsers, patchUsers } from '../../api';
+
+import axios from 'axios';
+import styled from 'styled-components';
 import Loader from '../etc/Loader';
 
 /**순서
@@ -23,7 +23,6 @@ const CommentsList = () => {
   const { id } = useParams<{ id?: string }>();
   const queryClient = useQueryClient();
   const PAGE_SIZE = 6;
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const fetchComments = async (page = 0) => {
     const url = `${process.env.REACT_APP_JSON}/comments?postId=${id}`;
@@ -76,7 +75,6 @@ const CommentsList = () => {
   const { data: post } = useQuery(['post', id], () => getPostsId(id), {
     staleTime: Infinity,
   });
-  console.log('post: ', post);
 
   //커맨트 삭제 시 판매자 커맨트 카운트 -1을 위한 판매자 정보 get하기
   const { data: sellerUser } = useQuery(
@@ -88,7 +86,7 @@ const CommentsList = () => {
   );
 
   //  comment가 달리면 판매자 user data의 commentsCount가 +1이 된다.
-  const { mutate: updateUser } = useMutation(
+  const { mutate } = useMutation(
     (newUser: { commentsCount: number }) =>
       patchUsers(post?.[0].sellerUid, newUser),
     {
@@ -184,16 +182,6 @@ const TopContainer = styled.div`
   display: flex;
 `;
 
-const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-image: url(${(props) => props.profileIMG});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
 const NickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title20};
   font-weight: ${(props) => props.theme.fontWeight.medium};
@@ -223,15 +211,4 @@ const CreateAt = styled.p`
   line-height: ${(props) => props.theme.lineHeight.title20};
   color: ${(props) => props.theme.colors.gray30};
   margin-left: 16px;
-`;
-
-const DeleteButton = styled.button`
-  width: 3rem;
-  height: 35px;
-  border: none;
-  font-size: 16px;
-  background-color: yellow;
-  &:hover {
-    cursor: pointer;
-  }
 `;

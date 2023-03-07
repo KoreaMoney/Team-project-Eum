@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import PointHistoryList from './PointHistoryList';
-import styled from 'styled-components';
 import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
 import { getUsers } from '../../api';
 import { theme } from '../../styles/theme';
+import PointHistoryList from './PointHistoryList';
+import styled from 'styled-components';
 
-/**순서
- * 2. 포인트 활동 alert를 진행한다
- */
 const PointModal = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ReactQuill from 'react-quill';
@@ -12,10 +11,12 @@ import {
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { auth, storageService } from '../firebase/Firebase';
 import { postType } from '../types';
-import SignIn from './SignIn';
-import * as a from '../styles/styledComponent/writeEdit';
 import { getUsers, postPosts } from '../api';
-import Loader from '../components/etc/Loader';
+import * as a from '../styles/styledComponent/writeEdit';
+import loadable from '@loadable/component';
+
+const SignIn = loadable(() => import('./SignIn'));
+const Loader = loadable(() => import('../components/etc/Loader'));
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -68,7 +69,6 @@ const WritePage = () => {
   );
 
   const sellerUid = saveUser.uid;
-  const nickName = user?.nickName;
 
   const { mutate } = useMutation((newPost: postType) => postPosts(newPost), {
     onSuccess: () => {
@@ -100,7 +100,7 @@ const WritePage = () => {
     tsCount: 0,
     commentsCount: 0,
   });
-  console.log('post.category: ', post.category);
+
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
   const { title, content, price, imgURL } = post;
 
@@ -155,14 +155,6 @@ const WritePage = () => {
       price: value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','),
     });
   };
-  // 카테고리는 select를 사용해 value를 전달해주기 때문에 함수를 따로 만듦
-  // const onClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //  const value = e.currentTarget.value;
-  //  setPost({
-  //    ...post,
-  //    category: value,
-  //  });
-  // };
 
   // React-quill 웹 에디터의 value -> html태그를 포함하고 있기에 유효성 검사를 위해 태그를 제거
   const parsingHtml = (html: string): string => {
@@ -221,6 +213,7 @@ const WritePage = () => {
   const deleteImg = () => {
     setPost({ ...post, imgURL: '' });
   };
+
   return (
     <a.WriteContainer>
       <a.MainTitle>글쓰기</a.MainTitle>

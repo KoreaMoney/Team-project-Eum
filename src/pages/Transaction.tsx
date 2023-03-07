@@ -1,27 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   customConfirm,
   customInfoAlert,
   customSuccessAlert,
-  customWarningAlert,
 } from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
-import SignIn from './SignIn';
 import parse from 'html-react-parser';
-import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/detail';
 import { userType } from '../types';
 import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
-import { CustomModal } from '../components/modal/CustomModal';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
 import SellerInfo from '../components/detail/SellerInfo';
 import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
-import { number } from 'yup';
+import KakaoModal from '../components/modal/KakaoModal';
 
 /**순서
  * 1. query-key만들기
@@ -30,22 +26,18 @@ import { number } from 'yup';
  */
 const Transaction = () => {
   const navigate = useNavigate();
-
-  const [isDrop, setIsDrop] = useState(false);
-  const { uuid } = useParams();
-  const [current, setCurrent] = useState(false);
+  auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
   const onClickBtn = () => {
     navigate(-1);
   };
 
+  const { uuid } = useParams();
+  const [current, setCurrent] = useState(false);
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
-  const [isCancelConfirmed, setIsCancelConfirmed] = useState(0);
-  auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
-  const [isReviewActive, setIsReviewActive] = useState(false);
+
   //쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   const { data, isLoading } = useQuery(
     ['salePost', uuid],
@@ -54,6 +46,7 @@ const Transaction = () => {
       onSuccess: () => queryClient.invalidateQueries(['salePost0', uuid]),
     }
   );
+
   const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCnacle);
   const [buyerData, setBuyerData] = useState<userType | null>(null);
   const [sellerData, setSellerData] = useState<userType | null>(null);
@@ -214,13 +207,13 @@ const Transaction = () => {
       '취소 하시겠습니까?',
       '구매자, 판매자 전부 취소버튼을 눌러야 취소됩니다.',
       '확인',
-      async () => {
+      () => {
         if (saveUser.uid === data?.[0]?.sellerUid) {
-          await sellerCancel({
+          sellerCancel({
             isSellerCancel: true,
           });
         } else if (saveUser.uid === data?.[0]?.buyerUid) {
-          await buyerCancel({
+          buyerCancel({
             isBuyerCancel: true,
           });
         }
@@ -228,28 +221,6 @@ const Transaction = () => {
     );
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  /**후기 누르면 후기로 */
-  const goRivew = () => {
-    window.scrollTo({
-      top: 1306,
-      behavior: 'smooth',
-    });
-  };
-
-  /**화면 중간 네브바*/
-  const onClickNavExSeller = () => {
-    setIsDescriptionActive(true);
-    setIsReviewActive(false);
-    scrollToTop();
-  };
-  const onClickNavReview = () => {
-    setIsDescriptionActive(false);
-    setIsReviewActive(true);
-    goRivew();
-  };
   //로딩 구간
   if (isLoading) {
     return (
@@ -261,6 +232,8 @@ const Transaction = () => {
   if (!data || data.length === 0) {
     return <div>추가적인 데이터가 없습니다</div>;
   }
+
+  //회원가입 된 유저가 아니라면 로그인 화면으로 이동합니다.
   if (!saveUser) {
     navigate('/signin');
   }
@@ -309,10 +282,6 @@ const Transaction = () => {
               </p>
             </a.InfoTopLeftContainer>
             <a.InfoTopRightContainer>
-              {/* <a.IconLeftContainer>
-                <a.HeartIcon />
-                <a.LikeLength>{data?.[0].like.length}</a.LikeLength>
-              </a.IconLeftContainer> */}
               <a.IconRigntContainer>
                 <a.ShareIcon onClick={linkCopy} />
               </a.IconRigntContainer>
@@ -426,6 +395,7 @@ const Transaction = () => {
                 <p>판매자</p>
               </a.SellerInfoTitle>
               <SellerInfo />
+              <KakaoModal />
             </>
           )}
         </a.PostContentWrapper>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAnimation, motion } from 'framer-motion';
 import { theme } from '../../styles/theme';
+import styled from 'styled-components';
 
 /**순서
  * 1. 검색 데이터 변경넣기

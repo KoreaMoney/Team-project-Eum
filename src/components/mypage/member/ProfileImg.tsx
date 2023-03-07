@@ -1,17 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { auth, storageService } from '../../../firebase/Firebase';
 import { theme } from '../../../styles/theme';
 import { customSuccessAlert } from '../../modal/CustomAlert';
+import axios from 'axios';
+import styled from 'styled-components';
 
-export default function Profile(params: any) {
+export default function Profile() {
+  const { id } = useParams();
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
-  const { id } = useParams();
+
   const [loading, setLoading] = useState(false);
   const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);
 
@@ -64,8 +65,8 @@ export default function Profile(params: any) {
       }
     };
   };
-  const handleClick = async () => {
-    await editUser({
+  const handleClick = () => {
+    editUser({
       ...data,
       profileImg: photo,
     });
