@@ -137,7 +137,7 @@ const CategoryPage = () => {
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((post: postType) => (
-              <Post post={post} onClick={handlePostClick} />
+              <Post post={post} onClick={handlePostClick} key={post.id} />
             ))}
           </Fragment>
         ))}
