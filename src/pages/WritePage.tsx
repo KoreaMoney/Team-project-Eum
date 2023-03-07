@@ -251,7 +251,7 @@ const WritePage = () => {
               name="title"
               value={title}
               onChange={onChange}
-              placeholder="제목(최대 16글자까지)"
+              placeholder="제목"
               maxLength={32}
             />
             <a.TextInput
