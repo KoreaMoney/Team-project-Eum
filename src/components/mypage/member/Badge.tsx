@@ -23,30 +23,29 @@ import nc_service from '../../../styles/badge/notChoice/nc_service.webp';
 import c_time from '../../../styles/badge/choice/c_time.webp';
 import lock_time from '../../../styles/badge/lock/lock_time.webp';
 import nc_time from '../../../styles/badge/notChoice/nc_time.webp';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUsers, patchUsers } from '../../../api';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '../../../api';
 import { useRecoilState } from 'recoil';
 import { choiceBadgeAtom } from '../../../atom';
 
 const Badge = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const [repBadgeChoice, setRepBadgeChoice] = useRecoilState(choiceBadgeAtom);
-  const queryClient = useQueryClient();
   const { data: myData } = useQuery(['user', saveUser?.uid], () =>
     getUsers(saveUser?.uid)
   );
 
   useEffect(() => {
-    setRepBadgeChoice(myData?.repBadge)
-  },[myData?.repBadge])
-const images = [
-  [c_time, lock_time, nc_time],
-  [c_manner, lock_manner, nc_manner],
-  [c_cheap, lock_cheap, nc_cheap],
-  [c_fast, lock_fast, nc_fast],
-  [c_service, lock_service, nc_service],
-  [c_donation, lock_donation, nc_donation],
-];
+    setRepBadgeChoice(myData?.repBadge);
+  }, [myData?.repBadge]);
+  const images = [
+    [c_time, lock_time, nc_time],
+    [c_manner, lock_manner, nc_manner],
+    [c_cheap, lock_cheap, nc_cheap],
+    [c_fast, lock_fast, nc_fast],
+    [c_service, lock_service, nc_service],
+    [c_donation, lock_donation, nc_donation],
+  ];
 
   return (
     <BadgeContainer>

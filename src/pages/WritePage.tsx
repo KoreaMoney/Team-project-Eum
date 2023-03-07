@@ -252,7 +252,7 @@ const WritePage = () => {
               value={title}
               onChange={onChange}
               placeholder="제목"
-              maxLength={16}
+              maxLength={32}
             />
             <a.TextInput
               ref={priceRef}

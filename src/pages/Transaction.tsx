@@ -44,7 +44,7 @@ const Transaction = () => {
     () => getOnSalePost(uuid),
     {
       onSuccess: () => queryClient.invalidateQueries(['salePost0', uuid]),
-      refetchOnMount:'always',
+      refetchOnMount: 'always',
       refetchOnReconnect: 'always',
       refetchOnWindowFocus: 'always',
     }

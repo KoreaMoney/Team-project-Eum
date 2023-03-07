@@ -29,5 +29,5 @@ yarn-error.log*
 /db.json
 
 # env
-
+.env
 
