@@ -334,7 +334,6 @@ const MyPage = () => {
                 {category === '회원정보 변경' ? (
                   <a.MyInfoWrapper>
                     <MemberInfo />
-                    <a.UserBadge>배지</a.UserBadge>
                   </a.MyInfoWrapper>
                 ) : null}
                 {category === '포인트 관리' ? (
