@@ -19,6 +19,7 @@ import {
   customConfirm,
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
+import Loader from '../components/etc/Loader';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const MyPage = () => {
    * 2. 유저가 찜 한 목록을 받아옵니다.
    * 3. 유저의 판매 목록을 받아옵니다.
    */
-  const { data: postData } = useQuery(['Posts'], () => getPosts());
+  const { data: postData, isLoading } = useQuery(['Posts'], () => getPosts());
 
   const myLikePostList = postData?.filter((post: any) => {
     return post.like === saveUser.uid;
@@ -140,190 +141,213 @@ const MyPage = () => {
   return (
     <a.MyPageContainer>
       <a.MyPageHeader>마이페이지</a.MyPageHeader>
-      <a.MyPageBody>
-        <a.MyPageNavWrapper>
-          <a.MyTradeNavWrapper>
-            <span>나의 거래</span>
-            <div
-              onClick={() => setCategory('관심목록')}
-              style={category === '관심목록' ? categoryStyle : undefined}
-              aria-label="관심목록"
-            >
-              관심목록
-            </div>
-            <div
-              onClick={() => setCategory('나의 판매내역')}
-              style={category === '나의 판매내역' ? categoryStyle : undefined}
-              aria-label="나의 판매내역"
-            >
-              나의 판매내역
-            </div>
-            <div
-              onClick={() => setCategory('구매내역')}
-              style={category === '구매내역' ? categoryStyle : undefined}
-              aria-label="구매내역"
-            >
-              구매내역
-            </div>
-          </a.MyTradeNavWrapper>
-          <a.MyInfoNavWrapper>
-            <span>회원 정보</span>
-            <div
-              onClick={() => setCategory('회원정보 변경')}
-              style={category === '회원정보 변경' ? categoryStyle : undefined}
-              aria-label="회원정보 변경"
-            >
-              회원정보 변경
-            </div>
-            <div
-              onClick={() => setCategory('포인트 관리')}
-              style={category === '포인트 관리' ? categoryStyle : undefined}
-              aria-label="포인트 관리"
-            >
-              포인트 관리
-            </div>
-          </a.MyInfoNavWrapper>
-        </a.MyPageNavWrapper>
-        <a.MyPageContentsContainer>
-          <a.CategoryName>{category}</a.CategoryName>
-          {category === '나의 판매내역' ? (
-            <a.MySellNav>
-              <div
-                onClick={() => setSellCategory('판매중')}
-                style={sellCategory === '판매중' ? mySellNavStyle : undefined}
-                aria-label="판매중"
-              >
-                판매중 {mySellPostList?.length}
-              </div>
-              <div
-                onClick={() => setSellCategory('거래완료')}
-                style={sellCategory === '거래완료' ? mySellNavStyle : undefined}
-                aria-label="거래완료"
-              >
-                거래완료 {isDoneTradeSellList?.length}
-              </div>
-            </a.MySellNav>
-          ) : null}
-          {category === '회원정보 변경' ? (
-            <a.MyInfoTop>
-              <a.MyNickName>
-                <span>{saveUser.displayName}</span>님의 회원정보
-              </a.MyNickName>
-              <a.MyInfoTopRight onClick={deleteAuth}>
-                　회원탈퇴
-                <a.RightIcon />
-              </a.MyInfoTopRight>
-            </a.MyInfoTop>
-          ) : null}
-          <a.MyPageContentsWrapper>
-            {category === '관심목록'
-              ? myLikePostList?.map((list: postType) => {
-                  return (
-                    <a.MyLikeList key={list.id}>
-                      <a.LikeImg
-                        src="/assets/like.png"
-                        alt="찜"
-                        loading="lazy"
-                      />
-                      <a.PostImg
-                        src={
-                          list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
-                        }
-                        onClick={() => handleLikePostClick(list)}
-                      />
-                      <a.InfoBest>{list.category}</a.InfoBest>
-                      <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                      <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
-                      <p>{list.nickName}</p>
-                    </a.MyLikeList>
-                  );
-                })
-              : null}
-            {category === '나의 판매내역'
-              ? sellCategory === '판매중'
-                ? mySellPostList?.map((list: any) => {
-                    return (
-                      <a.MyLikeList key={list.id}>
-                        <a.PostImg
-                          src={
-                            list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
-                          }
-                          onClick={() => handleSellingPostClick(list)}
-                        />
-                        <a.InfoBest>{list.category}</a.InfoBest>
-                        <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                        <a.MyLikeDiv>
-                          {list.price
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          P
-                        </a.MyLikeDiv>
-                        <p>{list.buyerNickName}</p>
-                      </a.MyLikeList>
-                    );
-                  })
-                : isDoneTradeSellList?.map((list: any) => {
-                    return (
-                      <a.MyLikeList key={list.id}>
-                        <a.PostImg
-                          src={
-                            list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
-                          }
-                          onClick={() => handleBuyPostClick(list)}
-                        />
-                        <a.InfoBest>{list.category}</a.InfoBest>
-                        <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                        <a.MyLikeDiv>
-                          {list.price
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          P
-                        </a.MyLikeDiv>
-                        <p>{list.buyerNickName}</p>
-                      </a.MyLikeList>
-                    );
-                  })
-              : null}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          {' '}
+          <a.MyPageBody>
+            <a.MyPageNavWrapper>
+              <a.MyTradeNavWrapper>
+                <span>나의 거래</span>
+                <div
+                  onClick={() => setCategory('관심목록')}
+                  style={category === '관심목록' ? categoryStyle : undefined}
+                  aria-label="관심목록"
+                >
+                  관심목록
+                </div>
+                <div
+                  onClick={() => setCategory('나의 판매내역')}
+                  style={
+                    category === '나의 판매내역' ? categoryStyle : undefined
+                  }
+                  aria-label="나의 판매내역"
+                >
+                  나의 판매내역
+                </div>
+                <div
+                  onClick={() => setCategory('구매내역')}
+                  style={category === '구매내역' ? categoryStyle : undefined}
+                  aria-label="구매내역"
+                >
+                  구매내역
+                </div>
+              </a.MyTradeNavWrapper>
+              <a.MyInfoNavWrapper>
+                <span>회원 정보</span>
+                <div
+                  onClick={() => setCategory('회원정보 변경')}
+                  style={
+                    category === '회원정보 변경' ? categoryStyle : undefined
+                  }
+                  aria-label="회원정보 변경"
+                >
+                  회원정보 변경
+                </div>
+                <div
+                  onClick={() => setCategory('포인트 관리')}
+                  style={category === '포인트 관리' ? categoryStyle : undefined}
+                  aria-label="포인트 관리"
+                >
+                  포인트 관리
+                </div>
+              </a.MyInfoNavWrapper>
+            </a.MyPageNavWrapper>
+            <a.MyPageContentsContainer>
+              <a.CategoryName>{category}</a.CategoryName>
+              {category === '나의 판매내역' ? (
+                <a.MySellNav>
+                  <div
+                    onClick={() => setSellCategory('판매중')}
+                    style={
+                      sellCategory === '판매중' ? mySellNavStyle : undefined
+                    }
+                    aria-label="판매중"
+                  >
+                    판매중 {mySellPostList?.length}
+                  </div>
+                  <div
+                    onClick={() => setSellCategory('거래완료')}
+                    style={
+                      sellCategory === '거래완료' ? mySellNavStyle : undefined
+                    }
+                    aria-label="거래완료"
+                  >
+                    거래완료 {isDoneTradeSellList?.length}
+                  </div>
+                </a.MySellNav>
+              ) : null}
+              {category === '회원정보 변경' ? (
+                <a.MyInfoTop>
+                  <a.MyNickName>
+                    <span>{saveUser.displayName}</span>님의 회원정보
+                  </a.MyNickName>
+                  <a.MyInfoTopRight onClick={deleteAuth}>
+                    　회원탈퇴
+                    <a.RightIcon />
+                  </a.MyInfoTopRight>
+                </a.MyInfoTop>
+              ) : null}
+              <a.MyPageContentsWrapper>
+                {category === '관심목록'
+                  ? myLikePostList?.map((list: postType) => {
+                      return (
+                        <a.MyLikeList key={list.id}>
+                          <a.LikeImg
+                            src="/assets/like.png"
+                            alt="찜"
+                            loading="lazy"
+                          />
+                          <a.PostImg
+                            src={
+                              list?.imgURL
+                                ? list.imgURL
+                                : '/assets/basicIMG.jpg'
+                            }
+                            onClick={() => handleLikePostClick(list)}
+                          />
+                          <a.InfoBest>{list.category}</a.InfoBest>
+                          <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                          <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                          <p>{list.nickName}</p>
+                        </a.MyLikeList>
+                      );
+                    })
+                  : null}
+                {category === '나의 판매내역'
+                  ? sellCategory === '판매중'
+                    ? mySellPostList?.map((list: any) => {
+                        return (
+                          <a.MyLikeList key={list.id}>
+                            <a.PostImg
+                              src={
+                                list?.imgURL
+                                  ? list.imgURL
+                                  : '/assets/basicIMG.jpg'
+                              }
+                              onClick={() => handleSellingPostClick(list)}
+                            />
+                            <a.InfoBest>{list.category}</a.InfoBest>
+                            <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                            <a.MyLikeDiv>
+                              {list.price
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </a.MyLikeDiv>
+                            <p>{list.buyerNickName}</p>
+                          </a.MyLikeList>
+                        );
+                      })
+                    : isDoneTradeSellList?.map((list: any) => {
+                        return (
+                          <a.MyLikeList key={list.id}>
+                            <a.PostImg
+                              src={
+                                list?.imgURL
+                                  ? list.imgURL
+                                  : '/assets/basicIMG.jpg'
+                              }
+                              onClick={() => handleBuyPostClick(list)}
+                            />
+                            <a.InfoBest>{list.category}</a.InfoBest>
+                            <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                            <a.MyLikeDiv>
+                              {list.price
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </a.MyLikeDiv>
+                            <p>{list.buyerNickName}</p>
+                          </a.MyLikeList>
+                        );
+                      })
+                  : null}
 
-            {category === '구매내역'
-              ? tradeBuyData?.map((list: any) => {
-                  return (
-                    <a.MyLikeList key={list.id}>
-                      <a.PostImg
-                        src={
-                          list?.imgURL ? list.imgURL : '/assets/basicIMG.jpg'
-                        }
-                        onClick={() => handleBuyPostClick(list)}
-                      />
-                      <a.InfoBest>{list.category}</a.InfoBest>
-                      <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
+                {category === '구매내역'
+                  ? tradeBuyData?.map((list: any) => {
+                      return (
+                        <a.MyLikeList key={list.id}>
+                          <a.PostImg
+                            src={
+                              list?.imgURL
+                                ? list.imgURL
+                                : '/assets/basicIMG.jpg'
+                            }
+                            onClick={() => handleBuyPostClick(list)}
+                          />
+                          <a.InfoBest>{list.category}</a.InfoBest>
+                          <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
 
-                      <a.MyLikeDiv>
-                        {list.price
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        P
-                      </a.MyLikeDiv>
-                      <p>{list.sellerNickName}</p>
-                    </a.MyLikeList>
-                  );
-                })
-              : null}
-            {category === '회원정보 변경' ? (
-              <a.MyInfoWrapper>
-                <MemberInfo />
-                <a.UserBadge>배지</a.UserBadge>
-              </a.MyInfoWrapper>
-            ) : null}
-            {category === '포인트 관리' ? (
-              <>
-                <PointModal />
-              </>
-            ) : null}
-          </a.MyPageContentsWrapper>
-          <a.UserProfileWrapper></a.UserProfileWrapper>
-        </a.MyPageContentsContainer>
-      </a.MyPageBody>
+                          <a.MyLikeDiv>
+                            {list.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            P
+                          </a.MyLikeDiv>
+                          <p>{list.sellerNickName}</p>
+                        </a.MyLikeList>
+                      );
+                    })
+                  : null}
+                {category === '회원정보 변경' ? (
+                  <a.MyInfoWrapper>
+                    <MemberInfo />
+                    <a.UserBadge>배지</a.UserBadge>
+                  </a.MyInfoWrapper>
+                ) : null}
+                {category === '포인트 관리' ? (
+                  <>
+                    <PointModal />
+                  </>
+                ) : null}
+              </a.MyPageContentsWrapper>
+              <a.UserProfileWrapper></a.UserProfileWrapper>
+            </a.MyPageContentsContainer>
+          </a.MyPageBody>
+        </>
+      )}
     </a.MyPageContainer>
   );
 };
