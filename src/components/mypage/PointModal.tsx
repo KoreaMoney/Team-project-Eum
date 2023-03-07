@@ -14,12 +14,12 @@ const PointModal = () => {
   );
 
   const pointChargeHandle = () => {
-    customInfoAlert('이벤트 기간 동안 지급된 포인트로 활동하세요!');
+    customInfoAlert('이벤트 기간 동안 \n지급된 포인트로 활동해주세요!');
   };
 
   const pointWithDrawHandle = () => {
     customWarningAlert(
-      '이벤트 기간 종료 후 추가되는 포인트만 출금 가능합니다.'
+      '이벤트 기간 종료 후\n\n 추가되는 포인트만\n 출금 가능합니다.'
     );
   };
   return (
