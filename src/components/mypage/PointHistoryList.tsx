@@ -116,7 +116,7 @@ const PointHistoryList = () => {
                 ) : (
                   '에러'
                 )}
-                {prev.price}
+                {prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
             </PointHistory>
           ))
@@ -127,7 +127,9 @@ const PointHistoryList = () => {
                 {getTradeDate(prev.createdAt)}
               </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
-              <PointHistoryAmount>+{prev.price}</PointHistoryAmount>
+              <PointHistoryAmount>
+                +{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
+              </PointHistoryAmount>
             </PointHistory>
           ))
         ) : category === '출금' && buyTradeList ? (
@@ -137,7 +139,9 @@ const PointHistoryList = () => {
                 {getTradeDate(prev.createdAt)}
               </PointHistoryDate>
               <PointHistoryContent>{prev.title}</PointHistoryContent>
-              <PointHistoryAmount>-{prev.price}</PointHistoryAmount>
+              <PointHistoryAmount>
+                -{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
+              </PointHistoryAmount>
             </PointHistory>
           ))
         ) : (

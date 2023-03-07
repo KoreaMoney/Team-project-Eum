@@ -146,7 +146,7 @@ const SignIn = () => {
           mutation.mutate({
             id: uid,
             nickName: auth.currentUser?.displayName,
-            point: 10000000,
+            point: 50000,
             contactTime: '',
             profileImg: `${basicIMG}`,
             like: [],

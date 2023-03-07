@@ -81,23 +81,15 @@ const Detail = () => {
     postOnSalePost(newSalePosts)
   );
 
-  // 판매자의 프로필이미지를 위해 데이터 가져오기
-  const { data: seller } = useQuery(
-    ['user', post?.[0].sellerUid],
-    () => getUsers(post?.[0].sellerUid),
-    {
-      enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
-    }
-  );
-
   // 구매자가 바로신청하기를 누르면 구매자의 정보를 가져오기 위한 함수
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
     () => getUsers(saveUser?.uid),
     {
       enabled: Boolean(saveUser), // saveUser?.uid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
+      refetchOnMount: 'always',
+      refetchOnReconnect: 'always',
+      refetchOnWindowFocus: 'always',
     }
   );
 
