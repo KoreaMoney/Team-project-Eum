@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { viewBuyerModalAtom } from '../../atom';
 import { theme } from '../../styles/theme';
@@ -24,7 +24,7 @@ export const CustomModal = ({
     setModal(false);
   };
 
-  const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
+  const isModalActive = useRecoilValue(viewBuyerModalAtom);
 
   const onClickToggleModal = useCallback(() => {
     setModal(false);
