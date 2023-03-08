@@ -23,8 +23,8 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
 
   const getTimeGap = (posting: number) => {
     const time = new Date(posting);
-    const mm = time.toJSON().substring(5, 7);
-    const dd = time.toJSON().substring(8, 10);
+    const mm = time?.toJSON() ? time.toJSON().substring(5, 7) : '';
+    const dd = time?.toJSON() ? time.toJSON().substring(8, 10) : '';
     const result = `${mm.replace(/^0+/, '')}월 ` + `${dd.replace(/^0+/, '')}일`;
     return result;
   };

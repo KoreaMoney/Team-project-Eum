@@ -99,6 +99,7 @@ const WritePage = () => {
     profileImg: '',
     tsCount: 0,
     commentsCount: 0,
+    isDone: false,
   });
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.

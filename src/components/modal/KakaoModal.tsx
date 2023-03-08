@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
-import { viewKakaoModalAtom } from '../../atom';
+import { userProfileAtom, viewKakaoModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
 const KakaoModal = () => {
   const { postId } = useParams();
-
+  const location = useLocation();
+  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
 
   useEffect(() => {
@@ -34,7 +35,9 @@ const KakaoModal = () => {
       staleTime: Infinity,
     }
   );
+  const isDetailPage = location.pathname === '/detail';
 
+  const profile = isDetailPage ? seller : userProfile;
   return (
     <>
       {isModalActive ? (
@@ -54,14 +57,14 @@ const KakaoModal = () => {
                 <KakaoInfo>판매자에게 궁금한 점을 물어보세요!</KakaoInfo>
               </KakaoInfoContainer>
               <Seller>
-                {seller?.nickName}
-                <span>님의</span> {post?.[0]?.title}
+                {profile?.nickName}
+                <span>님의</span> 카카오톡 ID 입니다.
               </Seller>
               <KakaoIdContainer>
                 <KakaoIdTitle>카카오톡ID</KakaoIdTitle>
                 <KakaoId>
-                  {seller?.kakaoId
-                    ? seller?.kakaoId
+                  {profile?.kakaoId
+                    ? profile?.kakaoId
                     : 'ID가 등록되지 않았습니다.'}
                 </KakaoId>
               </KakaoIdContainer>

@@ -1,4 +1,4 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { addBirthDateAtom, addKakaoAtom, choiceBadgeAtom } from '../../../atom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchUsers } from '../../../api';
@@ -11,16 +11,15 @@ import {
 
 const ProfileImg = loadable(() => import('./ProfileImg'));
 const UserName = loadable(() => import('./UserName'));
-const Terms = loadable(() => import('./Terms'));
 const Badge = loadable(() => import('./Badge'));
 
 const MemberInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
 
-  const [editKakaoValue, setEditKakaoValue] = useRecoilState(addKakaoAtom);
-  const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
-  const [repBadgeChoice, setRepBadgeChoice] = useRecoilState(choiceBadgeAtom);
+  const editKakaoValue = useRecoilValue(addKakaoAtom);
+  const editBirthValue = useRecoilValue(addBirthDateAtom);
+  const repBadgeChoice = useRecoilValue(choiceBadgeAtom);
 
   const { mutate: updateUser } = useMutation(
     (newUser: { kakaoId: string; birthDate: string; repBadge: string }) =>
@@ -63,7 +62,7 @@ const MemberInfo = () => {
       <ProfileImg />
       <UserName />
       <Badge />
-      <Terms />
+
       <SubmitButton onClick={onSubmitMember}>저장하기</SubmitButton>
     </>
   );

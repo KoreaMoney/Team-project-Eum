@@ -146,6 +146,13 @@ export const getComments = async () => {
   return response.data;
 };
 
+export const getUserComments = async (id:string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/comments?sellerUid=${id}`
+  );
+  return response.data;
+};
+
 export const postComments = async (newComment: commentType) => {
   const response = await axios.post(
     `${process.env.REACT_APP_JSON}/comments`,

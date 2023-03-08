@@ -9,6 +9,7 @@ import axios from 'axios';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
 import Post from '../components/categoryHome/Post';
 import Loader from '../components/etc/Loader';
+import ErrorETC from '../components/error/ErrorETC';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -91,6 +92,7 @@ const CategoryPage = () => {
     isLoading,
     isFetchingNextPage,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ['posts', categoryName ?? 'all', select, word],
     ({ pageParam = 0 }) =>
@@ -127,6 +129,14 @@ const CategoryPage = () => {
     return (
       <div>
         <Loader />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        <ErrorETC />
       </div>
     );
   }
