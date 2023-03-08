@@ -119,7 +119,7 @@ export const ErrMsg = styled.div`
   width: 100%;
   padding: 0.4rem;
   padding-left: 1rem;
-  font-size: ${theme.fontSize.title14};
+  font-size: 12px;
   color: ${theme.colors.red};
 `;
 
@@ -244,7 +244,7 @@ export const SignUpNickname = styled.div`
   align-items: center;
   width: 100%;
   height: 64px;
-  margin-top: 56px;
+  margin-top: 45px;
 `;
 
 export const SignUpNicknameWrapper = styled.div`

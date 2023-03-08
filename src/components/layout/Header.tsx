@@ -101,7 +101,7 @@ const Header = () => {
               setActiveIndex(-1);
             }}
           >
-            <Logo>이음</Logo>
+            <Logo />
           </Link>
           <CategoryWrapper>
             <Items>
@@ -136,7 +136,7 @@ const Header = () => {
                         setWriteActive(false);
                       }}
                     >
-                      <BsPersonCircle size={30} />
+                      <BsPersonCircle size={35} />
                     </Link>
                   </span>
                   <WriteBtn
@@ -201,10 +201,12 @@ const HeaderWrapper = styled.div`
 
 const Logo = styled.div`
   display: flex;
-  width: 122px;
+  background-color: red;
+  width: 160px;
   height: 42px;
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
+  background: url('https://ifh.cc/g/TqgLJX.webp') no-repeat;
 `;
 
 const CategoryWrapper = styled.div`

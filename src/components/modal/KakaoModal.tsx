@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
@@ -41,8 +41,8 @@ const KakaoModal = () => {
         <CustomModal
           modal={isModalActive}
           setModal={setIsModalActive}
-          width="672"
-          height="411"
+          width="600"
+          height="400"
           overflow="hidden"
           element={
             <Container>
@@ -78,7 +78,7 @@ const KakaoModal = () => {
 export default KakaoModal;
 
 const Container = styled.div`
-  width: 512px;
+  width: 500px;
   height: 251px;
   margin: 80px;
   text-align: center;
@@ -108,7 +108,7 @@ const KakaoInfo = styled.p`
     font-size: ${(props) => props.theme.fontSize.title18};
     font-weight: ${(props) => props.theme.fontWeight.medium};
     line-height: ${(props) => props.theme.lineHeight.title18};
-    color: ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
 `;
 

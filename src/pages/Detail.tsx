@@ -22,12 +22,12 @@ import {
   patchUsers,
   postOnSalePost,
 } from '../api';
+import Loader from '../components/etc/Loader';
+import BuyerModal from '../components/modal/BuyerModal';
 
 const CommentsList = loadable(
   () => import('../components/comment/CommentsList')
 );
-const Loader = loadable(() => import('../components/etc/Loader'));
-const BuyerModal = loadable(() => import('../components/modal/BuyerModal'));
 const SellerInfo = loadable(() => import('../components/detail/SellerInfo'));
 
 /**순서
@@ -198,9 +198,9 @@ const Detail = () => {
    */
   const onClickApplyBuy = () => {
     customConfirm(
-      '거래를 하시겠습니까?',
-      '확인을 누르시면 포인트가 차감됩니다.',
-      '확인',
+      '이음 재능을 연결하시겠습니까?',
+      '연결을 누르시면 포인트가 차감됩니다.',
+      '연결',
       () => {
         if (!saveUser) {
           navigate('/signin', { state: { from: location.pathname } });
@@ -264,7 +264,7 @@ const Detail = () => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        customSuccessAlert('복사되었습니다.');
+        customSuccessAlert('재능 공유가 되었습니다!');
       })
       .catch((error) => {
         console.error(`Could not copy URL to clipboard: ${error}`);
@@ -289,7 +289,7 @@ const Detail = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <>
+        <a.DetailWrapper>
           <a.PostContainer>
             <BuyerModal newSalePosts={newSalePosts} />
             <a.PostImage
@@ -321,15 +321,15 @@ const Detail = () => {
                     <a.HeartIcon />
                     <a.LikeLength>{post?.[0].like.length}</a.LikeLength>
                   </a.IconLeftContainer>
-                  <a.IconRigntContainer>
+                  <a.IconRightContainer>
                     <a.ShareIcon onClick={linkCopy} />
-                  </a.IconRigntContainer>
+                  </a.IconRightContainer>
                 </a.InfoTopRightContainer>
               </a.InfoTopContainer>
               <a.TextContainer>
                 <a.TitleText>{post?.[0].title}</a.TitleText>
                 {saveUser?.uid === post?.[0].sellerUid && (
-                  <a.DropDonwContainer>
+                  <a.DropDownContainer>
                     <a.KebobIcon onClick={() => setIsDrop(!isDrop)} />
                     {isDrop && (
                       <a.DropDownBox>
@@ -346,7 +346,7 @@ const Detail = () => {
                         </a.DropDownButton>
                       </a.DropDownBox>
                     )}
-                  </a.DropDonwContainer>
+                  </a.DropDownContainer>
                 )}
               </a.TextContainer>
               <a.PostNickName>{post?.[0].nickName}</a.PostNickName>
@@ -452,7 +452,7 @@ const Detail = () => {
               <CommentsList />
             </div>
           </div>
-        </>
+        </a.DetailWrapper>
       )}
     </a.DetailContainer>
   );

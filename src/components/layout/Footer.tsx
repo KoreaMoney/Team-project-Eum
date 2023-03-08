@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 const Footer = () => {
   return (
@@ -30,14 +31,15 @@ export default Footer;
 
 const FooterContainer = styled.div`
   width: 100vw;
-  height: 280px;
-  background-color: #f9f9f9;
+  height: 200px;
+  margin-top: 120px;
+  background-color: ${theme.colors.gray05};
 `;
 
 const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 70%;
+  width: 1100px;
   height: 100%;
   margin: 0 auto;
 `;

@@ -9,12 +9,16 @@ interface PostProps {
 
 const Post = ({ post, onClick }: PostProps): JSX.Element => {
   return (
-    <a.PostContainer key={post.id} onClick={() => onClick(post)}>
-      <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+    <a.PostContainer>
+      <a.PostIMG
+        bgPhoto={post.imgURL ? post.imgURL : basicIMG}
+        key={post.id}
+        onClick={() => onClick(post)}
+      />
 
       <a.ContentContainer>
         <a.InfoBest>{post.category}</a.InfoBest>
-        <p>{post.title}</p>
+        <span>{post.title}</span>
         <p>
           {post.price
             ? post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

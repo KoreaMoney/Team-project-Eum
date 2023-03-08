@@ -1,23 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  customConfirm,
-  customInfoAlert,
-  customSuccessAlert,
-} from '../components/modal/CustomAlert';
 import { auth } from '../firebase/Firebase';
-import parse from 'html-react-parser';
-import * as a from '../styles/styledComponent/detail';
 import { userType } from '../types';
 import { getOnSalePost, getUsers, patchOnSalePost, patchUsers } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import { isCancelAtom, isDoneAtom } from '../atom';
+
+import parse from 'html-react-parser';
 import SellerInfo from '../components/detail/SellerInfo';
 import BuyerInfo from '../components/detail/BuyerInfo';
 import Loader from '../components/etc/Loader';
 import KakaoModal from '../components/modal/KakaoModal';
+import * as a from '../styles/styledComponent/detail';
+import {
+  customConfirm,
+  customInfoAlert,
+  customSuccessAlert,
+} from '../components/modal/CustomAlert';
 
 /**순서
  * 1. query-key만들기
@@ -195,7 +196,7 @@ const Transaction = () => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        customSuccessAlert('복사되었습니다.');
+        customSuccessAlert('재능 공유가 되었습니다!');
       })
       .catch((error) => {
         console.error(`Could not copy URL to clipboard: ${error}`);
@@ -243,83 +244,117 @@ const Transaction = () => {
 
   return (
     <a.DetailContainer>
-      {isDone && (
-        <a.TransactionText>
-          <button onClick={onClickBtn}>
-            <IoExitOutline size={50} />
-          </button>
-          <h1>이음이 연결되었습니다.</h1>
-        </a.TransactionText>
-      )}
-      {isCancel && (
-        <a.TransactionText>
-          <button onClick={onClickBtn}>
-            <IoExitOutline size={50} />
-          </button>
-          <h1>이음이 취소되었습니다.</h1>
-        </a.TransactionText>
-      )}
-      <a.PostContainer>
-        <a.PostImage
-          img={data[0].imgURL}
-          aria-label="post이미지"
-          onClick={() => {
-            window.open(data[0].imgURL);
-          }}
-        />
-        <a.PostInfoWrapper>
-          <a.InfoTopContainer>
-            <a.InfoTopLeftContainer>
-              <p>
-                {data?.[0].category === 'all'
-                  ? '전체'
-                  : data?.[0].category === 'study'
-                  ? '공부'
-                  : data?.[0].category === 'play'
-                  ? '놀이'
-                  : data?.[0].category === 'advice'
-                  ? '상담'
-                  : data?.[0].category === 'etc'
-                  ? '기타'
-                  : '전체'}
-              </p>
-            </a.InfoTopLeftContainer>
-            <a.InfoTopRightContainer>
-              <a.IconRigntContainer>
-                <a.ShareIcon onClick={linkCopy} />
-              </a.IconRigntContainer>
-            </a.InfoTopRightContainer>
-          </a.InfoTopContainer>
-          <a.TextContainer>
-            <a.TitleText>{data?.[0].title}</a.TitleText>
-          </a.TextContainer>
-          <a.PostNickName>{data?.[0].sellerNickName}</a.PostNickName>
-          <a.PostPrice>
-            {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
-          </a.PostPrice>
+      <a.DetailWrapper>
+        {isDone && (
+          <a.TransactionText>
+            <button onClick={onClickBtn}>
+              <IoExitOutline size={50} />
+            </button>
+            <h1>이음이 연결되었습니다.</h1>
+          </a.TransactionText>
+        )}
+        {isCancel && (
+          <a.TransactionText>
+            <button onClick={onClickBtn}>
+              <IoExitOutline size={50} />
+            </button>
+            <h1>이음이 취소되었습니다.</h1>
+          </a.TransactionText>
+        )}
+        <a.PostContainer>
+          <a.PostImage
+            img={data[0].imgURL}
+            aria-label="post이미지"
+            onClick={() => {
+              window.open(data[0].imgURL);
+            }}
+          />
+          <a.PostInfoWrapper>
+            <a.InfoTopContainer>
+              <a.InfoTopLeftContainer>
+                <p>
+                  {data?.[0].category === 'all'
+                    ? '전체'
+                    : data?.[0].category === 'study'
+                    ? '공부'
+                    : data?.[0].category === 'play'
+                    ? '놀이'
+                    : data?.[0].category === 'advice'
+                    ? '상담'
+                    : data?.[0].category === 'etc'
+                    ? '기타'
+                    : '전체'}
+                </p>
+              </a.InfoTopLeftContainer>
+              <a.InfoTopRightContainer>
+                <a.IconRightContainer>
+                  <a.ShareIcon onClick={linkCopy} />
+                </a.IconRightContainer>
+              </a.InfoTopRightContainer>
+            </a.InfoTopContainer>
+            <a.TextContainer>
+              <a.TitleText>{data?.[0].title}</a.TitleText>
+            </a.TextContainer>
+            <a.PostNickName>{data?.[0].sellerNickName}</a.PostNickName>
+            <a.PostPrice>
+              {data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+            </a.PostPrice>
 
-          {saveUser.uid === data?.[0]?.buyerUid ||
-          saveUser.uid === data?.[0]?.sellerUid ? (
-            <>
-              {buyerisCancel || data?.[0].isBuyerCancel ? (
-                <>
-                  {saveUser.uid === data?.[0]?.buyerUid ? (
-                    <>
-                      <a.ButtonsContainer>
+            {saveUser.uid === data?.[0]?.buyerUid ||
+            saveUser.uid === data?.[0]?.sellerUid ? (
+              <>
+                {buyerisCancel || data?.[0].isBuyerCancel ? (
+                  <>
+                    {saveUser.uid === data?.[0]?.buyerUid ? (
+                      <>
+                        <a.ButtonsContainer>
+                          <a.ClearButton
+                            onClick={() =>
+                              customInfoAlert(
+                                '구매자, 판매자 전부 취소버튼을 \n\n눌러야 취소됩니다.'
+                              )
+                            }
+                            aria-label="취소를 기다리는중"
+                          >
+                            판매자의 동의를 기다리고있습니다.
+                          </a.ClearButton>
+                        </a.ButtonsContainer>
+                      </>
+                    ) : (
+                      <>
+                        {isDone ? (
+                          <a.CancelButton aria-label="거래종료">
+                            거래종료
+                          </a.CancelButton>
+                        ) : (
+                          <a.CancelButton
+                            onClick={() => {
+                              onClickCancel();
+                            }}
+                            aria-label="거래취소"
+                          >
+                            거래취소
+                          </a.CancelButton>
+                        )}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <a.ButtonsContainer>
+                      {saveUser.uid === data?.[0].buyerUid && !isCancel ? (
                         <a.ClearButton
-                          onClick={() =>
-                            customInfoAlert(
-                              '구매자, 판매자 전부 취소버튼을 \n\n눌러야 취소됩니다.'
-                            )
-                          }
-                          aria-label="취소를 기다리는중"
+                          onClick={onClickClearRequest}
+                          aria-label="완료"
                         >
-                          판매자의 동의를 기다리고있습니다.
+                          거래완료
                         </a.ClearButton>
-                      </a.ButtonsContainer>
-                    </>
-                  ) : (
-                    <>
+                      ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
+                        <a.ClearButton aria-label="취소 완료">
+                          취소 완료
+                        </a.ClearButton>
+                      ) : null}
+
                       {isDone ? (
                         <a.CancelButton aria-label="거래종료">
                           거래종료
@@ -334,75 +369,43 @@ const Transaction = () => {
                           거래취소
                         </a.CancelButton>
                       )}
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  <a.ButtonsContainer>
-                    {saveUser.uid === data?.[0].buyerUid && !isCancel ? (
-                      <a.ClearButton
-                        onClick={onClickClearRequest}
-                        aria-label="완료"
-                      >
-                        거래완료
-                      </a.ClearButton>
-                    ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
-                      <a.ClearButton aria-label="취소 완료">
-                        취소 완료
-                      </a.ClearButton>
-                    ) : null}
+                    </a.ButtonsContainer>
+                  </>
+                )}
+              </>
+            ) : null}
+          </a.PostInfoWrapper>
+        </a.PostContainer>
 
-                    {isDone ? (
-                      <a.CancelButton aria-label="거래종료">
-                        거래종료
-                      </a.CancelButton>
-                    ) : (
-                      <a.CancelButton
-                        onClick={() => {
-                          onClickCancel();
-                        }}
-                        aria-label="거래취소"
-                      >
-                        거래취소
-                      </a.CancelButton>
-                    )}
-                  </a.ButtonsContainer>
-                </>
-              )}
-            </>
-          ) : null}
-        </a.PostInfoWrapper>
-      </a.PostContainer>
-
-      <a.PostRow>
-        <a.PostContentWrapper>
-          <a.SellerInfoTitle>
-            <p>설명</p>
-          </a.SellerInfoTitle>
-          <a.SellerInfoContent>
-            <p>{parse(data[0].content)}</p>
-          </a.SellerInfoContent>
-        </a.PostContentWrapper>
-        <a.PostContentWrapper>
-          {saveUser.uid === data[0].sellerUid ? (
-            <>
-              <a.SellerInfoTitle>
-                <p>구매자</p>
-              </a.SellerInfoTitle>
-              <BuyerInfo />
-            </>
-          ) : (
-            <>
-              <a.SellerInfoTitle>
-                <p>판매자</p>
-              </a.SellerInfoTitle>
-              <SellerInfo />
-              <KakaoModal />
-            </>
-          )}
-        </a.PostContentWrapper>
-      </a.PostRow>
+        <a.PostRow>
+          <a.PostContentWrapper>
+            <a.SellerInfoTitle>
+              <p>설명</p>
+            </a.SellerInfoTitle>
+            <a.SellerInfoContent>
+              <p>{parse(data[0].content)}</p>
+            </a.SellerInfoContent>
+          </a.PostContentWrapper>
+          <a.PostContentWrapper>
+            {saveUser.uid === data[0].sellerUid ? (
+              <>
+                <a.SellerInfoTitle>
+                  <p>구매자</p>
+                </a.SellerInfoTitle>
+                <BuyerInfo />
+              </>
+            ) : (
+              <>
+                <a.SellerInfoTitle>
+                  <p>판매자</p>
+                </a.SellerInfoTitle>
+                <SellerInfo />
+                <KakaoModal />
+              </>
+            )}
+          </a.PostContentWrapper>
+        </a.PostRow>
+      </a.DetailWrapper>
     </a.DetailContainer>
   );
 };

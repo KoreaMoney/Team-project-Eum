@@ -81,7 +81,6 @@ export const PostsContainer = styled.div`
 export const PostContainer = styled.div`
   width: 100%;
   margin-bottom: 56px;
-  cursor: pointer;
 `;
 
 export const PostIMG = styled.div<{ bgPhoto: string }>`
@@ -114,6 +113,16 @@ export const ContentContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 16px;
+  span {
+    display: flex;
+    width: 300px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    font-size: ${(props) => props.theme.fontSize.title18};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    margin-bottom: 16px;
+  }
   p {
     font-size: ${(props) => props.theme.fontSize.title18};
     font-weight: ${(props) => props.theme.fontWeight.regular};

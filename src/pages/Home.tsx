@@ -143,16 +143,18 @@ const Home = () => {
                   ?.slice(0, 9)
                   .sort((a: any, b: any) => b.like.length - a.like.length)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
+                        <a.InfoTitle
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          {post.title}
+                        </a.InfoTitle>
                         <a.InfoProfile>
                           <a.ProfileIMG
                             profileIMG={
@@ -183,16 +185,18 @@ const Home = () => {
                   ?.sort((a: any, b: any) => b.createAt - a.createAt)
                   ?.slice(0, 9)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
+                        <a.InfoTitle
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          {post.title}
+                        </a.InfoTitle>
                         <a.InfoProfile>
                           <a.ProfileIMG
                             profileIMG={
