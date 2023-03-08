@@ -16,6 +16,7 @@ const Transaction = loadable(() => import('../pages/Transaction'));
 const WritePage = loadable(() => import('../pages/WritePage'));
 const ReviewPage = loadable(() => import('../pages/ReviewPage'));
 const Error404 = loadable(() => import('../components/error/Error404'));
+const UserProfile = loadable(() => import('../pages/UserProfile'));
 
 const Router = () => {
   return (
@@ -39,6 +40,7 @@ const Router = () => {
             path="/detail/:categoryName/:postId/:buyerId/:uuid"
             element={<Transaction />}
           />
+          <Route path='/userprofile/:id' element={<UserProfile />} />
           <Route path="review/:id" element={<ReviewPage />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />

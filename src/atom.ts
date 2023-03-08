@@ -1,5 +1,7 @@
+import { commentType, postType } from './types.d';
 import { User } from 'firebase/auth';
 import { atom } from 'recoil';
+import { userType } from './types';
 /**여기에서 default는 기본값이 필요하기 때문에 사용됩니다
  * 다크모드 임시적으로 recoil setting을 위해 넣었습니다
  */
@@ -7,6 +9,22 @@ import { atom } from 'recoil';
 //   key: 'isDark',
 //   default: true,
 // });
+export const userCommentsAtom = atom<commentType[] | null | undefined>({
+  key: 'userComments',
+  default: null,
+});
+export const userPostsAtom = atom<postType[] | null | undefined>({
+  key: 'userPosts',
+  default: null,
+});
+export const userBadgeLengthAtom = atom({
+  key: 'userBadgeLength',
+  default: 0,
+})
+export const userProfileAtom = atom<userType | null | undefined>({
+  key: 'userProfile',
+  default: null,
+})
 export const viewKakaoModalAtom = atom({
   key: 'viewKakaoModal',
   default: false,

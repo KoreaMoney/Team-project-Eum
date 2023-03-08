@@ -54,6 +54,7 @@ export interface postType {
   profileImg: string;
   tsCount: number; // 파생된 거래페이지 완료개수
   commentsCount: number; // 후기가 달리면 +1씩
+  isDone: boolean;
 }
 export interface editPostType {
   title: string;
