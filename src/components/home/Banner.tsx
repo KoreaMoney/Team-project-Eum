@@ -26,7 +26,7 @@ const Banner = () => {
     <ImageContainer>
       <Slider {...settings}>
         <div>
-          <Image src="https://ifh.cc/g/1mcNzR.webp" alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/1mcNzR.webp" alt="" />
           <Text>
             <Text1>회원가입 시</Text1>
             <p>50,000P 즉시 지급!</p>
@@ -62,7 +62,7 @@ const Banner = () => {
           </Text>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/f3oFYw.webp" alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/f3oFYw.webp" alt="" />
           <Text2>
             <Text22>저절로 얼굴에</Text22>
             <p>스마일이 지어는 시간</p>
@@ -81,7 +81,7 @@ const Banner = () => {
           </Text2>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/cL6TKb.webp" alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/cL6TKb.webp" alt="" />
           <Text3>
             <Text33>수학 풀이를 봐도</Text33>
             <p>이해가 안되신다구요?</p>
@@ -100,7 +100,7 @@ const Banner = () => {
           </Text3>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/XA83gW.webp" alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/XA83gW.webp" alt="" />
           <Text4>
             <Text44>500원으로</Text44>
             <p>더 예뻐지고 싶으시다구요?</p>
@@ -119,7 +119,7 @@ const Banner = () => {
           </Text4>
         </div>
         <div>
-          <Image src="https://ifh.cc/g/ThpO56.webp" alt="" loading="lazy" />
+          <Image src="https://ifh.cc/g/ThpO56.webp" alt="" />
           <Text5>
             <Text55>인플루언서가</Text55>
             <p>되고 싶다면?</p>
@@ -148,6 +148,10 @@ const Move = styled.div`
   display: flex;
   align-items: center;
   height: 60px;
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const ImageContainer = styled.div`

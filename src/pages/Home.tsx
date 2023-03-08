@@ -11,11 +11,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { theme } from '../styles/theme';
 import loadable from '@loadable/component';
+import Loader from '../components/etc/Loader';
 
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
 const Banner = loadable(() => import('../components/home/Banner'));
-const Loader = loadable(() => import('../components/etc/Loader'));
 
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
@@ -161,7 +161,7 @@ const Home = () => {
                           />
                           <p>
                             {post.price
-                              .toString()
+                              ?.toString()
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             P
                           </p>
@@ -201,7 +201,7 @@ const Home = () => {
                           />
                           <p>
                             {post.price
-                              .toString()
+                              ?.toString()
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             P
                           </p>

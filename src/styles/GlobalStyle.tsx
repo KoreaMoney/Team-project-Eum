@@ -34,6 +34,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  overflow-x:hidden;
 }
 menu, ol, ul {
   list-style: none;
@@ -55,7 +56,7 @@ table {
 }
 body{
   font-family: 'Noto Sans KR', sans-serif;
-  overflow-x:hidden
+  overflow-x:hidden;
 }
 a{
   text-decoration: none;

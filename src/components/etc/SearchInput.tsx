@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAnimation, motion } from 'framer-motion';
 import { theme } from '../../styles/theme';
 import styled from 'styled-components';
+import { customWarningAlert } from '../modal/CustomAlert';
+import { RxMagnifyingGlass } from 'react-icons/rx';
 
 /**순서
  * 1. 검색 데이터 변경넣기
@@ -10,23 +11,8 @@ import styled from 'styled-components';
  */
 const SearchInput = () => {
   const [searchText, setSearchText] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState('title');
   const { categoryName } = useParams();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const inputAnimation = useAnimation();
-
-  const toggleSearch = () => {
-    if (searchOpen) {
-      inputAnimation.start({
-        scaleX: 0,
-      });
-    } else {
-      inputAnimation.start({
-        scaleX: 1,
-      });
-    }
-    setSearchOpen((prev) => !prev);
-  };
 
   const navigate = useNavigate();
 
@@ -40,69 +26,46 @@ const SearchInput = () => {
 
   const onSubmitSearchPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     // select가 지정되어있으면 아래 주소로, 그렇지 않다면 검색되지 않게 함
-    if (selectValue) {
+    if (searchText) {
       categoryName
         ? navigate(`/search/${categoryName}/${selectValue}/${searchText}`)
         : navigate(`/search/all/${selectValue}/${searchText}`);
       setSearchText('');
       setSelectValue('');
-    } else return;
+    } else {
+      customWarningAlert('검색정보를 찾을 수 없습니다.');
+    }
   };
 
   return (
     <SearchContainer>
       <form onSubmit={onSubmitSearchPost} aria-label="검색창">
-        <Search>
-          <motion.svg
-            onClick={toggleSearch}
-            transition={{ type: 'linear' }}
-            animate={{ x: searchOpen ? 140 : 315 }}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="검색창 보이기"
-          >
-            <path
-              fillRule="evenodd"
-              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-              clipRule="evenodd"
-            ></path>
-          </motion.svg>
-          <SearchWrapper>
-            <SelectWrapper>
-              <Select
-                value={selectValue}
-                onChange={onChangeSelect}
-                animate={inputAnimation}
-                transition={{ type: 'linear' }}
-                initial={{ scaleX: 0 }}
-              >
-                <option value="" aria-label="선택">
-                  선택
-                </option>
-                <option value="title" aria-label="제목">
-                  제목
-                </option>
-                <option value="content" aria-label="내용">
-                  내용
-                </option>
-                <option value="nickName" aria-label="작성자">
-                  작성자
-                </option>
-              </Select>
-            </SelectWrapper>
+        <SearchWrapper>
+          <SelectWrapper>
+            <Select value={selectValue} onChange={onChangeSelect}>
+              <option value="title" aria-label="제목">
+                제목
+              </option>
+              <option value="content" aria-label="내용">
+                내용
+              </option>
+              <option value="nickName" aria-label="작성자">
+                작성자
+              </option>
+            </Select>
+          </SelectWrapper>
+          <InputBox>
+            <RxMagnifyingGlass size={25} />
             <Input
               type="text"
               onChange={onChangeSearchInput}
               value={searchText}
-              animate={inputAnimation}
-              transition={{ type: 'linear' }}
-              initial={{ scaleX: 0 }}
               placeholder="검색어를 입력해주세요"
             />
-          </SearchWrapper>
-        </Search>
+          </InputBox>
+        </SearchWrapper>
       </form>
     </SearchContainer>
   );
@@ -110,19 +73,8 @@ const SearchInput = () => {
 
 export default SearchInput;
 
-const SearchContainer = styled.div`
-  margin-left: 23px;
-`;
-const Search = styled.span`
-  color: ${theme.colors.black};
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  svg {
-    height: 30px;
-  }
-`;
+const SearchContainer = styled.div``;
+
 const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -134,7 +86,7 @@ const SearchWrapper = styled.div`
 const SelectWrapper = styled.div`
   margin-right: 20px;
 `;
-const Select = styled(motion.select)`
+const Select = styled.select`
   transform-origin: right center;
   background-color: transparent;
   border: none;
@@ -145,14 +97,23 @@ const Select = styled(motion.select)`
     font-size: ${theme.fontSize.title20};
   }
 `;
-const Input = styled(motion.input)`
-  transform-origin: right center;
-  background-color: transparent;
-  padding-left: 40px;
-  width: 245px;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
   height: 40px;
   border: 2px solid ${theme.colors.black};
   border-radius: 23px;
+`;
+const Input = styled.input`
+  transform-origin: right center;
+  background-color: transparent;
   outline: none;
+  border: none;
+  width: 200px;
+  padding-left: 10px;
   font-size: ${theme.fontSize.title16};
 `;
