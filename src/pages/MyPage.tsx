@@ -96,7 +96,7 @@ const MyPage = () => {
   const deleteAuth = () => {
     customConfirm(
       '탈퇴 하시겠습니까?',
-      '회원 탈퇴 하기',
+      '탈퇴 시 모든 정보는 삭제가 됩니다.\n정말 탈퇴하시겠습니까?',
       '회원 탈퇴',
       async () => {
         await deletedUser(id);
@@ -146,7 +146,6 @@ const MyPage = () => {
         <Loader />
       ) : (
         <>
-          {' '}
           <a.MyPageBody>
             <a.MyPageNavWrapper>
               <a.MyTradeNavWrapper>
@@ -222,7 +221,7 @@ const MyPage = () => {
               {category === '회원정보 변경' ? (
                 <a.MyInfoTop>
                   <a.MyNickName>
-                    <span>{saveUser.displayName}</span>님의 회원정보
+                    <span>{saveUser.displayName || ''}</span>님의 회원정보
                   </a.MyNickName>
                   <a.MyInfoTopRight onClick={deleteAuth}>
                     　회원탈퇴
