@@ -168,8 +168,8 @@ const Nav = styled(motion.nav)`
   display: flex;
   align-items: center;
   position: sticky;
-  height: 112px;
-  width: 100%;
+  height: 90px;
+  width: 100vw;
   top: 0;
   padding: 20px 60px;
   z-index: 10;

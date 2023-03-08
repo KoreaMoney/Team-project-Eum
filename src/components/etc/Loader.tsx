@@ -24,4 +24,6 @@ const LoaderBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 400px;
+  margin-bottom: 800px;
 `;

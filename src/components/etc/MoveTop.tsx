@@ -44,11 +44,13 @@ export default MoveTop;
 
 const TopContainer = styled.div`
   display: flex;
-  align-items: center;
+  position: fixed;
   justify-content: end;
+  top: 83%;
+  height: 60px;
   width: 90%;
-  margin-top: 120px;
-  margin-bottom: 20px;
+  margin-left: 90px;
+  z-index: 5;
 `;
 
 const Cicle = styled.div`
@@ -75,6 +77,6 @@ const Btn = styled.button`
 
   &:hover {
     cursor: pointer;
-    background-color: ${theme.colors.black};
+    border: 2px solid ${theme.colors.black};
   }
 `;
