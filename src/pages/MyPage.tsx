@@ -82,7 +82,6 @@ const MyPage = () => {
               sessionStorage.removeItem('user');
               customSuccessAlert('탈퇴가 완료되었습니다.');
               navigate('/');
-              console.log('탈퇴', user);
             })
             .catch((error) => {
               console.dir('error: ', error);
