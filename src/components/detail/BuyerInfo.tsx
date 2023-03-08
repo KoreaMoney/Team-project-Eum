@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getSellerPosts, getUsers } from '../../api';
 
 import * as a from '../../styles/styledComponent/detail';
@@ -18,6 +18,7 @@ const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
+  const navigate = useNavigate();
 
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
@@ -76,6 +77,7 @@ const SellerInfo = () => {
           <a.ProfileIMG
             profileIMG={buyer?.profileImg ? buyer?.profileImg : basicIMG}
             aria-label="프로필 이미지"
+            onClick={() => navigate(`/userprofile/${buyer?.id}`)}
           />
         </a.Profiles>
         <a.Profiles>

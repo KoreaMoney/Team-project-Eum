@@ -331,6 +331,7 @@ export const ProfileIMG = styled.div<{ profileIMG: string }>`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
 `;
 export const SellerInfoContainer = styled.div`
   height: 235px;

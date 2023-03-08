@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { viewKakaoModalAtom } from '../../atom';
 import { customWarningAlert } from '../modal/CustomAlert';
@@ -28,7 +28,7 @@ const SellerInfo = () => {
   const identifier = id ? id : postId;
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
-
+  const navigate = useNavigate();
   const [badgeLength, setBadgeLength] = useState(0);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
 
@@ -108,6 +108,7 @@ const SellerInfo = () => {
           <a.ProfileIMG
             profileIMG={seller?.profileImg ? seller?.profileImg : basicIMG}
             aria-label="프로필 이미지"
+            onClick={() => navigate(`/userprofile/${seller?.id}`)}
           />
         </a.Profiles>
         <a.Profiles>
