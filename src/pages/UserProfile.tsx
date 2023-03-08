@@ -1,18 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { getPostsId, getSellerPosts, getUserComments, getUsers } from '../api';
-import { userCommentsAtom, userPostsAtom, userProfileAtom, viewKakaoModalAtom } from '../atom';
+import { getSellerPosts, getUserComments, getUsers } from '../api';
+import { userCommentsAtom, userPostsAtom, userProfileAtom } from '../atom';
 import KakaoModal from '../components/modal/KakaoModal';
 import Nav from '../components/userProfile/Nav';
 import ProfileBadge from '../components/userProfile/ProfileBadge';
 import UserComments from '../components/userProfile/UserComments';
 import UserOnSale from '../components/userProfile/UserOnSale';
 import UserPageProfile from '../components/userProfile/UserPageProfile';
-import { Link } from 'react-scroll';
 import Loader from '../components/etc/Loader';
+
 const UserProfile = () => {
   const { id } = useParams();
   const setUserProfile = useSetRecoilState(userProfileAtom);
@@ -30,28 +29,29 @@ const UserProfile = () => {
   });
 
   /**유저의 후기 불러오기 */
-   const { data: comments } = useQuery(
-     ['comments', id],
-     () => getUserComments(id),
-     {
-       onSuccess: (data) => setUserComments(data),
-     }
-   );
+  const { data: comments } = useQuery(
+    ['comments', id],
+    () => getUserComments(id),
+    {
+      onSuccess: (data) => setUserComments(data),
+    }
+  );
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
-
 
   return (
     <>
       <Container>
-        <UserPageProfile />
-        <KakaoModal />
-        <Nav />
-        <ProfileBadge />
-        <UserOnSale />
-        <UserComments />
+        <Wrapper>
+          <UserPageProfile />
+          <KakaoModal />
+          <Nav />
+          <ProfileBadge />
+          <UserOnSale />
+          <UserComments />
+        </Wrapper>
       </Container>
     </>
   );
@@ -60,6 +60,9 @@ const UserProfile = () => {
 export default UserProfile;
 
 const Container = styled.div`
+  width: 100vw;
+`;
+const Wrapper = styled.div`
   width: 1200px;
   margin: 0 auto;
   margin-top: 97px;

@@ -109,7 +109,7 @@ export const SubmitLogin = styled.button`
   outline: none;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     background-color: ${theme.colors.white};
     color: ${theme.colors.orange02Main};
   }
@@ -144,8 +144,9 @@ export const GoogleBtn = styled.button`
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     color: ${theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
 
@@ -303,7 +304,7 @@ export const SignUpBtn = styled.button`
   outline: none;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     background-color: ${theme.colors.white};
     color: ${theme.colors.orange02Main};
   }

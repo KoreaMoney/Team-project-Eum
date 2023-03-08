@@ -1,4 +1,3 @@
-
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { userProfileAtom, viewKakaoModalAtom } from '../../atom';
