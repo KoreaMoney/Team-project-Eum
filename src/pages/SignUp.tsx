@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -190,7 +190,12 @@ const SignUp = () => {
       }
     }
   };
-
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  useEffect(() => {
+    if (saveUser) {
+      navigate('/');
+    }
+  }, []);
   return (
     <>
       <Header />
