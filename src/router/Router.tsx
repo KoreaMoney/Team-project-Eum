@@ -1,6 +1,7 @@
 import loadable from '@loadable/component';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
+import Home from '../pages/Home';
 
 /**Code Spliting 진행
  * spliting을 하는 이유는 하나의 페이지가 아닌 하나의 import로 인식하게 하여 랜더링 속도를 증가 시키기 위함
@@ -8,7 +9,6 @@ import Layout from '../components/layout/Layout';
 const CategoryPage = loadable(() => import('../pages/CategoryPage'));
 const Detail = loadable(() => import('../pages/Detail'));
 const EditPage = loadable(() => import('../pages/EditPage'));
-const Home = loadable(() => import('../pages/Home'));
 const Footer = loadable(() => import('../components/layout/Footer'));
 const MyPage = loadable(() => import('../pages/MyPage'));
 const SignIn = loadable(() => import('../pages/SignIn'));
@@ -41,7 +41,7 @@ const Router = () => {
             path="/detail/:categoryName/:postId/:buyerId/:uuid"
             element={<Transaction />}
           />
-          <Route path='/userprofile/:id' element={<UserProfile />} />
+          <Route path="/userprofile/:id" element={<UserProfile />} />
           <Route path="review/:id" element={<ReviewPage />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />

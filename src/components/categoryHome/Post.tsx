@@ -18,7 +18,7 @@ const Post = ({ post, onClick }: PostProps): JSX.Element => {
         <p>
           {post.price
             ? post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            : 0}{' '}
+            : 0}
           P
         </p>
         <a.BottomContainer>

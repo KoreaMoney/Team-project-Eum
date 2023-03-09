@@ -136,7 +136,7 @@ const Header = () => {
                         setWriteActive(false);
                       }}
                     >
-                      <BsPersonCircle size={35} />
+                      <BsPersonCircle size={36} />
                     </Link>
                   </span>
                   <WriteBtn
@@ -177,9 +177,14 @@ const Nav = styled(motion.nav)`
 `;
 
 const navVariants = {
-  top: { backgroundColor: 'rgba(255,255,255,1)' },
+  top: {
+    backgroundColor: 'rgba(255,255,255,1)',
+    borderBottom: '1px solid rgba(255,255,255,0)',
+  },
+
   scroll: {
     backgroundColor: 'rgba(255,255,255,1)',
+    borderBottom: '1px solid rgba(194,193,193,1)',
   },
 };
 
@@ -227,15 +232,14 @@ const Item = styled.li`
   margin-right: 40px;
   width: 50px;
   transition: color 0.3s ease-in-out;
-  color: ${(props) => props.theme.colors.gray40};
+  color: ${(props) => props.theme.colors.black};
   position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.colors.black};
-    font-weight: ${theme.fontWeight.bold};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
   &.active {
     color: ${(props) => props.theme.colors.orange02Main};
@@ -265,8 +269,8 @@ const WriteBtn = styled.button`
   background-color: transparent;
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
-  border: 2px solid ${(props) => props.theme.colors.gray30};
-  color: ${(props) => props.theme.colors.gray40};
+  border: 2px solid ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.black};
   border-radius: 23px;
   width: 81px;
   height: 40px;
@@ -274,9 +278,8 @@ const WriteBtn = styled.button`
 
   cursor: pointer;
   &:hover {
-    border: 3px solid ${(props) => props.theme.colors.black};
-    color: ${(props) => props.theme.colors.black};
-    font-weight: ${(props) => props.theme.fontWeight.bold};
+    border: 2px solid ${(props) => props.theme.colors.orange02Main};
+    color: ${(props) => props.theme.colors.orange02Main};
   }
   &.active {
     border: 3px solid ${(props) => props.theme.colors.orange02Main};
@@ -289,8 +292,8 @@ const LogOutBtn = styled.button`
   background-color: transparent;
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
-  border: 2px solid ${(props) => props.theme.colors.gray30};
-  color: ${(props) => props.theme.colors.gray40};
+  border: 2px solid ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.black};
   border-radius: 23px;
   width: 94px;
   height: 40px;
@@ -298,13 +301,7 @@ const LogOutBtn = styled.button`
 
   &:hover {
     cursor: pointer;
-    border: 3px solid ${(props) => props.theme.colors.black};
-    color: ${(props) => props.theme.colors.black};
-    font-weight: ${(props) => props.theme.fontWeight.bold};
-  }
-  &:active {
-    border: 3px solid ${(props) => props.theme.colors.orange02Main};
+    border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
-    font-weight: ${theme.fontWeight.bold};
   }
 `;

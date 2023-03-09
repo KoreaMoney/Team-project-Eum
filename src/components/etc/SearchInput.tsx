@@ -101,7 +101,7 @@ const InputBox = styled.div`
   justify-content: center;
   width: 250px;
   height: 40px;
-  border: 2px solid ${theme.colors.gray40};
+  border: 2px solid ${theme.colors.black};
   border-radius: 23px;
 `;
 const Input = styled.input`

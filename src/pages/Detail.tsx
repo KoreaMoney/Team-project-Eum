@@ -351,7 +351,7 @@ const Detail = () => {
               </a.TextContainer>
               <a.PostNickName>{post?.[0].nickName}</a.PostNickName>
               <a.PostPrice>
-                {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 P
               </a.PostPrice>
               <a.LikeContainer>
