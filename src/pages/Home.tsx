@@ -107,8 +107,8 @@ const Home = () => {
             <HotKingWrapper>
               <>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/5MmCqO.png"
+                  <KingImage
+                    src={result?.[0]?.data?.[0]?.profileImg}
                     alt=""
                     loading="lazy"
                   />
@@ -117,8 +117,8 @@ const Home = () => {
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/kt0lFx.png"
+                  <KingImage
+                    src={result?.[1]?.data?.[0]?.profileImg}
                     alt=""
                     loading="lazy"
                   />
@@ -127,8 +127,8 @@ const Home = () => {
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/6SGy7o.png"
+                  <KingImage
+                    src={result?.[2]?.data?.[0]?.profileImg}
                     alt=""
                     loading="lazy"
                   />
@@ -137,8 +137,8 @@ const Home = () => {
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/zHY2xd.png"
+                  <KingImage
+                    src={result?.[3]?.data?.[0]?.profileImg}
                     alt=""
                     loading="lazy"
                   />
@@ -254,12 +254,13 @@ const KingBox = styled.div`
   width: 280px;
   height: 320px;
   gap: 14px;
-  img {
-    width: 100%;
-    height: 220px;
-  }
 `;
-
+const KingImage = styled.img`
+  width: 75%;
+  height: 200px;
+  margin: auto;
+  border-radius: 10px;
+`;
 const KingName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   color: ${(props) => props.theme.colors.orange02Main};

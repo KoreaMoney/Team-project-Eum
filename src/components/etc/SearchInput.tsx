@@ -15,7 +15,6 @@ const SearchInput = () => {
   const { categoryName } = useParams();
 
   const navigate = useNavigate();
-
   const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
@@ -33,7 +32,6 @@ const SearchInput = () => {
         ? navigate(`/search/${categoryName}/${selectValue}/${searchText}`)
         : navigate(`/search/all/${selectValue}/${searchText}`);
       setSearchText('');
-      setSelectValue('');
     } else {
       customWarningAlert('검색정보를 찾을 수 없습니다.');
     }
