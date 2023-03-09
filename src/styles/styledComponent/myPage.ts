@@ -209,7 +209,7 @@ export const PostImg = styled.img`
   height: 200px;
   cursor: pointer;
   &:hover {
-    scale: 1.1;
+    scale: 1.05;
   }
 `;
 
@@ -401,7 +401,7 @@ export const KakaoTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.fontSize.title16};
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
 `;
 
 export const KakaoInfo = styled.p`
@@ -416,7 +416,7 @@ export const KakaoInfo = styled.p`
 export const KakaoId = styled.input`
   width: 588px;
   height: 91px;
-  border: 1px solid ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   padding: 48px 40px 16px 40px;
   font-size: ${(props) => props.theme.fontSize.title18};

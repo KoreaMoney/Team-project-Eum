@@ -201,7 +201,6 @@ const HeaderWrapper = styled.div`
 
 const Logo = styled.div`
   display: flex;
-  background-color: red;
   width: 170px;
   height: 42px;
   font-size: ${(props) => props.theme.fontSize.title32};
@@ -228,7 +227,7 @@ const Item = styled.li`
   margin-right: 40px;
   width: 50px;
   transition: color 0.3s ease-in-out;
-  color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray40};
   position: relative;
   display: flex;
   justify-content: center;
@@ -267,7 +266,7 @@ const WriteBtn = styled.button`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   border: 2px solid ${(props) => props.theme.colors.gray30};
-  color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray40};
   border-radius: 23px;
   width: 81px;
   height: 40px;
@@ -291,14 +290,14 @@ const LogOutBtn = styled.button`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   border: 2px solid ${(props) => props.theme.colors.gray30};
-  color: ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray40};
   border-radius: 23px;
   width: 94px;
   height: 40px;
   margin-left: 40px;
 
-  cursor: pointer;
   &:hover {
+    cursor: pointer;
     border: 3px solid ${(props) => props.theme.colors.black};
     color: ${(props) => props.theme.colors.black};
     font-weight: ${(props) => props.theme.fontWeight.bold};
