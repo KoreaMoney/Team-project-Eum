@@ -380,7 +380,7 @@ const Transaction = () => {
         <a.PostRow>
           <a.PostContentWrapper>
             <a.SellerInfoTitle>
-              <p>설명</p>
+              <p>재능 설명</p>
             </a.SellerInfoTitle>
             <a.SellerInfoContent>
               <p>{parse(data[0].content)}</p>

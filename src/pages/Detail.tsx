@@ -240,7 +240,7 @@ const Detail = () => {
             navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
           }, 500);
         } else {
-          customWarningAlert('포인트가 부족합니다.');
+          customWarningAlert('이음 포인트가 부족합니다.');
         }
       }
     );
@@ -368,7 +368,7 @@ const Detail = () => {
                         onClick={onClickToggleModal}
                         aria-label="구매자명단"
                       >
-                        구매자 (
+                        매칭 중 (
                         {myOnSale?.length === 0 ? '0' : myOnSale?.length})
                       </a.LikeSubmitButton>
                     ) : (
@@ -376,7 +376,7 @@ const Detail = () => {
                         onClick={onClickApplyBuy}
                         aria-label="바로 구매하기"
                       >
-                        바로 구매하기
+                        바로 매칭 연결하기
                       </a.LikeSubmitButton>
                     )}
                   </>
@@ -394,14 +394,14 @@ const Detail = () => {
                         onClick={onClickToggleModal}
                         aria-label="구매자명단"
                       >
-                        구매자({myOnSale?.length ? myOnSale?.length : 0})
+                        매칭 중({myOnSale?.length ? myOnSale?.length : 0})
                       </a.LikeSubmitButton>
                     ) : (
                       <a.LikeSubmitButton
                         onClick={onClickApplyBuy}
                         aria-label="바로 구매하기"
                       >
-                        바로 구매하기
+                        바로 매칭 연결하기
                       </a.LikeSubmitButton>
                     )}
                   </>
@@ -427,14 +427,14 @@ const Detail = () => {
               style={{ borderRight: 'none' }}
               onClick={onClickNavReview}
             >
-              후기
+              매칭 후기
             </a.NavButtons>
           </a.NavContainer>
 
           <a.PostRow>
             <a.PostContentWrapper>
               <a.SellerInfoTitle>
-                <p>설명</p>
+                <p>재능 설명</p>
               </a.SellerInfoTitle>
               <a.SellerInfoContent>
                 <p>{parse(post[0].content)}</p>

@@ -1,7 +1,4 @@
-import {
-  useMemo,
-  useState,
-} from 'react';
+import { useMemo, useState } from 'react';
 import { commentType } from '../../types';
 import ReactPaginate from 'react-paginate';
 import styled from 'styled-components';
@@ -55,7 +52,7 @@ const UserComments = () => {
   return (
     <div>
       <CommentsContainer>
-        <CommentTitleText>후기 ({userComments?.length})</CommentTitleText>
+        <CommentTitleText>매칭 후기 ({userComments?.length})</CommentTitleText>
         {currentPageComments?.map((comment: commentType) => (
           <CommentContainer key={comment.id}>
             <TopContainer>
@@ -101,7 +98,6 @@ const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 1199px;
- 
 `;
 
 const CommentContainer = styled.div`
