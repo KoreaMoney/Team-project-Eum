@@ -7,12 +7,13 @@ import { theme } from '../../../styles/theme';
 import { customSuccessAlert } from '../../modal/CustomAlert';
 import axios from 'axios';
 import styled from 'styled-components';
+import Loader from '../../etc/Loader';
 
 export default function Profile() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
-
+  // const [changeFile, setChangeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);
 
@@ -38,21 +39,12 @@ export default function Profile() {
     }
   );
 
-  // const saveImgFile = () => {
-  //   if (imgRef.current?.files) {
-  //     const file = imgRef.current.files[0];
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onloadend = () => {
-  //       const resultImg = reader.result;
-  //       shortenUrl(resultImg as string);
-  //     };
-  //   }
-  const saveImgFile = () => {
+  const saveImgFile = (e: any) => {
+    // const selectedFile = e.target.files[0];
+    // setChangeFile(selectedFile);
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;
     }
-
     const file = imgRef.current.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -61,6 +53,10 @@ export default function Profile() {
       shortenUrl(resultImg as string);
     };
   };
+
+  // const handlePreviewDelete = () => {
+  //   setChangeFile(null);
+  // };
 
   const shortenUrl = async (img: string) => {
     const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
@@ -83,31 +79,43 @@ export default function Profile() {
 
   return (
     <UserProfileImgContainer>
-      <MyImageWrapper>
-        <MyImage htmlFor="changeImg">
-          <img src={data?.[0]?.profileImg} alt="" decoding="async" />
-        </MyImage>
-        {imgEditBtnToggle ? (
-          <ImgSubmitButton
-            onClick={handleClick}
-            disabled={loading || !photo}
-            aria-label="프로필 이미지 변경"
-          >
-            {!photo ? ' ' : '프로필 이미지 변경'}
-          </ImgSubmitButton>
-        ) : null}
-      </MyImageWrapper>
-      <EditImgWrapper>
-        <input
-          hidden
-          type="file"
-          id="changeImg"
-          onChange={saveImgFile}
-          ref={imgRef}
-          name="profile_img"
-          accept="image/*"
-        />
-      </EditImgWrapper>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <MyImageWrapper>
+            <MyImage htmlFor="changeImg">
+              {/* {changeFile === null ? ( */}
+              <img src={data?.[0]?.profileImg} alt="" decoding="async" />
+
+              {/* ) :(<img src={URL.createObjectURL(changeFile)} alt="" />)} */}
+            </MyImage>
+            {imgEditBtnToggle ? (
+              <>
+                <ImgSubmitButton
+                  onClick={handleClick}
+                  disabled={loading || !photo}
+                  aria-label="프로필 이미지 변경"
+                >
+                  {!photo ? ' ' : '프로필 이미지 변경'}
+                </ImgSubmitButton>
+                {/* <button onClick={handlePreviewDelete}>취소</button> */}
+              </>
+            ) : null}
+          </MyImageWrapper>
+          <EditImgWrapper>
+            <input
+              hidden
+              type="file"
+              id="changeImg"
+              onChange={saveImgFile}
+              ref={imgRef}
+              name="profile_img"
+              accept="image/*"
+            />
+          </EditImgWrapper>
+        </>
+      )}
     </UserProfileImgContainer>
   );
 }
