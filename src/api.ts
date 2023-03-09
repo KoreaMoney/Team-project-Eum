@@ -83,6 +83,14 @@ export const deleteUsers = async (id: string | undefined) => {
   return await axios.delete(`${process.env.REACT_APP_JSON}/users/${id}`);
 };
 
+export const getUserNickName = async (name: string) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/users?nickName=${name}`
+  );
+  console.log('response.data', response.data);
+  return response.data;
+};
+
 /**onSalePosts CRUD API
  * 1. 특정 onSalePosts를 출력한다
  * 2. 새로운 onSalePosts를 추가한다
@@ -146,7 +154,7 @@ export const getComments = async () => {
   return response.data;
 };
 
-export const getUserComments = async (id:string | undefined) => {
+export const getUserComments = async (id: string | undefined) => {
   const response = await axios.get(
     `${process.env.REACT_APP_JSON}/comments?sellerUid=${id}`
   );

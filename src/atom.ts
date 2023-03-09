@@ -20,11 +20,11 @@ export const userPostsAtom = atom<postType[] | null | undefined>({
 export const userBadgeLengthAtom = atom({
   key: 'userBadgeLength',
   default: 0,
-})
+});
 export const userProfileAtom = atom<userType | null | undefined>({
   key: 'userProfile',
   default: null,
-})
+});
 export const viewKakaoModalAtom = atom({
   key: 'viewKakaoModal',
   default: false,
@@ -46,6 +46,17 @@ export const addBirthDateAtom = atom({
   key: 'addBirthDate',
   default: '',
 });
+
+export const addNickNameAtom = atom({
+  key: 'addNickName',
+  default: '•ㅤ중복검사를 눌러주세요.',
+});
+
+export const editNickNameAtom = atom({
+  key: 'editNickName',
+  default: false,
+});
+
 export const loginUserCheckState = atom<User | null>({
   key: 'loginUserCheck',
   default: null,
