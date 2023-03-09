@@ -38,16 +38,6 @@ export default function Profile() {
     }
   );
 
-  // const saveImgFile = () => {
-  //   if (imgRef.current?.files) {
-  //     const file = imgRef.current.files[0];
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onloadend = () => {
-  //       const resultImg = reader.result;
-  //       shortenUrl(resultImg as string);
-  //     };
-  //   }
   const saveImgFile = () => {
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;

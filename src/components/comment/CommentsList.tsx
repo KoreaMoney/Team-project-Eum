@@ -159,12 +159,14 @@ const CommentTitleText = styled.p`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   padding-bottom: 28px;
+  margin-top: 80px;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 `;
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 1199px;
+  height: 728px;
   margin-bottom: 240px;
 `;
 

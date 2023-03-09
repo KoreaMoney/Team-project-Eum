@@ -1,4 +1,4 @@
-import { commentType, postType } from './types.d';
+import { commentType, onSalePostType, postType } from './types.d';
 import { User } from 'firebase/auth';
 import { atom } from 'recoil';
 import { userType } from './types';
@@ -9,6 +9,22 @@ import { userType } from './types';
 //   key: 'isDark',
 //   default: true,
 // });
+export const onSalePostAtom = atom<onSalePostType[] | null | undefined>({
+  key: 'onSalePost',
+  default:null,
+})
+export const myOnSalePostsAtom = atom<postType[] | null | undefined>({
+  key: 'myOnSalePosts',
+  default: [],
+});
+export const detailUserAtom = atom<userType | null | undefined>({
+  key: 'detailUser',
+  default: null,
+});
+export const detailPostAtom = atom<postType[] | null | undefined>({
+  key: 'detailPost',
+  default: null,
+});
 export const userCommentsAtom = atom<commentType[] | null | undefined>({
   key: 'userComments',
   default: null,
@@ -20,11 +36,11 @@ export const userPostsAtom = atom<postType[] | null | undefined>({
 export const userBadgeLengthAtom = atom({
   key: 'userBadgeLength',
   default: 0,
-})
+});
 export const userProfileAtom = atom<userType | null | undefined>({
   key: 'userProfile',
   default: null,
-})
+});
 export const viewKakaoModalAtom = atom({
   key: 'viewKakaoModal',
   default: false,

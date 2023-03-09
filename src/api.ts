@@ -37,7 +37,7 @@ export const postPosts = async (post: postType) => {
 export const patchPosts = (id: string | undefined, newPosts: any) =>
   axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, newPosts);
 
-export const deletePosts = async (id: string) => {
+export const deletePosts = async (id: string|undefined) => {
   const response = await axios.delete(
     `${process.env.REACT_APP_JSON}/posts/${id}`
   );
@@ -57,7 +57,7 @@ export const getSellerPosts = async (seller: string | undefined) => {
  * 3. 특정 user 정보를 수정한다
  * 4. 특정 user를 삭제한다
  */
-export const getUsers = async (id: string | undefined) => {
+export const getUsers = async (id: string | undefined|null) => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/users/${id}`);
   return response.data;
 };
@@ -75,7 +75,7 @@ export const postUsers = async (user: userType) => {
   return response.data;
 };
 
-export const patchUsers = async (id: string | undefined, user: any) => {
+export const patchUsers = async (id: string | undefined|null, user: any) => {
   return await axios.patch(`${process.env.REACT_APP_JSON}/users/${id}`, user);
 };
 
