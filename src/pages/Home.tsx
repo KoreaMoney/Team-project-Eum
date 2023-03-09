@@ -82,12 +82,12 @@ const Home = () => {
     dots: true,
     infinite: true,
     slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 4000,
   };
 
   return (
@@ -261,12 +261,13 @@ const KingBox = styled.div`
 `;
 
 const KingName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title14};
-  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.orange02Main};
 `;
 const KingNick = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${theme.colors.black};
 `;
 const KingContext = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};

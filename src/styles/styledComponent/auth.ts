@@ -52,7 +52,7 @@ export const LoginInputText = styled.span`
   width: 120px;
   display: flex;
   align-items: center;
-  color: ${theme.colors.gray20};
+  color: ${theme.colors.gray40};
 `;
 
 export const LoginInput = styled.input`
@@ -178,7 +178,7 @@ export const LoginOther = styled.div`
     outline: none;
     font-size: ${theme.fontSize.title14};
     background-color: transparent;
-    color: ${theme.colors.gray30};
+    color: ${theme.colors.gray40};
     font-weight: ${theme.fontWeight.medium};
 
     &:hover {

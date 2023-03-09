@@ -94,7 +94,7 @@ export const PostIMG = styled.div<{ bgPhoto: string }>`
   margin-bottom: 16px;
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 5px 3px ${theme.colors.gray20};
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -113,6 +113,10 @@ export const ContentContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 16px;
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
   span {
     display: flex;
     width: 300px;
@@ -134,13 +138,11 @@ export const CreateAtText = styled.div``;
 
 export const BottomContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-
   p {
     font-size: ${(props) => props.theme.fontSize.title16};
     font-weight: ${(props) => props.theme.fontWeight.regular};
     line-height: ${(props) => props.theme.lineHeight.title16};
-    color: ${(props) => props.theme.colors.gray20};
+    color: ${(props) => props.theme.colors.gray30};
   }
 `;
 

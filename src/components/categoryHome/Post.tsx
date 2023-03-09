@@ -9,12 +9,8 @@ interface PostProps {
 
 const Post = ({ post, onClick }: PostProps): JSX.Element => {
   return (
-    <a.PostContainer>
-      <a.PostIMG
-        bgPhoto={post.imgURL ? post.imgURL : basicIMG}
-        key={post.id}
-        onClick={() => onClick(post)}
-      />
+    <a.PostContainer key={post.id} onClick={() => onClick(post)}>
+      <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
 
       <a.ContentContainer>
         <a.InfoBest>{post.category}</a.InfoBest>

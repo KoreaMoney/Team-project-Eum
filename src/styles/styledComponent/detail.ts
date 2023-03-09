@@ -55,7 +55,7 @@ export const InfoTopLeftContainer = styled.div`
   margin-bottom: 30px;
   align-items: flex-end;
   p {
-    font-size: ${(props) => props.theme.fontSize.title14};
+    font-size: ${(props) => props.theme.fontSize.title20};
     font-weight: ${(props) => props.theme.fontWeight.regular};
     line-height: ${(props) => props.theme.lineHeight.title14};
     color: ${(props) => props.theme.colors.orange02Main};
