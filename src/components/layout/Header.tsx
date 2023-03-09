@@ -201,7 +201,6 @@ const HeaderWrapper = styled.div`
 
 const Logo = styled.div`
   display: flex;
-  background-color: red;
   width: 170px;
   height: 42px;
   font-size: ${(props) => props.theme.fontSize.title32};

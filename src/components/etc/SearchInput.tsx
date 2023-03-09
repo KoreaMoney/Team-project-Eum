@@ -38,7 +38,7 @@ const SearchInput = () => {
   };
 
   return (
-    <SearchContainer>
+    <div>
       <form onSubmit={onSubmitSearchPost} aria-label="검색창">
         <SearchWrapper>
           <SelectWrapper>
@@ -65,13 +65,11 @@ const SearchInput = () => {
           </InputBox>
         </SearchWrapper>
       </form>
-    </SearchContainer>
+    </div>
   );
 };
 
 export default SearchInput;
-
-const SearchContainer = styled.div``;
 
 const SearchWrapper = styled.div`
   display: flex;
@@ -103,7 +101,7 @@ const InputBox = styled.div`
   justify-content: center;
   width: 250px;
   height: 40px;
-  border: 2px solid ${theme.colors.black};
+  border: 2px solid ${theme.colors.gray40};
   border-radius: 23px;
 `;
 const Input = styled.input`
@@ -113,5 +111,6 @@ const Input = styled.input`
   border: none;
   width: 200px;
   padding-left: 10px;
+  color: ${theme.colors.black};
   font-size: ${theme.fontSize.title16};
 `;

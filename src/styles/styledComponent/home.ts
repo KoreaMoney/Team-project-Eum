@@ -62,7 +62,7 @@ export const PostImg = styled.div<{ bgPhoto: string }>`
   &:hover {
     cursor: pointer;
     scale: 1.05;
-    box-shadow: 3px 5px 3px ${theme.colors.gray20};
+    box-shadow: 2px 3px 6px ${theme.colors.gray20};
   }
 `;
 
