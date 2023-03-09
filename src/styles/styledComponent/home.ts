@@ -59,9 +59,6 @@ export const PostImg = styled.div<{ bgPhoto: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 export const PostInfoWrapper = styled.div`
@@ -74,7 +71,6 @@ export const PostInfoWrapper = styled.div`
 `;
 
 export const InfoBest = styled.div`
-  margin-top: 10px;
   text-decoration: underline;
   color: ${theme.colors.green};
   font-size: ${(props) => props.theme.fontSize.title16};
@@ -86,19 +82,10 @@ export const InfoTitle = styled.span`
   align-items: center;
   justify-content: center;
   font-size: ${(props) => props.theme.fontSize.title18};
-  color: ${theme.colors.black};
   width: 230px;
   height: 55px;
   margin-bottom: 5px;
   margin-top: 5px;
-  &:hover {
-    cursor: pointer;
-    color: ${theme.colors.orange02Main};
-    font-weight: ${(props) => props.theme.fontWeight.bold};
-  }
-  &:active {
-    color: ${theme.colors.black};
-  }
 `;
 
 export const InfoProfile = styled.div`
@@ -106,7 +93,7 @@ export const InfoProfile = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
 `;
 
 export const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`

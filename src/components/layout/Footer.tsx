@@ -32,7 +32,7 @@ export default Footer;
 const FooterContainer = styled.div`
   width: 100vw;
   height: 200px;
-  margin-top: 120px;
+  margin-top: 126px;
   background-color: ${theme.colors.gray05};
 `;
 

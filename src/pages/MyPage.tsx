@@ -205,7 +205,7 @@ const MyPage = () => {
                     }
                     aria-label="판매중"
                   >
-                    판매중 {mySellPostList?.length}
+                    매칭중 {mySellPostList?.length}
                   </div>
                   <div
                     onClick={() => setSellCategory('거래완료')}
@@ -214,7 +214,7 @@ const MyPage = () => {
                     }
                     aria-label="거래완료"
                   >
-                    거래완료 {isDoneTradeSellList?.length}
+                    매칭완료 {isDoneTradeSellList?.length}
                   </div>
                 </a.MySellNav>
               ) : null}
@@ -249,7 +249,12 @@ const MyPage = () => {
                           />
                           <a.InfoBest>{list.category}</a.InfoBest>
                           <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                          <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                          <a.MyLikeDiv>
+                            {list.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            P
+                          </a.MyLikeDiv>
                           <p>{list.nickName}</p>
                         </a.MyLikeList>
                       );

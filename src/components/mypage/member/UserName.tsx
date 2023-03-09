@@ -1,29 +1,49 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { getUsers } from '../../../api';
-import { addBirthDateAtom, addKakaoAtom } from '../../../atom';
+import { getUsers, getUserNickName } from '../../../api';
+import {
+  addBirthDateAtom,
+  addKakaoAtom,
+  addNickNameAtom,
+  editNickNameAtom,
+} from '../../../atom';
 import * as a from '../../../styles/styledComponent/myPage';
+import Loader from '../../etc/Loader';
 
 const UserName = () => {
   const [editKakaoValue, setEditKakaoValue] = useRecoilState(addKakaoAtom);
   const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
+  const [editNickNameValue, setEditNickNameValue] =
+    useRecoilState(addNickNameAtom);
+  const [nickNameCheck, setNickNameCheck] = useRecoilState(editNickNameAtom);
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   /* 1. 로그인한 유저 정보를 받아옵니다.
-   * 2. 유저의 닉네임에 접근해서 patch합니다.
-   * 3. 유저의 닉네임을 수정합니다.
+   * 2. 닉네임을 중복검사합니다.
+   * 3. 유저의 닉네임에 접근해서 patch합니다.
    */
   const { data } = useQuery(['users', saveUser.uid], () =>
     getUsers(saveUser.uid)
   );
 
+  const { data: nickNameData, isLoading } = useQuery(
+    ['users', editNickNameValue],
+    () => getUserNickName(editNickNameValue)
+  );
+
+  const nickNameCheckClick = () => {
+    setNickNameCheck(nickNameData?.length > 0);
+  };
+
   useEffect(() => {
     setEditKakaoValue(data?.kakaoId);
     setEditBirthValue(data?.birthDate);
+    setEditNickNameValue(data?.nickName);
   }, [data]);
 
+  // 생년월일을 입력합니다.
   const onChangeBirthDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -50,9 +70,28 @@ const UserName = () => {
       <a.UserInfoBox>
         <a.UserInfoTitle>이메일 아이디</a.UserInfoTitle>
         <a.UserInfoContent>{saveUser.email}</a.UserInfoContent>
-        <a.UserInfoTitle>닉네임</a.UserInfoTitle>
-        <a.UserInfoContent>{data?.nickName}</a.UserInfoContent>
       </a.UserInfoBox>
+      <a.KakaoIdBox>
+        <a.KakaoTitle>닉네임 {'( 최대 8자 )'}</a.KakaoTitle>
+        <a.UserNickName
+          value={editNickNameValue}
+          type="text"
+          onChange={(e) => setEditNickNameValue(e.target.value)}
+          aria-label="닉네임 입력하기"
+          maxLength={8}
+        />
+        <a.UserNickNameBtn onClick={nickNameCheckClick}>
+          중복검사
+        </a.UserNickNameBtn>
+      </a.KakaoIdBox>
+      {isLoading ? (
+        <Loader />
+      ) : nickNameCheck ? (
+        <a.NickNameInfo>•ㅤ이미 사용중인 닉네임입니다.</a.NickNameInfo>
+      ) : (
+        <a.NickNameInfoPass>•ㅤ사용 가능한 닉네임입니다.</a.NickNameInfoPass>
+      )}
+
       <a.KakaoIdBox>
         <a.KakaoTitle>카카오톡 아이디</a.KakaoTitle>
         <a.KakaoId
