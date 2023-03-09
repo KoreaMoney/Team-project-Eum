@@ -1,16 +1,18 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { viewBuyerModalAtom } from '../../atom';
-import { onSalePostType } from '../../types';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { myOnSalePostsAtom, onSalePostAtom, viewBuyerModalAtom } from '../../atom';
+import { onSalePostType, postType } from '../../types';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
-const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
+const BuyerModal = () => {
   const navigate = useNavigate();
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
-
+  const newSalePosts = useRecoilValue(myOnSalePostsAtom);
+  console.log( 'newSalePosts: ' ,newSalePosts);
+  
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -29,6 +31,12 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
     return result;
   };
 
+  const GoOnSalePost = (salePosts:any) => {
+    navigate(
+      `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
+    );
+    setIsModalActive(false)
+  };
   return (
     <>
       {isModalActive ? (
@@ -52,19 +60,13 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
                   <ListContentsContainer>
-                    {newSalePosts.map((salePosts) => {
+                    {newSalePosts?.map((salePosts:any) => {
                       return (
                         <ListContentContainer>
                           <Day>{getTimeGap(salePosts?.createdAt)}</Day>
                           <NickName>{salePosts?.buyerNickName}</NickName>
                           <Price>{salePosts?.price}P</Price>
-                          <MoveButton
-                            onClick={() =>
-                              navigate(
-                                `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
-                              )
-                            }
-                          >
+                          <MoveButton onClick={() => GoOnSalePost(salePosts)}>
                             바로가기
                           </MoveButton>
                         </ListContentContainer>
