@@ -54,6 +54,9 @@ const CloseButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  &:hover {
+    color: ${theme.colors.orange02Main};
+  }
 `;
 
 const Container = styled.div<{

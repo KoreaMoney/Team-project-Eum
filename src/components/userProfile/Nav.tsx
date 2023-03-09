@@ -77,7 +77,7 @@ export const NavContainer = styled.div`
   display: flex;
   position: sticky;
   z-index: 5;
-  top: 112px;
+  top: 90px;
   width: 1200px;
   height: 80px;
   padding: 30px 0;

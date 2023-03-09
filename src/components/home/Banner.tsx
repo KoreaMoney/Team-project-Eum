@@ -14,6 +14,16 @@ const Banner = () => {
     pauseOnHover: true,
     autoplay: true,
     autoplaySpeed: 8000,
+    prevArrow: (
+      <PrevArrow>
+        <img src="https://ifh.cc/g/j7cfsH.png" alt="이전" />
+      </PrevArrow>
+    ),
+    nextArrow: (
+      <NextArrow>
+        <img src="https://ifh.cc/g/ARGjlO.png" alt="다음" />
+      </NextArrow>
+    ),
   };
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -147,6 +157,7 @@ export default Banner;
 const Move = styled.div`
   display: flex;
   align-items: center;
+  border: none;
   height: 60px;
   img {
     width: 24px;
@@ -157,7 +168,9 @@ const Move = styled.div`
 const ImageContainer = styled.div`
   width: 80vw;
   margin-bottom: 56px;
+  border: none;
   .slick-dots {
+    z-index: 3;
     position: absolute;
     top: 34rem;
     .slick-active {
@@ -174,20 +187,46 @@ const ImageContainer = styled.div`
   }
   .slider {
     position: relative;
+    border: none;
+  }
+  .slick-prev::before,
+  .slick-next::before {
+    opacity: 0;
+    display: none;
+  }
+  .slick-slide div {
+    cursor: pointer;
   }
 `;
 
+const NextArrow = styled.div`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin-right: 22%;
+  z-index: 3;
+`;
+
+const PrevArrow = styled.div`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin-left: 20%;
+  z-index: 3;
+`;
+
 const Image = styled.img`
-  width: 990px;
+  width: 1000px;
   height: 600px;
   margin: auto;
   position: relative;
+  border: none;
 `;
 
 const Text = styled.div`
   position: absolute;
   top: 27rem;
-  left: 12.3%;
+  left: 12.6%;
   transform: translate(-50%, -50%);
   font-size: 45px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -211,7 +250,7 @@ const Text1 = styled.p`
 const Text2 = styled.div`
   position: absolute;
   top: 26rem;
-  left: 21.5%;
+  left: 22%;
   transform: translate(-50%, -50%);
   font-size: 45px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -234,7 +273,7 @@ const Text22 = styled.p`
 const Text3 = styled.div`
   position: absolute;
   top: 26rem;
-  left: 30.7%;
+  left: 31%;
   transform: translate(-50%, -50%);
   font-size: 45px;
   font-weight: ${(props) => props.theme.fontWeight.bold};
@@ -257,7 +296,7 @@ const Text33 = styled.p`
 const Text4 = styled.div`
   position: absolute;
   top: 26rem;
-  left: 40.2%;
+  left: 40.4%;
   transform: translate(-50%, -50%);
   font-size: 45px;
   font-weight: ${(props) => props.theme.fontWeight.bold};

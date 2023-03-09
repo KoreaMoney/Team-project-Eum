@@ -4,10 +4,17 @@ import { RxClock } from 'react-icons/rx';
 import { GoKebabVertical } from 'react-icons/go';
 import { NavButtonProps } from '../../types';
 import { theme } from '../theme';
+
 export const DetailContainer = styled.div`
-  width: 1200px;
-  margin: 0 auto;
+  width: 100vw;
   margin-top: 90px;
+`;
+
+export const DetailWrapper = styled.div`
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
 `;
 
 export const PostContainer = styled.div`
@@ -97,8 +104,11 @@ export const ShareIcon = styled(BsShare)`
   position: absolute;
   left: 8px;
   cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.colors.orange02Main};
+  }
 `;
-export const IconRigntContainer = styled.div`
+export const IconRightContainer = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 100%;
@@ -193,8 +203,8 @@ export const LikeSubmitButton = styled.button`
   font-size: ${(props) => props.theme.fontSize.ad24};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   line-height: ${(props) => props.theme.lineHeight.ad24};
-  cursor: pointer;
   &:hover {
+    cursor: pointer;
     background-color: ${(props) => props.theme.colors.white};
     color: ${(props) => props.theme.colors.orange02Main};
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
@@ -341,7 +351,7 @@ export const ProfileInfos = styled.div`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
 `;
-export const DropDonwContainer = styled.div`
+export const DropDownContainer = styled.div`
   position: relative;
 `;
 export const DropDownBox = styled.div`

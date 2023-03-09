@@ -107,25 +107,41 @@ const Home = () => {
             <HotKingWrapper>
               <>
                 <KingBox>
-                  <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/5MmCqO.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>공부신</KingName>
                   <KingNick>{result?.[0]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/kt0lFx.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>놀이신</KingName>
                   <KingNick>{result?.[1]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/6SGy7o.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>상담신</KingName>
                   <KingNick>{result?.[2]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/zHY2xd.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>기타신</KingName>
                   <KingNick>{result?.[3]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
@@ -143,16 +159,18 @@ const Home = () => {
                   ?.slice(0, 9)
                   .sort((a: any, b: any) => b.like.length - a.like.length)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
+                        <a.InfoTitle
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          {post.title}
+                        </a.InfoTitle>
                         <a.InfoProfile>
                           <a.ProfileIMG
                             profileIMG={
@@ -183,16 +201,18 @@ const Home = () => {
                   ?.sort((a: any, b: any) => b.createAt - a.createAt)
                   ?.slice(0, 9)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
+                        <a.InfoTitle
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          {post.title}
+                        </a.InfoTitle>
                         <a.InfoProfile>
                           <a.ProfileIMG
                             profileIMG={
