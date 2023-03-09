@@ -61,8 +61,6 @@ export const PostImg = styled.div<{ bgPhoto: string }>`
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    scale: 1.05;
-    box-shadow: 2px 3px 6px ${theme.colors.gray20};
   }
 `;
 
