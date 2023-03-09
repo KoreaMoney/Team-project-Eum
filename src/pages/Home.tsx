@@ -12,10 +12,10 @@ import Slider from 'react-slick';
 import { theme } from '../styles/theme';
 import loadable from '@loadable/component';
 import Loader from '../components/etc/Loader';
+import Banner from '../components/home/Banner';
 
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
-const Banner = loadable(() => import('../components/home/Banner'));
 
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
@@ -87,7 +87,7 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 2300,
   };
 
   return (
@@ -165,26 +165,21 @@ const Home = () => {
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
-                        <a.InfoTitle
+                        <InfoBox
                           key={post.id}
                           onClick={() => handlePostClick(post)}
                         >
-                          {post.title}
-                        </a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              ?.toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -207,26 +202,21 @@ const Home = () => {
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>
-                        <a.InfoTitle
+                        <InfoBox
                           key={post.id}
                           onClick={() => handlePostClick(post)}
                         >
-                          {post.title}
-                        </a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              ?.toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -240,6 +230,18 @@ const Home = () => {
   );
 };
 export default Home;
+
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: ${theme.colors.black};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
+`;
 
 const HotKingWrapper = styled.div`
   display: flex;
