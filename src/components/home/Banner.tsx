@@ -13,8 +13,8 @@ const Banner = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     pauseOnHover: true,
-    // autoplay: true,
-    // autoplaySpeed: 7000,
+    autoplay: true,
+    autoplaySpeed: 5000,
     prevArrow: (
       <PrevArrow>
         <img src="https://ifh.cc/g/j7cfsH.png" alt="이전" />
