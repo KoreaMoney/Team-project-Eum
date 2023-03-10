@@ -41,11 +41,12 @@ const PostInfo = () => {
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
-  const postCountCheck = postData?.[0].like.includes(saveUser?.uid);
+  const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
+
 
   useEffect(() => {
-    setIsDone(postData?.[0].isDone);
-  }, [postData]);
+    setIsDone(postData?.[0]?.isDone)
+  },[postData])
 
   /** 판매중 모달 */
   const onClickToggleModal = useCallback(() => {
@@ -222,15 +223,15 @@ const PostInfo = () => {
       <a.InfoTopContainer>
         <a.InfoTopLeftContainer>
           <p>
-            {postData?.[0].category === 'all'
+            {postData?.[0]?.category === 'all'
               ? '전체'
-              : postData?.[0].category === 'study'
+              : postData?.[0]?.category === 'study'
               ? '공부'
-              : postData?.[0].category === 'play'
+              : postData?.[0]?.category === 'play'
               ? '놀이'
-              : postData?.[0].category === 'advice'
+              : postData?.[0]?.category === 'advice'
               ? '상담'
-              : postData?.[0].category === 'etc'
+              : postData?.[0]?.category === 'etc'
               ? '기타'
               : '전체'}
           </p>
@@ -240,12 +241,12 @@ const PostInfo = () => {
             // 상단 하트개수 나오는 곳
             <a.LikeIconLeftContainer>
               <a.LikeHeartIcon />
-              <a.LikeLikeLength>{postData?.[0].like.length}</a.LikeLikeLength>
+              <a.LikeLikeLength>{postData?.[0]?.like?.length}</a.LikeLikeLength>
             </a.LikeIconLeftContainer>
           ) : (
             <a.IconLeftContainer>
               <a.HeartIcon />
-              <a.LikeLength>{postData?.[0].like.length}</a.LikeLength>
+              <a.LikeLength>{postData?.[0]?.like?.length}</a.LikeLength>
             </a.IconLeftContainer>
           )}
           <a.IconRightContainer>
@@ -254,8 +255,8 @@ const PostInfo = () => {
         </a.InfoTopRightContainer>
       </a.InfoTopContainer>
       <a.TextContainer>
-        <a.TitleText>{postData?.[0].title}</a.TitleText>
-        {saveUser?.uid === postData?.[0].sellerUid && (
+        <a.TitleText>{postData?.[0]?.title}</a.TitleText>
+        {saveUser?.uid === postData?.[0]?.sellerUid && (
           // 판매자만 보이는 드랍다운 케밥 버튼
           <a.DropDownContainer>
             <a.KebobIcon onClick={() => setIsDrop(!isDrop)} />
@@ -277,13 +278,13 @@ const PostInfo = () => {
           </a.DropDownContainer>
         )}
       </a.TextContainer>
-      <a.PostNickName>{postData?.[0].nickName}</a.PostNickName>
+      <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
-        {postData?.[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+        {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
       </a.PostPrice>
 
-      {saveUser?.uid === postData?.[0].sellerUid ? (
+      {saveUser?.uid === postData?.[0]?.sellerUid ? (
         // 판매자일 때
         <>
           {isDone ? (
