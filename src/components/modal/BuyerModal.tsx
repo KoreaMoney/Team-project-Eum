@@ -1,18 +1,34 @@
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { myOnSalePostsAtom, onSalePostAtom, viewBuyerModalAtom } from '../../atom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  buyerLengthAtom,
+  myOnSalePostsAtom,
+  onSalePostAtom,
+  viewBuyerModalAtom,
+} from '../../atom';
 import { onSalePostType, postType } from '../../types';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
 const BuyerModal = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
-  console.log( 'newSalePosts: ' ,newSalePosts);
-  
+  const setBuyerLength = useSetRecoilState(buyerLengthAtom);
+
+  const salePosts = newSalePosts?.filter((prev) => {
+    return prev.postsId === id
+  });
+
+  useEffect(() => {
+    setBuyerLength(salePosts?.length);
+  }, [salePosts]);
+ 
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -31,11 +47,11 @@ const BuyerModal = () => {
     return result;
   };
 
-  const GoOnSalePost = (salePosts:any) => {
+  const GoOnSalePost = (salePost: any) => {
     navigate(
-      `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
+      `/detail/${salePost?.category}/${salePost?.postsId}/${salePost?.buyerUid}/${salePost?.id}`
     );
-    setIsModalActive(false)
+    setIsModalActive(false);
   };
   return (
     <>
@@ -60,13 +76,13 @@ const BuyerModal = () => {
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
                   <ListContentsContainer>
-                    {newSalePosts?.map((salePosts:any) => {
+                    {salePosts?.map((salePost: any) => {
                       return (
                         <ListContentContainer>
-                          <Day>{getTimeGap(salePosts?.createdAt)}</Day>
-                          <NickName>{salePosts?.buyerNickName}</NickName>
-                          <Price>{salePosts?.price}P</Price>
-                          <MoveButton onClick={() => GoOnSalePost(salePosts)}>
+                          <Day>{getTimeGap(salePost?.createdAt)}</Day>
+                          <NickName>{salePost?.buyerNickName}</NickName>
+                          <Price>{salePost?.price}P</Price>
+                          <MoveButton onClick={() => GoOnSalePost(salePost)}>
                             바로가기
                           </MoveButton>
                         </ListContentContainer>

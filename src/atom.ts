@@ -9,11 +9,15 @@ import { userType } from './types';
 //   key: 'isDark',
 //   default: true,
 // });
+export const buyerLengthAtom = atom<number | undefined>({
+  key: 'buyerLength',
+  default:0,
+})
 export const onSalePostAtom = atom<onSalePostType[] | null | undefined>({
   key: 'onSalePost',
   default:null,
 })
-export const myOnSalePostsAtom = atom<postType[] | null | undefined>({
+export const myOnSalePostsAtom = atom<onSalePostType[] | null | undefined>({
   key: 'myOnSalePosts',
   default: [],
 });
