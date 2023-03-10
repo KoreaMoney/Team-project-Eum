@@ -8,6 +8,7 @@ import {
   viewBuyerModalAtom,
 } from '../../atom';
 import { onSalePostType, postType } from '../../types';
+
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
@@ -29,6 +30,7 @@ const BuyerModal = () => {
   }, [salePosts]);
  
 
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -47,7 +49,8 @@ const BuyerModal = () => {
     return result;
   };
 
-  const GoOnSalePost = (salePost: any) => {
+
+  const GoOnSalePost = (salePosts: any) => {
     navigate(
       `/detail/${salePost?.category}/${salePost?.postsId}/${salePost?.buyerUid}/${salePost?.id}`
     );
@@ -65,13 +68,13 @@ const BuyerModal = () => {
           element={
             <>
               <Container>
-                <ModalTitle>구매한 사람들</ModalTitle>
+                <ModalTitle>매칭된 사람들</ModalTitle>
                 <ModalContent>
                   바로가기 버튼을 누르면 진행 상황을 수정할 수 있어요.
                 </ModalContent>
                 <ListContainer>
                   <ListTitleContainer>
-                    <ListDay>일시</ListDay>
+                    <ListDay>날짜</ListDay>
                     <ListNickName>닉네임</ListNickName>
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
@@ -209,14 +212,14 @@ const MoveButton = styled.button`
   width: 88px;
   height: 28px;
   background-color: ${(props) => props.theme.colors.white};
-  border: 1px solid ${(props) => props.theme.colors.gray20};
-  color: ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.title14};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title14};
-  cursor: pointer;
   &:hover {
+    cursor: pointer;
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
     border-radius: 10px;

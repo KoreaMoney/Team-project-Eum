@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import {
   detailPostAtom,
   detailUserAtom,
@@ -19,6 +19,7 @@ import PostImg from '../components/detail/PostImg';
 import PostInfo from '../components/detail/PostInfo/PostInfo';
 import NavBar from '../components/detail/PostInfo/NavBar';
 import DetailContent from '../components/detail/content/DetailContent';
+
 const CommentsList = loadable(
   () => import('../components/comment/CommentsList')
 );
@@ -87,7 +88,6 @@ const Detail = () => {
     }
   }, [user, queryClient, post?.[0]?.sellerUid]);
 
-
   /**판매중인 글, 삭제금지 */
   const { data: myOnSale } = useQuery(
     ['myOnSale'],
@@ -109,6 +109,9 @@ const Detail = () => {
         <Loader />
       </div>
     );
+  }
+  if (!post || post.length === 0) {
+    return <div>No data found</div>;
   }
 
   return (

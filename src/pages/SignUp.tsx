@@ -127,9 +127,9 @@ const SignUp = () => {
         await createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
             customInfoAlert(
-              `${getValues(
+              ` ${getValues(
                 'nickName'
-              )}님 반갑습니다!\n\n재능을 이어주는 이음\n회원가입이 완료되었습니다.`
+              )}님 \n소액 재능 거래 플랫폼 \n이음에 오신걸 환영합니다.`
             );
           })
           .catch((error) => {

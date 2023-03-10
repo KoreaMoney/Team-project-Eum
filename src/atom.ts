@@ -18,6 +18,7 @@ export const onSalePostAtom = atom<onSalePostType[] | null | undefined>({
   default:null,
 })
 export const myOnSalePostsAtom = atom<onSalePostType[] | null | undefined>({
+
   key: 'myOnSalePosts',
   default: [],
 });
@@ -44,6 +45,10 @@ export const userBadgeLengthAtom = atom({
 export const userProfileAtom = atom<userType | null | undefined>({
   key: 'userProfile',
   default: null,
+});
+export const viewModalAtom = atom({
+  key: 'viewModal',
+  default: false,
 });
 export const viewKakaoModalAtom = atom({
   key: 'viewKakaoModal',

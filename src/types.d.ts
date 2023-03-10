@@ -1,16 +1,14 @@
-
-
 interface Chat {
   id: string;
   chatContent: {
+    imgUrl?: string;
     uid?: string;
     manager?: string;
     message?: string;
     nickName?: string;
-    createdAt?: number|undefined;
+    createdAt?: number | undefined;
   }[];
-};
-
+}
 
 export interface ISignUpForm {
   email: string;
@@ -54,7 +52,6 @@ export interface userType {
   repBadge: string;
 }
 export interface postType {
-
   id: string | undefined;
   title: string;
   nickName: string | null | undefined;

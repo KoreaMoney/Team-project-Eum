@@ -105,10 +105,10 @@ const SellerInfo = () => {
       <a.ProfileInfoContainer>
         <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
         <a.ProfileInfos aria-label="매칭상품">
-          매칭상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
+          매칭 상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
-          후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
+          매칭 후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
     </a.SellerInfoContainer>
