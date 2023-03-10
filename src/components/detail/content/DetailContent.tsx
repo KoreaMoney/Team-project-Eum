@@ -14,7 +14,9 @@ const DetailContent = () => {
           <p>설명</p>
         </a.SellerInfoTitle>
         <a.SellerInfoContent>
-          <p>{postData && parse(postData?.[0].content)}</p>
+          <p>
+            {postData && postData[0]?.content && parse(postData[0].content)}
+          </p>{' '}
         </a.SellerInfoContent>
       </a.PostContentWrapper>
       <a.PostContentWrapper>

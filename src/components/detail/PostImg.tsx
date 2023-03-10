@@ -8,10 +8,10 @@ const PostImg = () => {
   return (
     <>
       <PostImage
-        img={postData?.[0].imgURL}
+        img={postData?.[0]?.imgURL}
         aria-label="post이미지"
         onClick={() => {
-          window.open(postData?.[0].imgURL);
+          window.open(postData?.[0]?.imgURL);
         }}
       />
     </>
