@@ -214,6 +214,7 @@ const WritePage = () => {
       ...post,
       imgURL: img,
       price: Number(price.toString().replace(/[^0-9]/g, '')),
+      category,
     };
     mutate(newPost); //
   };

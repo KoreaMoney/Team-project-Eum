@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
   deletePosts,
@@ -13,8 +13,8 @@ import {
   buyerLengthAtom,
   detailPostAtom,
   detailUserAtom,
-  isDoneSellerAtom,
   myOnSalePostsAtom,
+  onSalePostAtom,
   viewBuyerModalAtom,
 } from '../../../atom';
 import {
@@ -43,11 +43,20 @@ const PostInfo = () => {
   const postData = useRecoilValue(detailPostAtom);
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
-  const buyerLength = useRecoilValue(buyerLengthAtom);
-  const isDoneSeller = useRecoilValue(isDoneSellerAtom);
+  const setBuyerList = useSetRecoilState(buyerLengthAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
+
+  /**내가 거래중인 모든 글중에 해당 포스트의 글만 가져오기 */
+  const isPostSell = myOnSale?.filter((post: onSalePostType) => {
+    return post.postsId === id;
+  });
+    console.log('myOnSalePosts: ', isPostSell);
+
+  useEffect(() => {
+    setBuyerList(isPostSell?.length);
+  }, [isPostSell]);
 
   useEffect(() => {
     setIsDone(postData?.[0]?.isDone);
@@ -212,19 +221,21 @@ const PostInfo = () => {
   };
   /**거래완료 클릭 */
   const onClickCompletedButton = async () => {
-    if (isDoneSeller) {if (postData) {
-      setIsDone(true);
-      await changeStatePost({
-        ...postData[0],
-        isDone: true,
-      });
-    }
-        
-    } else {
+    if (isPostSell?.[0]) {
       customWarningAlert('매칭중인 글이 있습니다.');
       return;
+    } else {
+      if (postData) {
+        setIsDone(true);
+        await changeStatePost({
+          ...postData[0],
+          isDone: true,
+        });
+      }
     }
   };
+  console.log('isDoneSeller: ', myOnSale);
+  
 
   /**드랍다운의 게시글 수정 클릭 함수 */
   const onClickMoveEditPage = () => {
@@ -307,7 +318,7 @@ const PostInfo = () => {
             <>
               <a.LikeContainer>
                 <a.NotViewBuyerButton aria-label="매칭자">
-                  구매자 ({buyerLength && buyerLength})
+                  구매자 ({isPostSell?.length})
                 </a.NotViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
@@ -326,7 +337,7 @@ const PostInfo = () => {
                   onClick={onClickToggleModal}
                   aria-label="구매자명단"
                 >
-                  구매자 ({buyerLength && buyerLength})
+                  구매자 ({isPostSell?.length})
                 </a.ViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>

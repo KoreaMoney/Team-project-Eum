@@ -53,6 +53,7 @@ const Detail = () => {
     setIsDone(false);
   }, []);
 
+  
   /**Detail Post 정보 가져오기 */
   const { data: post, isLoading } = useQuery(
     ['post', id],
