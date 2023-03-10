@@ -13,6 +13,7 @@ import {
   buyerLengthAtom,
   detailPostAtom,
   detailUserAtom,
+  isDoneSellerAtom,
   myOnSalePostsAtom,
   viewBuyerModalAtom,
 } from '../../../atom';
@@ -43,6 +44,7 @@ const PostInfo = () => {
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
   const buyerLength = useRecoilValue(buyerLengthAtom);
+  const isDoneSeller = useRecoilValue(isDoneSellerAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
@@ -210,12 +212,17 @@ const PostInfo = () => {
   };
   /**거래완료 클릭 */
   const onClickCompletedButton = async () => {
-    if (postData) {
+    if (isDoneSeller) {if (postData) {
       setIsDone(true);
       await changeStatePost({
         ...postData[0],
         isDone: true,
       });
+    }
+        
+    } else {
+      customWarningAlert('매칭중인 글이 있습니다.');
+      return;
     }
   };
 
