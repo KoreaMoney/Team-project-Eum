@@ -226,7 +226,7 @@ const PostInfo = () => {
       </a.TextContainer>
       <a.PostNickName>{data?.[0].sellerNickName}</a.PostNickName>
       <a.PostPrice>
-        {data?.[0]?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+        {data?.[0]?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
       {saveUser.uid === data?.[0]?.buyerUid ||

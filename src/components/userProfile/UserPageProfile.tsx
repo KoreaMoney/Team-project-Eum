@@ -1,19 +1,15 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { userProfileAtom, viewKakaoModalAtom } from '../../atom';
+import { userProfileAtom } from '../../atom';
 
 const UserPageProfile = () => {
   const userProfile = useRecoilValue(userProfileAtom);
-  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
 
   return (
     <Container>
       <ProfileIMG profileIMG={userProfile?.profileImg} />
       <ProfileContainer>
         <NickName>{userProfile?.nickName}</NickName>
-        <SubmitButton onClick={() => setIsModalActive(true)}>
-          카카오톡으로 문의하기
-        </SubmitButton>
       </ProfileContainer>
     </Container>
   );
@@ -39,6 +35,8 @@ const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
 `;
 
 const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
   width: 391px;
   height: 136px;
 `;
@@ -47,27 +45,4 @@ const NickName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title32};
   line-height: ${(props) => props.theme.lineHeight.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
-  margin-bottom: 24px;
-`;
-const SubmitButton = styled.button`
-  width: 383px;
-  height: 64px;
-  border-radius: 10px;
-  border: none;
-  font-size: ${(props) => props.theme.fontSize.ad24};
-  line-height: ${(props) => props.theme.lineHeight.ad24};
-  font-weight: ${(props) => props.theme.fontWeight.medium};
-  background-color: ${(props) => props.theme.colors.orange02Main};
-  color: ${(props) => props.theme.colors.white};
-  &:hover {
-    cursor: pointer;
-    background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange02Main};
-    border: 1px solid ${(props) => props.theme.colors.orange02Main};
-  }
-  &:active {
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-    background-color: ${(props) => props.theme.colors.white};
-    color: ${(props) => props.theme.colors.orange02Main};
-  }
 `;

@@ -43,10 +43,9 @@ const PostInfo = () => {
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
 
-
   useEffect(() => {
-    setIsDone(postData?.[0]?.isDone)
-  },[postData])
+    setIsDone(postData?.[0]?.isDone);
+  }, [postData]);
 
   /** 판매중 모달 */
   const onClickToggleModal = useCallback(() => {
@@ -281,7 +280,7 @@ const PostInfo = () => {
       <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
-        {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+        {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
       {saveUser?.uid === postData?.[0]?.sellerUid ? (

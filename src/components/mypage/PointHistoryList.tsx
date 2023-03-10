@@ -63,38 +63,38 @@ const PointHistoryList = () => {
 
   return (
     <div>
-      <DropDown>
-        <DropWrapper>
+      <DropWrapper>
+        <DropDown>
           <DropDownBtn>
             <div>{category}</div>
             <img src="/assets/Vector.png" alt="" loading="lazy" />
           </DropDownBtn>
-          <ChartBtn></ChartBtn>
-        </DropWrapper>
-        <DropDownBox className="DropDownBox">
-          <PointWrapper
-            onClick={() => setCategory('전체')}
-            style={category === '전체' ? categoryStyle : undefined}
-            aria-label="전체"
-          >
-            전체
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('입금')}
-            style={category === '입금' ? categoryStyle : undefined}
-            aria-label="입금"
-          >
-            입금
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('출금')}
-            style={category === '출금' ? categoryStyle : undefined}
-            aria-label="출금"
-          >
-            출금
-          </PointWrapper>
-        </DropDownBox>
-      </DropDown>
+          <DropDownBox className="DropDownBox">
+            <PointWrapper
+              onClick={() => setCategory('전체')}
+              style={category === '전체' ? categoryStyle : undefined}
+              aria-label="전체"
+            >
+              전체
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('입금')}
+              style={category === '입금' ? categoryStyle : undefined}
+              aria-label="입금"
+            >
+              입금
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('출금')}
+              style={category === '출금' ? categoryStyle : undefined}
+              aria-label="출금"
+            >
+              출금
+            </PointWrapper>
+          </DropDownBox>
+        </DropDown>
+        <ChartBtn></ChartBtn>
+      </DropWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
           <div>
@@ -172,7 +172,6 @@ const DropDown = styled.div`
 const DropWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   width: 588px;
 `;
