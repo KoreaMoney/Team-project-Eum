@@ -33,8 +33,8 @@ const PostImg = () => {
         <CustomModal
           modal={isModalActive}
           setModal={setIsModalActive}
-          width="1000"
-          height="800"
+          width="800"
+          height="600"
           overflow="scroll"
           element={<ModalImage img={postData?.[0]?.imgURL} />}
         />
@@ -62,8 +62,8 @@ export const ModalImage = styled.div<{ img: string | undefined }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 800px;
-  height: 800px;
+  width: 700px;
+  height: 600px;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
