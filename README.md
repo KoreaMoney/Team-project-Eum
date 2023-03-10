@@ -19,8 +19,9 @@
 <h3>프로젝트</h3><br/>
 
 
-<h4>📆 프로젝트 개발기간</h4><br/>
+<h4>📆 프로젝트 개발기간</h4>
 23.02.06. ~ 23.03.13. (5weeks)<br/><br/>
+
 
 🛠 사용 기술 및 라이브러리<br/>
 <img src="https://img.shields.io/badge/React-red?style=flat-square&logo=React&logoColor=blue"/><br/>
