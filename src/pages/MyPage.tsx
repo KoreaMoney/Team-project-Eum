@@ -18,6 +18,7 @@ import {
 } from '../api';
 import {
   customConfirm,
+  customInfoAlert,
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
@@ -71,6 +72,15 @@ const MyPage = () => {
     return post.isDone === true;
   });
 
+   const isDoneSell = tradeSellData?.filter((post: any) => {
+     return post.isDone === false;
+   });
+  
+  
+  const isDoneBuy = tradeBuyData?.filter((post:any) => {
+    return post.isDone === false;
+  })
+
   /*회원탈퇴 */
   const user = auth.currentUser;
   const { mutate: deletedUser } = useMutation(
@@ -95,14 +105,18 @@ const MyPage = () => {
   );
   // deleteUsers
   const deleteAuth = () => {
-    customConfirm(
-      '탈퇴 하시겠습니까?',
-      '탈퇴 시 모든 정보는 삭제가 됩니다.\n정말 탈퇴하시겠습니까?',
-      '회원 탈퇴',
-      async () => {
-        await deletedUser(id);
-      }
-    );
+    if (isDoneBuy?.[0] || isDoneSell?.[0]) {
+      customInfoAlert('매칭중인 회원은 탈퇴가 불가능합니다.');
+    } else {
+      customConfirm(
+        '탈퇴 하시겠습니까?',
+        '탈퇴 시 모든 정보는 삭제가 됩니다.\n정말 탈퇴하시겠습니까?',
+        '회원 탈퇴',
+        async () => {
+          await deletedUser(id);
+        }
+      );
+    }
   };
 
   /* 1. 관심목록에서 포스트 클릭 시 조회수 + 1 후 해당 페이지로 이동합니다.
