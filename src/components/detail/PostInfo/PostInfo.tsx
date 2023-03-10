@@ -43,10 +43,9 @@ const PostInfo = () => {
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
 
-
   useEffect(() => {
-    setIsDone(postData?.[0]?.isDone)
-  },[postData])
+    setIsDone(postData?.[0]?.isDone);
+  }, [postData]);
 
   /** 판매중 모달 */
   const onClickToggleModal = useCallback(() => {
@@ -125,7 +124,7 @@ const PostInfo = () => {
    */
   const onClickApplyBuy = () => {
     customConfirm(
-      '이음 재능을 연결하시겠습니까?',
+      '재능 매칭을 연결하시겠습니까?',
       '연결을 누르시면 포인트가 차감됩니다.',
       '연결',
       () => {
@@ -185,8 +184,6 @@ const PostInfo = () => {
     postOnSalePost(newSalePosts)
   );
 
-
-
   /**판매중 <->거래완료 상태변경 */
   const { mutate: changeStatePost } = useMutation((newPost: postType) =>
     patchPosts(id, newPost)
@@ -219,7 +216,7 @@ const PostInfo = () => {
     } else {
       navigate(`/editpage/${id}`);
     }
-  }
+  };
   return (
     <a.PostInfoWrapper>
       <a.InfoTopContainer>
@@ -283,7 +280,7 @@ const PostInfo = () => {
       <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
-        {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} P
+        {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
       {saveUser?.uid === postData?.[0]?.sellerUid ? (
@@ -292,16 +289,16 @@ const PostInfo = () => {
           {isDone ? (
             <>
               <a.LikeContainer>
-                <a.NotViewBuyerButton aria-label="구매자명단">
+                <a.NotViewBuyerButton aria-label="매칭자">
                   구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
                 </a.NotViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
                 <a.NoStateButton onClick={onClickOnSaleButton}>
-                  판매중
+                  매칭중
                 </a.NoStateButton>
                 <a.StateButton onClick={onClickCompletedButton}>
-                  거래 완료
+                  매칭 완료
                 </a.StateButton>
               </a.CompletedBTContainer>
             </>
@@ -317,10 +314,10 @@ const PostInfo = () => {
               </a.LikeContainer>
               <a.CompletedBTContainer>
                 <a.StateButton onClick={onClickOnSaleButton}>
-                  판매중
+                  매칭중
                 </a.StateButton>
                 <a.NoStateButton onClick={onClickCompletedButton}>
-                  거래 완료
+                  매칭 완료
                 </a.NoStateButton>
               </a.CompletedBTContainer>
             </>
@@ -350,7 +347,7 @@ const PostInfo = () => {
             onClick={onClickApplyBuy}
             aria-label="바로 구매하기"
           >
-            바로 구매하기
+            바로 매칭하기
           </a.LikeSubmitButton>
         </a.LikeContainer>
       )}

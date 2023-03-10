@@ -136,7 +136,7 @@ const SellerInfo = () => {
           매칭 상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
-          후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
+          매칭 후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
       {isPostBuyer?.length > 0 ? (
@@ -149,7 +149,7 @@ const SellerInfo = () => {
       ) : (
         <a.KakaoButton
           onClick={() =>
-            customWarningAlert('구매자에게만\n제공되는 서비스입니다.')
+            customWarningAlert('재능 구매자에게만\n제공되는 서비스입니다.')
           }
           aria-label="안내 알림"
         >

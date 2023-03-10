@@ -125,7 +125,7 @@ const CommentsList = () => {
   return (
     <div>
       <CommentsContainer>
-        <CommentTitleText>후기</CommentTitleText>
+        <CommentTitleText>매칭 후기</CommentTitleText>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((comment: commentType) => (
@@ -159,15 +159,15 @@ const CommentTitleText = styled.p`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.ad24};
   padding-bottom: 28px;
-  margin-top: 80px;
   border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
 `;
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1199px;
+  width: 100%;
   height: 728px;
   margin-bottom: 240px;
+  margin-top: 60px;
 `;
 
 const CommentContainer = styled.div`

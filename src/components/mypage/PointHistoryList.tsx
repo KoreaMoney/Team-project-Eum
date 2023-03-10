@@ -63,35 +63,38 @@ const PointHistoryList = () => {
 
   return (
     <div>
-      <DropDown>
-        <DropDownBtn>
-          <div>{category}</div>
-          <img src="/assets/Vector.png" alt="" loading="lazy" />
-        </DropDownBtn>
-        <DropDownBox className="DropDownBox">
-          <PointWrapper
-            onClick={() => setCategory('전체')}
-            style={category === '전체' ? categoryStyle : undefined}
-            aria-label="전체"
-          >
-            전체
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('입금')}
-            style={category === '입금' ? categoryStyle : undefined}
-            aria-label="입금"
-          >
-            입금
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('출금')}
-            style={category === '출금' ? categoryStyle : undefined}
-            aria-label="출금"
-          >
-            출금
-          </PointWrapper>
-        </DropDownBox>
-      </DropDown>
+      <DropWrapper>
+        <DropDown>
+          <DropDownBtn>
+            <div>{category}</div>
+            <img src="/assets/Vector.png" alt="" loading="lazy" />
+          </DropDownBtn>
+          <DropDownBox className="DropDownBox">
+            <PointWrapper
+              onClick={() => setCategory('전체')}
+              style={category === '전체' ? categoryStyle : undefined}
+              aria-label="전체"
+            >
+              전체
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('입금')}
+              style={category === '입금' ? categoryStyle : undefined}
+              aria-label="입금"
+            >
+              입금
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('출금')}
+              style={category === '출금' ? categoryStyle : undefined}
+              aria-label="출금"
+            >
+              출금
+            </PointWrapper>
+          </DropDownBox>
+        </DropDown>
+        <ChartBtn></ChartBtn>
+      </DropWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
           <div>
@@ -166,6 +169,13 @@ const DropDown = styled.div`
   }
 `;
 
+const DropWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 588px;
+`;
+
 const DropDownBtn = styled.div`
   display: flex;
   flex-direction: row;
@@ -179,6 +189,29 @@ const DropDownBtn = styled.div`
   &:hover {
     cursor: pointer;
     color: ${theme.colors.gray30};
+  }
+`;
+
+const ChartBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  outline: none;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  &:hover {
+    background: url('https://ifh.cc/g/OyFgOq.png') no-repeat;
+    background-size: cover;
+  }
+  &:active {
+    background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+    background-size: cover;
   }
 `;
 

@@ -74,7 +74,7 @@ const Transaction = () => {
             <button onClick={onClickBtn}>
               <IoExitOutline size={50} />
             </button>
-            <h1>이음이 연결되었습니다.</h1>
+            <h1>매칭이 연결되었습니다.</h1>
           </a.TransactionText>
         )}
         {isCancel && (
@@ -82,7 +82,7 @@ const Transaction = () => {
             <button onClick={onClickBtn}>
               <IoExitOutline size={50} />
             </button>
-            <h1>이음이 취소되었습니다.</h1>
+            <h1>매칭이 취소되었습니다.</h1>
           </a.TransactionText>
         )}
         <a.PostContainer>

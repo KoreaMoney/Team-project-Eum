@@ -21,6 +21,7 @@ import {
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
+import Chart from '../components/mypage/Chart';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -350,6 +351,7 @@ const MyPage = () => {
               <a.UserProfileWrapper></a.UserProfileWrapper>
             </a.MyPageContentsContainer>
           </a.MyPageBody>
+          <Chart />
         </>
       )}
     </a.MyPageContainer>
