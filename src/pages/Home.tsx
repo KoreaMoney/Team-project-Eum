@@ -108,7 +108,7 @@ const Home = () => {
               <>
                 <KingBox>
                   <KingImage
-                    src="https://ifh.cc/g/TWvTps.webp"
+                    src="https://ifh.cc/g/7tc1h1.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -118,7 +118,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src="https://ifh.cc/g/X8qOwD.webp"
+                    src="https://ifh.cc/g/WMvHLg.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -128,7 +128,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src="https://ifh.cc/g/oW1q0M.webp"
+                    src="https://ifh.cc/g/lY7dfs.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -138,7 +138,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src="https://ifh.cc/g/ksZRlr.webp"
+                    src="https://ifh.cc/g/jj9v6l.webp"
                     alt=""
                     loading="lazy"
                   />
