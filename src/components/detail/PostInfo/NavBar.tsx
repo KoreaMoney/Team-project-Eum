@@ -62,6 +62,7 @@ const NavContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 60px;
+  margin-top: 80px;
   background-color: ${(props) => props.theme.colors.white};
 `;
 

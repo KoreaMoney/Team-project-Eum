@@ -15,7 +15,10 @@ import {
 } from 'firebase/auth';
 import * as a from '../styles/styledComponent/auth';
 import { getAuthUsers, postUsers } from '../api';
-import { customWarningAlert } from '../components/modal/CustomAlert';
+import {
+  customSuccessAlert,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
 import basicIMG from '../styles/basicIMG.webp';
 import loadable from '@loadable/component';
 
@@ -68,7 +71,6 @@ const SignIn = () => {
 
   //새로 고침 진행 시 uid session저장하기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log(!saveUser);
 
   //비밀번호 확인
   const handleClickViewPW = () => {
@@ -178,7 +180,7 @@ const SignIn = () => {
         if (
           errorMessage.includes('auth/account-exists-with-different-credential')
         ) {
-          setErr('이미 가입된 회원입니다.');
+          setErr('이미 가입된 이음인입니다.');
           navigate('/');
           return;
         }

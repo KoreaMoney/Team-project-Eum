@@ -7,6 +7,7 @@ import imageCompression from 'browser-image-compression';
 import 'react-quill/dist/quill.snow.css';
 import {
   customInfoAlert,
+  customSuccessAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
@@ -204,8 +205,7 @@ const WritePage = () => {
     }
   };
 
-  //비동기 처리를 하는 함수라서 await으로 진행
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validation()) {
       return;
@@ -227,6 +227,10 @@ const WritePage = () => {
   }
   const deleteImg = () => {
     setImg('');
+  };
+
+  const onClickWriteBtn = () => {
+    customSuccessAlert('재능 글쓰기가 완료되었습니다.');
   };
 
   return (
@@ -321,7 +325,7 @@ const WritePage = () => {
             </a.CategorysContainer>
           </a.EachContainer>
           <a.EachContainer>
-            <a.Title>설명</a.Title>
+            <a.Title>재능 설명</a.Title>
             <a.WriteQuill>
               <ReactQuill
                 theme="snow"
@@ -335,7 +339,7 @@ const WritePage = () => {
               />
             </a.WriteQuill>
           </a.EachContainer>
-          <a.SubmitButton>작성 완료</a.SubmitButton>
+          <a.SubmitButton onClick={onClickWriteBtn}>작성 완료</a.SubmitButton>
         </a.ContentsContainer>
       </a.WriteForm>
     </a.WriteContainer>

@@ -58,14 +58,14 @@ const Nav = () => {
         배지 ({badgeLength})
       </NavButtons>
       <NavButtons active={isSellerActive} onClick={onClickSeller}>
-        판매상품 ({userPosts && userPosts.length})
+        판매 상품 ({userPosts && userPosts.length})
       </NavButtons>
       <NavButtons
         active={isReviewActive}
         style={{ borderRight: 'none' }}
         onClick={onClickNavReview}
       >
-        받은 후기 ({userComments?.length})
+        매칭 후기 ({userComments?.length})
       </NavButtons>
     </NavContainer>
   );

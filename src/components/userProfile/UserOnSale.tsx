@@ -3,8 +3,11 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { userPostsAtom } from '../../atom';
 import ReactPaginate from 'react-paginate';
+import { useNavigate } from 'react-router-dom';
+import { postType } from '../../types';
 
 const UserOnSale = () => {
+  const navigate = useNavigate();
   const userPosts = useRecoilValue(userPostsAtom);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
@@ -16,25 +19,28 @@ const UserOnSale = () => {
     const endIndex = startIndex + itemsPerPage;
     return userPosts?.slice(startIndex, endIndex);
   }, [currentPage, userPosts]);
+
+  const onClickMoveDetail = (post:postType) => {
+    navigate(`/detail/${post.category}/${post.id}`)
+  }
   return (
     <>
       <Title>판매상품 ({userPosts && userPosts.length})</Title>
       <PostsContainer>
         {currentPagePosts?.map((post) => {
           return (
-            <PostContainer key={post.id}>
+            <PostContainer key={post.id} onClick={()=>onClickMoveDetail(post)}>
               {post.isDone && <ClearPost>거래완료</ClearPost>}
               <PostIMG bgPhoto={post.imgURL} />
               <ContentsContainer>
                 <InfoBest>{post.category}</InfoBest>
                 <p>{post.title}</p>
                 <p>
-                  {' '}
                   {post.price
                     ? post.price
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    : 0}{' '}
+                    : 0}
                   P
                 </p>
                 <span>{post.nickName}</span>
@@ -48,10 +54,7 @@ const UserOnSale = () => {
           <ReactPaginate
             previousLabel={'<'}
             nextLabel={'>'}
-            pageCount={Math.max(
-              Math.ceil(userPosts?.length / itemsPerPage),
-              1
-            )}
+            pageCount={Math.max(Math.ceil(userPosts?.length / itemsPerPage), 1)}
             marginPagesDisplayed={1}
             pageRangeDisplayed={3}
             onPageChange={handlePageChange}
@@ -78,7 +81,6 @@ const PostsContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   height: 718px;
-
 `;
 
 const PostContainer = styled.div`
@@ -131,7 +133,7 @@ const ClearPost = styled.div`
   top: 0;
   left: 0;
   width: 282px;
-  height: 347px;
+  height: 355px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
   font-size: ${(props) => props.theme.fontSize.title32};
@@ -139,7 +141,7 @@ const ClearPost = styled.div`
   line-height: ${(props) => props.theme.lineHeight.title32};
   color: ${(props) => props.theme.colors.orange01};
   text-align: center;
-  line-height: 347px;
+  line-height: 355px;
 `;
 
 const PaginationContainer = styled.div`
@@ -181,5 +183,4 @@ const PaginationContainer = styled.div`
       }
     }
   }
-
 `;

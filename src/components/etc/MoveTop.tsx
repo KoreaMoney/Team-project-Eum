@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 
 const MoveTop = () => {
