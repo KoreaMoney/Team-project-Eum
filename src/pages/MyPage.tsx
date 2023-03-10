@@ -24,7 +24,6 @@ import {
 import Loader from '../components/etc/Loader';
 import Chart from '../components/mypage/Chart';
 import { useSetRecoilState } from 'recoil';
-import { isDoneSellerAtom } from '../atom';
 
 
 const MyPage = () => {
@@ -33,7 +32,6 @@ const MyPage = () => {
 
   const [category, setCategory] = useState('관심목록');
   const [sellCategory, setSellCategory] = useState('판매중');
-  const setIsDoneSeller = useSetRecoilState(isDoneSellerAtom);
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
@@ -79,9 +77,7 @@ const MyPage = () => {
   const isDoneSell = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
   });
-  useEffect(() => {
-    setIsDoneSeller(isDoneSell);
-  }, [isDoneSell]);
+
 
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {

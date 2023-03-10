@@ -9,12 +9,6 @@ import { userType } from './types';
 //   key: 'isDark',
 //   default: true,
 // });
-
-export const isDoneSellerAtom = atom<onSalePostType[] | null | undefined>({
-  key: 'isDoneSeller',
-  default: null,
-});
-
 export const buyerLengthAtom = atom<number | undefined>({
   key: 'buyerLength',
   default: 0,
