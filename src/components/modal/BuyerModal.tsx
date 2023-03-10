@@ -22,14 +22,12 @@ const BuyerModal = () => {
   const setBuyerLength = useSetRecoilState(buyerLengthAtom);
 
   const salePosts = newSalePosts?.filter((prev) => {
-    return prev.postsId === id
+    return prev.postsId === id;
   });
 
   useEffect(() => {
     setBuyerLength(salePosts?.length);
   }, [salePosts]);
- 
-
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -49,10 +47,9 @@ const BuyerModal = () => {
     return result;
   };
 
-
   const GoOnSalePost = (salePosts: any) => {
     navigate(
-      `/detail/${salePost?.category}/${salePost?.postsId}/${salePost?.buyerUid}/${salePost?.id}`
+      `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
     );
     setIsModalActive(false);
   };
