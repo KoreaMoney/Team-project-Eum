@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { viewKakaoModalAtom } from '../../atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { onSalePostAtom, viewKakaoModalAtom } from '../../atom';
 import { customWarningAlert } from '../modal/CustomAlert';
 import {
   getOnSalePostBuyer,
@@ -22,6 +22,11 @@ import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
 import KakaoModal from '../modal/KakaoModal';
+import { async } from '@firebase/util';
+import { arrayUnion, doc, FieldValue, updateDoc } from 'firebase/firestore';
+import { dbService } from '../../firebase/Firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const SellerInfo = () => {
   const { postId, id } = useParams();
@@ -31,7 +36,7 @@ const SellerInfo = () => {
   const navigate = useNavigate();
 
   const [badgeLength, setBadgeLength] = useState(0);
-  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
+  const onSalePost = useRecoilValue(onSalePostAtom);
 
   const { data: post } = useQuery(
     ['post', identifier],
@@ -105,6 +110,11 @@ const SellerInfo = () => {
       userBadge = images[5];
       break;
   }
+
+  const salePostId = onSalePost?.[0]?.id;
+  
+
+
   return (
     <a.SellerInfoContainer>
       <a.ProfileContainer>
@@ -142,23 +152,6 @@ const SellerInfo = () => {
           매칭 후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-      {isPostBuyer?.length > 0 ? (
-        <>
-          <a.KakaoButton onClick={() => setIsModalActive(true)}>
-            카카오톡으로 문의하기
-          </a.KakaoButton>
-          <KakaoModal />
-        </>
-      ) : (
-        <a.KakaoButton
-          onClick={() =>
-            customWarningAlert('재능 구매자에게만\n제공되는 서비스입니다.')
-          }
-          aria-label="안내 알림"
-        >
-          카카오톡으로 문의하기
-        </a.KakaoButton>
-      )}
     </a.SellerInfoContainer>
   );
 };

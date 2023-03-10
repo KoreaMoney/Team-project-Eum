@@ -1,18 +1,42 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
-import { userProfileAtom, viewKakaoModalAtom } from '../../atom';
+import {
+  onSalePostAtom,
+  userProfileAtom,
+  viewKakaoModalAtom,
+} from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
+import {
+  arrayUnion,
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { dbService } from '../../firebase/Firebase';
+import { customWarningAlert } from './CustomAlert';
+import { Chat } from '../../types';
+import camera from '../../styles/camera.png';
 
 const KakaoModal = () => {
   const { postId } = useParams();
   const location = useLocation();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const messagesEndRef = useRef<HTMLDivElement>(document.createElement('div'));
+
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
-
+  const [chatContent, setChatContent] = useState('');
+  const [chat, setChat] = useState<Chat[] | null>(null);
+  const onSalePost = useRecoilValue(onSalePostAtom);
+  const [userNick, setUserNick] = useState<string | null | undefined>('');
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -24,7 +48,9 @@ const KakaoModal = () => {
   }, [isModalActive]);
 
   const { data: post } = useQuery(['post', postId], () => getPostsId(postId), {
-    staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    refetchOnMount: 'always',
+    refetchOnReconnect: 'always',
+    refetchOnWindowFocus: 'always',
   });
 
   const { data: seller } = useQuery(
@@ -32,43 +58,175 @@ const KakaoModal = () => {
     () => getUsers(post?.[0]?.sellerUid),
     {
       enabled: Boolean(post?.[0]?.sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
+      refetchOnMount: 'always',
+      refetchOnReconnect: 'always',
+      refetchOnWindowFocus: 'always',
     }
   );
   const isDetailPage = location.pathname === '/detail';
+  const getTimeGap = (posting: number | undefined) => {
+    if (posting) {
+      const msGap = Date.now() - posting;
+      const minuteGap = Math.floor(msGap / 60000);
+      const hourGap = Math.floor(msGap / 3600000);
+      if (msGap < 0) {
+        return '방금 전';
+      }
+      if (hourGap > 24) {
+        const time = new Date(posting);
+        const timeGap = time.toJSON().substring(0, 10);
+        return timeGap;
+      }
+      if (minuteGap > 59) {
+        return `${hourGap}시간 전`;
+      } else {
+        if (minuteGap === 0) {
+          return '방금 전';
+        } else {
+          return `${minuteGap}분 전`;
+        }
+      }
+    }
+  };
+  /** 여기서부터 채팅 관련 */
+  const salePostId = onSalePost?.[0]?.id;
 
-  const profile = isDetailPage ? seller : userProfile;
-  
+  useEffect(() => {
+    setUserNick(
+      saveUser.uid === onSalePost?.[0]?.sellerUid
+        ? onSalePost?.[0].sellerNickName
+        : onSalePost?.[0].buyerNickName
+    );
+  }, [onSalePost]);
+
+  console.log('userNick: ', userNick);
+
+  /**전송 버튼 클릭 */
+  const onClickAddChatContents = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    if (salePostId) {
+      //   if (saveUser.uid === onSalePost?.[0]?.sellerUid) {
+      //     setUserNick(sellerNickName);
+      //   } else {
+      //     setUserNick(buyerNickName);
+      //   }
+
+      if (chatContent) {
+        await updateDoc(doc(dbService, 'chat', salePostId), {
+          chatContent: arrayUnion({
+            message: chatContent,
+            uid: saveUser.uid,
+            nickName: userNick,
+            createdAt: Date.now(),
+          }),
+        });
+        setChatContent('');
+      } else {
+        customWarningAlert('내용을 입력해주세요');
+      }
+    }
+  };
+
+  const getChat = () => {
+    const q = query(
+      collection(dbService, 'chat'),
+      where('id', '==', salePostId)
+    );
+    onSnapshot(q, (snapshot) => {
+      const newChats = snapshot.docs.map((doc) => {
+        const newChat = {
+          id: doc.id,
+          chatContent: [],
+          ...doc.data(),
+        };
+        return newChat;
+      });
+      setChat(newChats);
+    });
+  };
+
+  useEffect(() => {
+    getChat();
+  }, [salePostId]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [isModalActive]);
+
   return (
     <>
       {isModalActive ? (
         <CustomModal
           modal={isModalActive}
           setModal={setIsModalActive}
-          width="600"
-          height="400"
+          width="872"
+          height="951"
           overflow="hidden"
           element={
-            <Container>
-              <Title>문의하기</Title>
-              <KakaoInfoContainer>
-                <KakaoInfo>
-                  하단에 적힌<span> 카카오톡 ID</span>로 연락해서
-                </KakaoInfo>
-                <KakaoInfo>판매자에게 궁금한 점을 물어보세요!</KakaoInfo>
-              </KakaoInfoContainer>
-              <Seller>
-                {profile?.nickName}
-                <span>님의</span> 카카오톡 ID 입니다.
-              </Seller>
-              <KakaoIdContainer>
-                <KakaoIdTitle>카카오톡ID</KakaoIdTitle>
-                <KakaoId>
-                  {profile?.kakaoId
-                    ? profile?.kakaoId
-                    : 'ID가 등록되지 않았습니다.'}
-                </KakaoId>
-              </KakaoIdContainer>
+            <Container onSubmit={onClickAddChatContents}>
+              <Title>채팅하기</Title>
+              <ScrollContainer>
+                <ChatContainer>
+                  {chat?.[0]?.chatContent.map((prev) => {
+                    return (
+                      <>
+                        {prev.uid === saveUser.uid ? (
+                          <>
+                            <MyDiv>
+                              <MyChatContainer key={prev.createdAt}>
+                                <span>{prev.nickName}</span>
+                                <p>{prev.message}</p>
+                              </MyChatContainer>
+                              <CreatedAtContainer>
+                                <CreatedAt>
+                                  {getTimeGap(prev.createdAt)}
+                                </CreatedAt>
+                              </CreatedAtContainer>
+                            </MyDiv>
+                          </>
+                        ) : (
+                          <YouDiv>
+                            <YouChatContainer key={prev.createdAt}>
+                              <span>{prev.nickName}</span>
+                              <p>{prev.message}</p>
+                            </YouChatContainer>
+                            <CreatedAtContainer>
+                              <CreatedAt>
+                                {getTimeGap(prev.createdAt)}
+                              </CreatedAt>
+                            </CreatedAtContainer>
+                          </YouDiv>
+                        )}
+                      </>
+                    );
+                  })}
+                  <div ref={messagesEndRef} />
+                </ChatContainer>
+              </ScrollContainer>
+              <ChatInputContainer>
+                <PhotoIcon />
+                <ChatInput
+                  type="text"
+                  value={chatContent}
+                  onChange={(e) => setChatContent(e.target.value)}
+                  placeholder="메세지를 입력해주세요."
+                  maxLength={150}
+                />
+              </ChatInputContainer>
             </Container>
           }
         />
@@ -81,74 +239,168 @@ const KakaoModal = () => {
 
 export default KakaoModal;
 
-const Container = styled.div`
-  width: 500px;
-  height: 251px;
+const Container = styled.form`
+  width: 640px;
+  height: 791px;
   margin: 80px;
   text-align: center;
   color: ${(props) => props.theme.colors.black};
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 `;
 
 const Title = styled.p`
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};
   line-height: ${(props) => props.theme.lineHeight.title32};
+  margin-bottom: 40px;
 `;
 
-const KakaoInfoContainer = styled.div`
-  width: 100%;
-  height: 51px;
-  margin: 32px 0;
+const MyDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-end;
+  height: 100%;
 `;
 
-const KakaoInfo = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title16};
+const YouDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+const CreatedAtContainer = styled.div`
+  display: flex;
+  justify-content: right;
+`;
+const CreatedAt = styled.p`
+  font-size: 12px;
   font-weight: ${(props) => props.theme.fontWeight.regular};
-  line-height: ${(props) => props.theme.lineHeight.title16};
-  color: ${(props) => props.theme.colors.gray20};
-  margin-bottom: 8px;
+  color: ${(props) => props.theme.colors.gray30};
+  padding: 5px;
+  display: flex;
+`;
+const ChatContainer = styled.div`
+  height: 439px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 95%;
+`;
 
+const MyChatContainer = styled.div`
+  min-height: 56px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 80%;
   span {
-    font-size: ${(props) => props.theme.fontSize.title18};
-    font-weight: ${(props) => props.theme.fontWeight.medium};
-    line-height: ${(props) => props.theme.lineHeight.title18};
+    font-size: ${(props) => props.theme.fontSize.title14};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: 17.76px;
+    padding: 5px 15px;
     color: ${(props) => props.theme.colors.orange02Main};
   }
-`;
-
-const Seller = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title16};
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  line-height: ${(props) => props.theme.lineHeight.title16};
-  margin-bottom: 24px;
-
-  span {
+  p {
+    font-size: ${(props) => props.theme.fontSize.title16};
     font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: 23.68px;
+    word-break: break-all;
+    padding: 10px 24px;
+    border-radius: 20px;
+    background-color: ${(props) => props.theme.colors.orange00};
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.25));
   }
 `;
 
-const KakaoIdContainer = styled.div`
-  width: 100%;
-  height: 56px;
-  border: 1px solid ${(props) => props.theme.colors.gray20};
-  border-radius: 10px;
-  padding: 16px 0;
+const YouChatContainer = styled.div`
+  min-height: 56px;
+  text-align: left;
   display: flex;
-  gap: 24px;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80%;
+  span {
+    font-size: ${(props) => props.theme.fontSize.title14};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: 17.76px;
+    padding: 5px 15px;
+    color: ${(props) => props.theme.colors.gray30};
+  }
+  p {
+    font-size: ${(props) => props.theme.fontSize.title16};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: 23.68px;
+    word-break: break-all;
+    padding: 10px 24px;
+    border-radius: 20px;
+    background-color: ${(props) => props.theme.colors.gray10};
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.4));
+  }
 `;
 
-const KakaoIdTitle = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title16};
-  font-weight: ${(props) => props.theme.fontWeight.regular};
-  line-height: ${(props) => props.theme.lineHeight.title16};
-  color: ${(props) => props.theme.colors.gray30};
+const ScrollContainer = styled.div`
+  height: 639px;
+  width: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.colors.orange02Main};
+    border-radius: 10px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: #f1f1f1;
+  }
 `;
 
-const KakaoId = styled.p`
+const ChatInputContainer = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ChatInput = styled.input`
+  width: 90%;
+  height: 40px;
+  border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  border-radius: 50px;
+  padding: 11px 49px;
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
   color: ${(props) => props.theme.colors.black};
+  &::placeholder {
+    font-size: ${(props) => props.theme.fontSize.title16};
+    font-weight: ${(props) => props.theme.fontWeight.regular};
+    line-height: ${(props) => props.theme.lineHeight.title16};
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const PhotoIcon = styled.div`
+  background-image: url(${camera});
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center center;
+  margin-left: 10px;
 `;

@@ -1,3 +1,17 @@
+
+
+interface Chat {
+  id: string;
+  chatContent: {
+    uid?: string;
+    manager?: string;
+    message?: string;
+    nickName?: string;
+    createdAt?: number|undefined;
+  }[];
+};
+
+
 export interface ISignUpForm {
   email: string;
   pw: string;
@@ -84,7 +98,7 @@ export interface onSalePostType {
   sellerUid: string | null | undefined;
   sellerNickName: string | null | undefined;
   title: string | undefined;
-  content: string | undefined;
+  content: string;
   imgURL: string | undefined;
   price: number | string | undefined;
   category: string | undefined;

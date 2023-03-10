@@ -1,16 +1,22 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../firebase/Firebase';
 import { getOnSalePost } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom, onSalePostAtom } from '../atom';
+import {
+  isCancelAtom,
+  isDoneAtom,
+  onSalePostAtom,
+  viewKakaoModalAtom,
+} from '../atom';
 import Loader from '../components/etc/Loader';
 import * as a from '../styles/styledComponent/detail';
 import PostImg from '../components/detail/PostImg';
 import PostInfo from '../components/transaction/PostInfo/PostInfo';
 import Content from '../components/transaction/content/Content';
+import KakaoModal from '../components/modal/KakaoModal';
 
 /**순서
  * 1. query-key만들기
@@ -28,11 +34,9 @@ const Transaction = () => {
   const isDone = useRecoilValue(isDoneAtom);
   const isCancel = useRecoilValue(isCancelAtom);
   const setOnSalePost = useSetRecoilState(onSalePostAtom);
-
   const onClickBtn = () => {
     navigate(-1);
   };
-
 
   /**onSalePost 데이터 가지고오기 */
   const { data, isLoading } = useQuery(
@@ -49,6 +53,7 @@ const Transaction = () => {
     }
   );
 
+  
   //로딩 구간
   if (isLoading) {
     return (

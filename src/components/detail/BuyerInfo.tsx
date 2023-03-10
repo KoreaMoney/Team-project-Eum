@@ -13,13 +13,15 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { viewKakaoModalAtom } from '../../atom';
+import KakaoModal from '../modal/KakaoModal';
 
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
   const navigate = useNavigate();
-
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
     ['sellerPost', buyerId],
@@ -69,6 +71,8 @@ const SellerInfo = () => {
       userBadge = images[5];
       break;
   }
+
+ 
 
   return (
     <a.SellerInfoContainer>
