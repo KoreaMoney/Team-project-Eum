@@ -52,7 +52,6 @@ const PostInfo = () => {
   const isPostSell = myOnSale?.filter((post: onSalePostType) => {
     return post.postsId === id;
   });
-    console.log('myOnSalePosts: ', isPostSell);
 
   useEffect(() => {
     setBuyerList(isPostSell?.length);
@@ -234,7 +233,6 @@ const PostInfo = () => {
       }
     }
   };
-  console.log('isDoneSeller: ', myOnSale);
   
 
   /**드랍다운의 게시글 수정 클릭 함수 */
