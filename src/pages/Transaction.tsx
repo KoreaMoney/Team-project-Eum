@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../firebase/Firebase';
 import { getOnSalePost } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom, onSalePostAtom } from '../atom';
+import { isCancelAtom, isDoneAtom, onSalePostAtom, viewKakaoModalAtom } from '../atom';
 import Loader from '../components/etc/Loader';
 import * as a from '../styles/styledComponent/detail';
 import PostImg from '../components/detail/PostImg';
@@ -28,11 +28,10 @@ const Transaction = () => {
   const isDone = useRecoilValue(isDoneAtom);
   const isCancel = useRecoilValue(isCancelAtom);
   const setOnSalePost = useSetRecoilState(onSalePostAtom);
-
+  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
   const onClickBtn = () => {
     navigate(-1);
   };
-
 
   /**onSalePost 데이터 가지고오기 */
   const { data, isLoading } = useQuery(
@@ -40,6 +39,8 @@ const Transaction = () => {
     () => getOnSalePost(uuid),
     {
       onSuccess: (data) => {
+        console.log('data: ', data);
+
         queryClient.invalidateQueries(['salePost0', uuid]);
         setOnSalePost(data);
       },
@@ -48,7 +49,9 @@ const Transaction = () => {
       refetchOnWindowFocus: 'always',
     }
   );
-
+  const onClickKakaoButton = () => {
+    setIsModalActive(true);
+  };
   //로딩 구간
   if (isLoading) {
     return (
@@ -88,6 +91,12 @@ const Transaction = () => {
         <a.PostContainer>
           <PostImg />
           <PostInfo />
+          <>
+            <a.KakaoButton onClick={onClickKakaoButton}>
+              카카오톡으로 문의하기
+            </a.KakaoButton>
+            <KakaoModal />
+          </>
         </a.PostContainer>
         <Content />
       </a.DetailWrapper>

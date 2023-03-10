@@ -24,6 +24,8 @@ import {
 import * as a from './PostInfoStyle';
 import { v4 as uuidv4 } from 'uuid';
 import { onSalePostType, postType } from '../../../types';
+import { doc, setDoc } from 'firebase/firestore';
+import { dbService } from '../../../firebase/Firebase';
 
 const PostInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -128,7 +130,7 @@ const PostInfo = () => {
       '이음 재능을 연결하시겠습니까?',
       '연결을 누르시면 포인트가 차감됩니다.',
       '연결',
-      () => {
+      async () => {
         if (!saveUser) {
           navigate('/signin', { state: { from: location.pathname } });
           return;
@@ -166,6 +168,10 @@ const PostInfo = () => {
           setTimeout(() => {
             navigate(`/detail/${categoryName}/${id}/${userData?.id}/${uuid}`);
           }, 500);
+          await setDoc(doc(dbService, 'chat', uuid), {
+            id:uuid,
+            chatContent: [{ manager: '연결되었습니다.'}],
+          });
         } else {
           customWarningAlert('포인트가 부족합니다.');
         }

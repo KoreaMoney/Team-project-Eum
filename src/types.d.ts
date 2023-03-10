@@ -1,3 +1,16 @@
+
+
+interface Chat {
+  id: string;
+  chatContent: {
+    manager?: string;
+    message?: string;
+    nickName?: string;
+    createdAt?: number;
+  }[];
+};
+
+
 export interface ISignUpForm {
   email: string;
   pw: string;

@@ -13,13 +13,16 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { viewKakaoModalAtom } from '../../atom';
+import KakaoModal from '../modal/KakaoModal';
 
 const SellerInfo = () => {
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
   const navigate = useNavigate();
-
+   const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
     ['sellerPost', buyerId],
@@ -70,6 +73,10 @@ const SellerInfo = () => {
       break;
   }
 
+  const onClickKakaoButton = () => {
+    setIsModalActive(true);
+  };
+
   return (
     <a.SellerInfoContainer>
       <a.ProfileContainer>
@@ -107,6 +114,10 @@ const SellerInfo = () => {
           후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
+      <a.KakaoButton onClick={onClickKakaoButton}>
+        카카오톡으로 문의하기
+      </a.KakaoButton>
+      <KakaoModal />
     </a.SellerInfoContainer>
   );
 };
