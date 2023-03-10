@@ -1,9 +1,9 @@
 <h1>세상 모든 사람들의 재능을 이어주다.</h1> <br/><br/>
 안녕하세요. <br/>
 저희 이음 프로젝트는 개인에게는 별거 없는 재능이라도 누군가 필요한 재능이 될 수 있다고 생각하여 제작하였습니다.<br/>
-🏠HomePage :&nbps; https://eum-interlink.vercel.app/<br/>
-🔗NOTION :&nbps;https://www.notion.so/e9e0f2e24c3041779bdbd281443bac6c<br/>
-📐Figma ::&nbps;<br/><br/>
+🏠HomePage : https://eum-interlink.vercel.app/<br/>
+🔗NOTION : https://www.notion.so/e9e0f2e24c3041779bdbd281443bac6c<br/>
+📐Figma : <br/><br/>
 
 
 <h3>👨‍💻 팀 소개</h3><br/>
@@ -37,7 +37,7 @@
 <h4>1. 포인트 결제제도</h4><br/>
 <h4>2. 결제 이중 검증제도</h4><br/>
 
-로그인/회원가입 :&nbps; <br/>
-메인페이지 :&nbps; <br/>
-상세페이지 :&nbps; <br/>
-마이페이지 :&nbps; <br/>
+로그인/회원가입 : <br/>
+메인페이지 : <br/>
+상세페이지 : <br/>
+마이페이지 : <br/>
