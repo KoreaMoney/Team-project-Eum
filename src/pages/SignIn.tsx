@@ -71,7 +71,6 @@ const SignIn = () => {
 
   //새로 고침 진행 시 uid session저장하기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  console.log(!saveUser);
 
   //비밀번호 확인
   const handleClickViewPW = () => {

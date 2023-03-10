@@ -351,7 +351,6 @@ const MyPage = () => {
               <a.UserProfileWrapper></a.UserProfileWrapper>
             </a.MyPageContentsContainer>
           </a.MyPageBody>
-          <Chart />
         </>
       )}
     </a.MyPageContainer>

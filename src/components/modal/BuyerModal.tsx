@@ -11,7 +11,6 @@ const BuyerModal = () => {
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
-  console.log( 'newSalePosts: ' ,newSalePosts);
   
   useEffect(() => {
     const body = document.querySelector('body');
