@@ -173,7 +173,7 @@ const KakaoModal = () => {
         shortenUrl(resultImg as string);
       };
     } catch (error) {
-      console.log(error);
+      console.dir(error);
     }
   };
 

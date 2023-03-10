@@ -18,6 +18,7 @@ const BuyerModal = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
+  
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
   const salePosts = newSalePosts?.filter((prev) => {
     return prev.postsId === id;
