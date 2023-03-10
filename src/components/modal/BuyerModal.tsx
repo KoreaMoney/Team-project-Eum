@@ -52,7 +52,7 @@ const BuyerModal = () => {
 
   const GoOnSalePost = (salePosts: any) => {
     navigate(
-      `/detail/${salePost?.category}/${salePost?.postsId}/${salePost?.buyerUid}/${salePost?.id}`
+      `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
     );
     setIsModalActive(false);
   };

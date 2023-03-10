@@ -13,6 +13,7 @@ import {
   buyerLengthAtom,
   detailPostAtom,
   detailUserAtom,
+  isDoneSellerAtom,
   myOnSalePostsAtom,
   viewBuyerModalAtom,
 } from '../../../atom';
@@ -43,6 +44,7 @@ const PostInfo = () => {
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
   const buyerLength = useRecoilValue(buyerLengthAtom);
+  const isDoneSeller = useRecoilValue(isDoneSellerAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
@@ -145,7 +147,7 @@ const PostInfo = () => {
         if (point >= price) {
           updateUser({ point: point - price });
           const uuid = uuidv4();
-          if (postData){
+          if (postData) {
             onSalePosts({
               id: uuid,
               postsId: id,
@@ -172,8 +174,8 @@ const PostInfo = () => {
             navigate(`/detail/${categoryName}/${id}/${userData?.id}/${uuid}`);
           }, 500);
           await setDoc(doc(dbService, 'chat', uuid), {
-            id:uuid,
-            chatContent: [{ manager: '연결되었습니다.'}],
+            id: uuid,
+            chatContent: [{ manager: '연결되었습니다.' }],
           });
         } else {
           customWarningAlert('포인트가 부족합니다.');
@@ -210,12 +212,17 @@ const PostInfo = () => {
   };
   /**거래완료 클릭 */
   const onClickCompletedButton = async () => {
-    if (postData) {
+    if (isDoneSeller) {if (postData) {
       setIsDone(true);
       await changeStatePost({
         ...postData[0],
         isDone: true,
       });
+    }
+        
+    } else {
+      customWarningAlert('매칭중인 글이 있습니다.');
+      return;
     }
   };
 
@@ -290,7 +297,6 @@ const PostInfo = () => {
       <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
-
         {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
