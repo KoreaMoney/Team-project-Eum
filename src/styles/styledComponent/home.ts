@@ -26,9 +26,8 @@ export const HomePostContainer = styled.div`
 export const HotEum = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 40px;
+  width: 90%;
 
   span {
     font-size: ${(props) => props.theme.fontSize.title32};
