@@ -38,6 +38,7 @@ const KakaoModal = () => {
   const isDetailPage = location.pathname === '/detail';
 
   const profile = isDetailPage ? seller : userProfile;
+  
   return (
     <>
       {isModalActive ? (
