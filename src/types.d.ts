@@ -40,6 +40,7 @@ export interface userType {
   repBadge: string;
 }
 export interface postType {
+
   id: string | undefined;
   title: string;
   nickName: string | null | undefined;
@@ -48,7 +49,7 @@ export interface postType {
   price: number | string;
   imgURL: string;
   category: string;
-  like: [];
+  like: string[];
   views: number;
   createAt: number;
   profileImg: string;
@@ -82,11 +83,11 @@ export interface onSalePostType {
   buyerNickName: string | null | undefined;
   sellerUid: string | null | undefined;
   sellerNickName: string | null | undefined;
-  title: string;
-  content: string;
-  imgURL: [];
-  price: number | string;
-  category: string;
+  title: string | undefined;
+  content: string | undefined;
+  imgURL: string | undefined;
+  price: number | string | undefined;
+  category: string | undefined;
   createdAt: number;
   isDone: boolean;
   isSellerCancel: boolean;

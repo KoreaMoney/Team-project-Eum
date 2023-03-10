@@ -33,6 +33,7 @@ import {
   patchUsers,
   postComments,
 } from '../api';
+import Loader from '../components/etc/Loader';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -176,7 +177,7 @@ function ReviewPage() {
     setReview(e.target.value);
   };
   if (isLoading) {
-    return <div></div>;
+    return <Loader />;
   }
 
   return (

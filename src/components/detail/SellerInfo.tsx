@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { viewKakaoModalAtom } from '../../atom';
 import { customWarningAlert } from '../modal/CustomAlert';
 import {
@@ -29,8 +29,9 @@ const SellerInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const navigate = useNavigate();
+  
   const [badgeLength, setBadgeLength] = useState(0);
-  const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
+  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
 
   const { data: post } = useQuery(
     ['post', identifier],

@@ -1,34 +1,27 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import { useRecoilState } from 'recoil';
-import { isCancelAtom, isDoneAtom, viewBuyerModalAtom } from '../atom';
-import { onSalePostType } from '../types';
-import parse from 'html-react-parser';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  detailPostAtom,
+  detailUserAtom,
+  isCancelAtom,
+  isDoneAtom,
+  myOnSalePostsAtom,
+} from '../atom';
 import * as a from '../styles/styledComponent/detail';
 import axios from 'axios';
 import loadable from '@loadable/component';
-import {
-  customConfirm,
-  customSuccessAlert,
-  customWarningAlert,
-} from '../components/modal/CustomAlert';
-import {
-  deletePosts,
-  getPostsId,
-  getUsers,
-  patchPosts,
-  patchUsers,
-  postOnSalePost,
-} from '../api';
+import { getPostsId, getUsers } from '../api';
 import Loader from '../components/etc/Loader';
 import BuyerModal from '../components/modal/BuyerModal';
-
+import PostImg from '../components/detail/PostImg';
+import PostInfo from '../components/detail/PostInfo/PostInfo';
+import NavBar from '../components/detail/PostInfo/NavBar';
+import DetailContent from '../components/detail/content/DetailContent';
 const CommentsList = loadable(
   () => import('../components/comment/CommentsList')
 );
-const SellerInfo = loadable(() => import('../components/detail/SellerInfo'));
 
 /**순서
  * 1. query구성을 진행하여 데이터를 get함
@@ -43,27 +36,15 @@ const SellerInfo = loadable(() => import('../components/detail/SellerInfo'));
  */
 
 const Detail = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const { categoryName } = useParams();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
 
-  const [isDrop, setIsDrop] = useState(false);
-  const [isDescriptionActive, setIsDescriptionActive] = useState(true);
-  const [isReviewActive, setIsReviewActive] = useState(false);
-  const location = useLocation();
-  const [postData, setPostData] = useState<{ like: any[] }>({ like: [] });
-  const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
-  const [isDone, setIsDone] = useRecoilState(isDoneAtom);
-  const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
-  const [newSalePosts, setNewSalePosts] = useState([]);
-
-  /** 판매중 모달 */
-  const onClickToggleModal = useCallback(() => {
-    setIsModalActive(!isModalActive);
-  }, [isModalActive]);
-
+  const setIsCancel = useSetRecoilState(isCancelAtom);
+  const setIsDone = useSetRecoilState(isDoneAtom);
+  const setPostData = useSetRecoilState(detailPostAtom);
+  const setUserData = useSetRecoilState(detailUserAtom);
+  const setNewSalePosts = useSetRecoilState(myOnSalePostsAtom);
   // 클릭한 글의 데이터를 가지고 옵니다.
   // 쿼리키는 중복이 안되야 하기에 detail페이지는 저렇게 뒤에 id를 붙혀서 쿼리키를 다 다르게 만들어준다.
   useEffect(() => {
@@ -71,44 +52,26 @@ const Detail = () => {
     setIsDone(false);
   }, []);
 
+  /**Detail Post 정보 가져오기 */
   const { data: post, isLoading } = useQuery(
     ['post', id],
     () => getPostsId(id),
     {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+      onSuccess: (data) => setPostData(data),
     }
   );
 
-  // onSalePosts 데이터가 생성 코드
-  const { mutate: onSalePosts } = useMutation((newSalePosts: onSalePostType) =>
-    postOnSalePost(newSalePosts)
-  );
-
-  // 구매자가 바로신청하기를 누르면 구매자의 정보를 가져오기 위한 함수
+  /**구매자가 바로구매하기 버튼을 누르면 구매자의 정보를 가져옵니다. */
   const { data: user } = useQuery(
     ['user', saveUser?.uid],
     () => getUsers(saveUser?.uid),
     {
       enabled: Boolean(saveUser), // saveUser?.uid가 존재할 때만 쿼리를 시작
+      onSuccess: (data) => setUserData(data),
       refetchOnMount: 'always',
       refetchOnReconnect: 'always',
       refetchOnWindowFocus: 'always',
-    }
-  );
-
-  /**판매중인 글 */
-  const { data: myOnSale } = useQuery(
-    ['myOnSale'],
-    async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${
-          saveUser.uid
-        }&isDone=${false}&isCancel=${false}`
-      );
-      return response.data;
-    },
-    {
-      onSuccess: (data) => setNewSalePosts(data),
     }
   );
 
@@ -124,63 +87,22 @@ const Detail = () => {
     }
   }, [user, queryClient, post?.[0]?.sellerUid]);
 
-  // 구매자가 바로신청하기를 누르면 구매자의 포인트에서 price만큼 -해주는 mutation 함수
-  const { mutate: updateUser } = useMutation(
-    (newUser: { point: number | undefined }) =>
-      patchUsers(saveUser?.uid, newUser),
-    {
-      onSuccess: () => queryClient.invalidateQueries(['user', saveUser?.uid]),
-    }
-  );
 
-  // 글 찜 기능을 위해
-  const postCountCheck = post?.[0].like.includes(saveUser?.uid);
-  const { mutate: updatePost } = useMutation(
-    (newPosts: { like: string[] }) => patchPosts(id, newPosts),
-
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['post', id]);
-        setPostData((prev: any) => ({
-          ...prev,
-          like: postCountCheck
-            ? prev.like.filter((prev: any) => prev !== saveUser?.uid)
-            : [...(prev.like || []), saveUser?.uid],
-        }));
-      },
-      onError: (error) => {
-        console.dir(error);
-      },
-    }
-  );
-
-  const postCounter = async () => {
-    if (!saveUser) navigate('/signin');
-    else {
-      if (postCountCheck) {
-        await updatePost({
-          like: post?.[0].like.filter((prev: any) => prev !== saveUser?.uid),
-        });
-      } else {
-        await updatePost({
-          like: [...(post?.[0].like || []), saveUser?.uid],
-        });
-      }
-    }
-  };
-
-  /**글 삭제 */
-  const { mutate: deletePost } = useMutation((id: string) => deletePosts(id), {
-    onSuccess: () => {
-      navigate('/categorypage/all');
+  /**판매중인 글, 삭제금지 */
+  const { data: myOnSale } = useQuery(
+    ['myOnSale'],
+    async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${
+          saveUser.uid
+        }&isDone=${false}&isCancel=${false}`
+      );
+      return response.data;
     },
-  });
-  const onClickDeleteComment = (postId: string) => {
-    customConfirm('정말 삭제하시겠습니까?', '내 글 삭제', '삭제', async () => {
-      deletePost(postId);
-    });
-  };
-
+    {
+      onSuccess: (data) => setNewSalePosts(data),
+    }
+  );
   if (isLoading) {
     return (
       <div>
@@ -240,7 +162,7 @@ const Detail = () => {
             navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
           }, 500);
         } else {
-          customWarningAlert('이음 포인트가 부족합니다.');
+          customWarningAlert('포인트가 부족합니다.');
         }
       }
     );
@@ -291,167 +213,13 @@ const Detail = () => {
       ) : (
         <a.DetailWrapper>
           <a.PostContainer>
-            <BuyerModal newSalePosts={newSalePosts} />
-            <a.PostImage
-              img={post[0].imgURL}
-              aria-label="post이미지"
-              onClick={() => {
-                window.open(post[0].imgURL);
-              }}
-            />
-            <a.PostInfoWrapper>
-              <a.InfoTopContainer>
-                <a.InfoTopLeftContainer>
-                  <p>
-                    {post?.[0].category === 'all'
-                      ? '전체'
-                      : post?.[0].category === 'study'
-                      ? '공부'
-                      : post?.[0].category === 'play'
-                      ? '놀이'
-                      : post?.[0].category === 'advice'
-                      ? '상담'
-                      : post?.[0].category === 'etc'
-                      ? '기타'
-                      : '전체'}
-                  </p>
-                </a.InfoTopLeftContainer>
-                <a.InfoTopRightContainer>
-                  <a.IconLeftContainer>
-                    <a.HeartIcon />
-                    <a.LikeLength>{post?.[0].like.length}</a.LikeLength>
-                  </a.IconLeftContainer>
-                  <a.IconRightContainer>
-                    <a.ShareIcon onClick={linkCopy} />
-                  </a.IconRightContainer>
-                </a.InfoTopRightContainer>
-              </a.InfoTopContainer>
-              <a.TextContainer>
-                <a.TitleText>{post?.[0].title}</a.TitleText>
-                {saveUser?.uid === post?.[0].sellerUid && (
-                  <a.DropDownContainer>
-                    <a.KebobIcon onClick={() => setIsDrop(!isDrop)} />
-                    {isDrop && (
-                      <a.DropDownBox>
-                        <a.DropDownButton
-                          onClick={() => navigate(`/editpage/${id}`)}
-                          aria-label="수정"
-                        >
-                          게시글 수정
-                        </a.DropDownButton>
-                        <a.DropDownButton
-                          onClick={() => onClickDeleteComment(post?.[0].id)}
-                        >
-                          삭제
-                        </a.DropDownButton>
-                      </a.DropDownBox>
-                    )}
-                  </a.DropDownContainer>
-                )}
-              </a.TextContainer>
-              <a.PostNickName>{post?.[0].nickName}</a.PostNickName>
-              <a.PostPrice>
-                {post[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                P
-              </a.PostPrice>
-              <a.LikeContainer>
-                {postCountCheck ? (
-                  <>
-                    <a.LikeButtonContainer
-                      onClick={postCounter}
-                      aria-label="좋아요 더하기"
-                    >
-                      <a.LikeIcon />
-                    </a.LikeButtonContainer>
-                    {saveUser?.uid === post?.[0].sellerUid ? (
-                      <a.LikeSubmitButton
-                        onClick={onClickToggleModal}
-                        aria-label="구매자명단"
-                      >
-                        매칭 중 (
-                        {myOnSale?.length === 0 ? '0' : myOnSale?.length})
-                      </a.LikeSubmitButton>
-                    ) : (
-                      <a.LikeSubmitButton
-                        onClick={onClickApplyBuy}
-                        aria-label="바로 구매하기"
-                      >
-                        바로 매칭 연결하기
-                      </a.LikeSubmitButton>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <a.NoLikeButtonContainer
-                      onClick={postCounter}
-                      aria-label="좋아요 빼기"
-                    >
-                      <a.NoLikeIcon />
-                    </a.NoLikeButtonContainer>
-
-                    {saveUser?.uid === post?.[0].sellerUid ? (
-                      <a.LikeSubmitButton
-                        onClick={onClickToggleModal}
-                        aria-label="구매자명단"
-                      >
-                        매칭 중({myOnSale?.length ? myOnSale?.length : 0})
-                      </a.LikeSubmitButton>
-                    ) : (
-                      <a.LikeSubmitButton
-                        onClick={onClickApplyBuy}
-                        aria-label="바로 구매하기"
-                      >
-                        바로 매칭 연결하기
-                      </a.LikeSubmitButton>
-                    )}
-                  </>
-                )}
-              </a.LikeContainer>
-            </a.PostInfoWrapper>
+            <BuyerModal />
+            <PostImg />
+            <PostInfo />
           </a.PostContainer>
-          <a.NavContainer>
-            <a.NavButtons
-              active={isDescriptionActive}
-              onClick={onClickNavExSeller}
-            >
-              설명
-            </a.NavButtons>
-            <a.NavButtons
-              active={isDescriptionActive}
-              onClick={onClickNavExSeller}
-            >
-              판매자
-            </a.NavButtons>
-            <a.NavButtons
-              active={isReviewActive}
-              style={{ borderRight: 'none' }}
-              onClick={onClickNavReview}
-            >
-              매칭 후기
-            </a.NavButtons>
-          </a.NavContainer>
-
-          <a.PostRow>
-            <a.PostContentWrapper>
-              <a.SellerInfoTitle>
-                <p>재능 설명</p>
-              </a.SellerInfoTitle>
-              <a.SellerInfoContent>
-                <p>{parse(post[0].content)}</p>
-              </a.SellerInfoContent>
-            </a.PostContentWrapper>
-            <a.PostContentWrapper>
-              <a.SellerInfoTitle>
-                <p>판매자</p>
-              </a.SellerInfoTitle>
-              <SellerInfo />
-            </a.PostContentWrapper>
-          </a.PostRow>
-          <div>
-            <div>
-              <CommentsList />
-            </div>
-          </div>
+          <NavBar />
+          <DetailContent />
+          <CommentsList />
         </a.DetailWrapper>
       )}
     </a.DetailContainer>
