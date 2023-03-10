@@ -11,8 +11,8 @@ import { userType } from './types';
 // });
 export const onSalePostAtom = atom<onSalePostType[] | null | undefined>({
   key: 'onSalePost',
-  default:null,
-})
+  default: null,
+});
 export const myOnSalePostsAtom = atom<postType[] | null | undefined>({
   key: 'myOnSalePosts',
   default: [],

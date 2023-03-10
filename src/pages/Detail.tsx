@@ -87,7 +87,6 @@ const Detail = () => {
     }
   }, [user, queryClient, post?.[0]?.sellerUid]);
 
-
   /**판매중인 글, 삭제금지 */
   const { data: myOnSale } = useQuery(
     ['myOnSale'],
