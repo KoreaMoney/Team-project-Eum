@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import {
   detailPostAtom,
   detailUserAtom,
@@ -87,7 +87,6 @@ const Detail = () => {
     }
   }, [user, queryClient, post?.[0]?.sellerUid]);
 
-
   /**판매중인 글, 삭제금지 */
   const { data: myOnSale } = useQuery(
     ['myOnSale'],
@@ -113,98 +112,6 @@ const Detail = () => {
   if (!post || post.length === 0) {
     return <div>No data found</div>;
   }
-
-  /**바로 신청하기 버튼 클릭
-   * user 데이터의 point가 price만큼 빠지고
-   * mutate로 데이터를 저장합니다
-   */
-  const onClickApplyBuy = () => {
-    customConfirm(
-      '이음 재능을 연결하시겠습니까?',
-      '연결을 누르시면 포인트가 차감됩니다.',
-      '연결',
-      () => {
-        if (!saveUser) {
-          navigate('/signin', { state: { from: location.pathname } });
-          return;
-        }
-
-        /**null인 경우 0으로 초기화 */
-        const point = Number(user?.point) || 0;
-        const price = Number(post?.[0]?.price) || 0;
-
-        /**구매자의 포인트에서 price만큼 뺀걸 구매자의 user에 업데이트 */
-        if (point >= price) {
-          updateUser({ point: point - price });
-          const uuid = uuidv4();
-          onSalePosts({
-            id: uuid,
-            postsId: id,
-            buyerUid: saveUser.uid,
-            buyerNickName: user?.nickName,
-            sellerUid: post?.[0]?.sellerUid,
-            sellerNickName: post?.[0]?.nickName,
-            title: post?.[0]?.title,
-            content: post?.[0]?.content,
-            imgURL: post?.[0]?.imgURL,
-            price: post?.[0]?.price,
-            category: post?.[0]?.category,
-            createdAt: Date.now(),
-            isDone: false,
-            isSellerCancel: false,
-            isBuyerCancel: false,
-            isCancel: false,
-            cancelTime: 0,
-            doneTime: 0,
-            reviewDone: false,
-          });
-          setTimeout(() => {
-            navigate(`/detail/${categoryName}/${id}/${user.id}/${uuid}`);
-          }, 500);
-        } else {
-          customWarningAlert('포인트가 부족합니다.');
-        }
-      }
-    );
-  };
-
-  /**화면 중간 네브바*/
-  const onClickNavExSeller = () => {
-    setIsDescriptionActive(true);
-    setIsReviewActive(false);
-    scrollToTop();
-  };
-  const onClickNavReview = () => {
-    setIsDescriptionActive(false);
-    setIsReviewActive(true);
-    goReview();
-  };
-
-  /**현재 URL 복사 */
-  const linkCopy = () => {
-    const url = window.location.href;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        customSuccessAlert('재능 공유가 되었습니다!');
-      })
-      .catch((error) => {
-        console.error(`Could not copy URL to clipboard: ${error}`);
-      });
-  };
-
-  /**설명이나 판매자 누르면 맨위로 */
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  /**후기 누르면 후기로 */
-  const goReview = () => {
-    window.scrollTo({
-      top: 1306,
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <a.DetailContainer>

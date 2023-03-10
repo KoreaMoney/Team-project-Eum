@@ -313,7 +313,7 @@ const WritePage = () => {
             </a.CategorysContainer>
           </a.EachContainer>
           <a.EachContainer>
-            <a.Title>설명</a.Title>
+            <a.Title>재능 설명</a.Title>
             <a.WriteQuill>
               <ReactQuill
                 theme="snow"
