@@ -19,15 +19,10 @@ const BuyerModal = () => {
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
-  const setBuyerLength = useSetRecoilState(buyerLengthAtom);
-
   const salePosts = newSalePosts?.filter((prev) => {
     return prev.postsId === id;
   });
 
-  useEffect(() => {
-    setBuyerLength(salePosts?.length);
-  }, [salePosts]);
 
   useEffect(() => {
     const body = document.querySelector('body');

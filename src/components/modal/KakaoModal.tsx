@@ -102,8 +102,6 @@ const KakaoModal = () => {
     );
   }, [onSalePost]);
 
-  console.log('userNick: ', userNick);
-
   /**전송 버튼 클릭 */
   const onClickAddChatContents = async (
     e: React.FormEvent<HTMLFormElement>
