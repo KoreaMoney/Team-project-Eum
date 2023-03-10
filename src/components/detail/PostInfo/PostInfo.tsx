@@ -144,27 +144,29 @@ const PostInfo = () => {
         if (point >= price) {
           updateUser({ point: point - price });
           const uuid = uuidv4();
-          onSalePosts({
-            id: uuid,
-            postsId: id,
-            buyerUid: saveUser.uid,
-            buyerNickName: userData?.nickName,
-            sellerUid: postData?.[0]?.sellerUid,
-            sellerNickName: postData?.[0]?.nickName,
-            title: postData?.[0]?.title,
-            content: postData?.[0]?.content,
-            imgURL: postData?.[0]?.imgURL,
-            price: postData?.[0]?.price,
-            category: postData?.[0]?.category,
-            createdAt: Date.now(),
-            isDone: false,
-            isSellerCancel: false,
-            isBuyerCancel: false,
-            isCancel: false,
-            cancelTime: 0,
-            doneTime: 0,
-            reviewDone: false,
-          });
+          if (postData){
+            onSalePosts({
+              id: uuid,
+              postsId: id,
+              buyerUid: saveUser.uid,
+              buyerNickName: userData?.nickName,
+              sellerUid: postData?.[0]?.sellerUid,
+              sellerNickName: postData?.[0]?.nickName,
+              title: postData?.[0]?.title,
+              content: postData?.[0]?.content,
+              imgURL: postData?.[0]?.imgURL,
+              price: postData?.[0]?.price,
+              category: postData?.[0]?.category,
+              createdAt: Date.now(),
+              isDone: false,
+              isSellerCancel: false,
+              isBuyerCancel: false,
+              isCancel: false,
+              cancelTime: 0,
+              doneTime: 0,
+              reviewDone: false,
+            });
+          }
           setTimeout(() => {
             navigate(`/detail/${categoryName}/${id}/${userData?.id}/${uuid}`);
           }, 500);

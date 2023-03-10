@@ -36,7 +36,6 @@ const SellerInfo = () => {
   const navigate = useNavigate();
   
   const [badgeLength, setBadgeLength] = useState(0);
-  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
   const onSalePost = useRecoilValue(onSalePostAtom);
 
   const { data: post } = useQuery(

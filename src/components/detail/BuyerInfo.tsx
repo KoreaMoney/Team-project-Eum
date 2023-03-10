@@ -22,7 +22,6 @@ const SellerInfo = () => {
   const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
   const navigate = useNavigate();
-   const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
     ['sellerPost', buyerId],
@@ -73,9 +72,7 @@ const SellerInfo = () => {
       break;
   }
 
-  const onClickKakaoButton = () => {
-    setIsModalActive(true);
-  };
+ 
 
   return (
     <a.SellerInfoContainer>
@@ -114,10 +111,6 @@ const SellerInfo = () => {
           후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-      <a.KakaoButton onClick={onClickKakaoButton}>
-        카카오톡으로 문의하기
-      </a.KakaoButton>
-      <KakaoModal />
     </a.SellerInfoContainer>
   );
 };
