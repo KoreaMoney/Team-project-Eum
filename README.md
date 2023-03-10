@@ -22,7 +22,7 @@
 <h4>📆 프로젝트 개발기간</h4><br/>
 23.02.06. ~ 23.03.13. (5weeks)<br/><br/>
 
-🛠 사용 기술 및 라이브러리<br/><br/>
+🛠 사용 기술 및 라이브러리<br/>
 <img src="https://img.shields.io/badge/React-red?style=flat-square&logo=React&logoColor=blue"/><br/>
 <img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/><br/>
 <img src="https://img.shields.io/badge/Recoil-blue?style=flat-square&logo=Recoil&logoColor=white"/><br/>
