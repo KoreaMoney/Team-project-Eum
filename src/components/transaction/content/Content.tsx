@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { detailPostAtom } from '../../../atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { detailPostAtom, onSalePostAtom, viewKakaoModalAtom } from '../../../atom';
 import * as a from '../../detail/content/Content';
 import parse from 'html-react-parser';
 import BuyerInfo from '../../detail/BuyerInfo';
@@ -8,9 +8,13 @@ import SellerInfo from '../../detail/SellerInfo';
 import KakaoModal from '../../modal/KakaoModal';
 
 const Content = () => {
-  const postData = useRecoilValue(detailPostAtom);
+  const postData = useRecoilValue(onSalePostAtom);
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
 
+  const onClickKakaoButton = () => {
+    setIsModalActive(true);
+  };
   return (
     <a.PostRow>
       <a.PostContentWrapper>
@@ -22,22 +26,25 @@ const Content = () => {
         </a.SellerInfoContent>
       </a.PostContentWrapper>
       <a.PostContentWrapper>
-        {saveUser.uid === postData?.[0].sellerUid ? (
+        {saveUser.uid === postData?.[0]?.sellerUid ? (
           <>
             <a.SellerInfoTitle>
               <p>구매자</p>
             </a.SellerInfoTitle>
             <BuyerInfo />
+            <a.KakaoButton onClick={onClickKakaoButton}>채팅하기</a.KakaoButton>
+            <KakaoModal />
           </>
-        ) : (
+        ) : saveUser.uid === postData?.[0]?.buyerUid ? (
           <>
             <a.SellerInfoTitle>
               <p>판매자</p>
             </a.SellerInfoTitle>
             <SellerInfo />
+            <a.KakaoButton onClick={onClickKakaoButton}>채팅하기</a.KakaoButton>
             <KakaoModal />
           </>
-        )}
+        ) : null}
       </a.PostContentWrapper>
     </a.PostRow>
   );

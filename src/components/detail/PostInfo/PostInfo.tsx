@@ -10,6 +10,7 @@ import {
   postOnSalePost,
 } from '../../../api';
 import {
+  buyerLengthAtom,
   detailPostAtom,
   detailUserAtom,
   myOnSalePostsAtom,
@@ -24,6 +25,8 @@ import {
 import * as a from './PostInfoStyle';
 import { v4 as uuidv4 } from 'uuid';
 import { onSalePostType, postType } from '../../../types';
+import { doc, setDoc } from 'firebase/firestore';
+import { dbService } from '../../../firebase/Firebase';
 
 const PostInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -39,6 +42,7 @@ const PostInfo = () => {
   const postData = useRecoilValue(detailPostAtom);
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
+  const buyerLength = useRecoilValue(buyerLengthAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
@@ -127,7 +131,7 @@ const PostInfo = () => {
       '재능 매칭을 연결하시겠습니까?',
       '연결을 누르시면 포인트가 차감됩니다.',
       '연결',
-      () => {
+      async () => {
         if (!saveUser) {
           navigate('/signin', { state: { from: location.pathname } });
           return;
@@ -141,30 +145,36 @@ const PostInfo = () => {
         if (point >= price) {
           updateUser({ point: point - price });
           const uuid = uuidv4();
-          onSalePosts({
-            id: uuid,
-            postsId: id,
-            buyerUid: saveUser.uid,
-            buyerNickName: userData?.nickName,
-            sellerUid: postData?.[0]?.sellerUid,
-            sellerNickName: postData?.[0]?.nickName,
-            title: postData?.[0]?.title,
-            content: postData?.[0]?.content,
-            imgURL: postData?.[0]?.imgURL,
-            price: postData?.[0]?.price,
-            category: postData?.[0]?.category,
-            createdAt: Date.now(),
-            isDone: false,
-            isSellerCancel: false,
-            isBuyerCancel: false,
-            isCancel: false,
-            cancelTime: 0,
-            doneTime: 0,
-            reviewDone: false,
-          });
+          if (postData){
+            onSalePosts({
+              id: uuid,
+              postsId: id,
+              buyerUid: saveUser.uid,
+              buyerNickName: userData?.nickName,
+              sellerUid: postData?.[0]?.sellerUid,
+              sellerNickName: postData?.[0]?.nickName,
+              title: postData?.[0]?.title,
+              content: postData?.[0]?.content,
+              imgURL: postData?.[0]?.imgURL,
+              price: postData?.[0]?.price,
+              category: postData?.[0]?.category,
+              createdAt: Date.now(),
+              isDone: false,
+              isSellerCancel: false,
+              isBuyerCancel: false,
+              isCancel: false,
+              cancelTime: 0,
+              doneTime: 0,
+              reviewDone: false,
+            });
+          }
           setTimeout(() => {
             navigate(`/detail/${categoryName}/${id}/${userData?.id}/${uuid}`);
           }, 500);
+          await setDoc(doc(dbService, 'chat', uuid), {
+            id:uuid,
+            chatContent: [{ manager: '연결되었습니다.'}],
+          });
         } else {
           customWarningAlert('포인트가 부족합니다.');
         }
@@ -280,6 +290,7 @@ const PostInfo = () => {
       <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
+
         {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
@@ -290,7 +301,7 @@ const PostInfo = () => {
             <>
               <a.LikeContainer>
                 <a.NotViewBuyerButton aria-label="매칭자">
-                  구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                  구매자 ({buyerLength && buyerLength})
                 </a.NotViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
@@ -309,7 +320,7 @@ const PostInfo = () => {
                   onClick={onClickToggleModal}
                   aria-label="구매자명단"
                 >
-                  구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                  구매자 ({buyerLength && buyerLength})
                 </a.ViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>

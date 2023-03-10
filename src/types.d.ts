@@ -1,3 +1,15 @@
+interface Chat {
+  id: string;
+  chatContent: {
+    imgUrl?: string;
+    uid?: string;
+    manager?: string;
+    message?: string;
+    nickName?: string;
+    createdAt?: number | undefined;
+  }[];
+}
+
 export interface ISignUpForm {
   email: string;
   pw: string;
@@ -40,7 +52,6 @@ export interface userType {
   repBadge: string;
 }
 export interface postType {
-
   id: string | undefined;
   title: string;
   nickName: string | null | undefined;
@@ -84,7 +95,7 @@ export interface onSalePostType {
   sellerUid: string | null | undefined;
   sellerNickName: string | null | undefined;
   title: string | undefined;
-  content: string | undefined;
+  content: string;
   imgURL: string | undefined;
   price: number | string | undefined;
   category: string | undefined;
