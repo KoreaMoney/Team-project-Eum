@@ -10,6 +10,7 @@ import {
   postOnSalePost,
 } from '../../../api';
 import {
+  buyerLengthAtom,
   detailPostAtom,
   detailUserAtom,
   myOnSalePostsAtom,
@@ -41,6 +42,7 @@ const PostInfo = () => {
   const postData = useRecoilValue(detailPostAtom);
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
+  const buyerLength = useRecoilValue(buyerLengthAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
@@ -288,6 +290,7 @@ const PostInfo = () => {
       <a.PostNickName>{postData?.[0]?.nickName}</a.PostNickName>
 
       <a.PostPrice>
+
         {postData?.[0]?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
       </a.PostPrice>
 
@@ -298,7 +301,7 @@ const PostInfo = () => {
             <>
               <a.LikeContainer>
                 <a.NotViewBuyerButton aria-label="매칭자">
-                  구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                  구매자 ({buyerLength && buyerLength})
                 </a.NotViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
@@ -317,7 +320,7 @@ const PostInfo = () => {
                   onClick={onClickToggleModal}
                   aria-label="구매자명단"
                 >
-                  구매자 ({myOnSale?.length === 0 ? '0' : myOnSale?.length})
+                  구매자 ({buyerLength && buyerLength})
                 </a.ViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
