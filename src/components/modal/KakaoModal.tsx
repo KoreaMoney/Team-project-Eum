@@ -166,6 +166,7 @@ const KakaoModal = () => {
   useEffect(() => {
     scrollToBottom();
   }, [isModalActive]);
+
   return (
     <>
       {isModalActive ? (

@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { myOnSalePostsAtom, onSalePostAtom, viewBuyerModalAtom } from '../../atom';
-import { onSalePostType, postType } from '../../types';
+import { myOnSalePostsAtom, viewBuyerModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
@@ -11,8 +10,7 @@ const BuyerModal = () => {
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
-  console.log( 'newSalePosts: ' ,newSalePosts);
-  
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -31,11 +29,11 @@ const BuyerModal = () => {
     return result;
   };
 
-  const GoOnSalePost = (salePosts:any) => {
+  const GoOnSalePost = (salePosts: any) => {
     navigate(
       `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
     );
-    setIsModalActive(false)
+    setIsModalActive(false);
   };
   return (
     <>
@@ -49,18 +47,18 @@ const BuyerModal = () => {
           element={
             <>
               <Container>
-                <ModalTitle>구매한 사람들</ModalTitle>
+                <ModalTitle>매칭된 사람들</ModalTitle>
                 <ModalContent>
                   바로가기 버튼을 누르면 진행 상황을 수정할 수 있어요.
                 </ModalContent>
                 <ListContainer>
                   <ListTitleContainer>
-                    <ListDay>일시</ListDay>
+                    <ListDay>날짜</ListDay>
                     <ListNickName>닉네임</ListNickName>
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
                   <ListContentsContainer>
-                    {newSalePosts?.map((salePosts:any) => {
+                    {newSalePosts?.map((salePosts: any) => {
                       return (
                         <ListContentContainer>
                           <Day>{getTimeGap(salePosts?.createdAt)}</Day>
@@ -193,14 +191,14 @@ const MoveButton = styled.button`
   width: 88px;
   height: 28px;
   background-color: ${(props) => props.theme.colors.white};
-  border: 1px solid ${(props) => props.theme.colors.gray20};
-  color: ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.title14};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title14};
-  cursor: pointer;
   &:hover {
+    cursor: pointer;
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
     border-radius: 10px;

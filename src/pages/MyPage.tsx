@@ -22,6 +22,7 @@ import {
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
+import Chart from '../components/mypage/Chart';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -295,7 +296,6 @@ const MyPage = () => {
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                               P
                             </a.MyLikeDiv>
-                            <p>{list.buyerNickName}</p>
                           </a.MyLikeList>
                         );
                       })

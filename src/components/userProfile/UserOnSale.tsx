@@ -36,12 +36,11 @@ const UserOnSale = () => {
                 <InfoBest>{post.category}</InfoBest>
                 <p>{post.title}</p>
                 <p>
-                  {' '}
                   {post.price
                     ? post.price
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    : 0}{' '}
+                    : 0}
                   P
                 </p>
                 <span>{post.nickName}</span>
@@ -55,10 +54,7 @@ const UserOnSale = () => {
           <ReactPaginate
             previousLabel={'<'}
             nextLabel={'>'}
-            pageCount={Math.max(
-              Math.ceil(userPosts?.length / itemsPerPage),
-              1
-            )}
+            pageCount={Math.max(Math.ceil(userPosts?.length / itemsPerPage), 1)}
             marginPagesDisplayed={1}
             pageRangeDisplayed={3}
             onPageChange={handlePageChange}
@@ -85,7 +81,6 @@ const PostsContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   height: 718px;
-
 `;
 
 const PostContainer = styled.div`
@@ -188,5 +183,4 @@ const PaginationContainer = styled.div`
       }
     }
   }
-
 `;
