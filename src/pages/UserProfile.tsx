@@ -4,7 +4,6 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getSellerPosts, getUserComments, getUsers } from '../api';
 import { userCommentsAtom, userPostsAtom, userProfileAtom } from '../atom';
-import KakaoModal from '../components/modal/KakaoModal';
 import Nav from '../components/userProfile/Nav';
 import ProfileBadge from '../components/userProfile/ProfileBadge';
 import UserComments from '../components/userProfile/UserComments';
@@ -46,7 +45,6 @@ const UserProfile = () => {
       <Container>
         <Wrapper>
           <UserPageProfile />
-          <KakaoModal />
           <Nav />
           <ProfileBadge />
           <UserOnSale />

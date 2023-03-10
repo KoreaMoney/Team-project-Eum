@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { theme } from '../styles/theme';
@@ -22,6 +22,10 @@ import {
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
+import Chart from '../components/mypage/Chart';
+import { useSetRecoilState } from 'recoil';
+import { isDoneSellerAtom } from '../atom';
+
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -29,6 +33,7 @@ const MyPage = () => {
 
   const [category, setCategory] = useState('관심목록');
   const [sellCategory, setSellCategory] = useState('판매중');
+  const setIsDoneSeller = useSetRecoilState(isDoneSellerAtom);
 
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
@@ -74,10 +79,15 @@ const MyPage = () => {
   const isDoneSell = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
   });
+  useEffect(() => {
+    setIsDoneSeller(isDoneSell);
+  }, [isDoneSell]);
+
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {
     return post.isDone === false;
   });
+
 
   /*회원탈퇴 */
   const user = auth.currentUser;
