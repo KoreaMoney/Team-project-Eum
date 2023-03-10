@@ -282,7 +282,6 @@ const MyPage = () => {
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                               P
                             </a.MyLikeDiv>
-                            <p>{list.buyerNickName}</p>
                           </a.MyLikeList>
                         );
                       })

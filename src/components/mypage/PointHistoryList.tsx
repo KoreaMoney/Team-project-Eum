@@ -252,7 +252,7 @@ const PlusOrMinus = styled.div`
 
 const PointHistoryWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-between;
   align-items: center;
   width: 588px;
