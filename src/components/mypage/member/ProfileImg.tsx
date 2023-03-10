@@ -13,7 +13,7 @@ export default function Profile() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
-  // const [changeFile, setChangeFile] = useState(null);
+  const [changeFile, setChangeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);
 
@@ -40,8 +40,8 @@ export default function Profile() {
   );
 
   const saveImgFile = (e: any) => {
-    // const selectedFile = e.target.files[0];
-    // setChangeFile(selectedFile);
+    const selectedFile = e.target.files[0];
+    setChangeFile(selectedFile);
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;
     }
@@ -54,13 +54,8 @@ export default function Profile() {
     };
   };
 
-  // const handlePreviewDelete = () => {
-  //   setChangeFile(null);
-  // };
-
   const shortenUrl = async (img: string) => {
     const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
-
     const imgDataUrl = img;
     let downloadUrl;
     if (imgDataUrl) {
@@ -85,10 +80,11 @@ export default function Profile() {
         <>
           <MyImageWrapper>
             <MyImage htmlFor="changeImg">
-              {/* {changeFile === null ? ( */}
-              <img src={data?.[0]?.profileImg} alt="" decoding="async" />
-
-              {/* ) :(<img src={URL.createObjectURL(changeFile)} alt="" />)} */}
+              {changeFile === null ? (
+                <img src={data?.[0]?.profileImg} alt="" decoding="async" />
+              ) : (
+                <img src={URL.createObjectURL(changeFile)} alt="" />
+              )}
             </MyImage>
             {imgEditBtnToggle ? (
               <>
@@ -97,9 +93,8 @@ export default function Profile() {
                   disabled={loading || !photo}
                   aria-label="프로필 이미지 변경"
                 >
-                  {!photo ? ' ' : '프로필 이미지 변경'}
+                  {photo ? '프로필 이미지 변경' : ''}
                 </ImgSubmitButton>
-                {/* <button onClick={handlePreviewDelete}>취소</button> */}
               </>
             ) : null}
           </MyImageWrapper>
