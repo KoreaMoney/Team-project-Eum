@@ -1,22 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
-import imageCompression from 'browser-image-compression';
+import { CustomModal } from './CustomModal';
 import {
   onSalePostAtom,
   userProfileAtom,
   viewKakaoModalAtom,
 } from '../../atom';
-import { CustomModal } from './CustomModal';
-import styled from 'styled-components';
 import {
   arrayUnion,
   collection,
   doc,
   onSnapshot,
-  orderBy,
   query,
   updateDoc,
   where,
@@ -24,22 +21,27 @@ import {
 import { auth, dbService, storageService } from '../../firebase/Firebase';
 import { customWarningAlert } from './CustomAlert';
 import { Chat } from '../../types';
-import camera from '../../styles/camera.png';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+
+import camera from '../../styles/camera.png';
+import imageCompression from 'browser-image-compression';
+import styled from 'styled-components';
 
 const KakaoModal = () => {
   const { postId } = useParams();
   const location = useLocation();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
-  const messagesEndRef = useRef<HTMLDivElement>(document.createElement('div'));
 
-  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
-  const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
+  const messagesEndRef = useRef<HTMLDivElement>(document.createElement('div'));
   const imgRef = useRef<HTMLInputElement>(null);
+
+  const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
+  const onSalePost = useRecoilValue(onSalePostAtom);
+
   const [chatContent, setChatContent] = useState('');
   const [chat, setChat] = useState<Chat[] | null>(null);
-  const onSalePost = useRecoilValue(onSalePostAtom);
   const [userNick, setUserNick] = useState<string | null | undefined>('');
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -66,7 +68,7 @@ const KakaoModal = () => {
       refetchOnWindowFocus: 'always',
     }
   );
-  const isDetailPage = location.pathname === '/detail';
+
   const getTimeGap = (posting: number | undefined) => {
     if (posting) {
       const msGap = Date.now() - posting;
@@ -288,7 +290,7 @@ const KakaoModal = () => {
                 </ChatContainer>
               </ScrollContainer>
               <ChatInputContainer>
-                <label htmlFor="changeImg">
+                <label htmlFor="changeImg" >
                   <PhotoIcon>
                     <input
                       hidden
@@ -301,7 +303,6 @@ const KakaoModal = () => {
                     />
                   </PhotoIcon>
                 </label>
-
                 <ChatInput
                   type="text"
                   value={chatContent}

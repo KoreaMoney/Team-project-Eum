@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '../../../api';
+import { useRecoilState } from 'recoil';
+import { choiceBadgeAtom } from '../../../atom';
+import { customWarningAlert } from '../../modal/CustomAlert';
+
 import styled from 'styled-components';
 import c_cheap from '../../../styles/badge/choice/c_cheap.webp';
 import lock_cheap from '../../../styles/badge/lock/lock_cheap.webp';
@@ -23,11 +29,6 @@ import nc_service from '../../../styles/badge/notChoice/nc_service.webp';
 import c_time from '../../../styles/badge/choice/c_time.webp';
 import lock_time from '../../../styles/badge/lock/lock_time.webp';
 import nc_time from '../../../styles/badge/notChoice/nc_time.webp';
-import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '../../../api';
-import { useRecoilState } from 'recoil';
-import { choiceBadgeAtom } from '../../../atom';
-import { customWarningAlert } from '../../modal/CustomAlert';
 
 const Badge = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');

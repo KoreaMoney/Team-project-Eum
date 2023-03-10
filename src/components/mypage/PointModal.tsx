@@ -31,9 +31,7 @@ const PointModal = () => {
         <CurrentPoint>
           {profileData &&
             profileData?.point &&
-            profileData?.point
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+            profileData?.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           P
         </CurrentPoint>
         <PointDepositWithdrawWrapper>

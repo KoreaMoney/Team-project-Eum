@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { userProfileAtom } from '../../atom';
+import styled from 'styled-components';
 
 const UserPageProfile = () => {
   const userProfile = useRecoilValue(userProfileAtom);

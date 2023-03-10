@@ -1,12 +1,15 @@
-import loadable from '@loadable/component';
-import parse from 'html-react-parser';
 import { useRecoilValue } from 'recoil';
 import { detailPostAtom } from '../../../atom';
+
+import loadable from '@loadable/component';
+import parse from 'html-react-parser';
 import * as a from './Content';
+
 const SellerInfo = loadable(() => import('../SellerInfo'));
 
 const DetailContent = () => {
   const postData = useRecoilValue(detailPostAtom);
+
   return (
     <a.PostRow>
       <a.PostContentWrapper>
@@ -16,7 +19,7 @@ const DetailContent = () => {
         <a.SellerInfoContent>
           <p>
             {postData && postData[0]?.content && parse(postData[0].content)}
-          </p>{' '}
+          </p>
         </a.SellerInfoContent>
       </a.PostContentWrapper>
       <a.PostContentWrapper>

@@ -100,10 +100,10 @@ const Header = () => {
   );
 
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
-    return post.isDone == false;
+    return post.isDone === false;
   });
 
-  const waitTradeCount = waitTradeSellList.length;
+  const waitTradeCount = waitTradeSellList?.length;
 
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={'top'}>
@@ -153,6 +153,7 @@ const Header = () => {
                       }}
                     >
                       <BsPersonCircle size={36} />
+                      {waitTradeCount}
                     </Link>
                   </span>
                   <WriteBtn

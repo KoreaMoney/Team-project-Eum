@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
+import { CustomModal } from '../modal/CustomModal';
+
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
 import Chart from './Chart';
-import { CustomModal } from '../modal/CustomModal';
-
 /**순서
  *1. 완료된 리스트 분류하기
  *2. 판매목록보기
@@ -75,7 +75,7 @@ const PointHistoryList = () => {
         <DropDown>
           <DropDownBtn>
             <div>{category}</div>
-            <img src="/assets/Vector.png" alt="" loading="lazy" />
+            <img src="/assets/Vector.png" alt="" decoding="async" />
           </DropDownBtn>
           <DropDownBox className="DropDownBox">
             <PointWrapper

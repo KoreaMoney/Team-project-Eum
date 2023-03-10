@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import {
   userBadgeLengthAtom,
   userCommentsAtom,
   userPostsAtom,
 } from '../../atom';
 import { NavButtonProps } from '../../types';
+import styled from 'styled-components';
 
 const Nav = () => {
   const [isSellerActive, setIsSellerActive] = useState(false);
   const [isReviewActive, setIsReviewActive] = useState(false);
   const [isBadgeActive, setIsBadgeActive] = useState(true);
+
   const badgeLength = useRecoilValue(userBadgeLengthAtom);
   const userPosts = useRecoilValue(userPostsAtom);
   const userComments = useRecoilValue(userCommentsAtom);
@@ -58,7 +59,7 @@ const Nav = () => {
         배지 ({badgeLength})
       </NavButtons>
       <NavButtons active={isSellerActive} onClick={onClickSeller}>
-        판매 상품 ({userPosts && userPosts.length})
+        매칭 상품 ({userPosts && userPosts.length})
       </NavButtons>
       <NavButtons
         active={isReviewActive}

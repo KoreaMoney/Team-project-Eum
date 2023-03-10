@@ -83,7 +83,11 @@ export default function Profile() {
               {changeFile === null ? (
                 <img src={data?.[0]?.profileImg} alt="" decoding="async" />
               ) : (
-                <img src={URL.createObjectURL(changeFile)} alt="" />
+                <img
+                  src={URL.createObjectURL(changeFile)}
+                  alt=""
+                  decoding="async"
+                />
               )}
             </MyImage>
             {imgEditBtnToggle ? (

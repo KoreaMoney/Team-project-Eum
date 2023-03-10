@@ -1,16 +1,19 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { userPostsAtom } from '../../atom';
-import ReactPaginate from 'react-paginate';
 import { useNavigate } from 'react-router-dom';
 import { postType } from '../../types';
 
+import styled from 'styled-components';
+import ReactPaginate from 'react-paginate';
+
 const UserOnSale = () => {
   const navigate = useNavigate();
-  const userPosts = useRecoilValue(userPostsAtom);
-  const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const userPosts = useRecoilValue(userPostsAtom);
+
   const handlePageChange = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected);
   };
@@ -20,16 +23,19 @@ const UserOnSale = () => {
     return userPosts?.slice(startIndex, endIndex);
   }, [currentPage, userPosts]);
 
-  const onClickMoveDetail = (post:postType) => {
-    navigate(`/detail/${post.category}/${post.id}`)
-  }
+  const onClickMoveDetail = (post: postType) => {
+    navigate(`/detail/${post.category}/${post.id}`);
+  };
   return (
     <>
-      <Title>판매상품 ({userPosts && userPosts.length})</Title>
+      <Title>매칭 상품 ({userPosts && userPosts.length})</Title>
       <PostsContainer>
         {currentPagePosts?.map((post) => {
           return (
-            <PostContainer key={post.id} onClick={()=>onClickMoveDetail(post)}>
+            <PostContainer
+              key={post.id}
+              onClick={() => onClickMoveDetail(post)}
+            >
               {post.isDone && <ClearPost>거래완료</ClearPost>}
               <PostIMG bgPhoto={post.imgURL} />
               <ContentsContainer>
