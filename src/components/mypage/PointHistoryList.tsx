@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
+import Chart from './Chart';
+import { CustomModal } from '../modal/CustomModal';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -13,6 +15,7 @@ import Loader from '../etc/Loader';
  */
 const PointHistoryList = () => {
   const [category, setCategory] = useState('전체');
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
@@ -61,6 +64,11 @@ const PointHistoryList = () => {
     backgroundColor: `${theme.colors.white}`,
   };
 
+  const [isModalActive, setIsModalActive] = useState(false);
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
+
   return (
     <div>
       <DropWrapper>
@@ -93,13 +101,27 @@ const PointHistoryList = () => {
             </PointWrapper>
           </DropDownBox>
         </DropDown>
-        <ChartBtn></ChartBtn>
+        <ChartBtn onClick={onClickToggleModal} />
+        {isModalActive ? (
+          <CustomModal
+            modal={isModalActive}
+            setModal={setIsModalActive}
+            width="700"
+            height="500"
+            overflow="scroll"
+            element={
+              <div>
+                <Chart />
+              </div>
+            }
+          />
+        ) : (
+          ''
+        )}
       </DropWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
-          <div>
-            <Loader />
-          </div>
+          <Loader />
         ) : category === '전체' ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
@@ -204,8 +226,8 @@ const ChartBtn = styled.div`
   background-color: transparent;
   background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
   background-size: cover;
-  cursor: pointer;
   &:hover {
+    cursor: pointer;
     background: url('https://ifh.cc/g/OyFgOq.png') no-repeat;
     background-size: cover;
   }
