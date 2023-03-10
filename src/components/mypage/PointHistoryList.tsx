@@ -64,10 +64,13 @@ const PointHistoryList = () => {
   return (
     <div>
       <DropDown>
-        <DropDownBtn>
-          <div>{category}</div>
-          <img src="/assets/Vector.png" alt="" loading="lazy" />
-        </DropDownBtn>
+        <DropWrapper>
+          <DropDownBtn>
+            <div>{category}</div>
+            <img src="/assets/Vector.png" alt="" loading="lazy" />
+          </DropDownBtn>
+          <ChartBtn></ChartBtn>
+        </DropWrapper>
         <DropDownBox className="DropDownBox">
           <PointWrapper
             onClick={() => setCategory('전체')}
@@ -166,6 +169,14 @@ const DropDown = styled.div`
   }
 `;
 
+const DropWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 588px;
+`;
+
 const DropDownBtn = styled.div`
   display: flex;
   flex-direction: row;
@@ -179,6 +190,29 @@ const DropDownBtn = styled.div`
   &:hover {
     cursor: pointer;
     color: ${theme.colors.gray30};
+  }
+`;
+
+const ChartBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  outline: none;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  &:hover {
+    background: url('https://ifh.cc/g/OyFgOq.png') no-repeat;
+    background-size: cover;
+  }
+  &:active {
+    background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+    background-size: cover;
   }
 `;
 
