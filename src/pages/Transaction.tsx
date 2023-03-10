@@ -1,22 +1,17 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../firebase/Firebase';
 import { getOnSalePost } from '../api';
 import { IoExitOutline } from 'react-icons/io5';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  isCancelAtom,
-  isDoneAtom,
-  onSalePostAtom,
-  viewKakaoModalAtom,
-} from '../atom';
+import { isCancelAtom, isDoneAtom, onSalePostAtom } from '../atom';
+
 import Loader from '../components/etc/Loader';
 import * as a from '../styles/styledComponent/detail';
 import PostImg from '../components/detail/PostImg';
 import PostInfo from '../components/transaction/PostInfo/PostInfo';
 import Content from '../components/transaction/content/Content';
-import KakaoModal from '../components/modal/KakaoModal';
 
 /**순서
  * 1. query-key만들기
@@ -53,14 +48,9 @@ const Transaction = () => {
     }
   );
 
-  
   //로딩 구간
   if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
   if (!data || data.length === 0) {
     return <div>추가적인 데이터가 없습니다</div>;
@@ -76,7 +66,7 @@ const Transaction = () => {
       <a.DetailWrapper>
         {isDone && (
           <a.TransactionText>
-            <button onClick={onClickBtn}>
+            <button onClick={onClickBtn} aria-label="매칭 연결">
               <IoExitOutline size={50} />
             </button>
             <h1>매칭이 연결되었습니다.</h1>
@@ -84,7 +74,7 @@ const Transaction = () => {
         )}
         {isCancel && (
           <a.TransactionText>
-            <button onClick={onClickBtn}>
+            <button onClick={onClickBtn} aria-label="매칭 취소">
               <IoExitOutline size={50} />
             </button>
             <h1>매칭이 취소되었습니다.</h1>

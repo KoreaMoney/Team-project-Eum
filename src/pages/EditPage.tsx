@@ -5,15 +5,16 @@ import { editPostType } from '../types';
 import { auth, storageService } from '../firebase/Firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { getPostsId, getUsers, patchPosts } from '../api';
+import {
+  customInfoAlert,
+  customWarningAlert,
+} from '../components/modal/CustomAlert';
+
 import * as a from '../styles/styledComponent/writeEdit';
 import Loader from '../components/etc/Loader';
 import imageCompression from 'browser-image-compression';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import {
-  customInfoAlert,
-  customWarningAlert,
-} from '../components/modal/CustomAlert';
 
 const EditPage = () => {
   const navigate = useNavigate();

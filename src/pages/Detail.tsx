@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { getPostsId, getUsers } from '../api';
 import {
   detailPostAtom,
   detailUserAtom,
@@ -9,19 +10,24 @@ import {
   isDoneAtom,
   myOnSalePostsAtom,
 } from '../atom';
+
 import * as a from '../styles/styledComponent/detail';
 import axios from 'axios';
 import loadable from '@loadable/component';
-import { getPostsId, getUsers } from '../api';
 import Loader from '../components/etc/Loader';
 import BuyerModal from '../components/modal/BuyerModal';
-import PostImg from '../components/detail/PostImg';
-import PostInfo from '../components/detail/PostInfo/PostInfo';
 import NavBar from '../components/detail/PostInfo/NavBar';
-import DetailContent from '../components/detail/content/DetailContent';
 
 const CommentsList = loadable(
   () => import('../components/comment/CommentsList')
+);
+const PostImg = loadable(() => import('../components/detail/PostImg'));
+const DetailContent = loadable(
+  () => import('../components/detail/content/DetailContent')
+);
+
+const PostInfo = loadable(
+  () => import('../components/detail/PostInfo/PostInfo')
 );
 
 /**순서
@@ -53,7 +59,6 @@ const Detail = () => {
     setIsDone(false);
   }, []);
 
-  
   /**Detail Post 정보 가져오기 */
   const { data: post, isLoading } = useQuery(
     ['post', id],
@@ -105,11 +110,7 @@ const Detail = () => {
     }
   );
   if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
   if (!post || post.length === 0) {
     return <div>No data found</div>;

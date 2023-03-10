@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
 import { postType } from '../types';
+
 import * as a from '../styles/styledComponent/category';
 import axios from 'axios';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
@@ -126,19 +127,11 @@ const CategoryPage = () => {
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
   if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <div>
-        <ErrorETC />
-      </div>
-    );
+    return <ErrorETC />;
   }
   return (
     <a.PageContainer>

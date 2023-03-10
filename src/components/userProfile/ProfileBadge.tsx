@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import c_cheap from '../../styles/badge/choice/c_cheap.webp';
 import lock_cheap from '../../styles/badge/lock/lock_cheap.webp';

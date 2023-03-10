@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { detailPostAtom } from '../../atom';
 import { CustomModal } from '../modal/CustomModal';
+import { useRecoilValue } from 'recoil';
+import styled from 'styled-components';
 
 const PostImg = () => {
   const postData = useRecoilValue(detailPostAtom);

@@ -1,27 +1,31 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getUsers, patchOnSalePost, patchUsers } from '../../../api';
 import { isCancelAtom, isDoneAtom, onSalePostAtom } from '../../../atom';
 import { userType } from '../../../types';
-import * as a from '../../detail/PostInfo/PostInfoStyle';
 import {
   customConfirm,
   customInfoAlert,
   customSuccessAlert,
 } from '../../modal/CustomAlert';
+
+import * as a from '../../detail/PostInfo/PostInfoStyle';
 import * as b from './PostInfoStyle';
+
 const PostInfo = () => {
   const navigate = useNavigate();
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
+
   const { uuid } = useParams();
 
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
   const data = useRecoilValue(onSalePostAtom);
-  const [buyerisCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCancel);
+  const [buyerIsCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCancel);
 
   /**현재 URL 복사 */
   const linkCopy = () => {
@@ -232,7 +236,7 @@ const PostInfo = () => {
       {saveUser.uid === data?.[0]?.buyerUid ||
       saveUser.uid === data?.[0]?.sellerUid ? (
         <>
-          {buyerisCancel || data?.[0].isBuyerCancel ? (
+          {buyerIsCancel || data?.[0].isBuyerCancel ? (
             <>
               {saveUser.uid === data?.[0]?.buyerUid ? (
                 <>

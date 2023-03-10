@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { onSalePostAtom, viewKakaoModalAtom } from '../../atom';
 import { customWarningAlert } from '../modal/CustomAlert';
 import {
   getOnSalePostBuyer,
@@ -21,11 +19,7 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
-import KakaoModal from '../modal/KakaoModal';
-import { async } from '@firebase/util';
-import { arrayUnion, doc, FieldValue, updateDoc } from 'firebase/firestore';
-import { dbService } from '../../firebase/Firebase';
-import firebase from 'firebase/app';
+
 import 'firebase/firestore';
 
 const SellerInfo = () => {
@@ -36,7 +30,6 @@ const SellerInfo = () => {
   const navigate = useNavigate();
 
   const [badgeLength, setBadgeLength] = useState(0);
-  const onSalePost = useRecoilValue(onSalePostAtom);
 
   const { data: post } = useQuery(
     ['post', identifier],
@@ -59,9 +52,6 @@ const SellerInfo = () => {
     ['onSalePosts', saveUser?.uid],
     () => getOnSalePostBuyer(saveUser?.uid)
   );
-  const isPostBuyer = onSalePostBuyerData?.filter((list: any) => {
-    return list?.postsId === post?.[0]?.id;
-  });
 
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
   const { data: seller } = useQuery(
@@ -110,10 +100,6 @@ const SellerInfo = () => {
       userBadge = images[5];
       break;
   }
-
-  const salePostId = onSalePost?.[0]?.id;
-  
-
 
   return (
     <a.SellerInfoContainer>

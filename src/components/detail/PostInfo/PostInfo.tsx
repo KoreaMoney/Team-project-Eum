@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-
 import {
   deletePosts,
   patchPosts,
@@ -14,7 +13,6 @@ import {
   detailPostAtom,
   detailUserAtom,
   myOnSalePostsAtom,
-  onSalePostAtom,
   viewBuyerModalAtom,
 } from '../../../atom';
 import {
@@ -23,27 +21,31 @@ import {
   customSuccessAlert,
   customWarningAlert,
 } from '../../modal/CustomAlert';
-import * as a from './PostInfoStyle';
 import { v4 as uuidv4 } from 'uuid';
 import { onSalePostType, postType } from '../../../types';
 import { doc, setDoc } from 'firebase/firestore';
 import { dbService } from '../../../firebase/Firebase';
+import * as a from './PostInfoStyle';
 
 const PostInfo = () => {
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const navigate = useNavigate();
-  const { id, categoryName } = useParams();
   const location = useLocation();
+
+  const { id, categoryName } = useParams();
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const queryClient = useQueryClient();
 
   // State
   const [likeData, setLikeData] = useState<{ like: any[] }>({ like: [] });
   const [isDrop, setIsDrop] = useState(false);
   const [isDone, setIsDone] = useState<boolean | undefined>(undefined);
+
   const postData = useRecoilValue(detailPostAtom);
   const userData = useRecoilValue(detailUserAtom);
   const myOnSale = useRecoilValue(myOnSalePostsAtom);
   const setBuyerList = useSetRecoilState(buyerLengthAtom);
+
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
   const postCountCheck = postData?.[0]?.like?.includes(saveUser?.uid);
@@ -221,7 +223,7 @@ const PostInfo = () => {
   /**거래완료 클릭 */
   const onClickCompletedButton = async () => {
     if (isPostSell?.[0]) {
-      customWarningAlert('매칭중인 글이 있습니다.');
+      customWarningAlert('매칭 중인 글이 있습니다.');
       return;
     } else {
       if (postData) {
@@ -233,7 +235,6 @@ const PostInfo = () => {
       }
     }
   };
-  
 
   /**드랍다운의 게시글 수정 클릭 함수 */
   const onClickMoveEditPage = () => {
@@ -275,7 +276,7 @@ const PostInfo = () => {
             </a.IconLeftContainer>
           )}
           <a.IconRightContainer>
-            <a.ShareIcon onClick={linkCopy} />
+            <a.ShareIcon onClick={linkCopy} aria-label="링크복사" />
           </a.IconRightContainer>
         </a.InfoTopRightContainer>
       </a.InfoTopContainer>
@@ -295,6 +296,7 @@ const PostInfo = () => {
                 </a.DropDownButton>
                 <a.DropDownButton
                   onClick={() => onClickDeleteComment(postData?.[0].id)}
+                  aria-label="삭제"
                 >
                   삭제
                 </a.DropDownButton>
@@ -320,10 +322,16 @@ const PostInfo = () => {
                 </a.NotViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
-                <a.NoStateButton onClick={onClickOnSaleButton}>
-                  매칭중
+                <a.NoStateButton
+                  onClick={onClickOnSaleButton}
+                  aria-label="매칭 중"
+                >
+                  매칭 중
                 </a.NoStateButton>
-                <a.StateButton onClick={onClickCompletedButton}>
+                <a.StateButton
+                  onClick={onClickCompletedButton}
+                  aria-label="매칭 완료"
+                >
                   매칭 완료
                 </a.StateButton>
               </a.CompletedBTContainer>
@@ -339,10 +347,16 @@ const PostInfo = () => {
                 </a.ViewBuyerButton>
               </a.LikeContainer>
               <a.CompletedBTContainer>
-                <a.StateButton onClick={onClickOnSaleButton}>
-                  매칭중
+                <a.StateButton
+                  onClick={onClickOnSaleButton}
+                  aria-label="매칭 중"
+                >
+                  매칭 중
                 </a.StateButton>
-                <a.NoStateButton onClick={onClickCompletedButton}>
+                <a.NoStateButton
+                  onClick={onClickCompletedButton}
+                  aria-label="매칭 완료"
+                >
                   매칭 완료
                 </a.NoStateButton>
               </a.CompletedBTContainer>

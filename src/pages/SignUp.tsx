@@ -6,17 +6,15 @@ import { ISignUpForm, userType } from '../types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
-import * as yup from 'yup';
+import { getAuthUsers, postUsers } from '../api';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import * as a from '../styles/styledComponent/auth';
-import { getAuthUsers, postUsers } from '../api';
-import basicIMG from '../styles/basicIMG.webp';
-import loadable from '@loadable/component';
 
-const Header = loadable(() => import('../components/layout/Header'));
+import * as a from '../styles/styledComponent/auth';
+import * as yup from 'yup';
+import basicIMG from '../styles/basicIMG.webp';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -198,7 +196,6 @@ const SignUp = () => {
   }, []);
   return (
     <>
-      <Header />
       <a.LoginContainer>
         <a.LoginText>회원가입</a.LoginText>
         <a.SignUpForm
