@@ -4,6 +4,9 @@ import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
+import Chart from './Chart';
+import { useSetRecoilState } from 'recoil';
+import { viewModalAtom } from '../../atom';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -13,6 +16,9 @@ import Loader from '../etc/Loader';
  */
 const PointHistoryList = () => {
   const [category, setCategory] = useState('전체');
+
+  const setIsModalActive = useSetRecoilState(viewModalAtom);
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
@@ -93,13 +99,17 @@ const PointHistoryList = () => {
             </PointWrapper>
           </DropDownBox>
         </DropDown>
-        <ChartBtn></ChartBtn>
+        <ChartBtn
+          onClick={() => {
+            setIsModalActive(true);
+          }}
+        >
+          <Chart />
+        </ChartBtn>
       </DropWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
-          <div>
-            <Loader />
-          </div>
+          <Loader />
         ) : category === '전체' ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>

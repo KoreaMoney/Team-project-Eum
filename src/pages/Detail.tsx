@@ -19,6 +19,7 @@ import PostImg from '../components/detail/PostImg';
 import PostInfo from '../components/detail/PostInfo/PostInfo';
 import NavBar from '../components/detail/PostInfo/NavBar';
 import DetailContent from '../components/detail/content/DetailContent';
+
 const CommentsList = loadable(
   () => import('../components/comment/CommentsList')
 );
