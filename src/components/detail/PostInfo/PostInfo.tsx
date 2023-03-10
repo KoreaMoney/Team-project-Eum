@@ -72,7 +72,7 @@ const PostInfo = () => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        customSuccessAlert('재능 공유가 되었습니다!');
+        customSuccessAlert('재능 링크가 복사 되었습니다!');
       })
       .catch((error) => {
         console.error(`Could not copy URL to clipboard: ${error}`);
