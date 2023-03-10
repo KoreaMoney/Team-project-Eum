@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ReactQuill from 'react-quill';
+import imageCompression from 'browser-image-compression';
 import 'react-quill/dist/quill.snow.css';
 import {
   customInfoAlert,
@@ -116,18 +117,34 @@ const WritePage = () => {
   }, [user]);
 
   //이미지 저장
-  const saveImgFile = () => {
+  const saveImgFile = async () => {
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;
     }
 
     const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const resultImg = reader.result;
-      shortenUrl(resultImg as string);
+
+    const options = {
+      maxSizeMB: 0.15,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
+    try {
+      // 압축 결과
+      const compressedFile = await imageCompression(file, options).then(
+        (res) => {
+          return res;
+        }
+      );
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      reader.onloadend = () => {
+        const resultImg = reader.result;
+        shortenUrl(resultImg as string);
+      };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경

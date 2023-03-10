@@ -29,7 +29,7 @@ const SellerInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
   const navigate = useNavigate();
-  
+
   const [badgeLength, setBadgeLength] = useState(0);
   const setIsModalActive = useSetRecoilState(viewKakaoModalAtom);
 
@@ -43,8 +43,8 @@ const SellerInfo = () => {
 
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
-    ['sellerPost', post?.[0]?.sellerUid],
-    () => getSellerPosts(post?.[0]?.sellerUid),
+    ['sellerPost', post?.[0].sellerUid],
+    () => getSellerPosts(post?.[0].sellerUid),
     {
       staleTime: Infinity,
     }
@@ -60,14 +60,17 @@ const SellerInfo = () => {
 
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
   const { data: seller } = useQuery(
-    ['user', post?.[0]?.sellerUid],
-    () => getUsers(post?.[0]?.sellerUid),
+    ['user', post?.[0].sellerUid],
+    () => getUsers(post?.[0].sellerUid),
     {
-      enabled: Boolean(post?.[0]?.sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
+      enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
       staleTime: Infinity,
+      onError: () => {
+        customWarningAlert('현재 구매할수 없는 글입니다.');
+        navigate(-1);
+      },
     }
   );
-
   /**배지 개수 구하기 */
   useEffect(() => {
     const time = seller?.time >= 10 ? true : false;
