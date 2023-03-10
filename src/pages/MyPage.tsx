@@ -26,6 +26,7 @@ import Chart from '../components/mypage/Chart';
 import { useSetRecoilState } from 'recoil';
 import { isDoneSellerAtom } from '../atom';
 
+
 const MyPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -81,6 +82,7 @@ const MyPage = () => {
   useEffect(() => {
     setIsDoneSeller(isDoneSell);
   }, [isDoneSell]);
+
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {
     return post.isDone === false;

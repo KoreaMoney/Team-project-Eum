@@ -10,7 +10,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
-    },  
+    },
   },
 });
 
@@ -21,7 +21,7 @@ root.render(
   <div>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={true} />
+        <ReactQueryDevtools initialIsOpen={false} />
         <App />
       </QueryClientProvider>
     </RecoilRoot>

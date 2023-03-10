@@ -22,14 +22,12 @@ const BuyerModal = () => {
   const setBuyerLength = useSetRecoilState(buyerLengthAtom);
 
   const salePosts = newSalePosts?.filter((prev) => {
-    return prev.postsId === id
+    return prev.postsId === id;
   });
 
   useEffect(() => {
     setBuyerLength(salePosts?.length);
   }, [salePosts]);
- 
-
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -48,7 +46,6 @@ const BuyerModal = () => {
     const result = `${mm.replace(/^0+/, '')}월 ` + `${dd.replace(/^0+/, '')}일`;
     return result;
   };
-
 
   const GoOnSalePost = (salePosts: any) => {
     navigate(

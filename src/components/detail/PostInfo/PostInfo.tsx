@@ -130,9 +130,9 @@ const PostInfo = () => {
    */
   const onClickApplyBuy = () => {
     customConfirm(
-      '재능 매칭을 연결하시겠습니까?',
-      '연결을 누르시면 포인트가 차감됩니다.',
-      '연결',
+      '재능을 매칭하시겠습니까?',
+      '매칭을 누르시면 포인트는 차감됩니다.\n\n단,매칭이 완료되기 전까지 판매자에게 지급되지 않습니다.',
+      '매칭',
       async () => {
         if (!saveUser) {
           navigate('/signin', { state: { from: location.pathname } });
