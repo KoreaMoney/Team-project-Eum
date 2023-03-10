@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
+import imageCompression from 'browser-image-compression';
 import {
   onSalePostAtom,
   userProfileAtom,
@@ -20,10 +21,11 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { dbService } from '../../firebase/Firebase';
+import { auth, dbService, storageService } from '../../firebase/Firebase';
 import { customWarningAlert } from './CustomAlert';
 import { Chat } from '../../types';
 import camera from '../../styles/camera.png';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 
 const KakaoModal = () => {
   const { postId } = useParams();
@@ -33,6 +35,7 @@ const KakaoModal = () => {
 
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
+  const imgRef = useRef<HTMLInputElement>(null);
   const [chatContent, setChatContent] = useState('');
   const [chat, setChat] = useState<Chat[] | null>(null);
   const onSalePost = useRecoilValue(onSalePostAtom);
@@ -146,6 +149,56 @@ const KakaoModal = () => {
       setChat(newChats);
     });
   };
+  const saveImgFile = async () => {
+    if (!imgRef.current?.files || imgRef.current.files.length === 0) {
+      return;
+    }
+
+    const file = imgRef.current.files[0];
+
+    const options = {
+      maxSizeMB: 0.15,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    try {
+      // 압축 결과
+      const compressedFile = await imageCompression(file, options).then(
+        (res) => {
+          return res;
+        }
+      );
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      reader.onloadend = () => {
+        const resultImg = reader.result;
+        shortenUrl(resultImg as string);
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 파이어 스토리지를 이용해 base64 기반 이미지 코드를 짧은 url로 변경
+  const shortenUrl = async (img: string) => {
+    const imgRef = ref(storageService, `${auth.currentUser?.uid}${Date.now()}`);
+    const imgDataUrl = img;
+    let downloadUrl;
+    if (imgDataUrl) {
+      const response = await uploadString(imgRef, imgDataUrl, 'data_url');
+      downloadUrl = await getDownloadURL(response.ref);
+      if (salePostId) {
+        await updateDoc(doc(dbService, 'chat', salePostId), {
+          chatContent: arrayUnion({
+            imgUrl: downloadUrl,
+            uid: saveUser.uid,
+            nickName: userNick,
+            createdAt: Date.now(),
+          }),
+        });
+      }
+    }
+  };
 
   useEffect(() => {
     getChat();
@@ -174,7 +227,7 @@ const KakaoModal = () => {
           modal={isModalActive}
           setModal={setIsModalActive}
           width="872"
-          height="951"
+          height="750"
           overflow="hidden"
           element={
             <Container onSubmit={onClickAddChatContents}>
@@ -189,7 +242,12 @@ const KakaoModal = () => {
                             <MyDiv>
                               <MyChatContainer key={prev.createdAt}>
                                 <span>{prev.nickName}</span>
-                                <p>{prev.message}</p>
+
+                                {prev.imgUrl ? (
+                                  <ImgBox img={prev.imgUrl} />
+                                ) : null}
+
+                                {prev.message ? <p>{prev.message}</p> : null}
                               </MyChatContainer>
                               <CreatedAtContainer>
                                 <CreatedAt>
@@ -202,7 +260,11 @@ const KakaoModal = () => {
                           <YouDiv>
                             <YouChatContainer key={prev.createdAt}>
                               <span>{prev.nickName}</span>
-                              <p>{prev.message}</p>
+                              {prev.imgUrl ? (
+                                <ImgBox img={prev.imgUrl} />
+                              ) : null}
+
+                              {prev.message ? <p>{prev.message}</p> : null}
                             </YouChatContainer>
                             <CreatedAtContainer>
                               <CreatedAt>
@@ -218,7 +280,20 @@ const KakaoModal = () => {
                 </ChatContainer>
               </ScrollContainer>
               <ChatInputContainer>
-                <PhotoIcon />
+                <label htmlFor="changeImg">
+                  <PhotoIcon>
+                    <input
+                      hidden
+                      type="file"
+                      id="changeImg"
+                      onChange={saveImgFile}
+                      ref={imgRef}
+                      name="profile_img"
+                      accept="image/*"
+                    />
+                  </PhotoIcon>
+                </label>
+
                 <ChatInput
                   type="text"
                   value={chatContent}
@@ -241,7 +316,7 @@ export default KakaoModal;
 
 const Container = styled.form`
   width: 640px;
-  height: 791px;
+  height: 600px;
   margin: 80px;
   text-align: center;
   color: ${(props) => props.theme.colors.black};
@@ -403,4 +478,13 @@ const PhotoIcon = styled.div`
   background-size: cover;
   background-position: center center;
   margin-left: 10px;
+`;
+
+export const ImgBox = styled.div<{ img: string }>`
+  width: 380px;
+  height: 380px;
+  background-size: cover;
+  background-image: url(${(props) => props.img});
+  background-position: center center;
+  position: relative;
 `;
