@@ -244,7 +244,12 @@ const KakaoModal = () => {
                                 <span>{prev.nickName}</span>
 
                                 {prev.imgUrl ? (
-                                  <ImgBox img={prev.imgUrl} />
+                                  <ImgBox
+                                    img={prev.imgUrl}
+                                    onClick={() => {
+                                      window.open(prev.imgUrl);
+                                    }}
+                                  />
                                 ) : null}
 
                                 {prev.message ? <p>{prev.message}</p> : null}
@@ -261,7 +266,12 @@ const KakaoModal = () => {
                             <YouChatContainer key={prev.createdAt}>
                               <span>{prev.nickName}</span>
                               {prev.imgUrl ? (
-                                <ImgBox img={prev.imgUrl} />
+                                <ImgBox
+                                  img={prev.imgUrl}
+                                  onClick={() => {
+                                    window.open(prev.imgUrl);
+                                  }}
+                                />
                               ) : null}
 
                               {prev.message ? <p>{prev.message}</p> : null}
