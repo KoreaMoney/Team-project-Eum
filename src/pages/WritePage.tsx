@@ -15,9 +15,9 @@ import { postType } from '../types';
 import { getUsers, postPosts } from '../api';
 import * as a from '../styles/styledComponent/writeEdit';
 import loadable from '@loadable/component';
+import Loader from '../components/etc/Loader';
 
 const SignIn = loadable(() => import('./SignIn'));
-const Loader = loadable(() => import('../components/etc/Loader'));
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -28,9 +28,8 @@ const WritePage = () => {
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
   const [category, setCategory] = useState('');
-
+  const [img, setImg] = useState('');
   const toolbarOptions = [
-    // [{ header: [1, 2, 3, false] }],
     [{ align: [] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ list: 'ordered' }, { list: 'bullet' }],
@@ -154,7 +153,7 @@ const WritePage = () => {
     if (imgDataUrl) {
       const response = await uploadString(imgRef, imgDataUrl, 'data_url');
       downloadUrl = await getDownloadURL(response.ref);
-      setPost({ ...post, imgURL: downloadUrl });
+      setImg(downloadUrl);
     }
   };
 
@@ -213,10 +212,10 @@ const WritePage = () => {
     }
     const newPost: postType = {
       ...post,
-      category: category,
+      imgURL: img,
       price: Number(price.toString().replace(/[^0-9]/g, '')),
     };
-    await mutate(newPost); //
+    mutate(newPost); //
   };
 
   // 서버통신은 다 비동기함수
@@ -224,14 +223,10 @@ const WritePage = () => {
     return <SignIn />;
   }
   if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
   const deleteImg = () => {
-    setPost({ ...post, imgURL: '' });
+    setImg('');
   };
 
   return (
@@ -256,8 +251,8 @@ const WritePage = () => {
                   <a.PhotoIcon />
                 </a.AddPhotoBox>
               </label>
-              {imgURL && (
-                <a.ImgBox img={imgURL}>
+              {img && (
+                <a.ImgBox img={img}>
                   <a.DeleteIcon onClick={deleteImg} />
                 </a.ImgBox>
               )}
