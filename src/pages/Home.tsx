@@ -82,7 +82,7 @@ const Home = () => {
     dots: true,
     infinite: true,
     slidesToShow: 3,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     draggable: true,
@@ -108,7 +108,7 @@ const Home = () => {
               <>
                 <KingBox>
                   <KingImage
-                    src={result?.[0]?.data?.[0]?.profileImg}
+                    src="https://ifh.cc/g/TWvTps.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -118,7 +118,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src={result?.[1]?.data?.[0]?.profileImg}
+                    src="https://ifh.cc/g/X8qOwD.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -128,7 +128,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src={result?.[2]?.data?.[0]?.profileImg}
+                    src="https://ifh.cc/g/oW1q0M.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -138,7 +138,7 @@ const Home = () => {
                 </KingBox>
                 <KingBox>
                   <KingImage
-                    src={result?.[3]?.data?.[0]?.profileImg}
+                    src="https://ifh.cc/g/ksZRlr.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -258,10 +258,9 @@ const KingBox = styled.div`
   gap: 14px;
 `;
 const KingImage = styled.img`
-  width: 75%;
+  width: 283px;
   height: 200px;
   margin: auto;
-  border-radius: 10px;
 `;
 const KingName = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};

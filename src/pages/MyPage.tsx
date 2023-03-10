@@ -22,7 +22,6 @@ import {
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
-import Chart from '../components/mypage/Chart';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -72,14 +71,13 @@ const MyPage = () => {
     return post.isDone === true;
   });
 
-   const isDoneSell = tradeSellData?.filter((post: any) => {
-     return post.isDone === false;
-   });
-  
-  
-  const isDoneBuy = tradeBuyData?.filter((post:any) => {
+  const isDoneSell = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
-  })
+  });
+
+  const isDoneBuy = tradeBuyData?.filter((post: any) => {
+    return post.isDone === false;
+  });
 
   /*회원탈퇴 */
   const user = auth.currentUser;
