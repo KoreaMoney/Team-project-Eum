@@ -13,6 +13,8 @@ import {
   useScroll,
 } from 'framer-motion';
 import loadable from '@loadable/component';
+import { useQuery } from '@tanstack/react-query';
+import { getOnSalePostSeller } from '../../api';
 
 const SearchInput = loadable(() => import('../etc/SearchInput'));
 
@@ -88,6 +90,20 @@ const Header = () => {
     { label: '상담', path: '/categorypage/advice' },
     { label: '기타', path: '/categorypage/etc' },
   ];
+
+  const {
+    isLoading: getTradeSellListLoading,
+    isError: getTradeSellListIsError,
+    data: tradeSellData,
+  } = useQuery(['onSaleSellPosts', saveUser?.uid], () =>
+    getOnSalePostSeller(saveUser?.uid)
+  );
+
+  const waitTradeSellList = tradeSellData?.filter((post: any) => {
+    return post.isDone == false;
+  });
+
+  const waitTradeCount = waitTradeSellList.length;
 
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={'top'}>
