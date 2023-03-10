@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { viewBuyerModalAtom } from '../../atom';
+import { viewBuyerModalAtom, viewModalAtom } from '../../atom';
 import { theme } from '../../styles/theme';
 
 interface ModalProps {
@@ -24,7 +24,7 @@ export const CustomModal = ({
     setModal(false);
   };
 
-  const isModalActive = useRecoilValue(viewBuyerModalAtom);
+  const isModalActive = useRecoilValue(viewModalAtom);
 
   const onClickToggleModal = useCallback(() => {
     setModal(false);

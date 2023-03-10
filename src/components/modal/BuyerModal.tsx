@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { myOnSalePostsAtom, onSalePostAtom, viewBuyerModalAtom } from '../../atom';
-import { onSalePostType, postType } from '../../types';
+import { myOnSalePostsAtom, viewBuyerModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
@@ -11,7 +10,7 @@ const BuyerModal = () => {
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
-  
+
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
@@ -30,11 +29,11 @@ const BuyerModal = () => {
     return result;
   };
 
-  const GoOnSalePost = (salePosts:any) => {
+  const GoOnSalePost = (salePosts: any) => {
     navigate(
       `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
     );
-    setIsModalActive(false)
+    setIsModalActive(false);
   };
   return (
     <>
@@ -59,7 +58,7 @@ const BuyerModal = () => {
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
                   <ListContentsContainer>
-                    {newSalePosts?.map((salePosts:any) => {
+                    {newSalePosts?.map((salePosts: any) => {
                       return (
                         <ListContentContainer>
                           <Day>{getTimeGap(salePosts?.createdAt)}</Day>
