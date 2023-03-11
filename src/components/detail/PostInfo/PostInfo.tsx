@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -38,8 +38,10 @@ const PostInfo = () => {
 
   // State
   const [likeData, setLikeData] = useState<{ like: any[] }>({ like: [] });
-  const [isDrop, setIsDrop] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
   const [isDone, setIsDone] = useState<boolean | undefined>(undefined);
+
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
   const postData = useRecoilValue(detailPostAtom);
   const userData = useRecoilValue(detailUserAtom);
@@ -244,6 +246,21 @@ const PostInfo = () => {
       navigate(`/editpage/${id}`);
     }
   };
+
+  useEffect(() => {
+    const clickOustSide = (event: MouseEvent) => {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
+        setDropDown(false);
+      }
+    };
+    document.addEventListener('click', clickOustSide);
+    return () => {
+      document.removeEventListener('click', clickOustSide);
+    };
+  }, []);
   return (
     <a.PostInfoWrapper>
       <a.InfoTopContainer>
@@ -284,9 +301,9 @@ const PostInfo = () => {
         <a.TitleText>{postData?.[0]?.title}</a.TitleText>
         {saveUser?.uid === postData?.[0]?.sellerUid && (
           // 판매자만 보이는 드랍다운 케밥 버튼
-          <a.DropDownContainer>
-            <a.KebobIcon onClick={() => setIsDrop(!isDrop)} />
-            {isDrop && (
+          <a.DropDownContainer ref={dropDownRef}>
+            <a.KebobIcon onClick={() => setDropDown(!dropDown)} />
+            {dropDown && (
               <a.DropDownBox>
                 <a.DropDownButton
                   onClick={onClickMoveEditPage}
