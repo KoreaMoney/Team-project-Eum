@@ -87,7 +87,7 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 2300,
     cssEase: 'linear',
   };
 
@@ -107,8 +107,8 @@ const Home = () => {
             <HotKingWrapper>
               <>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/5MmCqO.png"
+                  <KingImage
+                    src="https://ifh.cc/g/7tc1h1.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -117,8 +117,8 @@ const Home = () => {
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/kt0lFx.png"
+                  <KingImage
+                    src="https://ifh.cc/g/WMvHLg.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -127,8 +127,8 @@ const Home = () => {
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/6SGy7o.png"
+                  <KingImage
+                    src="https://ifh.cc/g/lY7dfs.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -137,8 +137,8 @@ const Home = () => {
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img
-                    src="https://ifh.cc/g/zHY2xd.png"
+                  <KingImage
+                    src="https://ifh.cc/g/jj9v6l.webp"
                     alt=""
                     loading="lazy"
                   />
@@ -159,30 +159,27 @@ const Home = () => {
                   ?.slice(0, 9)
                   .sort((a: any, b: any) => b.like.length - a.like.length)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        <InfoBox
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -199,30 +196,27 @@ const Home = () => {
                   ?.sort((a: any, b: any) => b.createAt - a.createAt)
                   ?.slice(0, 9)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        <InfoBox
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -237,6 +231,18 @@ const Home = () => {
 };
 export default Home;
 
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: ${theme.colors.black};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
+`;
+
 const HotKingWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -250,19 +256,20 @@ const KingBox = styled.div`
   width: 280px;
   height: 320px;
   gap: 14px;
-  img {
-    width: 100%;
-    height: 220px;
-  }
 `;
-
+const KingImage = styled.img`
+  width: 283px;
+  height: 200px;
+  margin: auto;
+`;
 const KingName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title14};
-  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.orange02Main};
 `;
 const KingNick = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${theme.colors.black};
 `;
 const KingContext = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
