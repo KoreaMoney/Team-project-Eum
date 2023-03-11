@@ -37,6 +37,9 @@
 ![ezgif com-video-to-gif (11)](https://user-images.githubusercontent.com/117058112/224473260-a3e3db3c-5da1-49c2-a55a-91aede671f3d.gif)
 5. 글쓰기<br/>
 ![ezgif com-video-to-gif (12)](https://user-images.githubusercontent.com/117058112/224473265-5f944343-87b9-46fc-b64f-3a326c6eb6d4.gif)
+6. 거래 취소<br/>
+![ezgif com-video-to-gif (13)](https://user-images.githubusercontent.com/117058112/224473442-35af91a6-1e30-46b0-8f74-3a5e70dd5a00.gif)
+<br/><br/>
 
 🛠 사용 기술 및 라이브러리<br/>
 <img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/>
