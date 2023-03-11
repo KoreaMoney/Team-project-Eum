@@ -27,15 +27,15 @@
 📆 프로젝트 개발기간<br/> 23.02.06. ~ 23.03.13. (5weeks)<br/>
 
 📺 프로젝트 시연<br/>
-1. 회원 가입
+1. 회원 가입<br/>
 ![ezgif com-video-to-gif (7)](https://user-images.githubusercontent.com/117058112/224472867-cd8b8f9e-1a5d-4400-8902-e4aa757d015b.gif)
-2. 거래 진행
+2. 거래 진행<br/>
 ![ezgif com-video-to-gif (9)](https://user-images.githubusercontent.com/117058112/224472871-7502065b-f73c-4caa-bde8-8ea307463909.gif)
-3. 채팅 하기
+3. 채팅 하기<br/>
 ![ezgif com-video-to-gif (10)](https://user-images.githubusercontent.com/117058112/224472872-111b07b8-49da-480c-a47a-a1be07220075.gif)
-4. 마이페이지
+4. 마이페이지<br/>
 ![ezgif com-video-to-gif (11)](https://user-images.githubusercontent.com/117058112/224473260-a3e3db3c-5da1-49c2-a55a-91aede671f3d.gif)
-5. 글쓰기
+5. 글쓰기<br/>
 ![ezgif com-video-to-gif (12)](https://user-images.githubusercontent.com/117058112/224473265-5f944343-87b9-46fc-b64f-3a326c6eb6d4.gif)
 
 🛠 사용 기술 및 라이브러리<br/>
