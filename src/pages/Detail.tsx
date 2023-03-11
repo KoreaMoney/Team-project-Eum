@@ -113,7 +113,7 @@ const Detail = () => {
     return <Loader />;
   }
   if (!post || post.length === 0) {
-    return <div>No data found</div>;
+    return <div>데이터를 찾을 수 없습니다</div>;
   }
 
   return (

@@ -51,6 +51,10 @@ export const viewBuyerModalAtom = atom({
   key: 'viewBuyerModal',
   default: false,
 });
+export const viewHeaderBuyerModalAtom = atom({
+  key: 'viewHeaderBuyerModal',
+  default: false,
+});
 export const choiceBadgeAtom = atom({
   key: 'choiceBadge',
   default: '',
