@@ -25,16 +25,12 @@
 숨겨둔재능을 가치있게 만들자라는 의미입니다.<br/><br/>
 
 📆 프로젝트 개발기간<br/> 23.02.06. ~ 23.03.13. (5weeks)<br/>
-![ezgif com-video-to-gif (4)](https://user-images.githubusercontent.com/117058112/224468568-a48d85e9-51c7-4291-ab9d-21382ab06951.gif)
-![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/117058112/224468569-5a6d9d6a-8feb-41c3-abe8-9b6f4473b936.gif)
-![ezgif com-video-to-gif (6)](https://user-images.githubusercontent.com/117058112/224468570-fb215022-82fa-4073-b926-36f9fb721d6c.gif)
-![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/117058112/224468571-a43b4413-9017-4010-9961-1bfa60454538.gif)
 
-![ezgif com-video-to-gif (6)](https://user-images.githubusercontent.com/117058112/224468574-53462997-db6a-41a1-9323-d3bb15e06c55.gif)
-![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/117058112/224468576-4bef5942-b667-469f-b313-2bb10c987c15.gif)
-![ezgif com-video-to-gif (4)](https://user-images.githubusercontent.com/117058112/224468577-08d2788f-a336-4e8f-aef4-545e10a1be15.gif)
-![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/117058112/224468578-16e327bf-8f63-438e-bfdf-b35e67fc84ef.gif)
 
+![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/117058112/224468637-6bd630fb-8dc8-41b2-9eb0-87255dbd4c6e.gif)
+![ezgif com-video-to-gif (4)](https://user-images.githubusercontent.com/117058112/224468638-c974c4f1-3fc8-4cf1-8df2-d7c3dcd86d65.gif)
+![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/117058112/224468639-c980058b-761f-4ae1-9955-27db6f3aab88.gif)
+![ezgif com-video-to-gif (6)](https://user-images.githubusercontent.com/117058112/224468640-45177d34-f115-40be-a016-32179056acf7.gif)
 
 
 🛠 사용 기술 및 라이브러리<br/>
