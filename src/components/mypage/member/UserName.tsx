@@ -39,8 +39,8 @@ const UserName = () => {
   );
 
   const nickNameCheckClick = () => {
-    const nickNameDataLength = nickNameData?.nickName.length === 0;
     const editNickNameData = nickNameData?.nickName === editNickNameValue;
+    const nickNameDataLength = nickNameData?.nickName.length === 0;
     const checkMyNickName = nickNameData?.id === saveUser?.uid;
     if (nickNameDataLength || (checkMyNickName && editNickNameData)) {
       setNickNameCheck(2);
