@@ -64,39 +64,39 @@
 
 ✅ 기술적 의사결정<br/>
 1. 많은 양의 데이터 출력방법<br/>
--> Infinit Scroll (선택)<br/>
+-> Infinit Scroll (✔️)<br/>
 -> pagination	<br/>
-**선택 이유<br/>
+👍선택 이유<br/>
 __로드 되는 데이터가 쌓였을 때, 데이터 용량을 최소화 하여 가져오기 위해 선택하였습니다.<br/>
 __원하는 서비스를 찾아야 하는 매칭 서비스 특성 상, 게시 글을 페이지 개념보다 스크롤 형식으로 표현했을 때 UX가 좋다고 판단했습니다.<br/><br/>
 2. 서버 상태 관리<br>
--> React-Query (선택)<br/>
+-> React-Query (✔️)<br/>
 -> RTK-Query<br/>
 -> SWR<br/>
 -> Redux-Thunk<br/>
-**선택 이유<br/>
+👍선택 이유<br/>
 __server state 관리가 편리합니다.<br/>
 __라이브러리에서 기본적으로 제공하는 기능(캐싱, 업데이트, 동기화 등)이 더욱 강력합니다.<br/>
 __자동으로 가비지 컬렉션을 지원 하여 데이터를 최적화 합니다.<br/><br/>
 3. 클라이언트 상태 관리<br/>
--> Recoil <br/>
+-> Recoil(✔️) <br/>
 -> Redux<br/>	
-**선택이유<br/>
+👍선택이유<br/>
 __BoilerPlate가 적습니다.<br/>
 __코드가 간결해 사용하기 쉽고 가독성이 좋습니다.<br/>
 __React와 상성이 좋으며 react 기반으로 제작된 라이브러리로서 안정성, 성능 면에서 뛰어납니다.<br/>
 __미들웨어가 필요하지 않다.<br/>
 __입력 데이터 값을 기억하여 동일 응답 시, 추가적으로 요청하지 않아 성능 적으로 유리합니다.<br/><br/>
 4. 성능 개선<br/>
--> Loadable components(선택)<br/>
+-> Loadable components(✔️)<br/>
 -> React.lazy<br/>
-**선택이유<br/>
+👍선택이유<br/>
 __React에서 code splitting과 SSR 모두 지원합니다.<br/>
 __React.lazy에서는 제공하지 않는 library splitting, import 지원합니다.<br/><br/>
 5. authservice 데이터베이스<br/>
--> firebase(선택)<br/>
+-> firebase(✔️)<br/>
 -> supbase<br/>	
-**선택이유<br/>
+👍선택이유<br/>
 __보안성 높고, Auth서비스를 포함한 소셜 로그인을 지원합니다.<br/>
 __레퍼런스가 많습니다.
 		
