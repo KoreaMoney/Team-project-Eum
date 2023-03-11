@@ -30,11 +30,25 @@ const UserName = () => {
 
   const { data: nickNameData, isLoading } = useQuery(
     ['users', editNickNameValue],
-    () => getUserNickName(editNickNameValue)
+    () => getUserNickName(editNickNameValue),
+    {
+      select: (data) => {
+        return data[0];
+      },
+    }
   );
 
   const nickNameCheckClick = () => {
-    setNickNameCheck(nickNameData?.length > 0);
+    const nickNameDataLength = nickNameData?.nickName.length === 0;
+    const editNickNameData = nickNameData?.nickName === editNickNameValue;
+    const checkMyNickName = nickNameData?.id === saveUser?.uid;
+    if (nickNameDataLength || (checkMyNickName && editNickNameData)) {
+      setNickNameCheck(2);
+    } else if (nickNameData?.nickName.length > 0) {
+      setNickNameCheck(1);
+    } else if (!nickNameData) {
+      setNickNameCheck(2);
+    }
   };
 
   useEffect(() => {
@@ -86,11 +100,13 @@ const UserName = () => {
       </a.KakaoIdBox>
       {isLoading ? (
         <Loader />
-      ) : nickNameCheck ? (
-        <a.NickNameInfo>•ㅤ이미 사용중인 닉네임입니다.</a.NickNameInfo>
-      ) : (
+      ) : nickNameCheck === 0 ? (
+        <a.NickNameInfoCheck>•ㅤ중복검사를 해주세요.</a.NickNameInfoCheck>
+      ) : nickNameCheck === 2 ? (
         <a.NickNameInfoPass>•ㅤ사용 가능한 닉네임입니다.</a.NickNameInfoPass>
-      )}
+      ) : nickNameCheck === 1 ? (
+        <a.NickNameInfo>•ㅤ이미 사용중인 닉네임입니다.</a.NickNameInfo>
+      ) : null}
 
       <a.KakaoIdBox>
         <a.KakaoTitle>카카오톡 아이디</a.KakaoTitle>

@@ -71,12 +71,12 @@ export const addBirthDateAtom = atom({
 
 export const addNickNameAtom = atom({
   key: 'addNickName',
-  default: '•ㅤ중복검사를 눌러주세요.',
+  default: '',
 });
 
 export const editNickNameAtom = atom({
   key: 'editNickName',
-  default: false,
+  default: 0,
 });
 
 export const loginUserCheckState = atom<User | null>({

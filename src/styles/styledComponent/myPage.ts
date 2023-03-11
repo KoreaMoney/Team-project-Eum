@@ -414,6 +414,15 @@ export const KakaoInfo = styled.p`
   margin-bottom: 56px;
 `;
 
+export const NickNameInfoCheck = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
 export const NickNameInfo = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};

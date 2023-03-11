@@ -132,7 +132,20 @@ const PointHistoryList = () => {
                   ? '입금'
                   : '에러'}
               </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              {prev.buyerUid === saveUser.uid ? (
+                <PointHistoryContent>
+                  <p>{prev.title}</p>
+                  <p>{prev.sellerNickName}</p>
+                </PointHistoryContent>
+              ) : prev.sellerUid ? (
+                <PointHistoryContent>
+                  <p>{prev.title}</p>
+                  <p>{prev.buyerNickName}</p>
+                </PointHistoryContent>
+              ) : (
+                '에러'
+              )}
+
               <PointHistoryAmount>
                 {prev.buyerUid === saveUser.uid ? (
                   <PlusOrMinus>-</PlusOrMinus>
@@ -151,7 +164,10 @@ const PointHistoryList = () => {
               <PointHistoryDate>
                 {getTradeDate(prev.createdAt)}
               </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointHistoryContent>
+                <p>{prev.title}</p>
+                <p>{prev.buyerNickName}</p>
+              </PointHistoryContent>
               <PointHistoryAmount>
                 +{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -163,7 +179,10 @@ const PointHistoryList = () => {
               <PointHistoryDate>
                 {getTradeDate(prev.createdAt)}
               </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointHistoryContent>
+                <p>{prev.title}</p>
+                <p>{prev.sellerNickName}</p>
+              </PointHistoryContent>
               <PointHistoryAmount>
                 -{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -302,8 +321,9 @@ const PointHistoryDate = styled.div`
 
 const PointHistoryContent = styled.div`
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 25rem;
 `;
 
