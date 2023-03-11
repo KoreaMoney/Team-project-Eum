@@ -4,8 +4,9 @@ import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsPersonCircle } from 'react-icons/bs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { theme } from '../../styles/theme';
+import * as a from '../../components/detail/PostInfo/PostInfoStyle';
 import {
   motion,
   useAnimation,
@@ -15,6 +16,9 @@ import {
 import loadable from '@loadable/component';
 import { useQuery } from '@tanstack/react-query';
 import { getOnSalePostSeller } from '../../api';
+import { viewHeaderBuyerModalAtom } from '../../atom';
+import { useRecoilState } from 'recoil';
+import HeaderBuyerModal from '../modal/HeaderbuyerModal';
 
 const SearchInput = loadable(() => import('../etc/SearchInput'));
 
@@ -25,6 +29,11 @@ const Header = () => {
   const { scrollY } = useScroll();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [writeActive, setWriteActive] = useState(false);
+  const [isDrop, setIsDrop] = useState(false);
+  const dropDownRef = useRef<HTMLDivElement>(null);
+  const [isModalActive, setIsModalActive] = useRecoilState(
+    viewHeaderBuyerModalAtom
+  );
 
   //JSON서버 섹션스토리지 작성하기
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -73,6 +82,21 @@ const Header = () => {
       window.onpopstate = null;
     };
   }, []);
+  //드롭다운 밖의 영역 클릭시 사라짐
+  useEffect(() => {
+    const clickOustSide = (event: MouseEvent) => {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
+        setIsDrop(false);
+      }
+    };
+    document.addEventListener('click', clickOustSide);
+    return () => {
+      document.removeEventListener('click', clickOustSide);
+    };
+  }, []);
 
   useEffect(() => {
     // 라우트가 변경될 때마다 activeIndex 상태 업데이트
@@ -95,10 +119,18 @@ const Header = () => {
     isLoading: getTradeSellListLoading,
     isError: getTradeSellListIsError,
     data: tradeSellData,
-  } = useQuery(['onSaleSellPosts', saveUser?.uid], () =>
-    getOnSalePostSeller(saveUser?.uid)
+    refetch,
+  } = useQuery(
+    ['onSaleSellPosts', saveUser?.uid],
+    () => getOnSalePostSeller(saveUser?.uid),
+    {
+      onSuccess: () => {
+        setTimeout(() => {
+          refetch();
+        }, 60000);
+      },
+    }
   );
-
   const waitTradeSellList = tradeSellData?.filter((post: any) => {
     return post.isDone === false;
   });
@@ -144,17 +176,37 @@ const Header = () => {
             <HeaderRightInfo>
               {saveUser && (
                 <>
-                  <span>
-                    <Link
-                      to={`/mypage/${saveUser.uid}`}
-                      aria-label="마이페이지 이동"
-                      onClick={() => {
-                        setWriteActive(false);
-                      }}
-                    >
-                      <BsPersonCircle size={36} />
-                      {waitTradeCount}
-                    </Link>
+                  <span ref={dropDownRef}>
+                    <BsPersonCircle
+                      size={36}
+                      onClick={() => setIsDrop(!isDrop)}
+                    />
+                    {waitTradeCount}
+                    <a.DropDownContainer>
+                      {isDrop && (
+                        <DropDownBox>
+                          <Link
+                            to={`/mypage/${saveUser.uid}`}
+                            aria-label="마이페이지 이동"
+                            onClick={() => {
+                              setWriteActive(false);
+                              setIsDrop(!isDrop);
+                            }}
+                          >
+                            <a.DropDownButton aria-label="마이페이지">
+                              마이페이지
+                            </a.DropDownButton>
+                          </Link>
+                          <a.DropDownButton
+                            onClick={() => setIsModalActive(true)}
+                            aria-label="매칭중"
+                          >
+                            매칭중{waitTradeCount}
+                          </a.DropDownButton>
+                          <HeaderBuyerModal salePosts={tradeSellData} />
+                        </DropDownBox>
+                      )}
+                    </a.DropDownContainer>
                   </span>
                   <WriteBtn
                     className={writeActive ? 'active' : ''}
@@ -321,4 +373,16 @@ const LogOutBtn = styled.button`
     border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
   }
+`;
+export const DropDownBox = styled.div`
+  width: 132px;
+  border-radius: 20%;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  position: absolute;
+  background-color: ${(props) => props.theme.colors.white};
+  top: 45px;
+  right: -110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
