@@ -1,29 +1,20 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  buyerLengthAtom,
-  myOnSalePostsAtom,
-  onSalePostAtom,
-  viewBuyerModalAtom,
-} from '../../atom';
-import { onSalePostType, postType } from '../../types';
-
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { myOnSalePostsAtom, viewBuyerModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
 const BuyerModal = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
-  
+
   const newSalePosts = useRecoilValue(myOnSalePostsAtom);
   const salePosts = newSalePosts?.filter((prev) => {
     return prev.postsId === id;
   });
-
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -77,7 +68,14 @@ const BuyerModal = () => {
                         <ListContentContainer>
                           <Day>{getTimeGap(salePost?.createdAt)}</Day>
                           <NickName>{salePost?.buyerNickName}</NickName>
-                          <Price>{salePost?.price}P</Price>
+                          <Price>
+                            {salePost?.price
+                              ? salePost?.price
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              : 0}
+                            P
+                          </Price>
                           <MoveButton onClick={() => GoOnSalePost(salePost)}>
                             바로가기
                           </MoveButton>
@@ -115,7 +113,7 @@ const ModalTitle = styled.p`
 `;
 
 const ModalContent = styled.p`
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
@@ -213,8 +211,8 @@ const MoveButton = styled.button`
   line-height: ${(props) => props.theme.lineHeight.title14};
   &:hover {
     cursor: pointer;
-    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+    border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
-    border-radius: 10px;
+    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;

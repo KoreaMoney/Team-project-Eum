@@ -213,24 +213,24 @@ const PostInfo = () => {
     patchPosts(id, newPost)
   );
   /**판매중 클릭 */
-  const onClickOnSaleButton = async () => {
+  const onClickOnSaleButton = () => {
     if (postData) {
       setIsDone(false);
-      await changeStatePost({
+      changeStatePost({
         ...postData[0],
         isDone: false,
       });
     }
   };
   /**거래완료 클릭 */
-  const onClickCompletedButton = async () => {
+  const onClickCompletedButton = () => {
     if (isPostSell?.[0]) {
       customWarningAlert('매칭 중인 글이 있습니다.');
       return;
     } else {
       if (postData) {
         setIsDone(true);
-        await changeStatePost({
+        changeStatePost({
           ...postData[0],
           isDone: true,
         });
@@ -261,6 +261,7 @@ const PostInfo = () => {
       document.removeEventListener('click', clickOustSide);
     };
   }, []);
+
   return (
     <a.PostInfoWrapper>
       <a.InfoTopContainer>

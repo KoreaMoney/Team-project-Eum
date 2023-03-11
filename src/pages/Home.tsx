@@ -1,21 +1,21 @@
 import { useNavigate } from 'react-router';
 import { postType } from '../types';
 import { useQueries, useQuery } from '@tanstack/react-query';
+import { getPosts } from '../api';
+import { theme } from '../styles/theme';
+import Slider from 'react-slick';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
-import { getPosts } from '../api';
+import loadable from '@loadable/component';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Slider from 'react-slick';
-import { theme } from '../styles/theme';
-import loadable from '@loadable/component';
+import Banner from '../components/home/Banner';
+import Loader from '../components/etc/Loader';
 
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
-const Banner = loadable(() => import('../components/home/Banner'));
-const Loader = loadable(() => import('../components/etc/Loader'));
 
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
@@ -88,6 +88,7 @@ const Home = () => {
     draggable: true,
     autoplay: true,
     autoplaySpeed: 6000,
+    cssEase: 'linear',
   };
 
   return (
@@ -96,9 +97,8 @@ const Home = () => {
         <Loader />
       ) : (
         <>
-          <div>
-            <Banner />
-          </div>
+          <Banner />
+
           <a.HomePostContainer>
             <a.HotEum>
               <span>핫한 이음이 친구들</span>
@@ -107,25 +107,41 @@ const Home = () => {
             <HotKingWrapper>
               <>
                 <KingBox>
-                  <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/5MmCqO.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>공부신</KingName>
                   <KingNick>{result?.[0]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/kt0lFx.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>놀이신</KingName>
                   <KingNick>{result?.[1]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/6SGy7o.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>상담신</KingName>
                   <KingNick>{result?.[2]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
+                  <img
+                    src="https://ifh.cc/g/zHY2xd.png"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>기타신</KingName>
                   <KingNick>{result?.[3]?.data?.[0]?.nickName}</KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsPersonCircle } from 'react-icons/bs';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { theme } from '../../styles/theme';
 import * as a from '../../components/detail/PostInfo/PostInfoStyle';
 import {
@@ -115,12 +115,7 @@ const Header = () => {
     { label: '기타', path: '/categorypage/etc' },
   ];
 
-  const {
-    isLoading: getTradeSellListLoading,
-    isError: getTradeSellListIsError,
-    data: tradeSellData,
-    refetch,
-  } = useQuery(
+  const { data: tradeSellData, refetch } = useQuery(
     ['onSaleSellPosts', saveUser?.uid],
     () => getOnSalePostSeller(saveUser?.uid),
     {
@@ -136,6 +131,10 @@ const Header = () => {
   });
 
   const waitTradeCount = waitTradeSellList?.length;
+
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
 
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={'top'}>
@@ -177,11 +176,13 @@ const Header = () => {
               {saveUser && (
                 <>
                   <span ref={dropDownRef}>
-                    <BsPersonCircle
-                      size={36}
-                      onClick={() => setIsDrop(!isDrop)}
-                    />
-                    {waitTradeCount}
+                    <CountWrapper>
+                      <BsPersonCircle
+                        size={36}
+                        onClick={() => setIsDrop(!isDrop)}
+                      />
+                      <Count> {waitTradeCount}</Count>
+                    </CountWrapper>
                     <a.DropDownContainer>
                       {isDrop && (
                         <DropDownBox>
@@ -198,15 +199,15 @@ const Header = () => {
                             </a.DropDownButton>
                           </Link>
                           <a.DropDownButton
-                            onClick={() => setIsModalActive(true)}
-                            aria-label="매칭중"
+                            onClick={onClickToggleModal}
+                            aria-label="매칭 중"
                           >
-                            매칭중{waitTradeCount}
+                            매칭 중 ({waitTradeCount})
                           </a.DropDownButton>
-                          <HeaderBuyerModal salePosts={tradeSellData} />
                         </DropDownBox>
                       )}
                     </a.DropDownContainer>
+                    <HeaderBuyerModal salePosts={tradeSellData} />
                   </span>
                   <WriteBtn
                     className={writeActive ? 'active' : ''}
@@ -243,6 +244,28 @@ const Nav = styled(motion.nav)`
   padding: 20px 60px;
   z-index: 10;
   color: ${(props) => props.theme.colors.black};
+`;
+
+const Count = styled.div`
+  background-color: ${theme.colors.red};
+  display: flex;
+  position: absolute;
+  font-size: 11px;
+  color: white;
+  right: 302px;
+  top: 18px;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 2px 2px 0 ${theme.colors.gray30};
+`;
+
+const CountWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
 `;
 
 const navVariants = {
@@ -334,6 +357,20 @@ const HeaderRightInfo = styled.div`
   width: 70%;
 `;
 
+const DropDownBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  font-size: ${theme.fontSize.title16};
+  top: 5px;
+  left: 35px;
+  width: 125px;
+  border-radius: 0 10px 10px 10px;
+  border: 1px solid ${(props) => props.theme.colors.gray20};
+  background-color: ${(props) => props.theme.colors.white};
+`;
+
 const WriteBtn = styled.button`
   background-color: transparent;
   font-size: ${(props) => props.theme.fontSize.title18};
@@ -373,16 +410,4 @@ const LogOutBtn = styled.button`
     border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
   }
-`;
-export const DropDownBox = styled.div`
-  width: 132px;
-  border-radius: 20%;
-  border: 1px solid ${(props) => props.theme.colors.gray20};
-  position: absolute;
-  background-color: ${(props) => props.theme.colors.white};
-  top: 45px;
-  right: -110px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;

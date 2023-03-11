@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import { theme } from '../../styles/theme';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '../../api';
+import { IoIosArrowForward } from 'react-icons/io';
+
 import Slider from 'react-slick';
 import styled from 'styled-components';
-import { IoIosArrowForward } from 'react-icons/io';
 
 const Banner = () => {
   const settings = {
@@ -15,14 +16,15 @@ const Banner = () => {
     pauseOnHover: true,
     autoplay: true,
     autoplaySpeed: 7000,
+    cssEase: 'linear',
     prevArrow: (
       <PrevArrow>
-        <img src="https://ifh.cc/g/j7cfsH.png" alt="이전" />
+        <img src="https://ifh.cc/g/j7cfsH.png" alt="이전" loading="lazy" />
       </PrevArrow>
     ),
     nextArrow: (
       <NextArrow>
-        <img src="https://ifh.cc/g/ARGjlO.png" alt="다음" />
+        <img src="https://ifh.cc/g/ARGjlO.png" alt="다음" loading="lazy" />
       </NextArrow>
     ),
   };
@@ -37,13 +39,11 @@ const Banner = () => {
     <ImageContainer>
       <Slider {...settings}>
         <div>
-          <Image src="https://ifh.cc/g/BYTr0h.webp" alt="" />
           <Text>
             <Text1>알파세대를 위한 재능 마켓</Text1>
             <p>재능을 이어주다, 이음</p>
-            <p></p>
             <span>
-              <Link to="/categorypage/all" aria-label="전체">
+              <Link to="/categorypage/all" aria-label="전체" rel="preload">
                 <Move>
                   재능 구경하러 가기
                   <IoIosArrowForward />
@@ -51,16 +51,20 @@ const Banner = () => {
               </Link>
             </span>
           </Text>
+          <Image src="https://ifh.cc/g/BYTr0h.webp" alt="" loading="lazy" />
         </div>
         <div>
-          <Image src="https://ifh.cc/g/2rVBFv.webp" alt="" />
           <Text2>
             <Text22>회원가입 시</Text22>
             <p>50,000P 즉시 증정</p>
             <span>
               {data?.id ? (
                 <>
-                  <Link to="/categorypage/all" aria-label="카테고리 이동">
+                  <Link
+                    to="/categorypage/all"
+                    aria-label="카테고리 이동"
+                    rel="preload"
+                  >
                     <Move>
                       재능 구경하러 가기
                       <IoIosArrowForward />
@@ -79,6 +83,7 @@ const Banner = () => {
               )}
             </span>
           </Text2>
+          <Image src="https://ifh.cc/g/2rVBFv.webp" alt="" loading="lazy" />
         </div>
       </Slider>
     </ImageContainer>
@@ -141,6 +146,7 @@ const Image = styled.img`
 
 const Text = styled.div`
   position: absolute;
+
   top: 20rem;
   left: 27%;
   transform: translate(-50%, -50%);
@@ -162,6 +168,7 @@ const Text = styled.div`
 
 const Text1 = styled.p`
   margin-bottom: 20px;
+  font-display: fallback;
 `;
 
 const Text2 = styled.div`
@@ -185,4 +192,5 @@ const Text2 = styled.div`
 `;
 const Text22 = styled.p`
   margin-bottom: 20px;
+  font-display: fallback;
 `;
