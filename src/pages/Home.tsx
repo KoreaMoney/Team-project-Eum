@@ -87,7 +87,7 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 2300,
+    autoplaySpeed: 3000,
     cssEase: 'linear',
   };
 
