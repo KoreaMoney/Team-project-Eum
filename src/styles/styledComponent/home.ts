@@ -46,7 +46,7 @@ export const PostWrapper = styled.div`
   align-items: center;
   gap: 10px;
   width: 370px;
-  height: 370px;
+  height: 390px;
 `;
 
 export const PostImg = styled.div<{ bgPhoto: string }>`
@@ -67,6 +67,10 @@ export const PostInfoWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   line-height: 32px;
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
 `;
 
 export const InfoBest = styled.div`
@@ -74,16 +78,17 @@ export const InfoBest = styled.div`
   color: ${theme.colors.green};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  margin-bottom: 10px;
 `;
 
 export const InfoTitle = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${(props) => props.theme.fontSize.title18};
+  font-size: ${(props) => props.theme.fontSize.title16};
   width: 230px;
   height: 55px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 5px;
 `;
 
@@ -112,6 +117,7 @@ export const InfoNickName = styled.p`
 
 export const InfoNew = styled.div`
   margin-top: 10px;
+  margin-bottom: 10px;
   text-decoration: underline;
   color: ${theme.colors.Blue};
   font-size: ${(props) => props.theme.fontSize.title16};
