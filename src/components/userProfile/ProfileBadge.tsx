@@ -46,10 +46,11 @@ const ProfileBadge = () => {
   useEffect(() => {
     const time = userProfile?.time;
     const cheap = userProfile?.cheap;
+    const manner = userProfile?.manner;
     const fast = userProfile?.fast;
     const service = userProfile?.service;
     const donation = userProfile?.donation;
-    const result = [time, cheap, fast, service, donation];
+    const result = [time, cheap, fast, service, donation, manner];
 
     const trueValues = result.filter((value) => (value ?? 0) >= 10);
     setBadgeLength(trueValues.length);
