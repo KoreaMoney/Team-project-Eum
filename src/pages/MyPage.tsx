@@ -5,10 +5,6 @@ import { theme } from '../styles/theme';
 import { deleteUser } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
 import { postType } from '../types';
-import PointModal from '../components/mypage/PointModal';
-import * as a from '../styles/styledComponent/myPage';
-import axios from 'axios';
-import MemberInfo from '../components/mypage/member/MemberInfo';
 import {
   getOnSalePostBuyer,
   getOnSalePostSeller,
@@ -21,6 +17,10 @@ import {
   customInfoAlert,
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
+import * as a from '../styles/styledComponent/myPage';
+import PointModal from '../components/mypage/PointModal';
+import axios from 'axios';
+import MemberInfo from '../components/mypage/member/MemberInfo';
 import Loader from '../components/etc/Loader';
 
 const MyPage = () => {

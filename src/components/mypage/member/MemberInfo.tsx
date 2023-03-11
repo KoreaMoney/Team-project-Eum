@@ -6,8 +6,8 @@ import {
   choiceBadgeAtom,
   editNickNameAtom,
 } from '../../../atom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { patchUsers } from '../../../api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getUserNickName, patchUsers } from '../../../api';
 import loadable from '@loadable/component';
 import styled from 'styled-components';
 import {
@@ -53,8 +53,12 @@ const MemberInfo = () => {
       customWarningAlert('닉네임을 작성해 주세요.');
       return;
     }
-    if (nickNameCheck === true) {
+    if (nickNameCheck === 0) {
       customWarningAlert('닉네임 중복검사를 해주세요.');
+      return;
+    }
+    if (nickNameCheck === 1) {
+      customWarningAlert('이미 사용중인 닉네임 입니다.');
       return;
     }
     if (editBirthValue) {
