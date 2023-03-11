@@ -59,7 +59,6 @@ const SellerInfo = () => {
     () => getUsers(post?.[0].sellerUid),
     {
       enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
       onError: () => {
         customWarningAlert('현재 구매할수 없는 글입니다.');
         navigate(-1);
@@ -71,12 +70,14 @@ const SellerInfo = () => {
     const time = seller?.time >= 10 ? true : false;
     const cheap = seller?.cheap >= 10 ? true : false;
     const fast = seller?.fast >= 10 ? true : false;
+    const manner = seller?.manner >= 10 ? true : false;
     const service = seller?.service >= 10 ? true : false;
     const donation = seller?.donation >= 10 ? true : false;
-    const result = [time, cheap, fast, service, donation];
+    const result = [time, cheap, fast, service, donation, manner];
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [seller]);
+console.log('badgeLength: ', seller?.donation);
 
   /**배지 이미지 정하기 */
   let userBadge;
