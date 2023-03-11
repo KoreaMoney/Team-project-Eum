@@ -42,7 +42,7 @@
 
 🛠서비스 아키텍처
 
-<img src="https://ifh.cc/g/Jjafzy.png" width="600" height="360"/>
+<img src="https://ifh.cc/g/Jjafzy.png" width="800" height="360"/>
 
 ✅ 주요기능<br/> 로그인/회원가입 :<br/> 메인페이지 :<br/> 상세페이지 :<br/> 마이
 페이지 :<br/>
