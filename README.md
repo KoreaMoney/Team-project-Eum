@@ -27,12 +27,6 @@
 📆 프로젝트 개발기간<br/> 23.02.06. ~ 23.03.13. (5weeks)<br/>
 
 
-![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/117058112/224468637-6bd630fb-8dc8-41b2-9eb0-87255dbd4c6e.gif)
-![ezgif com-video-to-gif (4)](https://user-images.githubusercontent.com/117058112/224468638-c974c4f1-3fc8-4cf1-8df2-d7c3dcd86d65.gif)
-![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/117058112/224468639-c980058b-761f-4ae1-9955-27db6f3aab88.gif)
-![ezgif com-video-to-gif (6)](https://user-images.githubusercontent.com/117058112/224468640-45177d34-f115-40be-a016-32179056acf7.gif)
-
-
 🛠 사용 기술 및 라이브러리<br/>
 <img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/>
 <img src="https://img.shields.io/badge/Recoil-blue?style=flat-square&logo=Recoil&logoColor=white"/><br/>
