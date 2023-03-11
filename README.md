@@ -41,7 +41,7 @@
 ![ezgif com-video-to-gif (13)](https://user-images.githubusercontent.com/117058112/224473442-35af91a6-1e30-46b0-8f74-3a5e70dd5a00.gif)
 <br/><br/>
 
-🛠 사용 기술 및 라이브러리<br/>
+🛠 Usage Technologies and Libraries<br/>
 <img src="https://img.shields.io/badge/Typescript-FFCA28?style=flat-square&logo=Typescript&logoColor=blue"/>
 <img src="https://img.shields.io/badge/Recoil-blue?style=flat-square&logo=Recoil&logoColor=white"/><br/>
 <img src="https://img.shields.io/badge/React-Query-blue?style=flat-square&logo=React-Query&logoColor=blue"/>
@@ -54,11 +54,11 @@
 <img src="https://img.shields.io/badge/Lighthouse-red?style=flat-square&logo=LightHouse&logoColor=green"/>
 <img src="https://img.shields.io/badge/Loadable-Components-red?style=flat-square&logo=Loadable-ComponentslogoColor=white"/>
 
-🛠서비스 아키텍처<br/>
+🛠Service Architecture<br/>
 
 <img src="https://ifh.cc/g/Jjafzy.png" width="800" height="400"/>
 
-🛠서비스 아키텍처<br/>
+🛠Data modeling<br/>
 <img src="https://ifh.cc/g/RAlDXN.png" width="800" height="400"/>
 
 
