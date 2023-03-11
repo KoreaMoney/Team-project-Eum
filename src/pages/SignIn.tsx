@@ -3,24 +3,25 @@ import { AxiosResponse } from 'axios';
 import { useNavigate, useLocation } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { auth } from '../firebase/Firebase';
 import { userType, ILoginForm } from '../types';
 import { CustomModal } from '../components/modal/CustomModal';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { getAuthUsers, postUsers } from '../api';
+import { customWarningAlert } from '../components/modal/CustomAlert';
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
+
 import * as a from '../styles/styledComponent/auth';
-import { getAuthUsers, postUsers } from '../api';
-import { customWarningAlert } from '../components/modal/CustomAlert';
+import * as yup from 'yup';
 import basicIMG from '../styles/basicIMG.webp';
 import loadable from '@loadable/component';
+import Loader from '../components/etc/Loader';
 
 const FindPW = loadable(() => import('../components/auth/FindPW'));
-const Header = loadable(() => import('../components/layout/Header'));
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ const SignIn = () => {
   const [isViewPW, setIsViewPW] = useState(false);
   const [authenticating, setAuthenticating] = useState<boolean>(false);
   const [err, setErr] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
 
   /**순서
    * user섹션 저장하기
@@ -42,6 +45,9 @@ const SignIn = () => {
 
   //user섹션에 데이터 저장하기
   useEffect(() => {
+    if (saveUser) {
+      navigate('/');
+    }
     const authObserver = auth.onAuthStateChanged((user) => {
       if (user) {
         sessionStorage.setItem('user', JSON.stringify(user));
@@ -174,7 +180,7 @@ const SignIn = () => {
         if (
           errorMessage.includes('auth/account-exists-with-different-credential')
         ) {
-          setErr('이미 가입된 회원입니다.');
+          setErr('이미 가입된 이음인입니다.');
           navigate('/');
           return;
         }
@@ -189,94 +195,99 @@ const SignIn = () => {
 
   return (
     <>
-      <Header />
-      <a.LoginContainer>
-        <a.LoginText>로그인</a.LoginText>
-        <a.LoginForm
-          onSubmit={handleSubmit(onSubmitHandler)}
-          aria-label="이메일 비밀번호 입력하기"
-        >
-          <a.LoginInputWrapper
-            style={{
-              borderColor: errors?.email?.message ? '#ff334b' : '',
-            }}
-          >
-            <a.LoginInputText>이메일 아이디</a.LoginInputText>
-            <a.LoginMiniWrapper>
-              <a.LoginInput
-                type="email"
-                placeholder=""
-                {...register('email')}
-              />
-              <a.LoginCloseIcon
-                size={20}
-                onClick={handleInputValueClickBT}
-                aria-label="닫기"
-              />
-            </a.LoginMiniWrapper>
-          </a.LoginInputWrapper>
-          <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
-          <a.LoginInputWrapper
-            style={{
-              borderColor: errors?.password?.message ? '#ff334b' : '',
-            }}
-          >
-            <a.LoginInputText>비밀번호</a.LoginInputText>
-            <a.LoginMiniWrapper>
-              <a.LoginInput
-                type={isViewPW ? 'text' : 'password'}
-                placeholder=""
-                {...register('password')}
-              />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <a.LoginContainer>
+            <a.LoginText>로그인</a.LoginText>
+            <a.LoginForm
+              onSubmit={handleSubmit(onSubmitHandler)}
+              aria-label="이메일 비밀번호 입력하기"
+            >
+              <a.LoginInputWrapper
+                style={{
+                  borderColor: errors?.email?.message ? '#ff334b' : '',
+                }}
+              >
+                <a.LoginInputText>이메일 아이디</a.LoginInputText>
+                <a.LoginMiniWrapper>
+                  <a.LoginInput
+                    type="email"
+                    placeholder=""
+                    {...register('email')}
+                  />
+                  <a.LoginCloseIcon
+                    size={20}
+                    onClick={handleInputValueClickBT}
+                    aria-label="닫기"
+                  />
+                </a.LoginMiniWrapper>
+              </a.LoginInputWrapper>
+              <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
+              <a.LoginInputWrapper
+                style={{
+                  borderColor: errors?.password?.message ? '#ff334b' : '',
+                }}
+              >
+                <a.LoginInputText>비밀번호</a.LoginInputText>
+                <a.LoginMiniWrapper>
+                  <a.LoginInput
+                    type={isViewPW ? 'text' : 'password'}
+                    placeholder=""
+                    {...register('password')}
+                  />
 
-              <a.LoginPwIcon
-                size={22}
-                onClick={handleClickViewPW}
-                style={{ color: isViewPW ? '#FF6C2C' : '#C2C1C1' }}
-                aria-label="비밀번호 입력하기"
-              />
-            </a.LoginMiniWrapper>
-          </a.LoginInputWrapper>
-          <a.ErrMsg>{errors.password?.message}</a.ErrMsg>
-          <a.SubmitLogin type="submit" aria-label="로그인">
-            로그인
-          </a.SubmitLogin>
-        </a.LoginForm>
-        <a.LoginAnd>또는</a.LoginAnd>
-        <a.GoogleWrapper>
-          <a.GoogleBtn onClick={onGoogleClick} aria-label="구글 로그인">
-            <a.GoogleIconWrapper>
-              <a.GoogleIcon size={30} />
-              <p>Google 계정으로 계속하기</p>
-            </a.GoogleIconWrapper>
-          </a.GoogleBtn>
-        </a.GoogleWrapper>
-        <a.LoginOther>
-          <button onClick={() => navigate('/signup')} aria-label="회원가입">
-            회원가입
-          </button>
+                  <a.LoginPwIcon
+                    size={22}
+                    onClick={handleClickViewPW}
+                    style={{ color: isViewPW ? '#FF6C2C' : '#C2C1C1' }}
+                    aria-label="비밀번호 입력하기"
+                  />
+                </a.LoginMiniWrapper>
+              </a.LoginInputWrapper>
+              <a.ErrMsg>{errors.password?.message}</a.ErrMsg>
+              <a.SubmitLogin type="submit" aria-label="로그인">
+                로그인
+              </a.SubmitLogin>
+            </a.LoginForm>
+            <a.LoginAnd>또는</a.LoginAnd>
+            <a.GoogleWrapper>
+              <a.GoogleBtn onClick={onGoogleClick} aria-label="구글 로그인">
+                <a.GoogleIconWrapper>
+                  <a.GoogleIcon size={30} />
+                  <p>Google 계정으로 계속하기</p>
+                </a.GoogleIconWrapper>
+              </a.GoogleBtn>
+            </a.GoogleWrapper>
+            <a.LoginOther>
+              <button onClick={() => navigate('/signup')} aria-label="회원가입">
+                회원가입
+              </button>
 
-          <button onClick={onClickToggleModal} aria-label="비밀번호 찾기">
-            비밀번호 찾기
-          </button>
-        </a.LoginOther>
-        {isModalActive ? (
-          <CustomModal
-            modal={isModalActive}
-            setModal={setIsModalActive}
-            width="544"
-            height="432"
-            overflow="hidden"
-            element={
-              <div>
-                <FindPW />
-              </div>
-            }
-          />
-        ) : (
-          ''
-        )}
-      </a.LoginContainer>
+              <button onClick={onClickToggleModal} aria-label="비밀번호 찾기">
+                비밀번호 찾기
+              </button>
+            </a.LoginOther>
+            {isModalActive ? (
+              <CustomModal
+                modal={isModalActive}
+                setModal={setIsModalActive}
+                width="544"
+                height="432"
+                overflow="hidden"
+                element={
+                  <div>
+                    <FindPW />
+                  </div>
+                }
+              />
+            ) : (
+              ''
+            )}
+          </a.LoginContainer>
+        </>
+      )}
     </>
   );
 };

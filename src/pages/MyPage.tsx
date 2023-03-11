@@ -18,6 +18,7 @@ import {
 } from '../api';
 import {
   customConfirm,
+  customInfoAlert,
   customSuccessAlert,
 } from '../components/modal/CustomAlert';
 import Loader from '../components/etc/Loader';
@@ -70,6 +71,14 @@ const MyPage = () => {
     return post.isDone === true;
   });
 
+  const isDoneSell = tradeSellData?.filter((post: any) => {
+    return post.isDone === false;
+  });
+
+  const isDoneBuy = tradeBuyData?.filter((post: any) => {
+    return post.isDone === false;
+  });
+
   /*회원탈퇴 */
   const user = auth.currentUser;
   const { mutate: deletedUser } = useMutation(
@@ -94,14 +103,18 @@ const MyPage = () => {
   );
   // deleteUsers
   const deleteAuth = () => {
-    customConfirm(
-      '탈퇴 하시겠습니까?',
-      '탈퇴 시 모든 정보는 삭제가 됩니다.\n정말 탈퇴하시겠습니까?',
-      '회원 탈퇴',
-      async () => {
-        await deletedUser(id);
-      }
-    );
+    if (isDoneBuy?.[0] || isDoneSell?.[0]) {
+      customInfoAlert('매칭중인 회원은 탈퇴가 불가능합니다.');
+    } else {
+      customConfirm(
+        '탈퇴 하시겠습니까?',
+        '탈퇴 시 모든 정보는 삭제가 됩니다.\n정말 탈퇴하시겠습니까?',
+        '회원 탈퇴',
+        async () => {
+          await deletedUser(id);
+        }
+      );
+    }
   };
 
   /* 1. 관심목록에서 포스트 클릭 시 조회수 + 1 후 해당 페이지로 이동합니다.
@@ -205,7 +218,7 @@ const MyPage = () => {
                     }
                     aria-label="판매중"
                   >
-                    판매중 {mySellPostList?.length}
+                    매칭 중 {mySellPostList?.length}
                   </div>
                   <div
                     onClick={() => setSellCategory('거래완료')}
@@ -214,7 +227,7 @@ const MyPage = () => {
                     }
                     aria-label="거래완료"
                   >
-                    거래완료 {isDoneTradeSellList?.length}
+                    매칭 완료 {isDoneTradeSellList?.length}
                   </div>
                 </a.MySellNav>
               ) : null}
@@ -223,8 +236,8 @@ const MyPage = () => {
                   <a.MyNickName>
                     <span>{saveUser.displayName || ''}</span>님의 회원정보
                   </a.MyNickName>
-                  <a.MyInfoTopRight onClick={deleteAuth}>
-                    　회원탈퇴
+                  <a.MyInfoTopRight onClick={deleteAuth} aria-label="회원 탈퇴">
+                    　회원 탈퇴
                     <a.RightIcon />
                   </a.MyInfoTopRight>
                 </a.MyInfoTop>
@@ -237,7 +250,7 @@ const MyPage = () => {
                           <a.LikeImg
                             src="/assets/like.png"
                             alt="찜"
-                            loading="lazy"
+                            decoding="async"
                           />
                           <a.PostImg
                             src={
@@ -245,11 +258,18 @@ const MyPage = () => {
                                 ? list.imgURL
                                 : '/assets/basicIMG.jpg'
                             }
+                            decoding="async"
                             onClick={() => handleLikePostClick(list)}
+                            aria-label="찜 목록"
                           />
                           <a.InfoBest>{list.category}</a.InfoBest>
                           <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
-                          <a.MyLikeDiv>{list.price} P</a.MyLikeDiv>
+                          <a.MyLikeDiv>
+                            {list.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            P
+                          </a.MyLikeDiv>
                           <p>{list.nickName}</p>
                         </a.MyLikeList>
                       );
@@ -266,7 +286,9 @@ const MyPage = () => {
                                   ? list.imgURL
                                   : '/assets/basicIMG.jpg'
                               }
+                              decoding="async"
                               onClick={() => handleSellingPostClick(list)}
+                              aria-label="판매 내역"
                             />
                             <a.InfoBest>{list.category}</a.InfoBest>
                             <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
@@ -276,7 +298,6 @@ const MyPage = () => {
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                               P
                             </a.MyLikeDiv>
-                            <p>{list.buyerNickName}</p>
                           </a.MyLikeList>
                         );
                       })
@@ -289,7 +310,9 @@ const MyPage = () => {
                                   ? list.imgURL
                                   : '/assets/basicIMG.jpg'
                               }
+                              decoding="async"
                               onClick={() => handleBuyPostClick(list)}
+                              aria-label="이미지"
                             />
                             <a.InfoBest>{list.category}</a.InfoBest>
                             <a.MyLikeDiv>{list.title}</a.MyLikeDiv>
@@ -315,7 +338,9 @@ const MyPage = () => {
                                 ? list.imgURL
                                 : '/assets/basicIMG.jpg'
                             }
+                            decoding="async"
                             onClick={() => handleBuyPostClick(list)}
+                            aria-label="구매 내역"
                           />
                           <a.InfoBest>{list.category}</a.InfoBest>
                           <a.MyLikeDiv>{list.title}</a.MyLikeDiv>

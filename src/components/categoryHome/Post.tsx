@@ -1,5 +1,5 @@
 import * as a from '../../styles/styledComponent/category';
-import basicIMG from '../../styles/basicIMG.webp';
+import basicPost from '../../styles/basicPost.webp';
 import { postType } from '../../types';
 
 interface PostProps {
@@ -10,15 +10,15 @@ interface PostProps {
 const Post = ({ post, onClick }: PostProps): JSX.Element => {
   return (
     <a.PostContainer key={post.id} onClick={() => onClick(post)}>
-      <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicIMG} />
+      <a.PostIMG bgPhoto={post.imgURL ? post.imgURL : basicPost} />
 
       <a.ContentContainer>
         <a.InfoBest>{post.category}</a.InfoBest>
-        <p>{post.title}</p>
+        <span>{post.title}</span>
         <p>
           {post.price
             ? post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            : 0}{' '}
+            : 0}
           P
         </p>
         <a.BottomContainer>

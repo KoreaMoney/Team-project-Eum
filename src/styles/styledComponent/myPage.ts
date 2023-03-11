@@ -209,7 +209,7 @@ export const PostImg = styled.img`
   height: 200px;
   cursor: pointer;
   &:hover {
-    scale: 1.1;
+    scale: 1.05;
   }
 `;
 
@@ -371,7 +371,7 @@ export const UserInfoBox = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 56px;
+  margin-bottom: 20px;
 `;
 
 export const UserInfoTitle = styled.p`
@@ -401,7 +401,7 @@ export const KakaoTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.fontSize.title16};
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
 `;
 
 export const KakaoInfo = styled.p`
@@ -413,10 +413,28 @@ export const KakaoInfo = styled.p`
   margin-bottom: 56px;
 `;
 
+export const NickNameInfo = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.red};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
+export const NickNameInfoPass = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.green};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
 export const KakaoId = styled.input`
   width: 588px;
   height: 91px;
-  border: 1px solid ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   padding: 48px 40px 16px 40px;
   font-size: ${(props) => props.theme.fontSize.title18};
@@ -424,6 +442,40 @@ export const KakaoId = styled.input`
   line-height: ${(props) => props.theme.fontSize.title18};
   &:focus {
     outline: none;
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
+export const UserNickName = styled.input`
+  margin-right: 6px;
+  width: 491px;
+  height: 91px;
+  border: 1px solid ${(props) => props.theme.colors.gray30};
+  border-radius: 10px;
+  padding: 48px 40px 16px 40px;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.fontSize.title18};
+  &:focus {
+    outline: none;
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
+export const UserNickNameBtn = styled.button`
+  position: absolute;
+  width: 91px;
+  height: 91px;
+  background-color: ${(props) => props.theme.colors.orange02Main};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${(props) => props.theme.colors.white};
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange02Main};
     border: 1px solid ${(props) => props.theme.colors.orange02Main};
   }
 `;

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IoCloseOutline } from 'react-icons/io5';
 import camera from '../camera.png';
 import deleteBt from '../deleteBt.png';
 import { theme } from '../theme';

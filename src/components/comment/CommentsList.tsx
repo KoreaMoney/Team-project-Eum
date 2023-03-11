@@ -78,8 +78,8 @@ const CommentsList = () => {
 
   //커맨트 삭제 시 판매자 커맨트 카운트 -1을 위한 판매자 정보 get하기
   const { data: sellerUser } = useQuery(
-    ['user', post?.[0].sellerUid],
-    () => getUsers(post?.[0].sellerUid),
+    ['user', post?.[0]?.sellerUid],
+    () => getUsers(post?.[0]?.sellerUid),
     {
       staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
     }
@@ -125,7 +125,7 @@ const CommentsList = () => {
   return (
     <div>
       <CommentsContainer>
-        <CommentTitleText>후기</CommentTitleText>
+        <CommentTitleText>매칭 후기</CommentTitleText>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((comment: commentType) => (
@@ -164,8 +164,10 @@ const CommentTitleText = styled.p`
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1199px;
+  width: 100%;
+  height: 728px;
   margin-bottom: 240px;
+  margin-top: 60px;
 `;
 
 const CommentContainer = styled.div`

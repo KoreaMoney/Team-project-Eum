@@ -37,7 +37,7 @@ export const postPosts = async (post: postType) => {
 export const patchPosts = (id: string | undefined, newPosts: any) =>
   axios.patch(`${process.env.REACT_APP_JSON}/posts/${id}`, newPosts);
 
-export const deletePosts = async (id: string) => {
+export const deletePosts = async (id: string | undefined) => {
   const response = await axios.delete(
     `${process.env.REACT_APP_JSON}/posts/${id}`
   );
@@ -57,7 +57,7 @@ export const getSellerPosts = async (seller: string | undefined) => {
  * 3. 특정 user 정보를 수정한다
  * 4. 특정 user를 삭제한다
  */
-export const getUsers = async (id: string | undefined) => {
+export const getUsers = async (id: string | undefined | null) => {
   const response = await axios.get(`${process.env.REACT_APP_JSON}/users/${id}`);
   return response.data;
 };
@@ -75,12 +75,19 @@ export const postUsers = async (user: userType) => {
   return response.data;
 };
 
-export const patchUsers = async (id: string | undefined, user: any) => {
+export const patchUsers = async (id: string | undefined | null, user: any) => {
   return await axios.patch(`${process.env.REACT_APP_JSON}/users/${id}`, user);
 };
 
 export const deleteUsers = async (id: string | undefined) => {
   return await axios.delete(`${process.env.REACT_APP_JSON}/users/${id}`);
+};
+
+export const getUserNickName = async (name: string) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/users?nickName=${name}`
+  );
+  return response.data;
 };
 
 /**onSalePosts CRUD API
@@ -146,6 +153,13 @@ export const getComments = async () => {
   return response.data;
 };
 
+export const getUserComments = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/comments?sellerUid=${id}`
+  );
+  return response.data;
+};
+
 export const postComments = async (newComment: commentType) => {
   const response = await axios.post(
     `${process.env.REACT_APP_JSON}/comments`,
@@ -159,6 +173,33 @@ export const deleteComments = async (id: string | undefined) => {
     `${process.env.REACT_APP_JSON}/comments/${id}`
   );
   return response.data;
+};
+
+/**inquires CRUD API
+ * 1. 전체 inquires를 출력한다
+ * 2. 새로운 inquires를 추가한다
+ * 3. 특정 inquires 정보를 수정한다
+ * 4. 특정 inquires를 삭제한다
+ */
+export const getInquire = async () => {
+  return await axios.get(`${process.env.REACT_APP_JSON}/inquires`);
+};
+
+export const createInquire = async (item: any) => {
+  return await axios.post(`${process.env.REACT_APP_JSON}/inquires`, item);
+};
+
+export const updateInquire = async (item: any) => {
+  return await axios.patch(
+    `${process.env.REACT_APP_JSON}/inquires/${item.id}`,
+    item
+  );
+};
+
+export const deleteInquire = async (item: any) => {
+  return await axios.delete(
+    `${process.env.REACT_APP_JSON}/inquires/${item.id}`
+  );
 };
 
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ etc ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//

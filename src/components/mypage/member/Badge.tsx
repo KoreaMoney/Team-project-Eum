@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '../../../api';
+import { useRecoilState } from 'recoil';
+import { choiceBadgeAtom } from '../../../atom';
+import { customWarningAlert } from '../../modal/CustomAlert';
+
 import styled from 'styled-components';
 import c_cheap from '../../../styles/badge/choice/c_cheap.webp';
 import lock_cheap from '../../../styles/badge/lock/lock_cheap.webp';
@@ -23,10 +29,6 @@ import nc_service from '../../../styles/badge/notChoice/nc_service.webp';
 import c_time from '../../../styles/badge/choice/c_time.webp';
 import lock_time from '../../../styles/badge/lock/lock_time.webp';
 import nc_time from '../../../styles/badge/notChoice/nc_time.webp';
-import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '../../../api';
-import { useRecoilState } from 'recoil';
-import { choiceBadgeAtom } from '../../../atom';
 
 const Badge = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -47,124 +49,133 @@ const Badge = () => {
     [c_donation, lock_donation, nc_donation],
   ];
 
+  const closeBadgeClick = () => {
+    customWarningAlert('해당 후기를 10회 이상 받을 시\n\n선택 가능합니다.');
+  };
+
   return (
     <BadgeContainer>
       <BadgeInfo>대표 배지 설정</BadgeInfo>
       <BadgeContents>
         {/*절대 지켜 시간 : time*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'time'
-              ? images[0][0]
-              : myData.time < 10
-              ? images[0][1]
-              : myData.time >= 10
-              ? images[0][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.time >= 10) {
+        {myData && myData.time >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'time'
+                ? images[0][0]
+                : myData.time >= 10
+                ? images[0][2]
+                : null
+            }
+            onClick={() => {
               setRepBadgeChoice('time');
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[0][1]} onClick={closeBadgeClick} />
+        )}
+
         {/*친절해 : manner*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'manner'
-              ? images[1][0]
-              : myData.manner < 10
-              ? images[1][1]
-              : myData.manner >= 10
-              ? images[1][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.manner >= 10) {
+        {myData && myData.manner >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'manner'
+                ? images[1][0]
+                : myData.manner >= 10
+                ? images[1][2]
+                : null
+            }
+            onClick={() => {
               setRepBadgeChoice('manner');
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[1][1]} onClick={closeBadgeClick} />
+        )}
+
         {/*완전 싸다구 : cheap*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'cheap'
-              ? images[2][0]
-              : myData.cheap < 10
-              ? images[2][1]
-              : myData.cheap >= 10
-              ? images[2][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.cheap >= 10) {
+        {myData && myData.cheap >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'cheap'
+                ? images[2][0]
+                : myData.cheap >= 10
+                ? images[2][2]
+                : null
+            }
+            onClick={() => {
               setRepBadgeChoice('cheap');
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[2][1]} onClick={closeBadgeClick} />
+        )}
+
         {/*응답 봇 : fast*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'fast'
-              ? images[3][0]
-              : myData.fast < 10
-              ? images[3][1]
-              : myData.fast >= 10
-              ? images[3][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.fast >= 10) {
+        {myData && myData.fast >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'fast'
+                ? images[3][0]
+                : myData.fast >= 10
+                ? images[3][2]
+                : null
+            }
+            onClick={() => {
               setRepBadgeChoice('fast');
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[3][1]} onClick={closeBadgeClick} />
+        )}
+
         {/*A급 상품만 : service*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'service'
-              ? images[4][0]
-              : myData.service < 10
-              ? images[4][1]
-              : myData.service >= 10
-              ? images[4][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.service >= 10) {
+        {myData && myData.service >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'service'
+                ? images[4][0]
+                : myData.service >= 10
+                ? images[4][2]
+                : null
+            }
+            onClick={() => {
               setRepBadgeChoice('service');
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[4][1]} onClick={closeBadgeClick} />
+        )}
+
         {/*기부 머신 : donation*/}
-        <BadgeImg
-          imageUrl={
-            !myData
-              ? null
-              : repBadgeChoice === 'donation'
-              ? images[5][0]
-              : myData.donation < 10
-              ? images[5][1]
-              : myData.donation >= 10
-              ? images[5][2]
-              : null
-          }
-          onClick={() => {
-            if (myData && myData.donation >= 10) {
-              setRepBadgeChoice('donation');
+        {myData && myData.donation >= 10 ? (
+          <BadgeImg
+            imageUrl={
+              !myData
+                ? null
+                : repBadgeChoice === 'donation'
+                ? images[5][0]
+                : myData.donation >= 10
+                ? images[5][2]
+                : null
             }
-          }}
-        />
+            onClick={() => {
+              setRepBadgeChoice('donation');
+            }}
+          />
+        ) : (
+          <CloseBadgeImg imageUrl={images[5][1]} onClick={closeBadgeClick} />
+        )}
       </BadgeContents>
     </BadgeContainer>
   );
@@ -202,4 +213,20 @@ const BadgeImg = styled.div<{ imageUrl: string | null }>`
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-repeat: no-repeat;
+  &:hover {
+    cursor: pointer;
+    scale: 1.05;
+  }
+`;
+
+const CloseBadgeImg = styled.div<{ imageUrl: string | null }>`
+  width: 112px;
+  height: 112px;
+  background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
+  background-repeat: no-repeat;
+  &:hover {
+    cursor: pointer;
+    scale: 1.05;
+  }
 `;

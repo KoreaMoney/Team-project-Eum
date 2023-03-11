@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -6,17 +6,15 @@ import { ISignUpForm, userType } from '../types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/Firebase';
-import * as yup from 'yup';
+import { getAuthUsers, postUsers } from '../api';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import * as a from '../styles/styledComponent/auth';
-import { getAuthUsers, postUsers } from '../api';
-import basicIMG from '../styles/basicIMG.webp';
-import loadable from '@loadable/component';
 
-const Header = loadable(() => import('../components/layout/Header'));
+import * as a from '../styles/styledComponent/auth';
+import * as yup from 'yup';
+import basicIMG from '../styles/basicIMG.webp';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -127,9 +125,9 @@ const SignUp = () => {
         await createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
             customInfoAlert(
-              `${getValues(
+              ` ${getValues(
                 'nickName'
-              )}님 반갑습니다!\n\n재능을 이어주는 이음\n회원가입이 완료되었습니다.`
+              )}님 \n소액 재능 거래 플랫폼 \n이음에 오신걸 환영합니다.`
             );
           })
           .catch((error) => {
@@ -190,10 +188,14 @@ const SignUp = () => {
       }
     }
   };
-
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  useEffect(() => {
+    if (saveUser) {
+      navigate('/');
+    }
+  }, []);
   return (
     <>
-      <Header />
       <a.LoginContainer>
         <a.LoginText>회원가입</a.LoginText>
         <a.SignUpForm

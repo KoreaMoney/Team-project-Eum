@@ -5,14 +5,16 @@ import { editPostType } from '../types';
 import { auth, storageService } from '../firebase/Firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { getPostsId, getUsers, patchPosts } from '../api';
-import * as a from '../styles/styledComponent/writeEdit';
-import Loader from '../components/etc/Loader';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import {
   customInfoAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
+
+import * as a from '../styles/styledComponent/writeEdit';
+import Loader from '../components/etc/Loader';
+import imageCompression from 'browser-image-compression';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const EditPage = () => {
   const navigate = useNavigate();
@@ -100,15 +102,33 @@ const EditPage = () => {
   };
 
   //이미지 저장
-  const saveImgFile = () => {
-    if (imgRef.current?.files) {
-      const file = imgRef.current.files[0];
+  const saveImgFile = async () => {
+    if (!imgRef.current?.files || imgRef.current.files.length === 0) {
+      return;
+    }
+
+    const file = imgRef.current.files[0];
+
+    const options = {
+      maxSizeMB: 0.15,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    try {
+      // 압축 결과
+      const compressedFile = await imageCompression(file, options).then(
+        (res) => {
+          return res;
+        }
+      );
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(compressedFile);
       reader.onloadend = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
       };
+    } catch (error) {
+      console.dir(error);
     }
   };
 
@@ -293,7 +313,7 @@ const EditPage = () => {
                 </a.CategorysContainer>
               </a.EachContainer>
               <a.EachContainer>
-                <a.Title>설명</a.Title>
+                <a.Title>재능 설명</a.Title>
                 <a.WriteQuill>
                   <ReactQuill
                     theme="snow"

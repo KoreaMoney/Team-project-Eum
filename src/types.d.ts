@@ -1,3 +1,15 @@
+interface Chat {
+  id: string;
+  chatContent: {
+    imgUrl?: string;
+    uid?: string;
+    manager?: string;
+    message?: string;
+    nickName?: string;
+    createdAt?: number | undefined;
+  }[];
+}
+
 export interface ISignUpForm {
   email: string;
   pw: string;
@@ -48,12 +60,13 @@ export interface postType {
   price: number | string;
   imgURL: string;
   category: string;
-  like: [];
+  like: string[];
   views: number;
   createAt: number;
   profileImg: string;
   tsCount: number; // 파생된 거래페이지 완료개수
   commentsCount: number; // 후기가 달리면 +1씩
+  isDone: boolean;
 }
 export interface editPostType {
   title: string;
@@ -81,11 +94,11 @@ export interface onSalePostType {
   buyerNickName: string | null | undefined;
   sellerUid: string | null | undefined;
   sellerNickName: string | null | undefined;
-  title: string;
+  title: string | undefined;
   content: string;
-  imgURL: [];
-  price: number | string;
-  category: string;
+  imgURL: string | undefined;
+  price: number | string | undefined;
+  category: string | undefined;
   createdAt: number;
   isDone: boolean;
   isSellerCancel: boolean;

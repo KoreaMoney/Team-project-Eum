@@ -33,6 +33,7 @@ import {
   patchUsers,
   postComments,
 } from '../api';
+import Loader from '../components/etc/Loader';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -176,7 +177,7 @@ function ReviewPage() {
     setReview(e.target.value);
   };
   if (isLoading) {
-    return <div></div>;
+    return <Loader />;
   }
 
   return (
@@ -198,31 +199,37 @@ function ReviewPage() {
           <a.BadgeImg
             imageUrl={badge === 'time' ? images[0][0] : images[0][1]}
             onClick={() => setBadge('time')}
+            aria-label="배지 선택"
           />
 
           <a.BadgeImg
             imageUrl={badge === 'fast' ? images[3][0] : images[3][1]}
             onClick={() => setBadge('fast')}
+            aria-label="배지 선택"
           />
 
           <a.BadgeImg
             imageUrl={badge === 'manner' ? images[1][0] : images[1][1]}
             onClick={() => setBadge('manner')}
+            aria-label="배지 선택"
           />
 
           <a.BadgeImg
             imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
             onClick={() => setBadge('service')}
+            aria-label="배지 선택"
           />
 
           <a.BadgeImg
             imageUrl={badge === 'cheap' ? images[2][0] : images[2][1]}
             onClick={() => setBadge('cheap')}
+            aria-label="배지 선택"
           />
 
           <a.BadgeImg
             imageUrl={badge === 'donation' ? images[5][0] : images[5][1]}
             onClick={() => setBadge('donation')}
+            aria-label="배지 선택"
           />
         </a.GridBox>
       </a.BadgeContainer>
@@ -231,9 +238,16 @@ function ReviewPage() {
         <a.ReviewInfo>
           남겨주신 거래 후기는 상대방의 프로필에 공개돼요.
         </a.ReviewInfo>
-        <a.ReviewInput type="text" value={review} onChange={onChangeReview} />
+        <a.ReviewInput
+          type="text"
+          value={review}
+          onChange={onChangeReview}
+          aria-label="입력창"
+        />
       </a.ReviewContainer>
-      <a.SubmitButton onClick={submitReview}>작성 완료</a.SubmitButton>
+      <a.SubmitButton onClick={submitReview} aria-label="작성 완료">
+        작성 완료
+      </a.SubmitButton>
     </a.Container>
   );
 }

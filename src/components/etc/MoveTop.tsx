@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 
 const MoveTop = () => {
@@ -28,15 +27,7 @@ const MoveTop = () => {
   };
 
   return (
-    <TopContainer>
-      {toggleBtn ? (
-        <Cicle>
-          <Btn onClick={goToTop}>
-            <img src="https://ifh.cc/g/LToplJ.png" alt="위로 올라가기" />
-          </Btn>
-        </Cicle>
-      ) : null}
-    </TopContainer>
+    <TopContainer>{toggleBtn ? <Btn onClick={goToTop} /> : null}</TopContainer>
   );
 };
 
@@ -44,22 +35,13 @@ export default MoveTop;
 
 const TopContainer = styled.div`
   display: flex;
-  align-items: center;
+  position: fixed;
   justify-content: end;
+  top: 83%;
+  height: 60px;
   width: 90%;
-  margin-top: 120px;
-  margin-bottom: 20px;
-`;
-
-const Cicle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 80px;
-  border: 1px solid ${theme.colors.gray20};
-  border-radius: 100%;
-  background-color: transparent;
+  margin-left: 120px;
+  z-index: 5;
 `;
 
 const Btn = styled.button`
@@ -72,9 +54,15 @@ const Btn = styled.button`
   border: none;
   border-radius: 100%;
   background-color: transparent;
-
+  background: url('https://ifh.cc/g/ltzDt4.png') no-repeat;
+  background-size: cover;
+  cursor: pointer;
   &:hover {
-    cursor: pointer;
-    background-color: ${theme.colors.black};
+    background: url('https://ifh.cc/g/5kxPq3.png') no-repeat;
+    background-size: cover;
+  }
+  &:active {
+    background: url('https://ifh.cc/g/ltzDt4.png') no-repeat;
+    background-size: cover;
   }
 `;

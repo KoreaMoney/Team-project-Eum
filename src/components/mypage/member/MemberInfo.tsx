@@ -1,5 +1,11 @@
-import { useRecoilState } from 'recoil';
-import { addBirthDateAtom, addKakaoAtom, choiceBadgeAtom } from '../../../atom';
+import { useRecoilValue } from 'recoil';
+import {
+  addBirthDateAtom,
+  addKakaoAtom,
+  addNickNameAtom,
+  choiceBadgeAtom,
+  editNickNameAtom,
+} from '../../../atom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchUsers } from '../../../api';
 import loadable from '@loadable/component';
@@ -11,20 +17,25 @@ import {
 
 const ProfileImg = loadable(() => import('./ProfileImg'));
 const UserName = loadable(() => import('./UserName'));
-const Terms = loadable(() => import('./Terms'));
 const Badge = loadable(() => import('./Badge'));
 
 const MemberInfo = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
 
-  const [editKakaoValue, setEditKakaoValue] = useRecoilState(addKakaoAtom);
-  const [editBirthValue, setEditBirthValue] = useRecoilState(addBirthDateAtom);
-  const [repBadgeChoice, setRepBadgeChoice] = useRecoilState(choiceBadgeAtom);
+  const editKakaoValue = useRecoilValue(addKakaoAtom);
+  const editBirthValue = useRecoilValue(addBirthDateAtom);
+  const repBadgeChoice = useRecoilValue(choiceBadgeAtom);
+  const editNickNameValue = useRecoilValue(addNickNameAtom);
+  const nickNameCheck = useRecoilValue(editNickNameAtom);
 
   const { mutate: updateUser } = useMutation(
-    (newUser: { kakaoId: string; birthDate: string; repBadge: string }) =>
-      patchUsers(saveUser?.uid, newUser),
+    (newUser: {
+      nickName: string;
+      kakaoId: string;
+      birthDate: string;
+      repBadge: string;
+    }) => patchUsers(saveUser?.uid, newUser),
     {
       onSuccess: () => queryClient.invalidateQueries(['user', saveUser?.uid]),
     }
@@ -37,12 +48,22 @@ const MemberInfo = () => {
 
   /**프로필 저장 */
   const onSubmitMember = () => {
+    const editNickName = editNickNameValue?.trim();
+    if (!editNickName) {
+      customWarningAlert('닉네임을 작성해 주세요.');
+      return;
+    }
+    if (nickNameCheck === true) {
+      customWarningAlert('닉네임 중복검사를 해주세요.');
+      return;
+    }
     if (editBirthValue) {
       if (!validateBirthDate(editBirthValue)) {
         customWarningAlert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
         return;
       } else {
         updateUser({
+          nickName: editNickNameValue,
           kakaoId: editKakaoValue,
           birthDate: editBirthValue,
           repBadge: repBadgeChoice,
@@ -51,6 +72,7 @@ const MemberInfo = () => {
       }
     } else {
       updateUser({
+        nickName: editNickNameValue,
         kakaoId: editKakaoValue,
         birthDate: editBirthValue,
         repBadge: repBadgeChoice,
@@ -63,7 +85,7 @@ const MemberInfo = () => {
       <ProfileImg />
       <UserName />
       <Badge />
-      <Terms />
+
       <SubmitButton onClick={onSubmitMember}>저장하기</SubmitButton>
     </>
   );

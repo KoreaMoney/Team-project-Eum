@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 const Footer = () => {
   return (
     <FooterContainer>
       <FooterWrapper>
-        <LogoText>이음</LogoText>
+        <Logoimg src="https://ifh.cc/g/TqgLJX.webp" alt="로고" />
         <InfoWrapper>
           <EumInfo>
             <p>상표 : 이음</p> &nbsp;| &nbsp;<p>리더 : 김미영</p> &nbsp;| &nbsp;
@@ -29,21 +30,21 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
-  
-  width: 100%;
-  height: 280px;
-  background-color: #f9f9f9;
+  width: 100vw;
+  height: 200px;
+  margin-top: 126px;
+  background-color: ${theme.colors.gray05};
 `;
 
 const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 70%;
+  width: 1100px;
   height: 100%;
   margin: 0 auto;
 `;
 
-const LogoText = styled.p`
+const Logoimg = styled.img`
   margin-bottom: 70px;
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};

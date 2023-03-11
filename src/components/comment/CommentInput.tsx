@@ -124,7 +124,7 @@ const CommentInput = () => {
         <ProfileIMG profileIMG={buyerUser?.profileImg} />
         <InputTag name="content" value={content} onChange={onChangeContent} />
         <AddCommentButton type="submit" aria-label="리뷰 등록">
-          리뷰 등록
+          매칭 후기 작성
         </AddCommentButton>
       </CommentContainer>
     </div>
