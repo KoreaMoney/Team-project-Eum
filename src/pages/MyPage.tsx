@@ -277,7 +277,7 @@ const MyPage = () => {
                   : null}
                 {category === '나의 판매내역'
                   ? sellCategory === '판매중'
-                    ? mySellPostList?.map((list: any) => {
+                    ? mySellPostList?.reverse().map((list: any) => {
                         return (
                           <a.MyLikeList key={list.id}>
                             <a.PostImg
@@ -301,7 +301,7 @@ const MyPage = () => {
                           </a.MyLikeList>
                         );
                       })
-                    : isDoneTradeSellList?.map((list: any) => {
+                    : isDoneTradeSellList?.reverse().map((list: any) => {
                         return (
                           <a.MyLikeList key={list.id}>
                             <a.PostImg
@@ -329,9 +329,10 @@ const MyPage = () => {
                   : null}
 
                 {category === '구매내역'
-                  ? tradeBuyData?.map((list: any) => {
+                  ? tradeBuyData?.reverse().map((list: any) => {
                       return (
                         <a.MyLikeList key={list.id}>
+                          {list?.isDone && <a.ClearPost>거래완료</a.ClearPost>}
                           <a.PostImg
                             src={
                               list?.imgURL

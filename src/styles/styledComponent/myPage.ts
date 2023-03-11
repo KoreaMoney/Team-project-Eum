@@ -188,6 +188,7 @@ export const MyLikeList = styled.div`
   height: 400px;
   gap: 16px;
   overflow: hidden;
+  position: relative;
 
   p {
     font-size: ${(props) => props.theme.fontSize.title16};
@@ -486,4 +487,20 @@ export const BirthInfo = styled.p`
   line-height: ${(props) => props.theme.fontSize.title16};
   color: ${(props) => props.theme.colors.gray20};
   margin: 16px 0 8px 5px;
+`;
+
+export const ClearPost = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  font-size: ${(props) => props.theme.fontSize.title32};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  line-height: ${(props) => props.theme.lineHeight.title32};
+  color: ${(props) => props.theme.colors.orange01};
+  text-align: center;
+  line-height: 355px;
 `;
