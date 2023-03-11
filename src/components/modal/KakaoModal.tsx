@@ -1,14 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPostsId, getUsers } from '../../api';
 import { CustomModal } from './CustomModal';
-import {
-  onSalePostAtom,
-  userProfileAtom,
-  viewKakaoModalAtom,
-} from '../../atom';
+import { onSalePostAtom, viewKakaoModalAtom } from '../../atom';
 import {
   arrayUnion,
   collection,
@@ -29,7 +25,6 @@ import styled from 'styled-components';
 
 const KakaoModal = () => {
   const { postId } = useParams();
-  const location = useLocation();
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const messagesEndRef = useRef<HTMLDivElement>(document.createElement('div'));
@@ -290,7 +285,7 @@ const KakaoModal = () => {
                 </ChatContainer>
               </ScrollContainer>
               <ChatInputContainer>
-                <label htmlFor="changeImg" >
+                <label htmlFor="changeImg">
                   <PhotoIcon>
                     <input
                       hidden

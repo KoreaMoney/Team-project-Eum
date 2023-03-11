@@ -82,7 +82,26 @@ const Container = styled.div<{
   align-items: center;
   font-size: ${theme.fontSize.title20};
   border: none;
-  overflow: ${(props) => props.overflow};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${theme.colors.orange00};
+    border-radius: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.colors.orange02Main};
+    border-radius: 10px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: ${theme.colors.orange00};
+  }
 `;
 
 const Canvas = styled.div`

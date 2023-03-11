@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { viewHeaderBuyerModalAtom } from '../../atom';
-import { onSalePostType, postType } from '../../types';
 
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
@@ -57,6 +56,7 @@ const HeaderBuyerModal = ({ salePosts }: any) => {
                 <ListContainer>
                   <ListTitleContainer>
                     <ListDay>날짜</ListDay>
+                    <ListCategory>카테고리</ListCategory>
                     <ListNickName>닉네임</ListNickName>
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
@@ -65,8 +65,17 @@ const HeaderBuyerModal = ({ salePosts }: any) => {
                       return (
                         <ListContentContainer>
                           <Day>{getTimeGap(salePost?.createdAt)}</Day>
+                          <Category>{salePost?.category}</Category>
                           <NickName>{salePost?.buyerNickName}</NickName>
-                          <Price>{salePost?.price}P</Price>
+                          <Price>
+                            {salePost?.price
+                              ? salePost?.price
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              : 0}
+                            P
+                          </Price>
+
                           <MoveButton onClick={() => GoOnSalePost(salePost)}>
                             바로가기
                           </MoveButton>
@@ -104,7 +113,7 @@ const ModalTitle = styled.p`
 `;
 
 const ModalContent = styled.p`
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
@@ -141,6 +150,15 @@ const ListDay = styled.p`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
 `;
+
+const ListCategory = styled.p`
+  width: 140px;
+  color: ${(props) => props.theme.colors.gray20};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.lineHeight.title16};
+`;
+
 const ListNickName = styled.p`
   width: 160px;
   color: ${(props) => props.theme.colors.gray20};
@@ -175,6 +193,14 @@ const Day = styled.p`
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
 `;
+
+const Category = styled.p`
+  width: 140px;
+  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.lineHeight.title16};
+`;
 const NickName = styled.p`
   width: 160px;
   color: ${(props) => props.theme.colors.black};
@@ -202,8 +228,8 @@ const MoveButton = styled.button`
   line-height: ${(props) => props.theme.lineHeight.title14};
   &:hover {
     cursor: pointer;
-    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+    border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
-    border-radius: 10px;
+    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;

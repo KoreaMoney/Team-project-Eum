@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { BsHeart, BsShare, BsHeartFill } from 'react-icons/bs';
 import { GoKebabVertical } from 'react-icons/go';
 
-
 export const PostInfoWrapper = styled.div`
   width: 486px;
   height: 539px;
@@ -138,7 +137,7 @@ export const DropDownBox = styled.div`
 `;
 export const DropDownButton = styled.button`
   text-align: center;
-  font-size: ${(props) => props.theme.fontSize.title20};
+  font-size: ${(props) => props.theme.fontSize.title18};
   line-height: 20px;
   border: none;
   background-color: transparent;
@@ -265,13 +264,13 @@ export const CompletedBTContainer = styled.div`
   width: 485px;
   height: 64px;
   background-color: ${(props) => props.theme.colors.gray10};
-  
+
   display: flex;
   gap: 32px;
   align-items: center;
   border-radius: 30px;
   padding: 0 4px;
-  `;
+`;
 export const StateButton = styled.button`
   width: 231px;
   height: 56px;

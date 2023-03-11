@@ -18,7 +18,7 @@ export const MyPageHeader = styled.div`
   line-height: ${theme.lineHeight.title32};
   width: 100%;
   height: auto;
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 96px;
 `;
 

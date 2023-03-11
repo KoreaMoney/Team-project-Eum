@@ -11,7 +11,7 @@ export const CategoryIntroTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.title64};
   font-weight: ${(props) => props.theme.fontWeight.bold};
   line-height: ${(props) => props.theme.lineHeight.title64};
-  margin-top: 80px;
+  margin-top: 60px;
 `;
 export const CategoryIntroContentContainer = styled.p`
   padding: 40px 0;
