@@ -153,6 +153,10 @@ const MyPage = () => {
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
 
+  if (isLoading) {
+    <Loader />;
+  }
+
   return (
     <a.MyPageContainer>
       <a.MyPageHeader>마이페이지</a.MyPageHeader>

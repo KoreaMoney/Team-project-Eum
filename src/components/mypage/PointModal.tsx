@@ -5,9 +5,12 @@ import { theme } from '../../styles/theme';
 
 import PointHistoryList from './PointHistoryList';
 import styled from 'styled-components';
+import { useState } from 'react';
+import Loader from '../etc/Loader';
 
 const PointModal = () => {
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+  const [isLoading, setIsLoading] = useState(false);
 
   // 로그인한 유저 정보를 불러옵니다
   const { data: profileData } = useQuery(['users'], () =>
@@ -26,38 +29,44 @@ const PointModal = () => {
 
   return (
     <>
-      <PointModalContainer>
-        <PointImgWrapper>
-          <div>내 포인트</div>
-        </PointImgWrapper>
-        <CurrentPoint>
-          {profileData &&
-            profileData?.point &&
-            profileData?.point
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-          P
-        </CurrentPoint>
-        <PointDepositWithdrawWrapper>
-          <PointWithdrawButton
-            onClick={() => {
-              pointWithDrawHandle();
-            }}
-            aria-label="출금하기"
-          >
-            <div>출금하기</div>
-          </PointWithdrawButton>
-          <PointDepositButton
-            onClick={() => {
-              pointChargeHandle();
-            }}
-            aria-label="충전하기"
-          >
-            <div>충전하기</div>
-          </PointDepositButton>
-        </PointDepositWithdrawWrapper>
-        <PointHistoryList />
-      </PointModalContainer>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <PointModalContainer>
+            <PointImgWrapper>
+              <div>내 포인트</div>
+            </PointImgWrapper>
+            <CurrentPoint>
+              {profileData &&
+                profileData?.point &&
+                profileData?.point
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+              P
+            </CurrentPoint>
+            <PointDepositWithdrawWrapper>
+              <PointWithdrawButton
+                onClick={() => {
+                  pointWithDrawHandle();
+                }}
+                aria-label="출금하기"
+              >
+                <div>출금하기</div>
+              </PointWithdrawButton>
+              <PointDepositButton
+                onClick={() => {
+                  pointChargeHandle();
+                }}
+                aria-label="충전하기"
+              >
+                <div>충전하기</div>
+              </PointDepositButton>
+            </PointDepositWithdrawWrapper>
+            <PointHistoryList />
+          </PointModalContainer>
+        </>
+      )}
     </>
   );
 };
