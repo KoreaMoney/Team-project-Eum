@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import * as yup from 'yup';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,6 +6,9 @@ import { ISignUpForm } from '../../types';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase/Firebase';
 import { theme } from '../../styles/theme';
+
+import styled from 'styled-components';
+import * as yup from 'yup';
 
 /**순서
  * 1. email작성

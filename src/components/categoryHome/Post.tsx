@@ -1,5 +1,6 @@
 import * as a from '../../styles/styledComponent/category';
 import basicPost from '../../styles/basicPost.webp';
+
 import { postType } from '../../types';
 
 interface PostProps {

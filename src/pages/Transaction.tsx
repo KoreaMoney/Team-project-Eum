@@ -20,15 +20,19 @@ import Content from '../components/transaction/content/Content';
  */
 const Transaction = () => {
   const navigate = useNavigate();
-  auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const queryClient = useQueryClient();
 
+  auth.onAuthStateChanged((user: any) => setCurrent(user?.uid));
+
   const { uuid } = useParams();
   const [current, setCurrent] = useState(false);
+
   const isDone = useRecoilValue(isDoneAtom);
   const isCancel = useRecoilValue(isCancelAtom);
   const setOnSalePost = useSetRecoilState(onSalePostAtom);
+
   const onClickBtn = () => {
     navigate(-1);
   };

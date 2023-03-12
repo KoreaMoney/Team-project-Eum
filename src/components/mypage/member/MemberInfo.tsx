@@ -56,19 +56,16 @@ const MemberInfo = () => {
           customWarningAlert('닉네임을 작성해 주세요.');
           setReCheck(!reCheck);
           return;
-        }
-        if (nickNameCheck === 0) {
+        } else if (nickNameCheck === 0) {
           customWarningAlert('닉네임 중복검사를 해주세요.');
           setReCheck(!reCheck);
           return;
-        }
-        if (nickNameCheck === 1) {
+        } else if (nickNameCheck === 1) {
           customWarningAlert('이미 사용중인 닉네임 입니다.');
           setReCheck(!reCheck);
           return;
-        }
-        if (nickNameDataLength && !checkMyNickName) {
-          customWarningAlert('11이미 사용중인 닉네임 입니다.');
+        } else if (nickNameDataLength && !checkMyNickName) {
+          customWarningAlert('누가 방금 닉네임을 등록하였습니다.');
           setReCheck(!reCheck);
           return;
         }
@@ -116,8 +113,9 @@ const MemberInfo = () => {
       <ProfileImg />
       <UserName />
       <Badge />
-
-      <SubmitButton onClick={onSubmitMember}>저장하기</SubmitButton>
+      <SubmitButton onClick={onSubmitMember} aria-label="저장하기">
+        저장하기
+      </SubmitButton>
     </>
   );
 };
@@ -134,7 +132,6 @@ const SubmitButton = styled.button`
   color: ${(props) => props.theme.colors.white};
   border: none;
   border-radius: 10px;
-  margin-bottom: 234px;
   &:hover {
     cursor: pointer;
     background-color: ${(props) => props.theme.colors.white};

@@ -23,11 +23,13 @@ import styled from 'styled-components';
 import 'firebase/firestore';
 
 const SellerInfo = () => {
+  const navigate = useNavigate();
+
   const { postId, id } = useParams();
   const identifier = id ? id : postId;
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
-  const navigate = useNavigate();
 
   const [badgeLength, setBadgeLength] = useState(0);
 
@@ -41,16 +43,15 @@ const SellerInfo = () => {
 
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
-    ['sellerPost', post?.[0].sellerUid],
-    () => getSellerPosts(post?.[0].sellerUid),
+    ['sellerPost', post?.[0]?.sellerUid],
+    () => getSellerPosts(post?.[0]?.sellerUid),
     {
       staleTime: Infinity,
     }
   );
 
-  const { data: onSalePostBuyerData } = useQuery(
-    ['onSalePosts', saveUser?.uid],
-    () => getOnSalePostBuyer(saveUser?.uid)
+  useQuery(['onSalePosts', saveUser?.uid], () =>
+    getOnSalePostBuyer(saveUser?.uid)
   );
 
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
@@ -77,7 +78,6 @@ const SellerInfo = () => {
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [seller]);
-console.log('badgeLength: ', seller?.donation);
 
   /**배지 이미지 정하기 */
   let userBadge;

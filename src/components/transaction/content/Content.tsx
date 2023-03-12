@@ -33,7 +33,9 @@ const Content = () => {
               <p>구매자</p>
             </a.SellerInfoTitle>
             <BuyerInfo />
-            <a.KakaoButton onClick={onClickKakaoButton}>채팅하기</a.KakaoButton>
+            <a.KakaoButton onClick={onClickKakaoButton} aria-label="채팅하기">
+              채팅하기
+            </a.KakaoButton>
             <KakaoModal />
           </>
         ) : saveUser.uid === postData?.[0]?.buyerUid ? (
@@ -42,7 +44,9 @@ const Content = () => {
               <p>판매자</p>
             </a.SellerInfoTitle>
             <SellerInfo />
-            <a.KakaoButton onClick={onClickKakaoButton}>채팅하기</a.KakaoButton>
+            <a.KakaoButton onClick={onClickKakaoButton} aria-label="채팅하기">
+              채팅하기
+            </a.KakaoButton>
             <KakaoModal />
           </>
         ) : null}

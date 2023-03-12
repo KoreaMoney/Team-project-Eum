@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { detailPostAtom } from '../../atom';
 import { CustomModal } from '../modal/CustomModal';
 import { useRecoilValue } from 'recoil';
+import basicPost from '../../styles/basicPost.webp';
 import styled from 'styled-components';
 
 const PostImg = () => {
@@ -25,7 +26,7 @@ const PostImg = () => {
   return (
     <>
       <PostImage
-        img={postData?.[0]?.imgURL}
+        bgPhoto={postData?.[0]?.imgURL ? postData?.[0]?.imgURL : basicPost}
         aria-label="post이미지"
         onClick={onClickToggleModal}
       />
@@ -36,7 +37,13 @@ const PostImg = () => {
           width="800"
           height="600"
           overflow="scroll"
-          element={<ModalImage img={postData?.[0]?.imgURL} />}
+          element={
+            <ModalImage
+              bgPhoto={
+                postData?.[0]?.imgURL ? postData?.[0]?.imgURL : basicPost
+              }
+            />
+          }
         />
       ) : (
         ''
@@ -46,7 +53,8 @@ const PostImg = () => {
 };
 
 export default PostImg;
-export const PostImage = styled.div<{ img: string | undefined }>`
+
+const PostImage = styled.div<{ bgPhoto: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,11 +62,11 @@ export const PostImage = styled.div<{ img: string | undefined }>`
   height: 539px;
   background-size: cover;
   background-position: center center;
-  background-image: url(${(props) => props.img});
+  background-image: url(${(props) => props.bgPhoto});
   cursor: pointer;
 `;
 
-export const ModalImage = styled.div<{ img: string | undefined }>`
+const ModalImage = styled.div<{ bgPhoto: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,5 +75,5 @@ export const ModalImage = styled.div<{ img: string | undefined }>`
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-  background-image: url(${(props) => props.img});
+  background-image: url(${(props) => props.bgPhoto});
 `;

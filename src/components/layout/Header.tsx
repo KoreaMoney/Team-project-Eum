@@ -2,7 +2,6 @@ import { auth } from '../../firebase/Firebase';
 import { signOut } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { BsPersonCircle } from 'react-icons/bs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { theme } from '../../styles/theme';
@@ -13,24 +12,26 @@ import {
   useMotionValueEvent,
   useScroll,
 } from 'framer-motion';
-import loadable from '@loadable/component';
 import { useQuery } from '@tanstack/react-query';
-import { getOnSalePostSeller } from '../../api';
+import { getOnSalePostTotalSeller } from '../../api';
 import { viewHeaderBuyerModalAtom } from '../../atom';
 import { useRecoilState } from 'recoil';
-import HeaderBuyerModal from '../modal/HeaderbuyerModal';
+import SearchInput from '../etc/SearchInput';
+import styled from 'styled-components';
+import loadable from '@loadable/component';
 
-const SearchInput = loadable(() => import('../etc/SearchInput'));
+const HeaderBuyerModal = loadable(() => import('../modal/HeaderbuyerModal'));
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navAnimation = useAnimation();
+  const dropDownRef = useRef<HTMLDivElement>(null);
+
   const { scrollY } = useScroll();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [writeActive, setWriteActive] = useState(false);
   const [isDrop, setIsDrop] = useState(false);
-  const dropDownRef = useRef<HTMLDivElement>(null);
   const [isModalActive, setIsModalActive] = useRecoilState(
     viewHeaderBuyerModalAtom
   );
@@ -117,20 +118,17 @@ const Header = () => {
 
   const { data: tradeSellData, refetch } = useQuery(
     ['onSaleSellPosts', saveUser?.uid],
-    () => getOnSalePostSeller(saveUser?.uid),
+    () => getOnSalePostTotalSeller(saveUser?.uid),
     {
       onSuccess: () => {
         setTimeout(() => {
           refetch();
-        }, 60000);
+        }, 30000);
       },
     }
   );
-  const waitTradeSellList = tradeSellData?.filter((post: any) => {
-    return post.isDone === false;
-  });
 
-  const waitTradeCount = waitTradeSellList?.length;
+  const waitTradeCount = tradeSellData?.length;
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);

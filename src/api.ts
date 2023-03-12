@@ -117,6 +117,13 @@ export const getOnSalePostSeller = async (id: string | undefined) => {
   return response.data;
 };
 
+export const getOnSalePostTotalSeller = async (id: string | undefined) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${id}&isDone=false`
+  );
+  return response.data;
+};
+
 export const postOnSalePost = async (newSalePosts: onSalePostType) => {
   const response = await axios.post(
     `${process.env.REACT_APP_JSON}/onSalePosts`,

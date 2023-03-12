@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { auth, storageService } from '../../../firebase/Firebase';
 import { theme } from '../../../styles/theme';
 import { customSuccessAlert } from '../../modal/CustomAlert';
+
 import axios from 'axios';
 import styled from 'styled-components';
 import Loader from '../../etc/Loader';
@@ -13,6 +14,7 @@ export default function Profile() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
+
   const [changeFile, setChangeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);

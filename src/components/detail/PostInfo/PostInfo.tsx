@@ -119,17 +119,17 @@ const PostInfo = () => {
     }
   );
   /**좋아요 버튼 클릭 */
-  const postCounter = async () => {
+  const postCounter = () => {
     if (!saveUser) navigate('/signin');
     else {
       if (postCountCheck) {
-        await updatePost({
+        updatePost({
           like: postData?.[0].like?.filter(
             (prev: any) => prev !== saveUser?.uid
           ),
         });
       } else {
-        await updatePost({
+        updatePost({
           like: [...(postData?.[0].like || []), saveUser?.uid],
         });
       }

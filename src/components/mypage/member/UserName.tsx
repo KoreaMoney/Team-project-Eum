@@ -107,19 +107,6 @@ const UserName = () => {
       ) : nickNameCheck === 1 ? (
         <a.NickNameInfo>•ㅤ이미 사용중인 닉네임입니다.</a.NickNameInfo>
       ) : null}
-
-      <a.KakaoIdBox>
-        <a.KakaoTitle>카카오톡 아이디</a.KakaoTitle>
-        <a.KakaoId
-          value={editKakaoValue}
-          type="text"
-          onChange={(e) => setEditKakaoValue(e.target.value)}
-          aria-label="카카오톡 아이디 입력하기"
-        />
-      </a.KakaoIdBox>
-      <a.KakaoInfo>
-        •ㅤ카카오톡 아이디는 매칭 서비스에 활용되므로 정확하게 입력해주세요.
-      </a.KakaoInfo>
       <a.KakaoIdBox>
         <a.KakaoTitle>생일정보</a.KakaoTitle>
         <a.KakaoId

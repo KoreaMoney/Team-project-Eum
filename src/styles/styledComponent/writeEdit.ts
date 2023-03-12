@@ -131,6 +131,7 @@ export const CategoryButton = styled.button<{ selected?: boolean }>`
   font-size: ${(props) => props.theme.fontSize.title20};
   line-height: ${(props) => props.theme.lineHeight.title20};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  cursor: pointer;
 `;
 export const WriteWrapper = styled.div`
   width: 70%;

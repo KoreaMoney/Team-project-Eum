@@ -22,14 +22,15 @@ const PostInfo = () => {
 
   const { uuid } = useParams();
 
+  const data = useRecoilValue(onSalePostAtom);
   const [isDone, setIsDone] = useRecoilState(isDoneAtom);
   const [isCancel, setIsCancel] = useRecoilState(isCancelAtom);
-  const data = useRecoilValue(onSalePostAtom);
   const [buyerIsCancel, setBuyerIsCancel] = useState(data?.[0]?.isBuyerCancel);
 
   /**현재 URL 복사 */
   const linkCopy = () => {
     const url = window.location.href;
+
     navigator.clipboard
       .writeText(url)
       .then(() => {
@@ -221,7 +222,7 @@ const PostInfo = () => {
         </a.InfoTopLeftContainer>
         <a.InfoTopRightContainer>
           <a.IconRightContainer>
-            <a.ShareIcon onClick={linkCopy} />
+            <a.ShareIcon onClick={linkCopy} aria-label="링크 복사하기" />
           </a.IconRightContainer>
         </a.InfoTopRightContainer>
       </a.InfoTopContainer>

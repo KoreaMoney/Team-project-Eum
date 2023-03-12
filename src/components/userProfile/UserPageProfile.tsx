@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
 import { userProfileAtom } from '../../atom';
+
 import styled from 'styled-components';
 
 const UserPageProfile = () => {
@@ -7,7 +8,10 @@ const UserPageProfile = () => {
 
   return (
     <Container>
-      <ProfileIMG profileIMG={userProfile?.profileImg} />
+      <ProfileIMG
+        profileIMG={userProfile?.profileImg}
+        aria-label="프로필 사진"
+      />
       <ProfileContainer>
         <NickName>{userProfile?.nickName}</NickName>
       </ProfileContainer>
