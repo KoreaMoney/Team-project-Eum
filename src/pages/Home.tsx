@@ -7,7 +7,7 @@ import { customWarningAlert } from '../components/modal/CustomAlert';
 
 import Slider from 'react-slick';
 import axios from 'axios';
-import basicIMG from '../styles/basicIMG.webp';
+import basicPost from '../styles/basicPost.webp';
 import * as a from '../styles/styledComponent/home';
 import loadable from '@loadable/component';
 import styled from 'styled-components';
@@ -213,7 +213,7 @@ const Home = () => {
                   .map((post: postType) => (
                     <a.PostWrapper>
                       <a.PostImg
-                        bgPhoto={post.imgURL ? post.imgURL : basicIMG}
+                        bgPhoto={post.imgURL ? post.imgURL : basicPost}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
@@ -251,7 +251,7 @@ const Home = () => {
                   .map((post: postType) => (
                     <a.PostWrapper>
                       <a.PostImg
-                        bgPhoto={post.imgURL ? post.imgURL : basicIMG}
+                        bgPhoto={post.imgURL ? post.imgURL : basicPost}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>

@@ -257,7 +257,7 @@ const MyPage = () => {
                             src={
                               list?.imgURL
                                 ? list.imgURL
-                                : '/assets/basicIMG.jpg'
+                                : '/assets/basicIMG.webp'
                             }
                             decoding="async"
                             onClick={() => handleLikePostClick(list)}
@@ -285,7 +285,7 @@ const MyPage = () => {
                               src={
                                 list?.imgURL
                                   ? list.imgURL
-                                  : '/assets/basicIMG.jpg'
+                                  : '/assets/basicIMG.webp'
                               }
                               decoding="async"
                               onClick={() => handleSellingPostClick(list)}
@@ -309,7 +309,7 @@ const MyPage = () => {
                               src={
                                 list?.imgURL
                                   ? list.imgURL
-                                  : '/assets/basicIMG.jpg'
+                                  : '/assets/basicIMG.webp'
                               }
                               decoding="async"
                               onClick={() => handleBuyPostClick(list)}
@@ -338,7 +338,7 @@ const MyPage = () => {
                             src={
                               list?.imgURL
                                 ? list.imgURL
-                                : '/assets/basicIMG.jpg'
+                                : '/assets/basicIMG.webp'
                             }
                             decoding="async"
                             onClick={() => handleBuyPostClick(list)}
