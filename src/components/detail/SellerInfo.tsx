@@ -66,6 +66,7 @@ const SellerInfo = () => {
       },
     }
   );
+  
   /**배지 개수 구하기 */
   useEffect(() => {
     const time = seller?.time >= 10 ? true : false;
