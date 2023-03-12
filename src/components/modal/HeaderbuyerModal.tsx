@@ -37,6 +37,7 @@ const HeaderBuyerModal = ({ salePosts }: any) => {
     );
     setIsModalActive(false);
   };
+
   return (
     <>
       {isModalActive ? (
@@ -63,7 +64,7 @@ const HeaderBuyerModal = ({ salePosts }: any) => {
                   <ListContentsContainer>
                     {salePosts?.map((salePost: any) => {
                       return (
-                        <ListContentContainer>
+                        <ListContentContainer key={salePost.id}>
                           <Day>{getTimeGap(salePost?.createdAt)}</Day>
                           <Category>{salePost?.category}</Category>
                           <NickName>{salePost?.buyerNickName}</NickName>
