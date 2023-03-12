@@ -73,11 +73,11 @@ const MyPage = () => {
   });
 
   const isDoneSell = tradeSellData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false;
   });
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false;
   });
 
   /*회원탈퇴 */
