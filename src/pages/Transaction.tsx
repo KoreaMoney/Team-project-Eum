@@ -46,8 +46,16 @@ const Transaction = () => {
     }
   );
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   if (!data || data.length === 0) {
-    return <div>추가적인 데이터가 없습니다</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   //회원가입 된 유저가 아니라면 로그인 화면으로 이동합니다.
