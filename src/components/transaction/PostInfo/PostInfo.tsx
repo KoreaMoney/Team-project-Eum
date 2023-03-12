@@ -175,31 +175,35 @@ const PostInfo = () => {
 
   /**구매자가 완료버튼을 클릭했을 때 실행되는 함수 */
   const onClickClearRequest = () => {
-    customSuccessAlert(
-      '이음 재능연결이 완료되었습니다!\n\n후기 작성을 해주세요.'
+    customConfirm(
+      '매칭 하시겠습니까?',
+      '매칭이 완료되면, 판매자에게 포인트가 지급됩니다.',
+      '완료',
+      () => {
+        /**글의 카테고리와 같은 데이터에 +1 카운트 */
+        let categoryCount;
+        if (data?.[0].category === 'study') {
+          categoryCount = { study: (sellerData?.study ?? 0) + 1 };
+        } else if (data?.[0].category === 'play') {
+          categoryCount = { play: (sellerData?.play ?? 0) + 1 };
+        } else if (data?.[0].category === 'advice') {
+          categoryCount = { advice: (sellerData?.advice ?? 0) + 1 };
+        } else {
+          categoryCount = { etc: (sellerData?.etc ?? 0) + 1 };
+        }
+        /**판매자의 판매량을 +1 카운트 */
+        updateUser({
+          point: Number(sellerData?.point) + Number(data?.[0]?.price),
+          isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
+          ...categoryCount,
+        });
+        /**완료된 것을 확정 및 완료시간을 추가 */
+        clearRequest({
+          isDone: true,
+          doneTime: Date.now(),
+        });
+      }
     );
-    /**글의 카테고리와 같은 데이터에 +1 카운트 */
-    let categoryCount;
-    if (data?.[0].category === 'study') {
-      categoryCount = { study: (sellerData?.study ?? 0) + 1 };
-    } else if (data?.[0].category === 'play') {
-      categoryCount = { play: (sellerData?.play ?? 0) + 1 };
-    } else if (data?.[0].category === 'advice') {
-      categoryCount = { advice: (sellerData?.advice ?? 0) + 1 };
-    } else {
-      categoryCount = { etc: (sellerData?.etc ?? 0) + 1 };
-    }
-    /**판매자의 판매량을 +1 카운트 */
-    updateUser({
-      point: Number(sellerData?.point) + Number(data?.[0]?.price),
-      isDoneCount: (sellerData?.isDoneCount ?? 0) + 1,
-      ...categoryCount,
-    });
-    /**완료된 것을 확정 및 완료시간을 추가 */
-    clearRequest({
-      isDone: true,
-      doneTime: Date.now(),
-    });
   };
 
   return (
@@ -257,17 +261,17 @@ const PostInfo = () => {
               ) : (
                 <>
                   {isDone ? (
-                    <b.CancelButton aria-label="거래종료">
-                      거래종료
+                    <b.CancelButton aria-label="매칭종료">
+                      매칭종료
                     </b.CancelButton>
                   ) : (
                     <b.CancelButton
                       onClick={() => {
                         onClickCancel();
                       }}
-                      aria-label="거래취소"
+                      aria-label="매칭취소"
                     >
-                      거래취소
+                      매칭취소
                     </b.CancelButton>
                   )}
                 </>
@@ -281,26 +285,26 @@ const PostInfo = () => {
                     onClick={onClickClearRequest}
                     aria-label="완료"
                   >
-                    거래완료
+                    매칭완료
                   </b.ClearButton>
                 ) : saveUser.uid === data?.[0]?.buyerUid && isCancel ? (
-                  <b.ClearButton aria-label="취소 완료">
-                    취소 완료
+                  <b.ClearButton aria-label="매칭 완료">
+                    매칭 완료
                   </b.ClearButton>
                 ) : null}
 
                 {isDone ? (
-                  <b.CancelButton aria-label="거래종료">
-                    거래종료
+                  <b.CancelButton aria-label="매칭종료">
+                    매칭종료
                   </b.CancelButton>
                 ) : (
                   <b.CancelButton
                     onClick={() => {
                       onClickCancel();
                     }}
-                    aria-label="거래취소"
+                    aria-label="매칭취소"
                   >
-                    거래취소
+                    매칭취소
                   </b.CancelButton>
                 )}
               </b.ButtonsContainer>
