@@ -119,7 +119,7 @@ export const getOnSalePostSeller = async (id: string | undefined) => {
 
 export const getOnSalePostTotalSeller = async (id: string | undefined) => {
   const response = await axios.get(
-    `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${id}&isDone=false`
+    `${process.env.REACT_APP_JSON}/onSalePosts?sellerUid=${id}&isDone=false&isCancel=false`
   );
   return response.data;
 };
