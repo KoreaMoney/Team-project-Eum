@@ -1,7 +1,6 @@
-import Footer from './Footer';
 import Header from './Header';
-import { Outlet } from 'react-router-dom';
 import MoveTop from '../etc/MoveTop';
+import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
   return (
@@ -9,7 +8,6 @@ const Layout = () => {
       <Header />
       <Outlet />
       <MoveTop />
-      <Footer />
     </div>
   );
 };

@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getOnSalePosts } from '../../api';
 import { theme } from '../../styles/theme';
+import { CustomModal } from '../modal/CustomModal';
+
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
+import Chart from './Chart';
 
 /**순서
  *1. 완료된 리스트 분류하기
@@ -13,6 +16,7 @@ import Loader from '../etc/Loader';
  */
 const PointHistoryList = () => {
   const [category, setCategory] = useState('전체');
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const { isLoading: getTradeListLoading, data: tradeData } = useQuery(
@@ -61,53 +65,89 @@ const PointHistoryList = () => {
     backgroundColor: `${theme.colors.white}`,
   };
 
+  const [isModalActive, setIsModalActive] = useState(false);
+  const onClickToggleModal = useCallback(() => {
+    setIsModalActive(!isModalActive);
+  }, [isModalActive]);
+
   return (
     <div>
-      <DropDown>
-        <DropDownBtn>
-          <div>{category}</div>
-          <img src="/assets/Vector.png" alt="" loading="lazy" />
-        </DropDownBtn>
-        <DropDownBox className="DropDownBox">
-          <PointWrapper
-            onClick={() => setCategory('전체')}
-            style={category === '전체' ? categoryStyle : undefined}
-            aria-label="전체"
-          >
-            전체
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('입금')}
-            style={category === '입금' ? categoryStyle : undefined}
-            aria-label="입금"
-          >
-            입금
-          </PointWrapper>
-          <PointWrapper
-            onClick={() => setCategory('출금')}
-            style={category === '출금' ? categoryStyle : undefined}
-            aria-label="출금"
-          >
-            출금
-          </PointWrapper>
-        </DropDownBox>
-      </DropDown>
+      <DropWrapper>
+        <DropDown>
+          <DropDownBtn>
+            <div>{category}</div>
+            <img src="/assets/Vector.png" alt="" decoding="async" />
+          </DropDownBtn>
+          <DropDownBox className="DropDownBox">
+            <PointWrapper
+              onClick={() => setCategory('전체')}
+              style={category === '전체' ? categoryStyle : undefined}
+              aria-label="전체"
+            >
+              전체
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('입금')}
+              style={category === '입금' ? categoryStyle : undefined}
+              aria-label="입금"
+            >
+              입금
+            </PointWrapper>
+            <PointWrapper
+              onClick={() => setCategory('출금')}
+              style={category === '출금' ? categoryStyle : undefined}
+              aria-label="출금"
+            >
+              출금
+            </PointWrapper>
+          </DropDownBox>
+        </DropDown>
+        <ChartBtn onClick={onClickToggleModal} />
+        {isModalActive ? (
+          <CustomModal
+            modal={isModalActive}
+            setModal={setIsModalActive}
+            width="700"
+            height="500"
+            overflow="scroll"
+            element={
+              <div>
+                <Chart />
+              </div>
+            }
+          />
+        ) : (
+          ''
+        )}
+      </DropWrapper>
       <PointHistoryWrapper>
         {getTradeListLoading ? (
-          <div>
-            <Loader />
-          </div>
+          <Loader />
         ) : category === '전체' ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {prev.buyerUid === saveUser.uid
-                  ? '출금'
-                  : prev.sellerUid
-                  ? '입금'
-                  : '에러'}
-              </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {prev.buyerUid === saveUser.uid
+                    ? '출금'
+                    : prev.sellerUid
+                    ? '입금'
+                    : '에러'}
+                </PointHistoryDate>
+                {prev.buyerUid === saveUser.uid ? (
+                  <PointHistoryContent>
+                    <span>제목 : {prev.title}</span>
+                    <p>닉네임 : {prev.buyerNickName}</p>
+                  </PointHistoryContent>
+                ) : prev.sellerUid ? (
+                  <PointHistoryContent>
+                    <span>제목 : {prev.title}</span>
+                    <p>닉네임 : {prev.buyerNickName}</p>
+                  </PointHistoryContent>
+                ) : (
+                  '에러'
+                )}
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 {prev.buyerUid === saveUser.uid ? (
                   <PlusOrMinus>-</PlusOrMinus>
@@ -123,10 +163,15 @@ const PointHistoryList = () => {
         ) : category === '입금' ? (
           sellTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {getTradeDate(prev.createdAt)}
-              </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {getTradeDate(prev.createdAt)}
+                </PointHistoryDate>
+                <PointHistoryContent>
+                  <span>제목 : {prev.title}</span>
+                  <p>닉네임 : {prev.buyerNickName}</p>
+                </PointHistoryContent>
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 +{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -135,10 +180,15 @@ const PointHistoryList = () => {
         ) : category === '출금' && buyTradeList ? (
           buyTradeList.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {getTradeDate(prev.createdAt)}
-              </PointHistoryDate>
-              <PointHistoryContent>{prev.title}</PointHistoryContent>
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {getTradeDate(prev.createdAt)}
+                </PointHistoryDate>
+                <PointHistoryContent>
+                  <span>제목 : {prev.title}</span>
+                  <p>닉네임 : {prev.sellerNickName}</p>
+                </PointHistoryContent>
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 -{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -166,6 +216,13 @@ const DropDown = styled.div`
   }
 `;
 
+const DropWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 588px;
+`;
+
 const DropDownBtn = styled.div`
   display: flex;
   flex-direction: row;
@@ -179,6 +236,29 @@ const DropDownBtn = styled.div`
   &:hover {
     cursor: pointer;
     color: ${theme.colors.gray30};
+  }
+`;
+
+const ChartBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  outline: none;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+  background-size: cover;
+  &:hover {
+    cursor: pointer;
+    background: url('https://ifh.cc/g/OyFgOq.png') no-repeat;
+    background-size: cover;
+  }
+  &:active {
+    background: url('https://ifh.cc/g/mG2V9n.png') no-repeat;
+    background-size: cover;
   }
 `;
 
@@ -219,12 +299,12 @@ const PlusOrMinus = styled.div`
 
 const PointHistoryWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-between;
   align-items: center;
   width: 588px;
   height: auto;
-  gap: 24px;
+  gap: 20px;
   font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.medium};
   color: ${(props) => props.theme.colors.gray30};
@@ -232,29 +312,37 @@ const PointHistoryWrapper = styled.div`
 
 const PointHistory = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   width: 100%;
   height: 59px;
+  border-bottom: 1px solid ${theme.colors.gray10};
+`;
+
+const PointOtherWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
 `;
 
 const PointHistoryDate = styled.div`
   width: 10rem;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
 `;
 
 const PointHistoryContent = styled.div`
   display: flex;
-  justify-content: left;
-  align-items: center;
-  width: 25rem;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  p {
+    margin-top: 10px;
+  }
 `;
 
 const PointHistoryAmount = styled.div`
   display: flex;
-  justify-content: left;
   align-items: center;
   width: 6rem;
 `;

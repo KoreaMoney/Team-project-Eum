@@ -1,5 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { viewBuyerModalAtom, viewModalAtom } from '../../atom';
 import { theme } from '../../styles/theme';
 
 interface ModalProps {
@@ -16,23 +18,52 @@ export const CustomModal = ({
   height,
   element,
   setModal,
-  overflow
+  overflow,
 }: ModalProps) => {
   const disableModal = () => {
     setModal(false);
   };
 
+  const isModalActive = useRecoilValue(viewModalAtom);
+
+  const onClickToggleModal = useCallback(() => {
+    setModal(false);
+  }, [isModalActive]);
+
   return (
     <>
       <Container width={width} height={height} overflow={overflow}>
         <Wrapper>{element}</Wrapper>
+        <CloseButton onClick={onClickToggleModal} aria-label="닫기">
+          X
+        </CloseButton>
       </Container>
       <Canvas onClick={disableModal} />
     </>
   );
 };
 
-const Container = styled.div<{ width: string; height: string; overflow: string; }>`
+const CloseButton = styled.button`
+  position: absolute;
+  font-size: 24px;
+  font-weight: 600;
+  width: 40px;
+  height: 40px;
+  right: 12px;
+  top: 12px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  &:hover {
+    color: ${theme.colors.orange02Main};
+  }
+`;
+
+const Container = styled.div<{
+  width: string;
+  height: string;
+  overflow: string;
+}>`
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -51,15 +82,34 @@ const Container = styled.div<{ width: string; height: string; overflow: string; 
   align-items: center;
   font-size: ${theme.fontSize.title20};
   border: none;
-  overflow: ${(props) => props.overflow};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${theme.colors.orange00};
+    border-radius: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.colors.orange02Main};
+    border-radius: 10px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: ${theme.colors.orange00};
+  }
 `;
 
 const Canvas = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100%;
+  width: 100%;
+  height: 150vw;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 100;
 `;

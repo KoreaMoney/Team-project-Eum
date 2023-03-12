@@ -5,8 +5,8 @@ const Loader = () => {
   return (
     <LoaderBox>
       <MutatingDots
-        height="120"
-        width="120"
+        height="140"
+        width="140"
         color="#FF6C2C"
         secondaryColor="#FF6C2C"
         radius="12.5"
@@ -24,4 +24,6 @@ const LoaderBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 300px;
+  margin-bottom: 800px;
 `;

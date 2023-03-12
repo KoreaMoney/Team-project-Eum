@@ -1,21 +1,23 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { postType } from '../types';
 import { useQueries, useQuery } from '@tanstack/react-query';
+import { getPosts, getPostsId, getUsers } from '../api';
+import { theme } from '../styles/theme';
+import { customWarningAlert } from '../components/modal/CustomAlert';
+
+import Slider from 'react-slick';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
-import { getPosts } from '../api';
+import loadable from '@loadable/component';
 import styled from 'styled-components';
+import Banner from '../components/home/Banner';
+import Loader from '../components/etc/Loader';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Slider from 'react-slick';
-import { theme } from '../styles/theme';
-import loadable from '@loadable/component';
 
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
-const Banner = loadable(() => import('../components/home/Banner'));
-const Loader = loadable(() => import('../components/etc/Loader'));
 
 /**순서
  * 1. 상단에 위치한 스와이프 제작하기
@@ -26,6 +28,35 @@ const Loader = loadable(() => import('../components/etc/Loader'));
 
 const Home = () => {
   const navigate = useNavigate();
+
+  //핫한 이음친구들 이동
+  /**판매자의 프로필이미지를 위해 데이터 가져오기
+   * 1. params로 postId와 id값을 연결한다
+   * 2. 포스트 여부 인증을 한다
+   * 3. 판매자 정보에 대한 값을 가져온다
+   * 4. 클릭시 판매자 정보로 이동한다
+   */
+  const { postId, id } = useParams();
+  const identifier = id ? id : postId;
+  const { data: post } = useQuery(
+    ['post', identifier],
+    () => getPostsId(identifier),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+
+  const { data: seller } = useQuery(
+    ['user', post?.[0]?.sellerUid],
+    () => getUsers(post?.[0]?.sellerUid),
+    {
+      enabled: Boolean(post?.[0]?.sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
+      onError: () => {
+        customWarningAlert('현재 구매할수 없는 글입니다.');
+        navigate(-1);
+      },
+    }
+  );
 
   // query통신하기
   const { data, isLoading } = useQuery(['posts'], getPosts, {
@@ -87,7 +118,12 @@ const Home = () => {
     prevArrow: <PrevArrow />,
     draggable: true,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 3000,
+    cssEase: 'linear',
+  };
+
+  const onClickHotFriendHandler = () => {
+    navigate(`/userprofile/${seller?.id}`);
   };
 
   return (
@@ -96,9 +132,8 @@ const Home = () => {
         <Loader />
       ) : (
         <>
-          <div>
-            <Banner />
-          </div>
+          <Banner />
+
           <a.HomePostContainer>
             <a.HotEum>
               <span>핫한 이음이 친구들</span>
@@ -107,27 +142,60 @@ const Home = () => {
             <HotKingWrapper>
               <>
                 <KingBox>
-                  <img src="https://ifh.cc/g/5MmCqO.png" alt="" />
+                  <KingImage
+                    src="https://ifh.cc/g/7tc1h1.webp"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>공부신</KingName>
-                  <KingNick>{result?.[0]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[0]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/kt0lFx.png" alt="" />
+                  <KingImage
+                    src="https://ifh.cc/g/WMvHLg.webp"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>놀이신</KingName>
-                  <KingNick>{result?.[1]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick onClick={onClickHotFriendHandler}>
+                    {result?.[1]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/6SGy7o.png" alt="" />
+                  <KingImage
+                    src="https://ifh.cc/g/lY7dfs.webp"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>상담신</KingName>
-                  <KingNick>{result?.[2]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[2]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
-                  <img src="https://ifh.cc/g/zHY2xd.png" alt="" />
+                  <KingImage
+                    src="https://ifh.cc/g/jj9v6l.webp"
+                    alt=""
+                    loading="lazy"
+                  />
                   <KingName>기타신</KingName>
-                  <KingNick>{result?.[3]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[3]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
               </>
@@ -143,30 +211,28 @@ const Home = () => {
                   ?.slice(0, 9)
                   .sort((a: any, b: any) => b.like.length - a.like.length)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoBest>Best</a.InfoBest>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        <InfoBox
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                          aria-label="게시글 넘어가기"
+                        >
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -183,30 +249,28 @@ const Home = () => {
                   ?.sort((a: any, b: any) => b.createAt - a.createAt)
                   ?.slice(0, 9)
                   .map((post: postType) => (
-                    <a.PostWrapper
-                      key={post.id}
-                      onClick={() => handlePostClick(post)}
-                    >
+                    <a.PostWrapper>
                       <a.PostImg
                         bgPhoto={post.imgURL ? post.imgURL : basicIMG}
                       />
                       <a.PostInfoWrapper>
                         <a.InfoNew>New</a.InfoNew>
-                        <a.InfoTitle>{post.title}</a.InfoTitle>
-                        <a.InfoProfile>
-                          <a.ProfileIMG
-                            profileIMG={
-                              post?.profileImg ? post?.profileImg : basicIMG
-                            }
-                          />
-                          <p>
-                            {post.price
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            P
-                          </p>
-                        </a.InfoProfile>
-                        <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        <InfoBox
+                          key={post.id}
+                          onClick={() => handlePostClick(post)}
+                          aria-label="게시글 넘어가기"
+                        >
+                          <a.InfoTitle>{post.title}</a.InfoTitle>
+                          <a.InfoProfile>
+                            <p>
+                              {post.price
+                                ?.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                              P
+                            </p>
+                          </a.InfoProfile>
+                          <a.InfoNickName>{post.nickName}</a.InfoNickName>
+                        </InfoBox>
                       </a.PostInfoWrapper>
                     </a.PostWrapper>
                   ))}
@@ -221,6 +285,18 @@ const Home = () => {
 };
 export default Home;
 
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: ${theme.colors.black};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
+`;
+
 const HotKingWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -234,19 +310,24 @@ const KingBox = styled.div`
   width: 280px;
   height: 320px;
   gap: 14px;
-  img {
-    width: 100%;
-    height: 220px;
-  }
 `;
-
+const KingImage = styled.img`
+  width: 283px;
+  height: 200px;
+  margin: auto;
+`;
 const KingName = styled.p`
-  font-size: ${(props) => props.theme.fontSize.title14};
-  color: ${(props) => props.theme.colors.gray30};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.orange02Main};
 `;
 const KingNick = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${theme.colors.black};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
 `;
 const KingContext = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};

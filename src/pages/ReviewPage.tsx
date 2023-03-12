@@ -1,29 +1,9 @@
-import * as a from '../styles/styledComponent/reviewPage';
 import { uuidv4 } from '@firebase/util';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-
 import { commentType } from '../types';
-import c_cheap from '../styles/badge/choice/c_cheap.webp';
-import nc_cheap from '../styles/badge/notChoice/nc_cheap.webp';
-
-import c_donation from '../styles/badge/choice/c_donation.webp';
-import nc_donation from '../styles/badge/notChoice/nc_donation.webp';
-
-import c_fast from '../styles/badge/choice/c_fast.webp';
-import nc_fast from '../styles/badge/notChoice/nc_fast.webp';
-
-import c_manner from '../styles/badge/choice/c_manner.webp';
-import nc_manner from '../styles/badge/notChoice/nc_manner.webp';
-
-import c_service from '../styles/badge/choice/c_service.webp';
-import nc_service from '../styles/badge/notChoice/nc_service.webp';
-
-import c_time from '../styles/badge/choice/c_time.webp';
-import nc_time from '../styles/badge/notChoice/nc_time.webp';
 import { customSuccessAlert } from '../components/modal/CustomAlert';
-
 import {
   getOnSalePost,
   getPostsId,
@@ -33,6 +13,22 @@ import {
   patchUsers,
   postComments,
 } from '../api';
+
+import c_cheap from '../styles/badge/choice/c_cheap.webp';
+import nc_cheap from '../styles/badge/notChoice/nc_cheap.webp';
+import c_donation from '../styles/badge/choice/c_donation.webp';
+import nc_donation from '../styles/badge/notChoice/nc_donation.webp';
+import c_fast from '../styles/badge/choice/c_fast.webp';
+import nc_fast from '../styles/badge/notChoice/nc_fast.webp';
+import c_manner from '../styles/badge/choice/c_manner.webp';
+import nc_manner from '../styles/badge/notChoice/nc_manner.webp';
+import c_service from '../styles/badge/choice/c_service.webp';
+import nc_service from '../styles/badge/notChoice/nc_service.webp';
+import c_time from '../styles/badge/choice/c_time.webp';
+import nc_time from '../styles/badge/notChoice/nc_time.webp';
+
+import * as a from '../styles/styledComponent/reviewPage';
+import Loader from '../components/etc/Loader';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -105,7 +101,7 @@ function ReviewPage() {
       patchOnSalePost(id, newSalePosts),
     {
       onSuccess: () => {
-        navigate('/');
+        navigate(`/detail/${data.category}/${data.postsId}`);
       },
     }
   );
@@ -175,65 +171,81 @@ function ReviewPage() {
   const onChangeReview = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReview(e.target.value);
   };
-  if (isLoading) {
-    return <div></div>;
-  }
 
   return (
     <a.Container>
-      <a.ContainerTitle>후기 보내기</a.ContainerTitle>
-      <a.ReviewOpinionContainer>
-        <p>{reviewer?.nickName}님,</p>
-        <p>{user?.nickName}님과 거래가 어떠셨나요?</p>
-      </a.ReviewOpinionContainer>
-      <a.ProductContainer>
-        <a.ProductTitle>매칭한 상품</a.ProductTitle>
-        <a.ProductSeller>{post?.title}</a.ProductSeller>
-        <a.ProductTitle>거래한 이웃</a.ProductTitle>
-        <a.ProductSeller>{user?.nickName}</a.ProductSeller>
-      </a.ProductContainer>
-      <a.BadgeContainer>
-        <p>어떤 점이 최고였나요?</p>
-        <a.GridBox>
-          <a.BadgeImg
-            imageUrl={badge === 'time' ? images[0][0] : images[0][1]}
-            onClick={() => setBadge('time')}
-          />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <a.ContainerTitle>후기 보내기</a.ContainerTitle>
+          <a.ReviewOpinionContainer>
+            <p>{reviewer?.nickName}님,</p>
+            <p>{user?.nickName}님과 거래가 어떠셨나요?</p>
+          </a.ReviewOpinionContainer>
+          <a.ProductContainer>
+            <a.ProductTitle>매칭한 상품</a.ProductTitle>
+            <a.ProductSeller>{post?.title}</a.ProductSeller>
+            <a.ProductTitle>거래한 이웃</a.ProductTitle>
+            <a.ProductSeller>{user?.nickName}</a.ProductSeller>
+          </a.ProductContainer>
+          <a.BadgeContainer>
+            <p>어떤 점이 최고였나요?</p>
+            <a.GridBox>
+              <a.BadgeImg
+                imageUrl={badge === 'time' ? images[0][0] : images[0][1]}
+                onClick={() => setBadge('time')}
+                aria-label="배지 선택"
+              />
 
-          <a.BadgeImg
-            imageUrl={badge === 'fast' ? images[3][0] : images[3][1]}
-            onClick={() => setBadge('fast')}
-          />
+              <a.BadgeImg
+                imageUrl={badge === 'fast' ? images[3][0] : images[3][1]}
+                onClick={() => setBadge('fast')}
+                aria-label="배지 선택"
+              />
 
-          <a.BadgeImg
-            imageUrl={badge === 'manner' ? images[1][0] : images[1][1]}
-            onClick={() => setBadge('manner')}
-          />
+              <a.BadgeImg
+                imageUrl={badge === 'manner' ? images[1][0] : images[1][1]}
+                onClick={() => setBadge('manner')}
+                aria-label="배지 선택"
+              />
 
-          <a.BadgeImg
-            imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
-            onClick={() => setBadge('service')}
-          />
+              <a.BadgeImg
+                imageUrl={badge === 'service' ? images[4][0] : images[4][1]}
+                onClick={() => setBadge('service')}
+                aria-label="배지 선택"
+              />
 
-          <a.BadgeImg
-            imageUrl={badge === 'cheap' ? images[2][0] : images[2][1]}
-            onClick={() => setBadge('cheap')}
-          />
+              <a.BadgeImg
+                imageUrl={badge === 'cheap' ? images[2][0] : images[2][1]}
+                onClick={() => setBadge('cheap')}
+                aria-label="배지 선택"
+              />
 
-          <a.BadgeImg
-            imageUrl={badge === 'donation' ? images[5][0] : images[5][1]}
-            onClick={() => setBadge('donation')}
-          />
-        </a.GridBox>
-      </a.BadgeContainer>
-      <a.ReviewContainer>
-        <a.ReviewTitle>따뜻한 거래 경험을 알려주세요!</a.ReviewTitle>
-        <a.ReviewInfo>
-          남겨주신 거래 후기는 상대방의 프로필에 공개돼요.
-        </a.ReviewInfo>
-        <a.ReviewInput type="text" value={review} onChange={onChangeReview} />
-      </a.ReviewContainer>
-      <a.SubmitButton onClick={submitReview}>작성 완료</a.SubmitButton>
+              <a.BadgeImg
+                imageUrl={badge === 'donation' ? images[5][0] : images[5][1]}
+                onClick={() => setBadge('donation')}
+                aria-label="배지 선택"
+              />
+            </a.GridBox>
+          </a.BadgeContainer>
+          <a.ReviewContainer>
+            <a.ReviewTitle>따뜻한 거래 경험을 알려주세요!</a.ReviewTitle>
+            <a.ReviewInfo>
+              남겨주신 거래 후기는 상대방의 프로필에 공개돼요.
+            </a.ReviewInfo>
+            <a.ReviewInput
+              type="text"
+              value={review}
+              onChange={onChangeReview}
+              aria-label="입력창"
+            />
+          </a.ReviewContainer>
+          <a.SubmitButton onClick={submitReview} aria-label="작성 완료">
+            작성 완료
+          </a.SubmitButton>
+        </>
+      )}
     </a.Container>
   );
 }

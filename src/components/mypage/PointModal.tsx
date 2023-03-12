@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { customInfoAlert, customWarningAlert } from '../modal/CustomAlert';
 import { getUsers } from '../../api';
 import { theme } from '../../styles/theme';
+
 import PointHistoryList from './PointHistoryList';
 import styled from 'styled-components';
 
@@ -22,6 +23,7 @@ const PointModal = () => {
       '이벤트 기간 종료 후\n\n 추가되는 포인트만\n 출금 가능합니다.'
     );
   };
+
   return (
     <>
       <PointModalContainer>
@@ -73,7 +75,7 @@ const PointImgWrapper = styled.div`
   width: 100%;
   font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.gray20};
+  color: ${theme.colors.gray30};
 `;
 
 const CurrentPoint = styled.div`

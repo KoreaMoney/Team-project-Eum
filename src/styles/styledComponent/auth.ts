@@ -52,7 +52,7 @@ export const LoginInputText = styled.span`
   width: 120px;
   display: flex;
   align-items: center;
-  color: ${theme.colors.gray20};
+  color: ${theme.colors.gray40};
 `;
 
 export const LoginInput = styled.input`
@@ -109,7 +109,7 @@ export const SubmitLogin = styled.button`
   outline: none;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     background-color: ${theme.colors.white};
     color: ${theme.colors.orange02Main};
   }
@@ -119,7 +119,7 @@ export const ErrMsg = styled.div`
   width: 100%;
   padding: 0.4rem;
   padding-left: 1rem;
-  font-size: ${theme.fontSize.title14};
+  font-size: 12px;
   color: ${theme.colors.red};
 `;
 
@@ -144,8 +144,9 @@ export const GoogleBtn = styled.button`
   border-radius: 10px;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     color: ${theme.colors.orange02Main};
+    font-weight: ${theme.fontWeight.bold};
   }
 `;
 
@@ -177,7 +178,7 @@ export const LoginOther = styled.div`
     outline: none;
     font-size: ${theme.fontSize.title14};
     background-color: transparent;
-    color: ${theme.colors.gray30};
+    color: ${theme.colors.gray40};
     font-weight: ${theme.fontWeight.medium};
 
     &:hover {
@@ -244,7 +245,7 @@ export const SignUpNickname = styled.div`
   align-items: center;
   width: 100%;
   height: 64px;
-  margin-top: 56px;
+  margin-top: 45px;
 `;
 
 export const SignUpNicknameWrapper = styled.div`
@@ -303,7 +304,7 @@ export const SignUpBtn = styled.button`
   outline: none;
   &:hover {
     cursor: pointer;
-    border: 1px solid ${theme.colors.orange02Main};
+    border: 2px solid ${theme.colors.orange02Main};
     background-color: ${theme.colors.white};
     color: ${theme.colors.orange02Main};
   }

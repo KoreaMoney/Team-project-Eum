@@ -26,9 +26,8 @@ export const HomePostContainer = styled.div`
 export const HotEum = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 40px;
+  width: 90%;
 
   span {
     font-size: ${(props) => props.theme.fontSize.title32};
@@ -47,7 +46,7 @@ export const PostWrapper = styled.div`
   align-items: center;
   gap: 10px;
   width: 370px;
-  height: 352px;
+  height: 390px;
 `;
 
 export const PostImg = styled.div<{ bgPhoto: string }>`
@@ -59,12 +58,6 @@ export const PostImg = styled.div<{ bgPhoto: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
-  &:hover {
-    cursor: pointer;
-    width: 72%;
-    height: 210px;
-    box-shadow: 3px 5px 3px ${theme.colors.gray20};
-  }
 `;
 
 export const PostInfoWrapper = styled.div`
@@ -72,7 +65,12 @@ export const PostInfoWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
   line-height: 32px;
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
 `;
 
 export const InfoBest = styled.div`
@@ -80,10 +78,18 @@ export const InfoBest = styled.div`
   color: ${theme.colors.green};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.medium};
+  margin-bottom: 10px;
 `;
 
 export const InfoTitle = styled.span`
-  font-size: ${(props) => props.theme.fontSize.title20};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${(props) => props.theme.fontSize.title16};
+  width: 230px;
+  height: 55px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 `;
 
 export const InfoProfile = styled.div`
@@ -91,7 +97,7 @@ export const InfoProfile = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
 `;
 
 export const ProfileIMG = styled.div<{ profileIMG: string | undefined | null }>`
@@ -110,6 +116,8 @@ export const InfoNickName = styled.p`
 `;
 
 export const InfoNew = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
   text-decoration: underline;
   color: ${theme.colors.Blue};
   font-size: ${(props) => props.theme.fontSize.title16};

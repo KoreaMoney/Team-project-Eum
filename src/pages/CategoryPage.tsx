@@ -4,11 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { sortAtom } from '../atom';
 import { postType } from '../types';
+
 import * as a from '../styles/styledComponent/category';
 import axios from 'axios';
 import CategoryIntros from '../components/categoryHome/CategoryIntros';
 import Post from '../components/categoryHome/Post';
 import Loader from '../components/etc/Loader';
+import ErrorETC from '../components/error/ErrorETC';
 
 /** 전체, 놀이 등 카테고리를 클릭하면 이동되는 페이지입니다.
  * 어떤 DATA의 URL이 들어가는 먼저 넣기
@@ -30,6 +32,7 @@ const CategoryPage = () => {
     word: string | undefined,
     page = 0
   ) => {
+    //기본 이미지 적용여부
     const baseUrl = `${process.env.REACT_APP_JSON}/posts`;
     let url = baseUrl;
     if (categoryName !== 'all' && !word) {
@@ -40,6 +43,7 @@ const CategoryPage = () => {
       url = `${baseUrl}?category=${categoryName}&${select}_like=${word}`;
     }
 
+    //최신순 정렬
     const response = await axios.get(url, {
       params: {
         _page: page,
@@ -91,6 +95,7 @@ const CategoryPage = () => {
     isLoading,
     isFetchingNextPage,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ['posts', categoryName ?? 'all', select, word],
     ({ pageParam = 0 }) =>
@@ -123,28 +128,30 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+  if (isError) {
+    return <ErrorETC />;
   }
   return (
     <a.PageContainer>
-      <CategoryIntros categoryName={categoryName} />
-      <a.PostsContainer>
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.map((post: postType) => (
-              <Post post={post} onClick={handlePostClick} key={post.id} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CategoryIntros categoryName={categoryName} />
+          <a.PostsContainer>
+            {data?.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.map((post: postType) => (
+                  <Post post={post} onClick={handlePostClick} key={post.id} />
+                ))}
+              </Fragment>
             ))}
-          </Fragment>
-        ))}
 
-        <a.PostContainer ref={observerElem}></a.PostContainer>
-        {isFetching || isFetchingNextPage ? <Loader /> : null}
-      </a.PostsContainer>
+            <a.PostContainer ref={observerElem}></a.PostContainer>
+            {isFetching || isFetchingNextPage ? <Loader /> : null}
+          </a.PostsContainer>
+        </>
+      )}
     </a.PageContainer>
   );
 };

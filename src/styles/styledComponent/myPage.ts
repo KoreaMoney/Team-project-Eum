@@ -18,7 +18,7 @@ export const MyPageHeader = styled.div`
   line-height: ${theme.lineHeight.title32};
   width: 100%;
   height: auto;
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 96px;
 `;
 
@@ -124,7 +124,7 @@ export const MySellNav = styled.div`
     align-items: center;
     &:hover {
       color: ${theme.colors.gray40};
-      border-bottom: 1px solid ${theme.colors.gray40};
+      border-bottom: 1px solid ${theme.colors.gray20};
     }
   }
 `;
@@ -177,7 +177,6 @@ export const MyPageContentsWrapper = styled.div`
   height: auto;
   padding: 40px 0;
   border-top: 1px solid ${theme.colors.gray20};
-  border-bottom: 1px solid ${theme.colors.gray20};
 `;
 
 export const MyLikeList = styled.div`
@@ -188,6 +187,7 @@ export const MyLikeList = styled.div`
   height: 400px;
   gap: 16px;
   overflow: hidden;
+  position: relative;
 
   p {
     font-size: ${(props) => props.theme.fontSize.title16};
@@ -209,7 +209,7 @@ export const PostImg = styled.img`
   height: 200px;
   cursor: pointer;
   &:hover {
-    scale: 1.1;
+    scale: 1.05;
   }
 `;
 
@@ -247,7 +247,6 @@ export const UserProfileWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 24rem;
-
   span {
     display: flex;
     justify-content: left;
@@ -371,7 +370,7 @@ export const UserInfoBox = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 56px;
+  margin-bottom: 20px;
 `;
 
 export const UserInfoTitle = styled.p`
@@ -401,7 +400,7 @@ export const KakaoTitle = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.fontSize.title16};
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
 `;
 
 export const KakaoInfo = styled.p`
@@ -413,10 +412,37 @@ export const KakaoInfo = styled.p`
   margin-bottom: 56px;
 `;
 
+export const NickNameInfoCheck = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.gray20};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
+export const NickNameInfo = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.red};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
+export const NickNameInfoPass = styled.p`
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.regular};
+  line-height: ${(props) => props.theme.fontSize.title16};
+  color: ${(props) => props.theme.colors.green};
+  margin-left: 5px;
+  margin-bottom: 56px;
+`;
+
 export const KakaoId = styled.input`
   width: 588px;
   height: 91px;
-  border: 1px solid ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   padding: 48px 40px 16px 40px;
   font-size: ${(props) => props.theme.fontSize.title18};
@@ -428,10 +454,60 @@ export const KakaoId = styled.input`
   }
 `;
 
+export const UserNickName = styled.input`
+  margin-right: 6px;
+  width: 491px;
+  height: 91px;
+  border: 1px solid ${(props) => props.theme.colors.gray30};
+  border-radius: 10px;
+  padding: 48px 40px 16px 40px;
+  font-size: ${(props) => props.theme.fontSize.title18};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  line-height: ${(props) => props.theme.fontSize.title18};
+  &:focus {
+    outline: none;
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
+export const UserNickNameBtn = styled.button`
+  position: absolute;
+  width: 91px;
+  height: 91px;
+  background-color: ${(props) => props.theme.colors.orange02Main};
+  font-size: ${(props) => props.theme.fontSize.title16};
+  font-weight: ${(props) => props.theme.fontWeight.medium};
+  color: ${(props) => props.theme.colors.white};
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.orange02Main};
+    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+  }
+`;
+
 export const BirthInfo = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.fontSize.title16};
   color: ${(props) => props.theme.colors.gray20};
   margin: 16px 0 8px 5px;
+`;
+
+export const ClearPost = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  font-size: ${(props) => props.theme.fontSize.title32};
+  font-weight: ${(props) => props.theme.fontWeight.bold};
+  line-height: ${(props) => props.theme.lineHeight.title32};
+  color: ${(props) => props.theme.colors.orange01};
+  text-align: center;
+  line-height: 355px;
 `;

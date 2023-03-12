@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { viewKakaoModalAtom } from '../../atom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { customWarningAlert } from '../modal/CustomAlert';
 import {
   getOnSalePostBuyer,
@@ -21,16 +19,19 @@ import c_service from '../../styles/badge/choice/c_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
-import KakaoModal from '../modal/KakaoModal';
+
+import 'firebase/firestore';
 
 const SellerInfo = () => {
+  const navigate = useNavigate();
+
   const { postId, id } = useParams();
   const identifier = id ? id : postId;
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
 
   const [badgeLength, setBadgeLength] = useState(0);
-  const [isModalActive, setIsModalActive] = useRecoilState(viewKakaoModalAtom);
 
   const { data: post } = useQuery(
     ['post', identifier],
@@ -42,20 +43,16 @@ const SellerInfo = () => {
 
   /**판매중인 글 */
   const { data: sellerPosts } = useQuery(
-    ['sellerPost', post?.[0].sellerUid],
-    () => getSellerPosts(post?.[0].sellerUid),
+    ['sellerPost', post?.[0]?.sellerUid],
+    () => getSellerPosts(post?.[0]?.sellerUid),
     {
       staleTime: Infinity,
     }
   );
 
-  const { data: onSalePostBuyerData } = useQuery(
-    ['onSalePosts', saveUser?.uid],
-    () => getOnSalePostBuyer(saveUser?.uid)
+  useQuery(['onSalePosts', saveUser?.uid], () =>
+    getOnSalePostBuyer(saveUser?.uid)
   );
-  const isPostBuyer = onSalePostBuyerData?.filter((list: any) => {
-    return list?.postsId === post?.[0]?.id;
-  });
 
   /**판매자의 프로필이미지를 위해 데이터 가져오기 */
   const { data: seller } = useQuery(
@@ -63,18 +60,21 @@ const SellerInfo = () => {
     () => getUsers(post?.[0].sellerUid),
     {
       enabled: Boolean(post?.[0].sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
-      staleTime: Infinity,
+      onError: () => {
+        customWarningAlert('현재 구매할수 없는 글입니다.');
+        navigate(-1);
+      },
     }
   );
-
   /**배지 개수 구하기 */
   useEffect(() => {
     const time = seller?.time >= 10 ? true : false;
     const cheap = seller?.cheap >= 10 ? true : false;
     const fast = seller?.fast >= 10 ? true : false;
+    const manner = seller?.manner >= 10 ? true : false;
     const service = seller?.service >= 10 ? true : false;
     const donation = seller?.donation >= 10 ? true : false;
-    const result = [time, cheap, fast, service, donation];
+    const result = [time, cheap, fast, service, donation, manner];
     const trueValues = result.filter((value) => value === true);
     setBadgeLength(trueValues.length);
   }, [seller]);
@@ -101,6 +101,7 @@ const SellerInfo = () => {
       userBadge = images[5];
       break;
   }
+
   return (
     <a.SellerInfoContainer>
       <a.ProfileContainer>
@@ -108,6 +109,7 @@ const SellerInfo = () => {
           <a.ProfileIMG
             profileIMG={seller?.profileImg ? seller?.profileImg : basicIMG}
             aria-label="프로필 이미지"
+            onClick={() => navigate(`/userprofile/${seller?.id}`)}
           />
         </a.Profiles>
         <a.Profiles>
@@ -134,26 +136,9 @@ const SellerInfo = () => {
           매칭 상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
-          후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
+          매칭 후기 {seller?.commentsCount ? seller?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
-      {isPostBuyer?.length > 0 ? (
-        <>
-          <a.KakaoButton onClick={() => setIsModalActive(true)}>
-            카카오톡으로 문의하기
-          </a.KakaoButton>
-          <KakaoModal />
-        </>
-      ) : (
-        <a.KakaoButton
-          onClick={() =>
-            customWarningAlert('구매자에게만\n제공되는 서비스입니다.')
-          }
-          aria-label="안내 알림"
-        >
-          카카오톡으로 문의하기
-        </a.KakaoButton>
-      )}
     </a.SellerInfoContainer>
   );
 };

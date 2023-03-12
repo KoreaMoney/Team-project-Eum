@@ -55,7 +55,7 @@ table {
 }
 body{
   font-family: 'Noto Sans KR', sans-serif;
-  overflow-x:hidden
+  overflow-x:hidden;
 }
 a{
   text-decoration: none;

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getSellerPosts, getUsers } from '../../api';
 
 import * as a from '../../styles/styledComponent/detail';
@@ -15,7 +15,9 @@ import basicLock from '../../styles/badge/basicLock.webp';
 import styled from 'styled-components';
 
 const SellerInfo = () => {
+  const navigate = useNavigate();
   const images = [c_time, c_manner, c_cheap, c_fast, c_service, c_donation];
+
   const { buyerId } = useParams();
   const [badgeLength, setBadgeLength] = useState(0);
 
@@ -76,6 +78,7 @@ const SellerInfo = () => {
           <a.ProfileIMG
             profileIMG={buyer?.profileImg ? buyer?.profileImg : basicIMG}
             aria-label="프로필 이미지"
+            onClick={() => navigate(`/userprofile/${buyer?.id}`)}
           />
         </a.Profiles>
         <a.Profiles>
@@ -99,10 +102,10 @@ const SellerInfo = () => {
       <a.ProfileInfoContainer>
         <a.ProfileInfos>배지 {badgeLength}개</a.ProfileInfos>
         <a.ProfileInfos aria-label="매칭상품">
-          매칭상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
+          매칭 상품 {sellerPosts?.length ? sellerPosts?.length : '0'}개
         </a.ProfileInfos>
         <a.ProfileInfos aria-label="받은 후기" style={{ borderRight: 'none' }}>
-          후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
+          매칭 후기 {buyer?.commentsCount ? buyer?.commentsCount : '0'}개
         </a.ProfileInfos>
       </a.ProfileInfoContainer>
     </a.SellerInfoContainer>

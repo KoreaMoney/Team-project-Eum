@@ -1,19 +1,20 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { viewBuyerModalAtom } from '../../atom';
-import { onSalePostType } from '../../types';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { myOnSalePostsAtom, viewBuyerModalAtom } from '../../atom';
 import { CustomModal } from './CustomModal';
 import styled from 'styled-components';
 
-const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
+const BuyerModal = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [isModalActive, setIsModalActive] = useRecoilState(viewBuyerModalAtom);
 
-  const onClickToggleModal = useCallback(() => {
-    setIsModalActive(!isModalActive);
-  }, [isModalActive]);
+  const newSalePosts = useRecoilValue(myOnSalePostsAtom);
+  const salePosts = newSalePosts?.filter((prev) => {
+    return prev.postsId === id;
+  });
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -27,12 +28,18 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
 
   const getTimeGap = (posting: number) => {
     const time = new Date(posting);
-    const mm = time.toJSON().substring(5, 7);
-    const dd = time.toJSON().substring(8, 10);
+    const mm = time?.toJSON() ? time.toJSON().substring(5, 7) : '';
+    const dd = time?.toJSON() ? time.toJSON().substring(8, 10) : '';
     const result = `${mm.replace(/^0+/, '')}월 ` + `${dd.replace(/^0+/, '')}일`;
     return result;
   };
 
+  const GoOnSalePost = (salePosts: any) => {
+    navigate(
+      `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
+    );
+    setIsModalActive(false);
+  };
   return (
     <>
       {isModalActive ? (
@@ -45,32 +52,33 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
           element={
             <>
               <Container>
-                <CloseButton onClick={onClickToggleModal} aria-label="닫기">
-                  X
-                </CloseButton>
-                <ModalTitle>구매한 사람들</ModalTitle>
+                <ModalTitle>매칭된 사람들</ModalTitle>
                 <ModalContent>
                   바로가기 버튼을 누르면 진행 상황을 수정할 수 있어요.
                 </ModalContent>
                 <ListContainer>
                   <ListTitleContainer>
-                    <ListDay>일시</ListDay>
+                    <ListDay>날짜</ListDay>
                     <ListNickName>닉네임</ListNickName>
                     <ListPrice>금액</ListPrice>
                   </ListTitleContainer>
                   <ListContentsContainer>
-                    {newSalePosts.map((salePosts) => {
+                    {salePosts?.map((salePost: any) => {
                       return (
                         <ListContentContainer>
-                          <Day>{getTimeGap(salePosts?.createdAt)}</Day>
-                          <NickName>{salePosts?.buyerNickName}</NickName>
-                          <Price>{salePosts?.price}P</Price>
+                          <Day>{getTimeGap(salePost?.createdAt)}</Day>
+                          <NickName>{salePost?.buyerNickName}</NickName>
+                          <Price>
+                            {salePost?.price
+                              ? salePost?.price
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              : 0}
+                            P
+                          </Price>
                           <MoveButton
-                            onClick={() =>
-                              navigate(
-                                `/detail/${salePosts?.category}/${salePosts?.postsId}/${salePosts?.buyerUid}/${salePosts?.id}`
-                              )
-                            }
+                            onClick={() => GoOnSalePost(salePost)}
+                            aria-label="바로가기"
                           >
                             바로가기
                           </MoveButton>
@@ -93,7 +101,7 @@ const BuyerModal = ({ newSalePosts }: { newSalePosts: onSalePostType[] }) => {
 export default BuyerModal;
 
 const Container = styled.div`
-  width: 512px;
+  width: 100%;
   height: 559px;
   margin: 0 auto;
   text-align: center;
@@ -108,7 +116,7 @@ const ModalTitle = styled.p`
 `;
 
 const ModalContent = styled.p`
-  color: ${(props) => props.theme.colors.gray20};
+  color: ${(props) => props.theme.colors.gray30};
   font-size: ${(props) => props.theme.fontSize.title16};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title16};
@@ -198,29 +206,16 @@ const MoveButton = styled.button`
   width: 88px;
   height: 28px;
   background-color: ${(props) => props.theme.colors.white};
-  border: 1px solid ${(props) => props.theme.colors.gray20};
-  color: ${(props) => props.theme.colors.gray20};
+  border: 1px solid ${(props) => props.theme.colors.gray30};
+  color: ${(props) => props.theme.colors.gray30};
   border-radius: 10px;
   font-size: ${(props) => props.theme.fontSize.title14};
   font-weight: ${(props) => props.theme.fontWeight.regular};
   line-height: ${(props) => props.theme.lineHeight.title14};
-  cursor: pointer;
   &:hover {
-    border: 1px solid ${(props) => props.theme.colors.orange02Main};
+    cursor: pointer;
+    border: 2px solid ${(props) => props.theme.colors.orange02Main};
     color: ${(props) => props.theme.colors.orange02Main};
-    border-radius: 10px;
+    font-weight: ${(props) => props.theme.fontWeight.bold};
   }
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  font-size: 24px;
-  font-weight: 600;
-  width: 40px;
-  height: 40px;
-  right: 12px;
-  top: 12px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
 `;
