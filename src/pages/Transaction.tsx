@@ -73,7 +73,7 @@ const Transaction = () => {
             <button onClick={onClickBtn} aria-label="매칭 연결">
               <IoExitOutline size={50} />
             </button>
-            <h1>매칭이 연결되었습니다.</h1>
+            <h1>거래가 완료되었습니다.</h1>
           </a.TransactionText>
         )}
         {isCancel && (
@@ -81,7 +81,7 @@ const Transaction = () => {
             <button onClick={onClickBtn} aria-label="매칭 취소">
               <IoExitOutline size={50} />
             </button>
-            <h1>매칭이 취소되었습니다.</h1>
+            <h1>거래가 취소되었습니다.</h1>
           </a.TransactionText>
         )}
         <a.PostContainer>

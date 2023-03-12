@@ -117,10 +117,10 @@ const Header = () => {
   ];
 
   const { data: headerSeller, refetch } = useQuery(
-    ['onSaleSellPosts', saveUser?.uid],
+    ['onHeaderSeller', saveUser?.uid],
     () => getOnSalePostTotalSeller(saveUser?.uid),
     {
-      onSuccess: () => {
+      onSuccess: () => { 
         setTimeout(() => {
           refetch();
         }, 30000);
