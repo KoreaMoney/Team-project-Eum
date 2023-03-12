@@ -26,6 +26,7 @@ const UserOnSale = () => {
   const onClickMoveDetail = (post: postType) => {
     navigate(`/detail/${post.category}/${post.id}`);
   };
+
   return (
     <>
       <Title>매칭 상품 ({userPosts && userPosts.length})</Title>
@@ -35,9 +36,10 @@ const UserOnSale = () => {
             <PostContainer
               key={post.id}
               onClick={() => onClickMoveDetail(post)}
+              aria-label="매칭 상품"
             >
               {post.isDone && <ClearPost>거래완료</ClearPost>}
-              <PostIMG bgPhoto={post.imgURL} />
+              <PostIMG bgPhoto={post.imgURL} aria-label="게시물 사진" />
               <ContentsContainer>
                 <InfoBest>{post.category}</InfoBest>
                 <p>{post.title}</p>

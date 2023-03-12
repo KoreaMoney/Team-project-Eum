@@ -42,7 +42,7 @@ const EditPage = () => {
    */
 
   //React-query (Query)
-  const { data: postdata, isLoading } = useQuery(
+  const { data: postData, isLoading } = useQuery(
     ['editPost', id],
     () => getPostsId(id),
     {
@@ -102,7 +102,7 @@ const EditPage = () => {
   };
 
   //이미지 저장
-  const saveImgFile = async () => {
+  const saveImgFile = async (e: any) => {
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;
     }
@@ -126,6 +126,7 @@ const EditPage = () => {
       reader.onloadend = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
+        e.target.value = '';
       };
     } catch (error) {
       console.dir(error);
@@ -205,12 +206,12 @@ const EditPage = () => {
   };
 
   useEffect(() => {
-    setImgURL(postdata?.imgURL);
-    setTitle(postdata?.title);
-    setContent(postdata?.content);
-    setCategory(postdata?.category);
-    setPrice(postdata?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-  }, [postdata]);
+    setImgURL(postData?.imgURL);
+    setTitle(postData?.title);
+    setContent(postData?.content);
+    setCategory(postData?.category);
+    setPrice(postData?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+  }, [postData]);
 
   /**사진삭제 */
   const deleteImg = () => {

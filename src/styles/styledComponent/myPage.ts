@@ -124,7 +124,7 @@ export const MySellNav = styled.div`
     align-items: center;
     &:hover {
       color: ${theme.colors.gray40};
-      border-bottom: 1px solid ${theme.colors.gray40};
+      border-bottom: 1px solid ${theme.colors.gray20};
     }
   }
 `;
@@ -177,7 +177,6 @@ export const MyPageContentsWrapper = styled.div`
   height: auto;
   padding: 40px 0;
   border-top: 1px solid ${theme.colors.gray20};
-  border-bottom: 1px solid ${theme.colors.gray20};
 `;
 
 export const MyLikeList = styled.div`
@@ -248,7 +247,6 @@ export const UserProfileWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 24rem;
-
   span {
     display: flex;
     justify-content: left;

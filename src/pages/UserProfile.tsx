@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { getSellerPosts, getUserComments, getUsers } from '../api';
 import { userCommentsAtom, userPostsAtom, userProfileAtom } from '../atom';
+
+import styled from 'styled-components';
 import Nav from '../components/userProfile/Nav';
 import ProfileBadge from '../components/userProfile/ProfileBadge';
 import UserComments from '../components/userProfile/UserComments';
@@ -23,23 +24,18 @@ const UserProfile = () => {
   });
 
   /**유저의 포스트 리스트 불러오기 */
-  const { data: post } = useQuery(['post', id], () => getSellerPosts(id), {
+  useQuery(['post', id], () => getSellerPosts(id), {
     onSuccess: (data) => setUserPosts(data),
   });
 
   /**유저의 후기 불러오기 */
-  const { data: comments } = useQuery(
-    ['comments', id],
-    () => getUserComments(id),
-    {
-      onSuccess: (data) => setUserComments(data),
-    }
-  );
+  useQuery(['comments', id], () => getUserComments(id), {
+    onSuccess: (data) => setUserComments(data),
+  });
 
   if (isLoading) {
     return <Loader />;
   }
-
   return (
     <>
       <Container>

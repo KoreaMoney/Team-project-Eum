@@ -17,7 +17,6 @@ const CategoryIntros = ({
         <Loader />
       ) : (
         <>
-          {' '}
           <a.CategoryIntroTitle>
             {categoryName === 'all'
               ? '전체'

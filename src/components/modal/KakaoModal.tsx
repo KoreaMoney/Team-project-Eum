@@ -222,7 +222,7 @@ const KakaoModal = () => {
           modal={isModalActive}
           setModal={setIsModalActive}
           width="872"
-          height="750"
+          height="800"
           overflow="hidden"
           element={
             <Container onSubmit={onClickAddChatContents}>
@@ -244,6 +244,7 @@ const KakaoModal = () => {
                                     onClick={() => {
                                       window.open(prev.imgUrl);
                                     }}
+                                    aria-label="이미지 선택"
                                   />
                                 ) : null}
 
@@ -266,6 +267,7 @@ const KakaoModal = () => {
                                   onClick={() => {
                                     window.open(prev.imgUrl);
                                   }}
+                                  aria-label="닉네임"
                                 />
                               ) : null}
 
@@ -295,6 +297,7 @@ const KakaoModal = () => {
                       ref={imgRef}
                       name="profile_img"
                       accept="image/*"
+                      aria-label="이미지 선택"
                     />
                   </PhotoIcon>
                 </label>
@@ -304,6 +307,7 @@ const KakaoModal = () => {
                   onChange={(e) => setChatContent(e.target.value)}
                   placeholder="메세지를 입력해주세요."
                   maxLength={150}
+                  aria-label="메세지 입력"
                 />
               </ChatInputContainer>
             </Container>

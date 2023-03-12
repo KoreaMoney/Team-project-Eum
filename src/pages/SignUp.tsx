@@ -15,6 +15,7 @@ import {
 import * as a from '../styles/styledComponent/auth';
 import * as yup from 'yup';
 import basicIMG from '../styles/basicIMG.webp';
+import Loader from '../components/etc/Loader';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const SignUp = () => {
   const [checkNick, setCheckNick] = useState(0);
   const [err, setErr] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   /**유효성 검사를 위한 코드들
    * 영문+숫자+특수기호 포함 8~20자 비밀번호 정규식
@@ -194,104 +196,115 @@ const SignUp = () => {
       navigate('/');
     }
   }, []);
+
   return (
     <>
-      <a.LoginContainer>
-        <a.LoginText>회원가입</a.LoginText>
-        <a.SignUpForm
-          onSubmit={handleSubmit(onSubmitHandler)}
-          aria-label="이메일 비밀번호 입력하기"
-        >
-          <a.SignUpInputWrapper
-            style={{ borderColor: errors?.email?.message ? '#ff334b' : '' }}
-          >
-            <a.LoginInputText>이메일 아이디</a.LoginInputText>
-            <a.LoginMiniWrapper>
-              <a.LoginInput
-                type="email"
-                placeholder=""
-                {...register('email')}
-              />
-              <a.LoginCloseIcon
-                size={20}
-                onClick={handleInputValueClickBT}
-                aria-label="닫기"
-              />
-            </a.LoginMiniWrapper>
-          </a.SignUpInputWrapper>
-          <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
-          <a.SignUpPwWrapper
-            style={{ borderColor: errors?.pw?.message ? '#ff334b' : '' }}
-          >
-            <a.LoginInputText>비밀번호</a.LoginInputText>
-            <a.LoginMiniWrapper>
-              <a.LoginInput
-                type={isViewPW ? 'text' : 'password'}
-                placeholder=""
-                {...register('pw')}
-              />
-              <a.LoginPwIcon
-                size={22}
-                onClick={handleClickViewPW}
-                style={{ color: isViewPW ? '#FF6C2C' : '#C2C1C1' }}
-                aria-label="비밀번호 입력하기"
-              />
-            </a.LoginMiniWrapper>
-          </a.SignUpPwWrapper>
-          <a.ErrMsg>{errors.pw?.message}</a.ErrMsg>
-          <a.SignUpPwCheckWrapper
-            style={{
-              borderColor: errors?.checkPw?.message ? '#ff334b' : '',
-            }}
-          >
-            <a.LoginInputText>비밀번호 확인</a.LoginInputText>
-            <a.LoginMiniWrapper>
-              <a.LoginInput
-                type={isViewCheckPW ? 'text' : 'password'}
-                placeholder=""
-                {...register('checkPw')}
-              />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <a.LoginContainer>
+            <a.LoginText>회원가입</a.LoginText>
+            <a.SignUpForm
+              onSubmit={handleSubmit(onSubmitHandler)}
+              aria-label="이메일 비밀번호 입력하기"
+            >
+              <a.SignUpInputWrapper
+                style={{ borderColor: errors?.email?.message ? '#ff334b' : '' }}
+              >
+                <a.LoginInputText>이메일 아이디</a.LoginInputText>
+                <a.LoginMiniWrapper>
+                  <a.LoginInput
+                    type="email"
+                    placeholder=""
+                    {...register('email')}
+                    aria-label="이메일 작성하기"
+                  />
+                  <a.LoginCloseIcon
+                    size={20}
+                    onClick={handleInputValueClickBT}
+                    aria-label="닫기"
+                  />
+                </a.LoginMiniWrapper>
+              </a.SignUpInputWrapper>
+              <a.ErrMsg>{errors.email?.message}</a.ErrMsg>
+              <a.SignUpPwWrapper
+                style={{ borderColor: errors?.pw?.message ? '#ff334b' : '' }}
+              >
+                <a.LoginInputText>비밀번호</a.LoginInputText>
+                <a.LoginMiniWrapper>
+                  <a.LoginInput
+                    type={isViewPW ? 'text' : 'password'}
+                    placeholder=""
+                    {...register('pw')}
+                    aria-label="비밀번호 작성하기"
+                  />
+                  <a.LoginPwIcon
+                    size={22}
+                    onClick={handleClickViewPW}
+                    style={{ color: isViewPW ? '#FF6C2C' : '#C2C1C1' }}
+                    aria-label="비밀번호 입력하기"
+                  />
+                </a.LoginMiniWrapper>
+              </a.SignUpPwWrapper>
+              <a.ErrMsg>{errors.pw?.message}</a.ErrMsg>
+              <a.SignUpPwCheckWrapper
+                style={{
+                  borderColor: errors?.checkPw?.message ? '#ff334b' : '',
+                }}
+              >
+                <a.LoginInputText>비밀번호 확인</a.LoginInputText>
+                <a.LoginMiniWrapper>
+                  <a.LoginInput
+                    type={isViewCheckPW ? 'text' : 'password'}
+                    placeholder=""
+                    {...register('checkPw')}
+                    aria-label="비밀번호 확인하기"
+                  />
 
-              <a.LoginPwIcon
-                size={22}
-                onClick={handleClickCheckPW}
-                style={{ color: isViewCheckPW ? '#FF6C2C' : '#C2C1C1' }}
-                aria-label="비밀번호 확인하기"
-              />
-            </a.LoginMiniWrapper>
-          </a.SignUpPwCheckWrapper>
-          <a.ErrMsg>{errors.checkPw?.message}</a.ErrMsg>
-          <a.SignUpNickname>
-            <a.SignUpNicknameWrapper
-              style={{
-                borderColor: errors?.nickName?.message ? '#ff334b' : '',
-              }}
-            >
-              <a.LoginInputText>닉네임</a.LoginInputText>
-              <a.SignUpInputNick
-                type="text"
-                placeholder=""
-                {...register('nickName')}
-              />
-            </a.SignUpNicknameWrapper>
-            <a.SignUpCheckBtn
-              type="button"
-              onClick={handleCheckOverlapNickName}
-              aria-label="중복확인"
-            >
-              중복확인
-            </a.SignUpCheckBtn>
-          </a.SignUpNickname>
-          <a.ErrMsg>
-            {errors.nickName?.message}
-            {checkNick === 0 && errMsg}
-            {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
-          </a.ErrMsg>
-          <a.SignUpBtn disabled={registering} aria-label="회원가입">
-            회원가입
-          </a.SignUpBtn>
-        </a.SignUpForm>
-      </a.LoginContainer>
+                  <a.LoginPwIcon
+                    size={22}
+                    onClick={handleClickCheckPW}
+                    style={{ color: isViewCheckPW ? '#FF6C2C' : '#C2C1C1' }}
+                    aria-label="비밀번호 확인하기"
+                  />
+                </a.LoginMiniWrapper>
+              </a.SignUpPwCheckWrapper>
+              <a.ErrMsg>{errors.checkPw?.message}</a.ErrMsg>
+              <a.SignUpNickname>
+                <a.SignUpNicknameWrapper
+                  style={{
+                    borderColor: errors?.nickName?.message ? '#ff334b' : '',
+                  }}
+                >
+                  <a.LoginInputText>닉네임</a.LoginInputText>
+                  <a.SignUpInputNick
+                    type="text"
+                    placeholder=""
+                    {...register('nickName')}
+                    aria-label="닉네임 작성하기"
+                  />
+                </a.SignUpNicknameWrapper>
+                <a.SignUpCheckBtn
+                  type="button"
+                  onClick={handleCheckOverlapNickName}
+                  aria-label="중복확인"
+                >
+                  중복확인
+                </a.SignUpCheckBtn>
+              </a.SignUpNickname>
+              <a.ErrMsg>
+                {errors.nickName?.message}
+                {checkNick === 0 && errMsg}
+                {checkNick === 2 && <a.PassMSG>{errMsg}</a.PassMSG>}
+              </a.ErrMsg>
+              <a.SignUpBtn disabled={registering} aria-label="회원가입">
+                회원가입
+              </a.SignUpBtn>
+            </a.SignUpForm>
+          </a.LoginContainer>
+        </>
+      )}
     </>
   );
 };

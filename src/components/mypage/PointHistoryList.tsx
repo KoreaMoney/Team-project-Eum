@@ -7,6 +7,7 @@ import { CustomModal } from '../modal/CustomModal';
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
 import Chart from './Chart';
+
 /**순서
  *1. 완료된 리스트 분류하기
  *2. 판매목록보기
@@ -125,27 +126,28 @@ const PointHistoryList = () => {
         ) : category === '전체' ? (
           NewTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {prev.buyerUid === saveUser.uid
-                  ? '출금'
-                  : prev.sellerUid
-                  ? '입금'
-                  : '에러'}
-              </PointHistoryDate>
-              {prev.buyerUid === saveUser.uid ? (
-                <PointHistoryContent>
-                  <p>{prev.title}</p>
-                  <p>{prev.sellerNickName}</p>
-                </PointHistoryContent>
-              ) : prev.sellerUid ? (
-                <PointHistoryContent>
-                  <p>{prev.title}</p>
-                  <p>{prev.buyerNickName}</p>
-                </PointHistoryContent>
-              ) : (
-                '에러'
-              )}
-
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {prev.buyerUid === saveUser.uid
+                    ? '출금'
+                    : prev.sellerUid
+                    ? '입금'
+                    : '에러'}
+                </PointHistoryDate>
+                {prev.buyerUid === saveUser.uid ? (
+                  <PointHistoryContent>
+                    <span>제목 : {prev.title}</span>
+                    <p>닉네임 : {prev.buyerNickName}</p>
+                  </PointHistoryContent>
+                ) : prev.sellerUid ? (
+                  <PointHistoryContent>
+                    <span>제목 : {prev.title}</span>
+                    <p>닉네임 : {prev.buyerNickName}</p>
+                  </PointHistoryContent>
+                ) : (
+                  '에러'
+                )}
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 {prev.buyerUid === saveUser.uid ? (
                   <PlusOrMinus>-</PlusOrMinus>
@@ -161,13 +163,15 @@ const PointHistoryList = () => {
         ) : category === '입금' ? (
           sellTradeList?.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {getTradeDate(prev.createdAt)}
-              </PointHistoryDate>
-              <PointHistoryContent>
-                <p>{prev.title}</p>
-                <p>{prev.buyerNickName}</p>
-              </PointHistoryContent>
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {getTradeDate(prev.createdAt)}
+                </PointHistoryDate>
+                <PointHistoryContent>
+                  <span>제목 : {prev.title}</span>
+                  <p>닉네임 : {prev.buyerNickName}</p>
+                </PointHistoryContent>
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 +{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -176,13 +180,15 @@ const PointHistoryList = () => {
         ) : category === '출금' && buyTradeList ? (
           buyTradeList.map((prev: any) => (
             <PointHistory key={prev.id}>
-              <PointHistoryDate>
-                {getTradeDate(prev.createdAt)}
-              </PointHistoryDate>
-              <PointHistoryContent>
-                <p>{prev.title}</p>
-                <p>{prev.sellerNickName}</p>
-              </PointHistoryContent>
+              <PointOtherWrapper>
+                <PointHistoryDate>
+                  {getTradeDate(prev.createdAt)}
+                </PointHistoryDate>
+                <PointHistoryContent>
+                  <span>제목 : {prev.title}</span>
+                  <p>닉네임 : {prev.sellerNickName}</p>
+                </PointHistoryContent>
+              </PointOtherWrapper>
               <PointHistoryAmount>
                 -{prev.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}P
               </PointHistoryAmount>
@@ -298,7 +304,7 @@ const PointHistoryWrapper = styled.div`
   align-items: center;
   width: 588px;
   height: auto;
-  gap: 24px;
+  gap: 20px;
   font-size: ${theme.fontSize.title16};
   font-weight: ${theme.fontWeight.medium};
   color: ${(props) => props.theme.colors.gray30};
@@ -306,30 +312,37 @@ const PointHistoryWrapper = styled.div`
 
 const PointHistory = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   width: 100%;
   height: 59px;
+  border-bottom: 1px solid ${theme.colors.gray10};
+`;
+
+const PointOtherWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
 `;
 
 const PointHistoryDate = styled.div`
   width: 10rem;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
 `;
 
 const PointHistoryContent = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 25rem;
+  width: 100%;
+  height: auto;
+  p {
+    margin-top: 10px;
+  }
 `;
 
 const PointHistoryAmount = styled.div`
   display: flex;
-  justify-content: left;
   align-items: center;
   width: 6rem;
 `;

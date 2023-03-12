@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { NavButtonProps } from '../../../types';
+import styled from 'styled-components';
+
 const NavBar = () => {
   const [isDescriptionActive, setIsDescriptionActive] = useState(true);
   const [isReviewActive, setIsReviewActive] = useState(false);
@@ -31,16 +32,25 @@ const NavBar = () => {
 
   return (
     <NavContainer>
-      <NavButtons active={isDescriptionActive} onClick={onClickNavExSeller}>
+      <NavButtons
+        active={isDescriptionActive}
+        onClick={onClickNavExSeller}
+        aria-label="설명"
+      >
         설명
       </NavButtons>
-      <NavButtons active={isDescriptionActive} onClick={onClickNavExSeller}>
+      <NavButtons
+        active={isDescriptionActive}
+        onClick={onClickNavExSeller}
+        aria-label="판매자"
+      >
         판매자
       </NavButtons>
       <NavButtons
         active={isReviewActive}
         style={{ borderRight: 'none' }}
         onClick={onClickNavReview}
+        aria-label="후기"
       >
         후기
       </NavButtons>
@@ -49,6 +59,7 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
 const NavContainer = styled.div`
   display: flex;
   position: sticky;

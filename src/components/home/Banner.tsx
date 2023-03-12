@@ -15,7 +15,7 @@ const Banner = () => {
     slidesToScroll: 1,
     pauseOnHover: true,
     autoplay: true,
-    autoplaySpeed: 7000,
+    autoplaySpeed: 5000,
     cssEase: 'linear',
     prevArrow: (
       <PrevArrow>

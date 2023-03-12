@@ -6,6 +6,7 @@ import {
   userPostsAtom,
 } from '../../atom';
 import { NavButtonProps } from '../../types';
+
 import styled from 'styled-components';
 
 const Nav = () => {
@@ -53,6 +54,7 @@ const Nav = () => {
       behavior: 'smooth',
     });
   };
+  
   return (
     <NavContainer>
       <NavButtons active={isBadgeActive} onClick={onClickNavBadge}>

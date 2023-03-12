@@ -1,18 +1,20 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { postType } from '../types';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { getPosts } from '../api';
+import { getPosts, getPostsId, getUsers } from '../api';
 import { theme } from '../styles/theme';
+import { customWarningAlert } from '../components/modal/CustomAlert';
+
 import Slider from 'react-slick';
 import axios from 'axios';
 import basicIMG from '../styles/basicIMG.webp';
 import * as a from '../styles/styledComponent/home';
 import loadable from '@loadable/component';
 import styled from 'styled-components';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import Banner from '../components/home/Banner';
 import Loader from '../components/etc/Loader';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const NextArrow = loadable(() => import('../components/home/NextArrow'));
 const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
@@ -26,6 +28,35 @@ const PrevArrow = loadable(() => import('../components/home/PrevArrow'));
 
 const Home = () => {
   const navigate = useNavigate();
+
+  //핫한 이음친구들 이동
+  /**판매자의 프로필이미지를 위해 데이터 가져오기
+   * 1. params로 postId와 id값을 연결한다
+   * 2. 포스트 여부 인증을 한다
+   * 3. 판매자 정보에 대한 값을 가져온다
+   * 4. 클릭시 판매자 정보로 이동한다
+   */
+  const { postId, id } = useParams();
+  const identifier = id ? id : postId;
+  const { data: post } = useQuery(
+    ['post', identifier],
+    () => getPostsId(identifier),
+    {
+      staleTime: Infinity, // 캐시된 데이터가 만료되지 않도록 한다.
+    }
+  );
+
+  const { data: seller } = useQuery(
+    ['user', post?.[0]?.sellerUid],
+    () => getUsers(post?.[0]?.sellerUid),
+    {
+      enabled: Boolean(post?.[0]?.sellerUid), // post?.[0].sellerUid가 존재할 때만 쿼리를 시작
+      onError: () => {
+        customWarningAlert('현재 구매할수 없는 글입니다.');
+        navigate(-1);
+      },
+    }
+  );
 
   // query통신하기
   const { data, isLoading } = useQuery(['posts'], getPosts, {
@@ -91,6 +122,10 @@ const Home = () => {
     cssEase: 'linear',
   };
 
+  const onClickHotFriendHandler = () => {
+    navigate(`/userprofile/${seller?.id}`);
+  };
+
   return (
     <a.HomeContainer>
       {isLoading ? (
@@ -113,7 +148,12 @@ const Home = () => {
                     loading="lazy"
                   />
                   <KingName>공부신</KingName>
-                  <KingNick>{result?.[0]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[0]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>공부의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
@@ -123,7 +163,9 @@ const Home = () => {
                     loading="lazy"
                   />
                   <KingName>놀이신</KingName>
-                  <KingNick>{result?.[1]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick onClick={onClickHotFriendHandler}>
+                    {result?.[1]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>놀이의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
@@ -133,7 +175,12 @@ const Home = () => {
                     loading="lazy"
                   />
                   <KingName>상담신</KingName>
-                  <KingNick>{result?.[2]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[2]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>상담의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
                 <KingBox>
@@ -143,7 +190,12 @@ const Home = () => {
                     loading="lazy"
                   />
                   <KingName>기타신</KingName>
-                  <KingNick>{result?.[3]?.data?.[0]?.nickName}</KingNick>
+                  <KingNick
+                    onClick={onClickHotFriendHandler}
+                    aria-label="게시글 넘어가기"
+                  >
+                    {result?.[3]?.data?.[0]?.nickName}
+                  </KingNick>
                   <KingContext>기타의 신이 되신걸 축하합니다.</KingContext>
                 </KingBox>
               </>
@@ -168,6 +220,7 @@ const Home = () => {
                         <InfoBox
                           key={post.id}
                           onClick={() => handlePostClick(post)}
+                          aria-label="게시글 넘어가기"
                         >
                           <a.InfoTitle>{post.title}</a.InfoTitle>
                           <a.InfoProfile>
@@ -205,6 +258,7 @@ const Home = () => {
                         <InfoBox
                           key={post.id}
                           onClick={() => handlePostClick(post)}
+                          aria-label="게시글 넘어가기"
                         >
                           <a.InfoTitle>{post.title}</a.InfoTitle>
                           <a.InfoProfile>
@@ -270,6 +324,10 @@ const KingNick = styled.p`
   font-size: ${(props) => props.theme.fontSize.title18};
   font-weight: ${(props) => props.theme.fontWeight.medium};
   color: ${theme.colors.black};
+  &:hover {
+    cursor: pointer;
+    color: ${theme.colors.orange02Main};
+  }
 `;
 const KingContext = styled.p`
   font-size: ${(props) => props.theme.fontSize.title16};

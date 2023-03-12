@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import { commentType } from '../../types';
 import { useRecoilValue } from 'recoil';
 import { userCommentsAtom } from '../../atom';
+
 import ReactPaginate from 'react-paginate';
 import styled from 'styled-components';
+
 /**순서
  * 1. 저장된 유저 정보 가져오기
  * 2. 유저의 UID값 가져오기
@@ -12,7 +14,7 @@ import styled from 'styled-components';
 const UserComments = () => {
   const userComments = useRecoilValue(userCommentsAtom);
   const [currentPage, setCurrentPage] = useState(0);
-  
+
   const itemsPerPage = 5;
   /**댓글 작성 시간을 n분전 으로 출력해주는 함수
    * 7일 이상이 된 댓글은 yyyy-mm-dd hh:mm 형식으로 출력
@@ -49,6 +51,7 @@ const UserComments = () => {
     const endIndex = startIndex + itemsPerPage;
     return userComments?.slice(startIndex, endIndex);
   }, [currentPage, userComments]);
+
   return (
     <div>
       <CommentsContainer>
@@ -87,6 +90,7 @@ const UserComments = () => {
 };
 
 export default UserComments;
+
 const CommentTitleText = styled.p`
   font-size: ${(props) => props.theme.fontSize.ad24};
   font-weight: ${(props) => props.theme.fontWeight.medium};

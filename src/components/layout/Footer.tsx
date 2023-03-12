@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterWrapper>
-        <Logoimg src="https://ifh.cc/g/TqgLJX.webp" alt="로고" />
+        <LogoImg src="https://ifh.cc/g/TqgLJX.webp" alt="로고" loading='lazy'/>
         <InfoWrapper>
           <EumInfo>
             <p>상표 : 이음</p> &nbsp;| &nbsp;<p>리더 : 김미영</p> &nbsp;| &nbsp;
@@ -44,7 +44,7 @@ const FooterWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const Logoimg = styled.img`
+const LogoImg = styled.img`
   margin-bottom: 70px;
   font-size: ${(props) => props.theme.fontSize.title32};
   font-weight: ${(props) => props.theme.fontWeight.bold};

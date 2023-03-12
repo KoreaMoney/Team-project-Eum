@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userBadgeLengthAtom, userProfileAtom } from '../../atom';
 import styled from 'styled-components';
+
 import c_cheap from '../../styles/badge/choice/c_cheap.webp';
 import lock_cheap from '../../styles/badge/lock/lock_cheap.webp';
 import nc_cheap from '../../styles/badge/notChoice/nc_cheap.webp';
@@ -23,12 +26,6 @@ import nc_service from '../../styles/badge/notChoice/nc_service.webp';
 import c_time from '../../styles/badge/choice/c_time.webp';
 import lock_time from '../../styles/badge/lock/lock_time.webp';
 import nc_time from '../../styles/badge/notChoice/nc_time.webp';
-
-import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  userBadgeLengthAtom,
-  userProfileAtom,
-} from '../../atom';
 
 const ProfileBadge = () => {
   const userProfile = useRecoilValue(userProfileAtom);
@@ -61,7 +58,6 @@ const ProfileBadge = () => {
       <BadgeInfo>배지 ({badgeLength})</BadgeInfo>
       <BadgeContainer>
         <BadgeContents>
-          {/*절대 지켜 시간 : time*/}
           <BadgeImg
             imageUrl={
               !userProfile
@@ -75,7 +71,6 @@ const ProfileBadge = () => {
                 : null
             }
           />
-          {/*친절해 : manner*/}
           <BadgeImg
             imageUrl={
               !userProfile
@@ -89,7 +84,6 @@ const ProfileBadge = () => {
                 : null
             }
           />
-          {/*완전 싸다구 : cheap*/}
           <BadgeImg
             imageUrl={
               !userProfile
@@ -103,7 +97,6 @@ const ProfileBadge = () => {
                 : null
             }
           />
-          {/*응답 봇 : fast*/}
           <BadgeImg
             imageUrl={
               !userProfile
@@ -117,7 +110,6 @@ const ProfileBadge = () => {
                 : null
             }
           />
-          {/*A급 상품만 : service*/}
           <BadgeImg
             imageUrl={
               !userProfile
@@ -131,7 +123,6 @@ const ProfileBadge = () => {
                 : null
             }
           />
-          {/*기부 머신 : donation*/}
           <BadgeImg
             imageUrl={
               !userProfile

@@ -2,18 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import ReactQuill from 'react-quill';
-import imageCompression from 'browser-image-compression';
-import 'react-quill/dist/quill.snow.css';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { auth, storageService } from '../firebase/Firebase';
+import { postType } from '../types';
+import { getUsers, postPosts } from '../api';
 import {
   customInfoAlert,
   customSuccessAlert,
   customWarningAlert,
 } from '../components/modal/CustomAlert';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
-import { auth, storageService } from '../firebase/Firebase';
-import { postType } from '../types';
-import { getUsers, postPosts } from '../api';
+
+import ReactQuill from 'react-quill';
+import imageCompression from 'browser-image-compression';
+import 'react-quill/dist/quill.snow.css';
 import * as a from '../styles/styledComponent/writeEdit';
 import loadable from '@loadable/component';
 import Loader from '../components/etc/Loader';
@@ -104,7 +105,7 @@ const WritePage = () => {
   });
 
   // post의 key값으로 input value를 보내기 위해 구조분해 할당 한다.
-  const { title, content, price, imgURL } = post;
+  const { title, content, price } = post;
 
   // user정보가 있을 때에는 이렇게 저장됩니다.
   useEffect(() => {
@@ -116,7 +117,7 @@ const WritePage = () => {
   }, [user]);
 
   //이미지 저장
-  const saveImgFile = async () => {
+  const saveImgFile = async (e: any) => {
     if (!imgRef.current?.files || imgRef.current.files.length === 0) {
       return;
     }
@@ -140,6 +141,7 @@ const WritePage = () => {
       reader.onloadend = () => {
         const resultImg = reader.result;
         shortenUrl(resultImg as string);
+        e.target.value = '';
       };
     } catch (error) {
       console.dir(error);
@@ -237,7 +239,7 @@ const WritePage = () => {
   return (
     <a.WriteContainer>
       <a.MainTitle>글쓰기</a.MainTitle>
-      <a.WriteForm onSubmit={onSubmitHandler}>
+      <a.WriteForm onSubmit={onSubmitHandler} aria-label="글쓰기">
         <a.ContentsContainer>
           <a.EachContainer>
             <a.Title>사진</a.Title>
@@ -252,13 +254,14 @@ const WritePage = () => {
                     ref={imgRef}
                     name="profile_img"
                     accept="image/*"
+                    aria-label="이미지 들어가는 공간"
                   />
                   <a.PhotoIcon />
                 </a.AddPhotoBox>
               </label>
               {img && (
                 <a.ImgBox img={img}>
-                  <a.DeleteIcon onClick={deleteImg} />
+                  <a.DeleteIcon onClick={deleteImg} aria-label="이미지 삭제" />
                 </a.ImgBox>
               )}
             </a.PhotosContainer>
@@ -273,6 +276,7 @@ const WritePage = () => {
               onChange={onChange}
               placeholder="제목"
               maxLength={32}
+              aria-label="제목 작성 공간"
             />
             <a.TextInput
               ref={priceRef}
@@ -286,6 +290,7 @@ const WritePage = () => {
               placeholder="가격"
               maxLength={11}
               min={0}
+              aria-label="가격 작성공간"
             />
           </a.EachContainer>
           <a.EachContainer>
@@ -337,10 +342,13 @@ const WritePage = () => {
                 onChange={(value) => {
                   setPost({ ...post, content: value });
                 }}
+                aria-label="글쓰기 공간"
               />
             </a.WriteQuill>
           </a.EachContainer>
-          <a.SubmitButton onClick={onClickWriteBtn}>작성 완료</a.SubmitButton>
+          <a.SubmitButton onClick={onClickWriteBtn} aria-label="작성 완료">
+            작성 완료
+          </a.SubmitButton>
         </a.ContentsContainer>
       </a.WriteForm>
     </a.WriteContainer>

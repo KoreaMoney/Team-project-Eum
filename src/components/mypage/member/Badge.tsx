@@ -57,7 +57,6 @@ const Badge = () => {
     <BadgeContainer>
       <BadgeInfo>대표 배지 설정</BadgeInfo>
       <BadgeContents>
-        {/*절대 지켜 시간 : time*/}
         {myData && myData.time >= 10 ? (
           <BadgeImg
             imageUrl={
@@ -72,12 +71,16 @@ const Badge = () => {
             onClick={() => {
               setRepBadgeChoice('time');
             }}
+            aria-label="시간이미지"
           />
         ) : (
-          <CloseBadgeImg imageUrl={images[0][1]} onClick={closeBadgeClick} />
+          <CloseBadgeImg
+            imageUrl={images[0][1]}
+            onClick={closeBadgeClick}
+            aria-label="시간이미지"
+          />
         )}
 
-        {/*친절해 : manner*/}
         {myData && myData.manner >= 10 ? (
           <BadgeImg
             imageUrl={
@@ -92,9 +95,14 @@ const Badge = () => {
             onClick={() => {
               setRepBadgeChoice('manner');
             }}
+            aria-label="친절해이미지"
           />
         ) : (
-          <CloseBadgeImg imageUrl={images[1][1]} onClick={closeBadgeClick} />
+          <CloseBadgeImg
+            imageUrl={images[1][1]}
+            onClick={closeBadgeClick}
+            aria-label="친절해이미지"
+          />
         )}
 
         {/*완전 싸다구 : cheap*/}
@@ -116,8 +124,6 @@ const Badge = () => {
         ) : (
           <CloseBadgeImg imageUrl={images[2][1]} onClick={closeBadgeClick} />
         )}
-
-        {/*응답 봇 : fast*/}
         {myData && myData.fast >= 10 ? (
           <BadgeImg
             imageUrl={
@@ -132,12 +138,15 @@ const Badge = () => {
             onClick={() => {
               setRepBadgeChoice('fast');
             }}
+            aria-label="응답잘해 이미지"
           />
         ) : (
-          <CloseBadgeImg imageUrl={images[3][1]} onClick={closeBadgeClick} />
+          <CloseBadgeImg
+            imageUrl={images[3][1]}
+            onClick={closeBadgeClick}
+            aria-label="응답잘해 이미지"
+          />
         )}
-
-        {/*A급 상품만 : service*/}
         {myData && myData.service >= 10 ? (
           <BadgeImg
             imageUrl={
@@ -152,12 +161,16 @@ const Badge = () => {
             onClick={() => {
               setRepBadgeChoice('service');
             }}
+            aria-label="A급이미지"
           />
         ) : (
-          <CloseBadgeImg imageUrl={images[4][1]} onClick={closeBadgeClick} />
+          <CloseBadgeImg
+            imageUrl={images[4][1]}
+            onClick={closeBadgeClick}
+            aria-label="A급이미지"
+          />
         )}
 
-        {/*기부 머신 : donation*/}
         {myData && myData.donation >= 10 ? (
           <BadgeImg
             imageUrl={
@@ -172,9 +185,14 @@ const Badge = () => {
             onClick={() => {
               setRepBadgeChoice('donation');
             }}
+            aria-label="기부이미지"
           />
         ) : (
-          <CloseBadgeImg imageUrl={images[5][1]} onClick={closeBadgeClick} />
+          <CloseBadgeImg
+            imageUrl={images[5][1]}
+            onClick={closeBadgeClick}
+            aria-label="기부이미지"
+          />
         )}
       </BadgeContents>
     </BadgeContainer>

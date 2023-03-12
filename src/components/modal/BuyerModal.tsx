@@ -76,7 +76,10 @@ const BuyerModal = () => {
                               : 0}
                             P
                           </Price>
-                          <MoveButton onClick={() => GoOnSalePost(salePost)}>
+                          <MoveButton
+                            onClick={() => GoOnSalePost(salePost)}
+                            aria-label="바로가기"
+                          >
                             바로가기
                           </MoveButton>
                         </ListContentContainer>

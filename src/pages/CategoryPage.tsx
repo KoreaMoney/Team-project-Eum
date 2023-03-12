@@ -32,6 +32,7 @@ const CategoryPage = () => {
     word: string | undefined,
     page = 0
   ) => {
+    //기본 이미지 적용여부
     const baseUrl = `${process.env.REACT_APP_JSON}/posts`;
     let url = baseUrl;
     if (categoryName !== 'all' && !word) {
@@ -42,6 +43,7 @@ const CategoryPage = () => {
       url = `${baseUrl}?category=${categoryName}&${select}_like=${word}`;
     }
 
+    //최신순 정렬
     const response = await axios.get(url, {
       params: {
         _page: page,
@@ -126,28 +128,30 @@ const CategoryPage = () => {
     return () => observer.unobserve(element);
   }, [fetchNextPage, hasNextPage, handleObserver]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   if (isError) {
     return <ErrorETC />;
   }
   return (
     <a.PageContainer>
-      <CategoryIntros categoryName={categoryName} />
-      <a.PostsContainer>
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.map((post: postType) => (
-              <Post post={post} onClick={handlePostClick} key={post.id} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CategoryIntros categoryName={categoryName} />
+          <a.PostsContainer>
+            {data?.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.map((post: postType) => (
+                  <Post post={post} onClick={handlePostClick} key={post.id} />
+                ))}
+              </Fragment>
             ))}
-          </Fragment>
-        ))}
 
-        <a.PostContainer ref={observerElem}></a.PostContainer>
-        {isFetching || isFetchingNextPage ? <Loader /> : null}
-      </a.PostsContainer>
+            <a.PostContainer ref={observerElem}></a.PostContainer>
+            {isFetching || isFetchingNextPage ? <Loader /> : null}
+          </a.PostsContainer>
+        </>
+      )}
     </a.PageContainer>
   );
 };
