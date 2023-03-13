@@ -116,19 +116,19 @@ const Header = () => {
     { label: '기타', path: '/categorypage/etc' },
   ];
 
-  const { data: tradeSellData, refetch } = useQuery(
-    ['onSaleSellPosts', saveUser?.uid],
+  const { data: headerSeller, refetch } = useQuery(
+    ['onHeaderSeller', saveUser?.uid],
     () => getOnSalePostTotalSeller(saveUser?.uid),
     {
       onSuccess: () => {
         setTimeout(() => {
           refetch();
-        }, 30000);
+        }, 20000);
       },
     }
   );
 
-  const waitTradeCount = tradeSellData?.length;
+  const waitTradeCount = headerSeller?.length;
 
   const onClickToggleModal = useCallback(() => {
     setIsModalActive(!isModalActive);
@@ -205,7 +205,7 @@ const Header = () => {
                         </DropDownBox>
                       )}
                     </a.DropDownContainer>
-                    <HeaderBuyerModal salePosts={tradeSellData} />
+                    <HeaderBuyerModal salePosts={headerSeller} />
                   </span>
                   <WriteBtn
                     className={writeActive ? 'active' : ''}

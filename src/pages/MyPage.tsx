@@ -73,11 +73,11 @@ const MyPage = () => {
   });
 
   const isDoneSell = tradeSellData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false;
   });
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false;
   });
 
   /*회원탈퇴 */
@@ -152,6 +152,10 @@ const MyPage = () => {
     color: `${theme.colors.black}`,
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
+
+  if (isLoading) {
+    <Loader />;
+  }
 
   return (
     <a.MyPageContainer>
@@ -257,7 +261,7 @@ const MyPage = () => {
                             src={
                               list?.imgURL
                                 ? list.imgURL
-                                : '/assets/basicIMG.jpg'
+                                : '/assets/basicIMG.webp'
                             }
                             decoding="async"
                             onClick={() => handleLikePostClick(list)}
@@ -285,7 +289,7 @@ const MyPage = () => {
                               src={
                                 list?.imgURL
                                   ? list.imgURL
-                                  : '/assets/basicIMG.jpg'
+                                  : '/assets/basicIMG.webp'
                               }
                               decoding="async"
                               onClick={() => handleSellingPostClick(list)}
@@ -309,7 +313,7 @@ const MyPage = () => {
                               src={
                                 list?.imgURL
                                   ? list.imgURL
-                                  : '/assets/basicIMG.jpg'
+                                  : '/assets/basicIMG.webp'
                               }
                               decoding="async"
                               onClick={() => handleBuyPostClick(list)}
@@ -338,7 +342,7 @@ const MyPage = () => {
                             src={
                               list?.imgURL
                                 ? list.imgURL
-                                : '/assets/basicIMG.jpg'
+                                : '/assets/basicIMG.webp'
                             }
                             decoding="async"
                             onClick={() => handleBuyPostClick(list)}

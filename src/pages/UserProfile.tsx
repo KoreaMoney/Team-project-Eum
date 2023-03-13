@@ -38,15 +38,21 @@ const UserProfile = () => {
   }
   return (
     <>
-      <Container>
-        <Wrapper>
-          <UserPageProfile />
-          <Nav />
-          <ProfileBadge />
-          <UserOnSale />
-          <UserComments />
-        </Wrapper>
-      </Container>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Container>
+            <Wrapper>
+              <UserPageProfile />
+              <Nav />
+              <ProfileBadge />
+              <UserOnSale />
+              <UserComments />
+            </Wrapper>
+          </Container>
+        </>
+      )}
     </>
   );
 };

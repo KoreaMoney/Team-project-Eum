@@ -218,6 +218,9 @@ const EditPage = () => {
     setImgURL('');
   };
 
+  if (isLoading) {
+    <Loader />;
+  }
   return (
     <a.WriteContainer>
       {isLoading ? (
@@ -260,7 +263,7 @@ const EditPage = () => {
                   value={title}
                   onChange={onChange}
                   placeholder="제목"
-                  maxLength={16}
+                  maxLength={32}
                 />
                 <a.TextInput
                   ref={priceRef}

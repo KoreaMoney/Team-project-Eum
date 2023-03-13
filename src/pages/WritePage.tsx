@@ -225,9 +225,6 @@ const WritePage = () => {
   if (!saveUser) {
     return <SignIn />;
   }
-  if (isLoading) {
-    return <Loader />;
-  }
   const deleteImg = () => {
     setImg('');
   };
@@ -235,123 +232,140 @@ const WritePage = () => {
   const onClickWriteBtn = () => {
     customSuccessAlert('재능 글쓰기가 완료되었습니다.');
   };
+  if (isLoading) {
+    <Loader />;
+  }
 
   return (
-    <a.WriteContainer>
-      <a.MainTitle>글쓰기</a.MainTitle>
-      <a.WriteForm onSubmit={onSubmitHandler} aria-label="글쓰기">
-        <a.ContentsContainer>
-          <a.EachContainer>
-            <a.Title>사진</a.Title>
-            <a.PhotosContainer>
-              <label htmlFor="changeImg">
-                <a.AddPhotoBox>
-                  <input
-                    hidden
-                    type="file"
-                    id="changeImg"
-                    onChange={saveImgFile}
-                    ref={imgRef}
-                    name="profile_img"
-                    accept="image/*"
-                    aria-label="이미지 들어가는 공간"
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <a.WriteContainer>
+            <a.MainTitle>글쓰기</a.MainTitle>
+            <a.WriteForm onSubmit={onSubmitHandler} aria-label="글쓰기">
+              <a.ContentsContainer>
+                <a.EachContainer>
+                  <a.Title>사진</a.Title>
+                  <a.PhotosContainer>
+                    <label htmlFor="changeImg">
+                      <a.AddPhotoBox>
+                        <input
+                          hidden
+                          type="file"
+                          id="changeImg"
+                          onChange={saveImgFile}
+                          ref={imgRef}
+                          name="profile_img"
+                          accept="image/*"
+                          aria-label="이미지 들어가는 공간"
+                        />
+                        <a.PhotoIcon />
+                      </a.AddPhotoBox>
+                    </label>
+                    {img && (
+                      <a.ImgBox img={img}>
+                        <a.DeleteIcon
+                          onClick={deleteImg}
+                          aria-label="이미지 삭제"
+                        />
+                      </a.ImgBox>
+                    )}
+                  </a.PhotosContainer>
+                </a.EachContainer>
+                <a.EachContainer>
+                  <a.Title>제목/가격</a.Title>
+                  <a.TextInput
+                    ref={titleRef}
+                    type="text"
+                    name="title"
+                    value={title}
+                    onChange={onChange}
+                    placeholder="제목"
+                    maxLength={32}
+                    aria-label="제목 작성 공간"
                   />
-                  <a.PhotoIcon />
-                </a.AddPhotoBox>
-              </label>
-              {img && (
-                <a.ImgBox img={img}>
-                  <a.DeleteIcon onClick={deleteImg} aria-label="이미지 삭제" />
-                </a.ImgBox>
-              )}
-            </a.PhotosContainer>
-          </a.EachContainer>
-          <a.EachContainer>
-            <a.Title>제목/가격</a.Title>
-            <a.TextInput
-              ref={titleRef}
-              type="text"
-              name="title"
-              value={title}
-              onChange={onChange}
-              placeholder="제목"
-              maxLength={32}
-              aria-label="제목 작성 공간"
-            />
-            <a.TextInput
-              ref={priceRef}
-              onKeyDown={(e) =>
-                ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-              }
-              type="text"
-              name="price"
-              value={price === 0 ? '' : price}
-              onChange={onChangePrice}
-              placeholder="가격"
-              maxLength={11}
-              min={0}
-              aria-label="가격 작성공간"
-            />
-          </a.EachContainer>
-          <a.EachContainer>
-            <a.Title>카테고리</a.Title>
-            <a.CategorysContainer>
-              <a.CategoryButton
-                aria-label="공부"
-                onClick={() => setCategory('study')}
-                selected={category === 'study'}
-                type="button"
-              >
-                공부
-              </a.CategoryButton>
-              <a.CategoryButton
-                aria-label="놀이"
-                onClick={() => setCategory('play')}
-                selected={category === 'play'}
-                type="button"
-              >
-                놀이
-              </a.CategoryButton>
-              <a.CategoryButton
-                aria-label="상담"
-                onClick={() => setCategory('advice')}
-                selected={category === 'advice'}
-                type="button"
-              >
-                상담
-              </a.CategoryButton>
-              <a.CategoryButton
-                aria-label="기타"
-                onClick={() => setCategory('etc')}
-                selected={category === 'etc'}
-                type="button"
-              >
-                기타
-              </a.CategoryButton>
-            </a.CategorysContainer>
-          </a.EachContainer>
-          <a.EachContainer>
-            <a.Title>재능 설명</a.Title>
-            <a.WriteQuill>
-              <ReactQuill
-                theme="snow"
-                ref={contentsRef}
-                modules={modules}
-                formats={formats}
-                value={content}
-                onChange={(value) => {
-                  setPost({ ...post, content: value });
-                }}
-                aria-label="글쓰기 공간"
-              />
-            </a.WriteQuill>
-          </a.EachContainer>
-          <a.SubmitButton onClick={onClickWriteBtn} aria-label="작성 완료">
-            작성 완료
-          </a.SubmitButton>
-        </a.ContentsContainer>
-      </a.WriteForm>
-    </a.WriteContainer>
+                  <a.TextInput
+                    ref={priceRef}
+                    onKeyDown={(e) =>
+                      ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                    }
+                    type="text"
+                    name="price"
+                    value={price === 0 ? '' : price}
+                    onChange={onChangePrice}
+                    placeholder="가격"
+                    maxLength={11}
+                    min={0}
+                    aria-label="가격 작성공간"
+                  />
+                </a.EachContainer>
+                <a.EachContainer>
+                  <a.Title>카테고리</a.Title>
+                  <a.CategorysContainer>
+                    <a.CategoryButton
+                      aria-label="공부"
+                      onClick={() => setCategory('study')}
+                      selected={category === 'study'}
+                      type="button"
+                    >
+                      공부
+                    </a.CategoryButton>
+                    <a.CategoryButton
+                      aria-label="놀이"
+                      onClick={() => setCategory('play')}
+                      selected={category === 'play'}
+                      type="button"
+                    >
+                      놀이
+                    </a.CategoryButton>
+                    <a.CategoryButton
+                      aria-label="상담"
+                      onClick={() => setCategory('advice')}
+                      selected={category === 'advice'}
+                      type="button"
+                    >
+                      상담
+                    </a.CategoryButton>
+                    <a.CategoryButton
+                      aria-label="기타"
+                      onClick={() => setCategory('etc')}
+                      selected={category === 'etc'}
+                      type="button"
+                    >
+                      기타
+                    </a.CategoryButton>
+                  </a.CategorysContainer>
+                </a.EachContainer>
+                <a.EachContainer>
+                  <a.Title>재능 설명</a.Title>
+                  <a.WriteQuill>
+                    <ReactQuill
+                      theme="snow"
+                      ref={contentsRef}
+                      modules={modules}
+                      formats={formats}
+                      value={content}
+                      onChange={(value) => {
+                        setPost({ ...post, content: value });
+                      }}
+                      aria-label="글쓰기 공간"
+                    />
+                  </a.WriteQuill>
+                </a.EachContainer>
+                <a.SubmitButton
+                  onClick={onClickWriteBtn}
+                  aria-label="작성 완료"
+                >
+                  작성 완료
+                </a.SubmitButton>
+              </a.ContentsContainer>
+            </a.WriteForm>
+          </a.WriteContainer>
+        </>
+      )}
+    </>
   );
 };
 export default WritePage;
