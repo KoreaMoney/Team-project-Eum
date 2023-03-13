@@ -14,16 +14,40 @@ const queryClient = new QueryClient({
   },
 });
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <div>
+const container = document.getElementById('root') as HTMLElement;
+const root = ReactDOM.createRoot(container);
+
+if (container.hasChildNodes()) {
+  ReactDOM.hydrateRoot(
+    container,
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <App />
       </QueryClientProvider>
     </RecoilRoot>
-  </div>
-);
+  );
+} else {
+  root.render(
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <App />
+      </QueryClientProvider>
+    </RecoilRoot>
+  );
+}
+
+// const root = ReactDOM.createRoot(
+//   document.getElementById('root') as HTMLElement
+// );
+// root.render(
+//   <div>
+//     <RecoilRoot>
+//       <QueryClientProvider client={queryClient}>
+//         <ReactQueryDevtools initialIsOpen={false} />
+//         <App />
+//       </QueryClientProvider>
+//     </RecoilRoot>
+//   </div>
+// );
