@@ -14,12 +14,13 @@ export default function Profile() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const imgRef = useRef<HTMLInputElement>(null);
+  const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const [changeFile, setChangeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [imgEditBtnToggle, setImgEditBtnToggle] = useState(false);
 
-  const { data } = useQuery(['users'], () =>
+  const { data } = useQuery(['users', saveUser?.Uid], () =>
     axios
       .get(`${process.env.REACT_APP_JSON}/users?id=${id}`)
       .then((res) => res.data)
@@ -86,7 +87,7 @@ export default function Profile() {
                 <img src={data?.[0]?.profileImg} alt="" decoding="async" />
               ) : (
                 <img
-                  src={URL.createObjectURL(changeFile)}
+                  src={URL?.createObjectURL(changeFile)}
                   alt=""
                   decoding="async"
                 />
