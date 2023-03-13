@@ -30,7 +30,7 @@ const Transaction = () => {
   const onClickBtn = () => {
     navigate(-1);
   };
-  console.log('엄진수');
+ 
   /**onSalePost 데이터 가지고오기 */
   const { data, isLoading } = useQuery(
     ['salePost', uuid],
