@@ -23,14 +23,16 @@ const Transaction = () => {
   const queryClient = useQueryClient();
 
   const { uuid } = useParams();
+
   const isDone = useRecoilValue(isDoneAtom);
   const isCancel = useRecoilValue(isCancelAtom);
+
   const setOnSalePost = useSetRecoilState(onSalePostAtom);
 
-  const onClickBtn = () => {
+  const onClickBackBtn = () => {
     navigate(-1);
   };
-  console.log('엄진수');
+
   /**onSalePost 데이터 가지고오기 */
   const { data, isLoading } = useQuery(
     ['salePost', uuid],
@@ -46,16 +48,8 @@ const Transaction = () => {
     }
   );
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   if (!data || data.length === 0) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
 
   //회원가입 된 유저가 아니라면 로그인 화면으로 이동합니다.
@@ -72,7 +66,7 @@ const Transaction = () => {
           <a.DetailWrapper>
             {isDone && (
               <a.TransactionText>
-                <button onClick={onClickBtn} aria-label="매칭 연결">
+                <button onClick={onClickBackBtn} aria-label="매칭 연결">
                   <IoExitOutline size={50} />
                 </button>
                 <h1>매칭이 완료되었습니다.</h1>
@@ -80,7 +74,7 @@ const Transaction = () => {
             )}
             {isCancel && (
               <a.TransactionText>
-                <button onClick={onClickBtn} aria-label="매칭 취소">
+                <button onClick={onClickBackBtn} aria-label="매칭 취소">
                   <IoExitOutline size={50} />
                 </button>
                 <h1>매칭이 취소되었습니다.</h1>

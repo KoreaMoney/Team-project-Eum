@@ -110,11 +110,9 @@ const Detail = () => {
       onSuccess: (data) => setNewSalePosts(data),
     }
   );
-  if (isLoading) {
-    return <Loader />;
-  }
+
   if (!post || post.length === 0) {
-    return <div>데이터를 찾을 수 없습니다</div>;
+    return <Loader />;
   }
 
   return (
