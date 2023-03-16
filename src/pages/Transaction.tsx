@@ -9,7 +9,8 @@ import Loader from '../components/etc/Loader';
 import * as a from '../styles/styledComponent/detail';
 import PostInfo from '../components/transaction/PostInfo/PostInfo';
 import Content from '../components/transaction/content/Content';
-import OnSalePostImg from '../components/transaction/OnSalePostImg ';
+import OnSalePostImg from '../components/transaction/OnSalePostImg';
+
 
 /**순서
  * 1. query-key만들기
@@ -65,35 +66,30 @@ const Transaction = () => {
 
   return (
     <a.DetailContainer>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <a.DetailWrapper>
-            {isDone && (
-              <a.TransactionText>
-                <button onClick={onClickBtn} aria-label="매칭 연결">
-                  <IoExitOutline size={50} />
-                </button>
-                <h1>매칭이 완료되었습니다.</h1>
-              </a.TransactionText>
-            )}
-            {isCancel && (
-              <a.TransactionText>
-                <button onClick={onClickBtn} aria-label="매칭 취소">
-                  <IoExitOutline size={50} />
-                </button>
-                <h1>매칭이 취소되었습니다.</h1>
-              </a.TransactionText>
-            )}
-            <a.PostContainer>
-              <OnSalePostImg />
-              <PostInfo />
-            </a.PostContainer>
-            <Content />
-          </a.DetailWrapper>
-        </>
-      )}
+      <a.DetailWrapper>
+        {isDone && (
+          <a.TransactionText>
+            <button onClick={onClickBtn} aria-label="매칭 연결">
+              <IoExitOutline size={50} />
+            </button>
+            <h1>거래가 완료되었습니다.</h1>
+          </a.TransactionText>
+        )}
+        {isCancel && (
+          <a.TransactionText>
+            <button onClick={onClickBtn} aria-label="매칭 취소">
+              <IoExitOutline size={50} />
+            </button>
+            <h1>거래가 취소되었습니다.</h1>
+          </a.TransactionText>
+        )}
+        <a.PostContainer>
+          <OnSalePostImg />
+          <PostInfo />
+        </a.PostContainer>
+        <Content />
+      </a.DetailWrapper>
+
     </a.DetailContainer>
   );
 };
