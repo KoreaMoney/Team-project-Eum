@@ -19,6 +19,7 @@ import ErrorETC from '../components/error/ErrorETC';
 const CategoryPage = () => {
   const navigate = useNavigate();
   const { categoryName, select, word } = useParams();
+
   const PAGE_SIZE = 6;
 
   const [sort, setSort] = useRecoilState(sortAtom);

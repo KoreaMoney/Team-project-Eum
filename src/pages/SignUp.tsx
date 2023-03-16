@@ -81,7 +81,7 @@ const SignUp = () => {
   };
 
   // x 버튼 누르면 email input 초기화
-  const handleInputValueClickBT = () => {
+  const handleClickEmailClear = () => {
     reset({
       email: '',
     });
@@ -95,7 +95,7 @@ const SignUp = () => {
    * 닉네임 중복 로직 : 중복확인 버튼 안누르면 0, 눌렀는데 중복이면 1, 눌렀는데 중복 없으면 2 (2가 되야 통과임)
    */
 
-  const handleCheckOverlapNickName = () => {
+  const handleClickNicknameCheck = () => {
     const nickName = getValues('nickName');
     if (!nickName) {
       customWarningAlert('닉네임을 입력해주세요.');
@@ -190,6 +190,7 @@ const SignUp = () => {
       }
     }
   };
+  
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
   useEffect(() => {
     if (saveUser) {
@@ -222,7 +223,7 @@ const SignUp = () => {
                   />
                   <a.LoginCloseIcon
                     size={20}
-                    onClick={handleInputValueClickBT}
+                    onClick={handleClickEmailClear}
                     aria-label="닫기"
                   />
                 </a.LoginMiniWrapper>
@@ -287,7 +288,7 @@ const SignUp = () => {
                 </a.SignUpNicknameWrapper>
                 <a.SignUpCheckBtn
                   type="button"
-                  onClick={handleCheckOverlapNickName}
+                  onClick={handleClickNicknameCheck}
                   aria-label="중복확인"
                 >
                   중복확인

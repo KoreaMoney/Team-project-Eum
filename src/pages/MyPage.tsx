@@ -82,6 +82,7 @@ const MyPage = () => {
 
   /*회원탈퇴 */
   const user = auth.currentUser;
+
   const { mutate: deletedUser } = useMutation(
     (id: string | undefined) => deleteUsers(id),
     {
@@ -129,7 +130,7 @@ const MyPage = () => {
     navigate(`/detail/${list.category}/${list.id}`);
   };
 
-  const handleSellingPostClick = async (list: any) => {
+  const handleSellPostClick = async (list: any) => {
     navigate(`/detail/${list.category}/${list.id}`);
   };
 
@@ -152,10 +153,6 @@ const MyPage = () => {
     color: `${theme.colors.black}`,
     borderBottom: `3px solid ${theme.colors.gray40}`,
   };
-
-  if (isLoading) {
-    <Loader />;
-  }
 
   return (
     <a.MyPageContainer>
@@ -292,7 +289,7 @@ const MyPage = () => {
                                   : '/assets/basicIMG.webp'
                               }
                               decoding="async"
-                              onClick={() => handleSellingPostClick(list)}
+                              onClick={() => handleSellPostClick(list)}
                               aria-label="판매 내역"
                             />
                             <a.InfoBest>{list.category}</a.InfoBest>

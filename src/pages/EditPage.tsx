@@ -19,6 +19,7 @@ import 'react-quill/dist/quill.snow.css';
 const EditPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const saveUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 
   const imgRef = useRef<HTMLInputElement>(null);
@@ -145,7 +146,7 @@ const EditPage = () => {
     }
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTitle(value);
   };
@@ -166,18 +167,15 @@ const EditPage = () => {
     if (!category) {
       customInfoAlert('카테고리를 선택해주세요');
       return true;
-    }
-    if (!title.trim()) {
+    } else if (!title.trim()) {
       customWarningAlert('제목을 입력해주세요');
       titleRef.current?.focus();
       return true;
-    }
-    if (!price) {
+    } else if (!price) {
       customWarningAlert('가격을 입력해주세요');
       priceRef.current?.focus();
       return true;
-    }
-    if (!parsingHtml(content).trim()) {
+    } else if (!parsingHtml(content).trim()) {
       customWarningAlert('내용을 입력해주세요');
       contentsRef.current?.focus();
       return true;
@@ -218,9 +216,6 @@ const EditPage = () => {
     setImgURL('');
   };
 
-  if (isLoading) {
-    <Loader />;
-  }
   return (
     <a.WriteContainer>
       {isLoading ? (
@@ -261,7 +256,7 @@ const EditPage = () => {
                   type="text"
                   name="title"
                   value={title}
-                  onChange={onChange}
+                  onChange={onChangeValue}
                   placeholder="제목"
                   maxLength={32}
                 />

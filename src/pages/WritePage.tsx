@@ -29,8 +29,10 @@ const WritePage = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<ReactQuill>(null);
   const priceRef = useRef<HTMLInputElement>(null);
+
   const [category, setCategory] = useState('');
   const [img, setImg] = useState('');
+
   const toolbarOptions = [
     [{ align: [] }],
     ['bold', 'italic', 'underline', 'strike'],
@@ -129,6 +131,7 @@ const WritePage = () => {
       maxWidthOrHeight: 1920,
       useWebWorker: true,
     };
+
     try {
       // 압축 결과
       const compressedFile = await imageCompression(file, options).then(
@@ -161,7 +164,7 @@ const WritePage = () => {
   };
 
   // value 저장
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPost({
       ...post,
@@ -232,9 +235,6 @@ const WritePage = () => {
   const onClickWriteBtn = () => {
     customSuccessAlert('재능 글쓰기가 완료되었습니다.');
   };
-  if (isLoading) {
-    <Loader />;
-  }
 
   return (
     <>
@@ -281,7 +281,7 @@ const WritePage = () => {
                     type="text"
                     name="title"
                     value={title}
-                    onChange={onChange}
+                    onChange={onChangeValue}
                     placeholder="제목"
                     maxLength={32}
                     aria-label="제목 작성 공간"
