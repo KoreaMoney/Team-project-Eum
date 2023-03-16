@@ -12,6 +12,7 @@ import * as a from '../styles/styledComponent/detail';
 import PostImg from '../components/detail/PostImg';
 import PostInfo from '../components/transaction/PostInfo/PostInfo';
 import Content from '../components/transaction/content/Content';
+import OnSalePostImg from '../components/transaction/OnSalePostImg';
 
 /**순서
  * 1. query-key만들기
@@ -85,7 +86,7 @@ const Transaction = () => {
           </a.TransactionText>
         )}
         <a.PostContainer>
-          <PostImg />
+          <OnSalePostImg />
           <PostInfo />
         </a.PostContainer>
         <Content />

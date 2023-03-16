@@ -73,11 +73,11 @@ const MyPage = () => {
   });
 
   const isDoneSell = tradeSellData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false
   });
 
   const isDoneBuy = tradeBuyData?.filter((post: any) => {
-    return post.isDone === false;
+    return post.isDone === false && post.isCancel === false;
   });
 
   /*회원탈퇴 */
@@ -104,7 +104,7 @@ const MyPage = () => {
   );
   // deleteUsers
   const deleteAuth = () => {
-    if (isDoneBuy?.[0] || isDoneSell?.[0]) {
+    if (isDoneBuy?.[0] || isDoneSell?.[0]) {  //
       customInfoAlert('매칭중인 회원은 탈퇴가 불가능합니다.');
     } else {
       customConfirm(
