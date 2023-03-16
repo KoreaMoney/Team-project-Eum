@@ -218,6 +218,9 @@ const EditPage = () => {
     setImgURL('');
   };
 
+  if (isLoading) {
+    <Loader />;
+  }
   return (
     <a.WriteContainer>
       {isLoading ? (

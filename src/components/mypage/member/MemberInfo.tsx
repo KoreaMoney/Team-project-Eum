@@ -15,9 +15,10 @@ import {
   customWarningAlert,
 } from '../../modal/CustomAlert';
 import { useState } from 'react';
+import ProfileImg from './ProfileImg';
+import Loader from '../../etc/Loader';
+import UserName from './UserName';
 
-const ProfileImg = loadable(() => import('./ProfileImg'));
-const UserName = loadable(() => import('./UserName'));
 const Badge = loadable(() => import('./Badge'));
 
 const MemberInfo = () => {
@@ -30,6 +31,7 @@ const MemberInfo = () => {
   const editNickNameValue = useRecoilValue(addNickNameAtom);
   const nickNameCheck = useRecoilValue(editNickNameAtom);
   const [reCheck, setReCheck] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutate: updateUser } = useMutation(
     (newUser: {
@@ -110,12 +112,18 @@ const MemberInfo = () => {
   };
   return (
     <>
-      <ProfileImg />
-      <UserName />
-      <Badge />
-      <SubmitButton onClick={onSubmitMember} aria-label="저장하기">
-        저장하기
-      </SubmitButton>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <ProfileImg />
+          <UserName />
+          <Badge />
+          <SubmitButton onClick={onSubmitMember} aria-label="저장하기">
+            저장하기
+          </SubmitButton>
+        </>
+      )}
     </>
   );
 };

@@ -65,7 +65,7 @@ const BuyerModal = () => {
                   <ListContentsContainer>
                     {salePosts?.map((salePost: any) => {
                       return (
-                        <ListContentContainer>
+                        <ListContentContainer key={salePost.id}>
                           <Day>{getTimeGap(salePost?.createdAt)}</Day>
                           <NickName>{salePost?.buyerNickName}</NickName>
                           <Price>
