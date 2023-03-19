@@ -9,22 +9,6 @@
 
 📏[Figma](https://www.figma.com/file/G5EnLXaTUv9j8fX9FWMgXc/%EC%9D%B4%EC%9D%8C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=924%3A7927&t=roZnTCbnUnNA7EuH-1)
 
-<h2>👨‍💻 팀 소개</h2>
-🧑‍🤝‍🧑__총 팀원 : FRONTEND (4명), DESIGNER (1명) <br/>
-🧑‍🤝‍🧑__구성원
-
-[김미영(Leader)](https://github.com/km-young),
-[김도원(Vice Leader)](https://github.com/KoreaMoney),
-[정진수](https://github.com/Um-Junsik), [김남규](https://github.com/Kimnamgyu93)
-| 김예은 (Designer)<br/><br/>
-
-🏷️팀명\_노른자 <br/> 사물에서 알짜로 중요하거나 값지거나 한 부분이 의미인 것처럼
-<br/>팀원들도 함께 프로젝트에서 값진 경험과 소중하고 중요한 "인재"가 되자라는의미
-입니다.<br/><br/>
-
-🏷️프로젝트 명\_이음<br/> "마주 이어서 합하는 일" 한국 고유의 뜻으로 모든 사람의
-숨겨둔재능을 가치있게 만들자라는 의미입니다.<br/><br/>
-
 📆 프로젝트 개발기간<br/> 23.02.06. ~ 23.03.13. (5weeks)<br/>
 ![image](https://user-images.githubusercontent.com/117058112/224474507-01231257-e99e-48df-8eab-de6c6803819e.png)
 
