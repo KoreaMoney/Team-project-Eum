@@ -5,7 +5,7 @@
 
 🏠[재능마켓 이음 바로가기](https://eum-interlink.vercel.app)
 
-🔗[Notion](https://www.notion.so/e9e0f2e24c3041779bdbd281443bac6c)<br/>
+🔗[Notion](https://well-juniper-a02.notion.site/b51d4546894849f8b1e25f0a813ba731)<br/>
 
 📏[Figma](https://www.figma.com/file/G5EnLXaTUv9j8fX9FWMgXc/%EC%9D%B4%EC%9D%8C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=924%3A7927&t=roZnTCbnUnNA7EuH-1)
 
