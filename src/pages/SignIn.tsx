@@ -104,7 +104,7 @@ const SignIn = () => {
   });
 
   // x 버튼 누르면 email input 초기화
-  const handleInputValueClickBT = () => {
+  const handleClearEmail = () => {
     reset({
       email: '',
     });
@@ -121,7 +121,9 @@ const SignIn = () => {
       setAuthenticating(true);
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+
           navigate(location.state?.from ? location.state.from : '/');
+          setIsLoading(false);
         })
         .catch((error) => {
           setAuthenticating(false);
@@ -144,6 +146,7 @@ const SignIn = () => {
   const onGoogleClick = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
+
         const uid = auth?.currentUser?.uid;
         const idList = data?.map((user: userType) => user.id); //리팩토링 필요
         const isId = idList.includes(saveUser?.uid);
@@ -219,7 +222,7 @@ const SignIn = () => {
                   />
                   <a.LoginCloseIcon
                     size={20}
-                    onClick={handleInputValueClickBT}
+                    onClick={handleClearEmail}
                     aria-label="닫기"
                   />
                 </a.LoginMiniWrapper>
@@ -253,7 +256,10 @@ const SignIn = () => {
             </a.LoginForm>
             <a.LoginAnd>또는</a.LoginAnd>
             <a.GoogleWrapper>
-              <a.GoogleBtn onClick={onGoogleClick} aria-label="구글 로그인">
+              <a.GoogleBtn
+                onClick={onClickGoogleLogin}
+                aria-label="구글 로그인"
+              >
                 <a.GoogleIconWrapper>
                   <a.GoogleIcon size={30} />
                   <p>Google 계정으로 계속하기</p>

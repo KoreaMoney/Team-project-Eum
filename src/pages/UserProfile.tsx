@@ -14,12 +14,13 @@ import Loader from '../components/etc/Loader';
 
 const UserProfile = () => {
   const { id } = useParams();
+  
   const setUserProfile = useSetRecoilState(userProfileAtom);
   const setUserPosts = useSetRecoilState(userPostsAtom);
   const setUserComments = useSetRecoilState(userCommentsAtom);
 
   /**유저 정보 불러오기 */
-  const { data: User, isLoading } = useQuery(['user', id], () => getUsers(id), {
+  const { isLoading } = useQuery(['user', id], () => getUsers(id), {
     onSuccess: (data) => setUserProfile(data),
   });
 
@@ -33,9 +34,6 @@ const UserProfile = () => {
     onSuccess: (data) => setUserComments(data),
   });
 
-  if (isLoading) {
-    return <Loader />;
-  }
   return (
     <>
       {isLoading ? (

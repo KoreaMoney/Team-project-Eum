@@ -58,8 +58,7 @@ function ReviewPage() {
       onSuccess: (data) => {
         if (!saveUser || saveUser.uid !== data.buyerUid || !data.isDone) {
           navigate('/');
-        }
-        if (data.reviewDone) {
+        } else if (data.reviewDone) {
           navigate('/');
         }
       },
@@ -145,7 +144,7 @@ function ReviewPage() {
   );
 
   //1. 판매자 카운트 2. 포스트 카운트, 3.댓글 만들기
-  const submitReview = () => {
+  const onSubmitReview = () => {
     if (badge) {
       const newUser = { [badge]: user[badge] + 1 };
       const userId = data.sellerUid;
@@ -241,7 +240,7 @@ function ReviewPage() {
               aria-label="입력창"
             />
           </a.ReviewContainer>
-          <a.SubmitButton onClick={submitReview} aria-label="작성 완료">
+          <a.SubmitButton onClick={onSubmitReview} aria-label="작성 완료">
             작성 완료
           </a.SubmitButton>
         </>
