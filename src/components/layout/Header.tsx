@@ -250,8 +250,8 @@ const Count = styled.div`
   position: absolute;
   font-size: 11px;
   color: white;
-  right: 302px;
-  top: 18px;
+  left: 50%;
+  bottom: 50%;
   width: 25px;
   height: 25px;
   border-radius: 100%;
@@ -261,6 +261,7 @@ const Count = styled.div`
 `;
 
 const CountWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   cursor: pointer;
@@ -282,7 +283,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  width: 100%;
+  width: 1920px;
   height: 40px;
   justify-content: space-between;
 `;

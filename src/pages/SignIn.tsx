@@ -256,10 +256,7 @@ const SignIn = () => {
             </a.LoginForm>
             <a.LoginAnd>또는</a.LoginAnd>
             <a.GoogleWrapper>
-              <a.GoogleBtn
-                onClick={onClickGoogleLogin}
-                aria-label="구글 로그인"
-              >
+              <a.GoogleBtn onClick={onGoogleClick} aria-label="구글 로그인">
                 <a.GoogleIconWrapper>
                   <a.GoogleIcon size={30} />
                   <p>Google 계정으로 계속하기</p>
