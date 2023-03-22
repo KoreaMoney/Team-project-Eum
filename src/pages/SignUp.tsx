@@ -113,7 +113,7 @@ const SignUp = () => {
   };
 
   // 등록하기 버튼 누르면 실행되는 함수
-  const onSubmitHandler: SubmitHandler<ISignUpForm> = async ({ email, pw }) => {
+  const onSubmitHandler: SubmitHandler<ISignUpForm> = ({ email, pw }) => {
     if (errors.checkPw || errors.email || errors.pw) {
       return;
     } else {
@@ -124,13 +124,14 @@ const SignUp = () => {
         return;
       } else {
         setRegistering(true);
-        await createUserWithEmailAndPassword(auth, email, pw)
+        createUserWithEmailAndPassword(auth, email, pw)
           .then(() => {
             customInfoAlert(
               ` ${getValues(
                 'nickName'
               )}님 \n소액 재능 거래 플랫폼 \n이음에 오신걸 환영합니다.`
             );
+            navigate('/');
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -167,7 +168,7 @@ const SignUp = () => {
             repBadge: '',
           });
 
-          await updateProfile(auth.currentUser, {
+          updateProfile(auth.currentUser, {
             displayName: getValues('nickName'),
           })
             .then(() => {

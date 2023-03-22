@@ -111,7 +111,7 @@ const SignIn = () => {
   };
 
   //이메일 비밀번호 최종 유효성 검사
-  const onSubmitHandler: SubmitHandler<ILoginForm> = async ({
+  const onSubmitHandler: SubmitHandler<ILoginForm> = ({
     email,
     password,
   }) => {
@@ -119,8 +119,9 @@ const SignIn = () => {
       return;
     } else {
       setAuthenticating(true);
-      await signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+
           navigate(location.state?.from ? location.state.from : '/');
           setIsLoading(false);
         })
@@ -142,9 +143,10 @@ const SignIn = () => {
   // 소셜 로그인 (구글)
   const googleProvider = new GoogleAuthProvider();
 
-  const onClickGoogleLogin = async () => {
-    await signInWithPopup(auth, googleProvider)
-      .then(() => {
+  const onGoogleClick = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+
         const uid = auth?.currentUser?.uid;
         const idList = data?.map((user: userType) => user.id); //리팩토링 필요
         const isId = idList.includes(saveUser?.uid);

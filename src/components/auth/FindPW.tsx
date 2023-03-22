@@ -47,7 +47,7 @@ const FindPW = () => {
   });
 
   //변경될 비밀번호 이메일로 전송하기
-  const onSubmitHandler = async () => {
+  const onSubmitHandler = () => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
         setSuccess(true);

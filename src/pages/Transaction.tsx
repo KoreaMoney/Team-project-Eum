@@ -9,7 +9,8 @@ import Loader from '../components/etc/Loader';
 import * as a from '../styles/styledComponent/detail';
 import PostInfo from '../components/transaction/PostInfo/PostInfo';
 import Content from '../components/transaction/content/Content';
-import OnSalePostImg from '../components/transaction/OnSalePostImg ';
+import OnSalePostImg from '../components/transaction/OnSalePostImg';
+
 
 /**순서
  * 1. query-key만들기
@@ -59,6 +60,7 @@ const Transaction = () => {
 
   return (
     <a.DetailContainer>
+
       {isLoading ? (
         <Loader />
       ) : (
